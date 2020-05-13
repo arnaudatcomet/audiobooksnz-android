@@ -34,17 +34,16 @@ class AppModule {
     fun providePrivateOkHttpClient(
             upstreamClient: OkHttpClient
     ): OkHttpClient {
-        return upstreamClient.newBuilder()
-                .addInterceptor(AuthInterceptor(BuildConfig.API_DEVELOPER_TOKEN)).build()
+        return upstreamClient.newBuilder().build()
     }
 
     @Singleton
     @Provides
     fun provideDb(app: Application) = AppDatabase.getInstance(app)
 
-//    @Singleton
-//    @Provides
-//    fun provideLegoSetDao(db: AppDatabase) = db.legoSetDao()
+    @Singleton
+    @Provides
+    fun provideCategoryDao(db: AppDatabase) = db.categoryDao()
 //
 //
 //    @Singleton
