@@ -2,8 +2,8 @@ package com.audiobookz.nz.app.browse.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.audiobookz.nz.app.browse.ui.CategoryViewModel
-//import com.audiobookz.nz.app.browse.ui.viewmo
+import com.audiobookz.nz.app.browse.categories.ui.CategoryViewModel
+//import com.audiobookz.nz.app.browse.categories.ui.viewmo
 
 import dagger.Binds
 import dagger.Module
@@ -15,7 +15,7 @@ abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(CategoryViewModel::class)
-    abstract fun bindThemeViewModel(viewModel: CategoryViewModel): ViewModel
+    abstract fun bindCategoryViewModel(viewModel: CategoryViewModel): ViewModel
 
 //    @Binds
 //    @IntoMap

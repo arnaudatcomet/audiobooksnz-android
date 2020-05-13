@@ -10,7 +10,7 @@
 
         <variable
             name="audioCategory"
-            type="com.audiobookz.nz.app.browse.data.AudiobookCategory"/>
+            type="com.audiobookz.nz.app.browse.categories.data.Category"/>
     </data>
 
     <androidx.cardview.widget.CardView
@@ -25,11 +25,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_normal"
-            android:text="@{audioCategory.name}"
+            android:text="@{audioCategory.title}"
             android:gravity="center"
             android:textAppearance="?attr/textAppearanceHeadline6"
             tools:text="Category"/>
-
     </androidx.cardview.widget.CardView>
 
 

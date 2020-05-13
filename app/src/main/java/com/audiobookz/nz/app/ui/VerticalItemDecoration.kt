@@ -1,4 +1,4 @@
-package com.audiobookz.nz.app.browse.ui
+package com.audiobookz.nz.app.browse.categories.ui
 
 import android.graphics.Rect
 import android.view.View

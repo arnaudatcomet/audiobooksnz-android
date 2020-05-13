@@ -8,10 +8,9 @@ import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
-import com.audiobookz.nz.app.browse.data.Category
-import com.audiobookz.nz.app.browse.data.CategoryDao
+import com.audiobookz.nz.app.browse.categories.data.Category
+import com.audiobookz.nz.app.browse.categories.data.CategoryDao
 import com.audiobookz.nz.app.worker.SeedDatabaseWorker
-import com.elifox.legocatalog.data.Converters
 
 /**
  * The Room database for this app

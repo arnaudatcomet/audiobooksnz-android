@@ -1,4 +1,4 @@
-package com.audiobookz.nz.app.browse.data
+package com.audiobookz.nz.app.browse.categories.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -10,13 +10,13 @@ data class Category(
     @PrimaryKey
     @field:SerializedName("id")
     val id: String,
-    @field: SerializedName(value = "sort_order")
+    @field: SerializedName("sort_order")
     val sortOrder: Int,
-    @field: SerializedName(value = "slug")
+    @field: SerializedName("slug")
     val slug: String,
-    @field: SerializedName(value = "title")
+    @field: SerializedName("title")
     val title: String,
-    @field: SerializedName(value = "Description")
+    @field: SerializedName("description")
     val description: String
 ) {
     override fun toString() = title

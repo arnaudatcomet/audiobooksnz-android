@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.audiobookz.nz.app.data.AppDatabase
-import com.audiobookz.nz.app.browse.data.Category
+import com.audiobookz.nz.app.browse.categories.data.Category
 import com.audiobookz.nz.app.util.DATA_FILENAME
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken

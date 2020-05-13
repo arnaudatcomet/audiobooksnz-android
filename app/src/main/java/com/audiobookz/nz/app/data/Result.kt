@@ -1,4 +1,4 @@
-package com.elifox.legocatalog.data
+package com.audiobookz.nz.app.data
 
 /**
  * A generic class that holds a value with its loading status.

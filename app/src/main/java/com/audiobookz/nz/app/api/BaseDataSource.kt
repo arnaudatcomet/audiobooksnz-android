@@ -1,6 +1,6 @@
 package com.audiobookz.nz.app.api
 
-import com.elifox.legocatalog.data.Result
+import com.audiobookz.nz.app.data.Result
 import retrofit2.Response
 import timber.log.Timber
 
@@ -24,7 +24,7 @@ abstract class BaseDataSource {
 
     private fun <T> error(message: String): Result<T> {
         Timber.e(message)
-        return Result.error("Network call has failed for a following reason: $message")
+        return Result.error("Network : $message")
     }
 
 }

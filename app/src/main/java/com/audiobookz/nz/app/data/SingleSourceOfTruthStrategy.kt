@@ -1,10 +1,10 @@
-package com.elifox.legocatalog.data
+package com.audiobookz.nz.app.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.map
-import com.elifox.legocatalog.data.Result.Status.ERROR
-import com.elifox.legocatalog.data.Result.Status.SUCCESS
+import com.audiobookz.nz.app.data.Result.Status.ERROR
+import com.audiobookz.nz.app.data.Result.Status.SUCCESS
 import kotlinx.coroutines.Dispatchers
 
 /**

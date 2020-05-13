@@ -1,10 +1,12 @@
-package com.audiobookz.nz.app.browse.ui
+package com.audiobookz.nz.app.browse.categories.ui
 
 import androidx.lifecycle.ViewModel
+import com.audiobookz.nz.app.browse.categories.data.CategoryRepository
 import javax.inject.Inject
 
-class CategoryViewModel : ViewModel() {
+class CategoryViewModel @Inject constructor(repository: CategoryRepository) : ViewModel() {
     // Need to inject the data we want
+    val category = repository.category
 }
 
 

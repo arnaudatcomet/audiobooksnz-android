@@ -1,4 +1,4 @@
-package com.audiobookz.nz.app.browse.data
+package com.audiobookz.nz.app.browse.categories.data
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
@@ -14,7 +14,7 @@ import androidx.room.Query
 interface CategoryDao {
 
     @Query("SELECT * FROM categories ORDER BY id DESC")
-    fun getLegoThemes(): LiveData<List<Category>>
+    fun getCategory(): LiveData<List<Category>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(plants: List<Category>)

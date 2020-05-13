@@ -1,11 +1,9 @@
 package com.audiobookz.nz.app.browse.di
 
 import android.app.Application
-import com.audiobookz.nz.app.BuildConfig
 import com.audiobookz.nz.app.api.AudiobookService
-import com.audiobookz.nz.app.api.AuthInterceptor
 import com.audiobookz.nz.app.data.AppDatabase
-import com.audiobookz.nz.app.browse.data.CategoryRemoteDataSource
+import com.audiobookz.nz.app.browse.categories.data.CategoryRemoteDataSource
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineScope
