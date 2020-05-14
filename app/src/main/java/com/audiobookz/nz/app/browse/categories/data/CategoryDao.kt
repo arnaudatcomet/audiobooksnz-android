@@ -12,7 +12,6 @@ import androidx.room.Query
  */
 @Dao
 interface CategoryDao {
-
     @Query("SELECT * FROM categories ORDER BY id DESC")
     fun getCategory(): LiveData<List<Category>>
 

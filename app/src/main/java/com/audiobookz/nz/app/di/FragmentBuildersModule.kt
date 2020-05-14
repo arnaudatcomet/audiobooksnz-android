@@ -1,9 +1,7 @@
 package com.audiobookz.nz.app.browse.di
 
 
-//import com.elifox.legocatalog.legoset.ui.LegoSetFragment
-//import com.elifox.legocatalog.legoset.ui.LegoSetsFragment
-//import com.elifox.legocatalog.legotheme.ui.LegoThemeFragment
+import com.audiobookz.nz.app.audiobookList.ui.AudiobookListFragment
 import com.audiobookz.nz.app.browse.categories.ui.CategoryFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -13,7 +11,8 @@ import dagger.android.ContributesAndroidInjector
 abstract class FragmentBuildersModule {
     @ContributesAndroidInjector
     abstract fun contributeCategoryFragment(): CategoryFragment
-
+    @ContributesAndroidInjector
+    abstract fun contributeCategoryDetailFragment(): AudiobookListFragment
 //
 //    @ContributesAndroidInjector
 //    abstract fun contributeLegoSetsFragment(): LegoSetsFragment

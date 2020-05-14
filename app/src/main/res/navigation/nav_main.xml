@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/categoryFragment">
+
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="com.audiobookz.nz.app.browse.categories.ui.CategoryFragment"
+        android:label="CategoryFragment"
+        tools:layout="@layout/fragment_categories"
+        >
+
+        <action
+            android:id="@+id/action_categoryFragment_to_categoryDetailFragment"
+            app:destination="@id/AudiobookListFragment" />
+    </fragment>
+    <fragment
+
+        android:id="@+id/AudiobookListFragment"
+        android:name="com.audiobookz.nz.app.audiobookList.ui.AudiobookListFragment"
+        android:label="AudiobookListFragment"
+        tools:layout="@layout/fragment_audiobook_list"
+        >
+        <argument
+            android:name="id"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null"/>
+    </fragment>
+</navigation>

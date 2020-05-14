@@ -1,27 +1,31 @@
 package com.audiobookz.nz.app.browse.categories.ui
-
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.audiobookz.nz.app.browse.categories.data.Category
 import com.audiobookz.nz.app.databinding.ListItemCategoriesBinding
+import com.audiobookz.nz.app.databinding.ListItemCategoriesBindingImpl
 
 class CategoryAdapter : ListAdapter<Category,CategoryAdapter.ViewHolder>(DiffCallback())
 {
+   
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val category = getItem(position)
         holder.apply {
-            bind(createOnClickListener(category.id, category.title), category)
+            bind(createOnClickListener(category.id), category)
             itemView.tag = category
         }
     }
-    private fun createOnClickListener(id: String, title: String): View.OnClickListener {
+    private fun createOnClickListener(id: String): View.OnClickListener {
         return View.OnClickListener {
-            Log.d("TAG", id+title)
+            val direction = CategoryFragmentDirections.actionCategoryFragmentToCategoryDetailFragment(id)
+            it.findNavController().navigate(direction)
         }
     }
     class ViewHolder(

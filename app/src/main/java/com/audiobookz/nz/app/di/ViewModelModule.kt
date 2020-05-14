@@ -2,6 +2,7 @@ package com.audiobookz.nz.app.browse.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.audiobookz.nz.app.audiobookList.ui.AudiobookListViewModel
 import com.audiobookz.nz.app.browse.categories.ui.CategoryViewModel
 //import com.audiobookz.nz.app.browse.categories.ui.viewmo
 
@@ -17,6 +18,10 @@ abstract class ViewModelModule {
     @ViewModelKey(CategoryViewModel::class)
     abstract fun bindCategoryViewModel(viewModel: CategoryViewModel): ViewModel
 
+    @Binds
+    @IntoMap
+    @ViewModelKey(AudiobookListViewModel::class)
+    abstract fun bindCategoryDetailViewModel(viewModel: AudiobookListViewModel): ViewModel
 //    @Binds
 //    @IntoMap
 //    @ViewModelKey(LegoSetsViewModel::class)

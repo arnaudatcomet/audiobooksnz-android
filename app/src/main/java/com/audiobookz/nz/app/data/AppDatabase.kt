@@ -8,6 +8,8 @@ import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
+import com.audiobookz.nz.app.audiobookList.data.AudiobookList
+import com.audiobookz.nz.app.audiobookList.data.AudiobookListDao
 import com.audiobookz.nz.app.browse.categories.data.Category
 import com.audiobookz.nz.app.browse.categories.data.CategoryDao
 import com.audiobookz.nz.app.worker.SeedDatabaseWorker
@@ -15,12 +17,13 @@ import com.audiobookz.nz.app.worker.SeedDatabaseWorker
 /**
  * The Room database for this app
  */
-@Database(entities = [Category::class],
-        version = 1, exportSchema = false)
+@Database(entities = [Category::class,AudiobookList::class],
+        version = 5, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun categoryDao(): CategoryDao
+    abstract fun audiobookListDao(): AudiobookListDao
 
 
     companion object {
@@ -46,6 +49,7 @@ abstract class AppDatabase : RoomDatabase() {
                             WorkManager.getInstance(context).enqueue(request)
                         }
                     })
+                    .fallbackToDestructiveMigration()
                     .build()
         }
     }

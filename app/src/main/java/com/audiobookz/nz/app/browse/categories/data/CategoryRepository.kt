@@ -14,6 +14,8 @@ class CategoryRepository @Inject constructor(private val dao: CategoryDao,
     val category = resultLiveData(
         databaseQuery = { dao.getCategory() },
         networkCall = { remoteSource.fetchData() },
-        saveCallResult = { dao.insertAll(it) })
+        saveCallResult = { dao.insertAll(it) },
+        nukeAudiobook = {}
+    )
 
 }
