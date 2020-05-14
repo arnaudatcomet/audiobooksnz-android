@@ -50,6 +50,10 @@ android {
 }
 
 dependencies {
+    //  use material component
+    implementation "com.google.android.material:material:$rootProject.materialcomponentVersion"
+
+    implementation "androidx.annotation:annotation:$rootProject.annotationVersion"
     kapt "androidx.room:room-compiler:$rootProject.roomVersion"
     kapt "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
     implementation "androidx.appcompat:appcompat:$rootProject.appCompatVersion"

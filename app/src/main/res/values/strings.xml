@@ -9,4 +9,39 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+
+    <!--login_activity-->
+    <string name="LoginFacebook">Login With Facebook</string>
+    <string name="LoginGoogle">Login With Google</string>
+    <string name="LoginEmail">Login With Email</string>
+    <string name="DontHaveAcc">Don\'t have Account?</string>
+    <string name="Or">Or</string>
+    <string name="SignFree">Sign Up For Free!</string>
+    <string name="Discover">Discover Audiobooks</string>
+
+    <!--login_mail_activity-->
+    <string name="E_mail_sign_in">Enter your email address</string>
+    <string name="Password">Password</string>
+    <string name="ForgotPass">Forgot Password?</string>
+    <string name="Login">Login</string>
+
+    <!--profile_activity-->
+    <string name="BookCredit">Book Credits</string>
+    <string name="BugReport">Submit Bug Report</string>
+    <string name="Email_Customer_care">Email Customer Care</string>
+    <string name="FAQ">FAQ</string>
+    <string name="mylibrary">My Library</string>
+    <string name="browse">Browse</string>
+    <string name="more">More</string>
+    <string name="me">Me</string>
+    <string name="Signout">Sign Out</string>
 </resources>

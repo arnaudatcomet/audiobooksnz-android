@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    tools:context=".MainActivity">
+
+
+    <ImageView
+        android:id="@+id/img_view_logo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_weight="40"
+        app:srcCompat="@drawable/logo" />
+
+    <Button
+        android:id="@+id/btnLoginFacebook"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:text="@string/LoginFacebook"
+        android:textAllCaps="false"
+        app:icon="@drawable/facebook40"
+        app:iconTint="@null" />
+
+    <Button
+        android:id="@+id/btnLoginGoogle"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:text="@string/LoginGoogle"
+        android:textAllCaps="false"
+        app:icon="@drawable/google40"
+        app:iconTint="@null" />
+
+    <Button
+        android:id="@+id/btnLoginEmail"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:text="@string/LoginEmail"
+        android:textAllCaps="false"
+        app:icon="@drawable/mail40"
+        app:iconTint="@null" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@color/colorTea" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/Or"
+            android:textAllCaps="false" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@color/colorTea" />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="@string/DontHaveAcc"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/btnSignFree"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:backgroundTint="@color/colorTea"
+        android:text="@string/SignFree" />
+
+    <Button
+        android:id="@+id/btnDiscover"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:backgroundTint="@android:color/background_dark"
+        android:text="@string/Discover" />
+
+
+</LinearLayout>
