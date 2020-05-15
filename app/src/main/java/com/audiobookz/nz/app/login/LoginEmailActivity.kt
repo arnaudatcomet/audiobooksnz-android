@@ -18,15 +18,15 @@ class LoginEmailActivity : AppCompatActivity() {
 
 
         val btnLogin = findViewById<Button>(R.id.btnLogin)
-        val edittxtAddress = findViewById<TextInputEditText>(R.id.editEmailAddress)
+        val edittxtEmailAddress = findViewById<TextInputEditText>(R.id.editEmailAddress)
         val edittxtPass = findViewById<TextInputEditText>(R.id.editPassword)
 
         btnLogin.setOnClickListener { view ->
 
-           val msg: String = edittxtAddress.text.toString() + " " + edittxtPass.text.toString()
+           val msg: String = edittxtEmailAddress.text.toString() + " " + edittxtPass.text.toString()
 
 
-            if (edittxtAddress.text.toString().trim().isNotEmpty() && edittxtPass.text.toString().trim().isNotEmpty()){
+            if (edittxtEmailAddress.text.toString().trim().isNotEmpty() && edittxtPass.text.toString().trim().isNotEmpty()){
                 Toast.makeText(this, msg , Toast.LENGTH_SHORT).show()
             } else{
                 Toast.makeText(this, "E-Mail or Password is Empty" , Toast.LENGTH_SHORT).show()
