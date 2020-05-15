@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApp">
-        <activity android:name=".login.LoginEmailActivity"></activity>
+        <activity android:name=".login.SignUpActivity"></activity>
+        <activity android:name=".login.LoginEmailActivity" />
         <activity android:name=".login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

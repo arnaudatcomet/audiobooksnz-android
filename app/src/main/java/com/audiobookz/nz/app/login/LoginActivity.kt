@@ -33,7 +33,8 @@ class LoginActivity : AppCompatActivity() {
         }
 
         btnSignUp.setOnClickListener { view ->
-            Toast.makeText(this, "SignUP", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, SignUpActivity::class.java)
+            startActivity(intent)
         }
 
         btnDiscover.setOnClickListener { view ->

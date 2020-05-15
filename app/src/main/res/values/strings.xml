@@ -44,4 +44,18 @@
     <string name="more">More</string>
     <string name="me">Me</string>
     <string name="Signout">Sign Out</string>
+
+    <!--SignUp_activity-->
+    <string name="Firstname_SignUp">Enter Your First Name</string>
+    <string name="Lastname_SignUp">Enter Your Last Name</string>
+    <string name="Mail_SignUp">Enter Your First Email</string>
+    <string name="Password_SignUp">Enter Your Password</string>
+    <string name="PasswordConfirm_SignUp">Enter Your Confirm Password</string>
+    <string name="TermAndCondition_SignUp">By Ticking you accept AudioBooks NZ Terms and Conditions and Privacy Policy</string>
+    <string name="SignUp">Sign Up</string>
+
+    <!--Alert_Dialog-->
+    <string name="AlertTitle">Alert!!</string>
+    <string name="AlertDescription">Something Wrong</string>
+    <string name="AlertOk">OK</string>
 </resources>
