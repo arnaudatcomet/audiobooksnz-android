@@ -1,9 +1,9 @@
 package com.audiobookz.nz.app.api
 import com.audiobookz.nz.app.audiobookList.data.AudiobookList
 import com.audiobookz.nz.app.browse.categories.data.Category
+import com.audiobookz.nz.app.login.data.UserData
 import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.http.*
 
 /**
  * Lego REST API access points
@@ -29,6 +29,12 @@ interface AudiobookService {
         @Query("per-page") pageSize: Int? = null,
         @Query("filter[language][]") pageLanguage:String
         ): Response<List<AudiobookList>>
+
+    @POST("users/login")
+    suspend fun postEmailLogin(
+        @Field("username") Username: String? ="test",
+        @Field("password") Password: String? ="test"
+    ): Response<UserData>
 
 //    @GET("lego/sets/")
 //    suspend fun getSets(@Query("page") page: Int? = null,

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.audiobookz.nz.app.audiobookList.ui.AudiobookListViewModel
 import com.audiobookz.nz.app.browse.categories.ui.CategoryViewModel
+import com.audiobookz.nz.app.login.ui.LoginEmailViewModel
 //import com.audiobookz.nz.app.browse.categories.ui.viewmo
 
 import dagger.Binds
@@ -22,6 +23,12 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(AudiobookListViewModel::class)
     abstract fun bindCategoryDetailViewModel(viewModel: AudiobookListViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(LoginEmailViewModel::class)
+    abstract fun bindLoginEmailViewModel(viewModel: LoginEmailViewModel): ViewModel
+
 //    @Binds
 //    @IntoMap
 //    @ViewModelKey(LegoSetsViewModel::class)

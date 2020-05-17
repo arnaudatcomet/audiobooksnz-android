@@ -2,6 +2,7 @@ package com.audiobookz.nz.app.browse.di
 
 import android.app.Application
 import com.audiobookz.nz.app.App
+import com.audiobookz.nz.app.di.LoginEmailActivityModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
@@ -12,7 +13,9 @@ import javax.inject.Singleton
     modules = [
         AndroidInjectionModule::class,
         AppModule::class,
-        MainActivityModule::class]
+        MainActivityModule::class,
+        LoginEmailActivityModule::class
+    ]
 )
 interface AppComponent {
     @Component.Builder

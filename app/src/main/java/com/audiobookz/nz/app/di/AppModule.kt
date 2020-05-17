@@ -9,6 +9,7 @@ import dagger.Provides
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -32,9 +33,10 @@ class AppModule {
     fun providePrivateOkHttpClient(
             upstreamClient: OkHttpClient
     ): OkHttpClient {
-        return upstreamClient.newBuilder().build()
+        return upstreamClient.newBuilder().apply {
+            this.addInterceptor(interceptor)
+        }.build()
     }
-
     @Singleton
     @Provides
     fun provideDb(app: Application) = AppDatabase.getInstance(app)
@@ -46,6 +48,10 @@ class AppModule {
     @Singleton
     @Provides
     fun provideAudiobookListDao(db: AppDatabase) = db.audiobookListDao()
+
+    @Singleton
+    @Provides
+    fun provideUserDataDao(db: AppDatabase) = db.userDataDao()
 //
 //
 //    @Singleton
@@ -56,6 +62,9 @@ class AppModule {
     @Provides
     fun provideCoroutineScopeIO() = CoroutineScope(Dispatchers.IO)
 
+    val interceptor : HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
+        this.level = HttpLoggingInterceptor.Level.BODY
+    }
 
     private fun createRetrofit(
             okhttpClient: OkHttpClient,

@@ -12,18 +12,21 @@ import com.audiobookz.nz.app.audiobookList.data.AudiobookList
 import com.audiobookz.nz.app.audiobookList.data.AudiobookListDao
 import com.audiobookz.nz.app.browse.categories.data.Category
 import com.audiobookz.nz.app.browse.categories.data.CategoryDao
+import com.audiobookz.nz.app.login.data.UserData
+import com.audiobookz.nz.app.login.data.UserDataDao
 import com.audiobookz.nz.app.worker.SeedDatabaseWorker
 
 /**
  * The Room database for this app
  */
-@Database(entities = [Category::class,AudiobookList::class],
-        version = 5, exportSchema = false)
+@Database(entities = [Category::class,AudiobookList::class,UserData::class],
+        version = 6, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun categoryDao(): CategoryDao
     abstract fun audiobookListDao(): AudiobookListDao
+    abstract fun userDataDao(): UserDataDao
 
 
     companion object {
