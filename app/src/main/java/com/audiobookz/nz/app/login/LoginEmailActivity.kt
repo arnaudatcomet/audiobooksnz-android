@@ -1,11 +1,13 @@
 package com.audiobookz.nz.app.login
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import com.audiobookz.nz.app.MainActivity
 import com.audiobookz.nz.app.R
 import com.google.android.material.textfield.TextInputEditText
 
@@ -29,8 +31,9 @@ class LoginEmailActivity : AppCompatActivity() {
             if (edittxtEmailAddress.text.toString().trim().isNotEmpty() && edittxtPass.text.toString().trim().isNotEmpty()){
                 Toast.makeText(this, msg , Toast.LENGTH_SHORT).show()
             } else{
-                Toast.makeText(this, "E-Mail or Password is Empty" , Toast.LENGTH_SHORT).show()
-            }
+                // bypass
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)            }
 
         }
 
