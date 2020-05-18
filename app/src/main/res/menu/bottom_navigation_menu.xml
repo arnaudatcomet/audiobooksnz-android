@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/mylibrary"
+        android:enabled="true"
+        android:icon="@drawable/mylibrary1_40"
+        android:title="@string/mylibrary" />
+    <item
+        android:id="@+id/browse"
+        android:enabled="true"
+        android:icon="@drawable/browse1_40"
+        android:title="@string/browse" />
+    <item
+        android:id="@+id/more"
+        android:enabled="true"
+        android:icon="@drawable/more40"
+        android:title="@string/more" />
+    <item
+        android:id="@+id/me"
+        android:enabled="true"
+        android:icon="@drawable/me1_40"
+        android:title="@string/me" />
+</menu>
