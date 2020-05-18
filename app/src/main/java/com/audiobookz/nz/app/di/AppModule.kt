@@ -33,9 +33,7 @@ class AppModule {
     fun providePrivateOkHttpClient(
             upstreamClient: OkHttpClient
     ): OkHttpClient {
-        return upstreamClient.newBuilder().apply {
-            this.addInterceptor(interceptor)
-        }.build()
+        return upstreamClient.newBuilder().build()
     }
     @Singleton
     @Provides
@@ -61,10 +59,6 @@ class AppModule {
     @CoroutineScropeIO
     @Provides
     fun provideCoroutineScopeIO() = CoroutineScope(Dispatchers.IO)
-
-    val interceptor : HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
-        this.level = HttpLoggingInterceptor.Level.BODY
-    }
 
     private fun createRetrofit(
             okhttpClient: OkHttpClient,

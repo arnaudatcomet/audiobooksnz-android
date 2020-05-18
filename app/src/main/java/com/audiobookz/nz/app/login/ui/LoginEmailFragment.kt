@@ -77,11 +77,13 @@ class LoginEmailFragment : Fragment(), Injectable{
 
         Log.d("TAG", Username!!.getText().toString())
         LoginBtn!!.setOnClickListener { view ->
-//            Log.d("TAG", "onViewCreated: click")
-//            val intent = Intent(activity, MainActivity::class.java)
-//            startActivity(intent)
-
-            subscribeUi()
+            if(Password!!.text.toString()=="" || Username!!.text.toString() == "")
+            {
+                Toast.makeText(getActivity(), "Username or password is empty", Toast.LENGTH_SHORT).show()
+            }else{
+                viewModel.loginEmail;
+                subscribeUi()
+            }
         }
     }
     private fun subscribeUi() {
@@ -90,13 +92,16 @@ class LoginEmailFragment : Fragment(), Injectable{
                 Result.Status.SUCCESS -> {
 //                    binding.progressBarDetail.hide()
 //                    result.data?.let { adapter.submitList(it) }
-                    Log.d("TAG", "result.message")
-                    Toast.makeText(getActivity(),result.message ,Toast.LENGTH_SHORT).show();
+                    if(result.data==null){
+                        Toast.makeText(getActivity(),"Username or password is incorrect" ,Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(getActivity(),"good" ,Toast.LENGTH_SHORT).show();
+                    }
 
                 }
                 Result.Status.LOADING ->    Log.d("TAG", "loading")
                 Result.Status.ERROR -> {
-                    Log.d("TAG", result.message)
+                    Toast.makeText(getActivity(),result.message ,Toast.LENGTH_SHORT).show();
                 }
             }
         })

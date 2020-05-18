@@ -30,10 +30,11 @@ interface AudiobookService {
         @Query("filter[language][]") pageLanguage:String
         ): Response<List<AudiobookList>>
 
+    @FormUrlEncoded
     @POST("users/login")
     suspend fun postEmailLogin(
-        @Field("username") Username: String? ="test",
-        @Field("password") Password: String? ="test"
+        @Field("username") Username: String? ="test@gmail.com",
+        @Field("password") Password: String? ="Welcome1"
     ): Response<UserData>
 
 //    @GET("lego/sets/")
