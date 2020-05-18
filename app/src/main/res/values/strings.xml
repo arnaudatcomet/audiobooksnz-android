@@ -58,4 +58,10 @@
     <string name="AlertTitle">Alert!!</string>
     <string name="AlertDescription">Something Wrong</string>
     <string name="AlertOk">OK</string>
+
+    <!--edit_profile-->
+    <string name="CurrentPass">Current Password</string>
+    <string name="NewPass">New Password</string>
+    <string name="ConfirmPass">Confirm Password</string>
+    <string name="SaveChanges">Save Changes</string>
 </resources>
