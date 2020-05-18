@@ -33,9 +33,28 @@ interface AudiobookService {
     @FormUrlEncoded
     @POST("users/login")
     suspend fun postEmailLogin(
-        @Field("username") Username: String? ="test@gmail.com",
-        @Field("password") Password: String? ="Welcome1"
+        @Field("username") Username: String? =null,
+        @Field("password") Password: String? =null
     ): Response<UserData>
+
+    @FormUrlEncoded
+    @POST("users/register")
+    suspend fun postRegister(
+        @Field("email") email: String? =null,
+        @Field("lastName") lastName: String? =null,
+        @Field("password") password: String? =null,
+        @Field("terms") terms: String? =null,
+        @Field("cPassword") cPassword: String? =null,
+        @Field("firstName") firstName: String? =null
+    ): Response<UserData>
+
+    @GET("users/profile")
+    suspend fun getProfile(
+        @Query("filter[category_id]") filter: Int? =null,
+        @Query("page") page: Int? = null,
+        @Query("per-page") pageSize: Int? = null,
+        @Query("filter[language][]") pageLanguage:String
+    ): Response<List<AudiobookList>>
 
 //    @GET("lego/sets/")
 //    suspend fun getSets(@Query("page") page: Int? = null,

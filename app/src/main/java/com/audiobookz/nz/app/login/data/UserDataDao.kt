@@ -12,6 +12,12 @@ interface UserDataDao {
     @Query("SELECT * FROM userdata ")
     fun getUserData(): LiveData<UserData>
 
+    @Query("SELECT access_token FROM userdata ")
+    fun getAccessToken(): String
+
+    @Query("DELETE FROM userdata ")
+    fun logout()
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUserData(Userdata: UserData)
 

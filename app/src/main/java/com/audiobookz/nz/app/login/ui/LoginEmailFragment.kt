@@ -1,5 +1,6 @@
 package com.audiobookz.nz.app.login.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,14 +12,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.audiobookz.nz.app.MainActivity
 import com.audiobookz.nz.app.R
 import com.audiobookz.nz.app.browse.di.Injectable
 import com.audiobookz.nz.app.browse.di.injectViewModel
 import com.audiobookz.nz.app.data.Result
-import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
 
@@ -96,6 +96,8 @@ class LoginEmailFragment : Fragment(), Injectable{
                         Toast.makeText(getActivity(),"Username or password is incorrect" ,Toast.LENGTH_SHORT).show();
                     }else{
                         Toast.makeText(getActivity(),"good" ,Toast.LENGTH_SHORT).show();
+                        val intent = Intent(activity, MainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        startActivity(intent)
                     }
 
                 }
