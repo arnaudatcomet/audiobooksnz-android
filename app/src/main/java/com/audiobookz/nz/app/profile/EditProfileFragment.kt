@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.cardview.widget.CardView
 
 import com.audiobookz.nz.app.R
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class EditProfileFragment : Fragment() {
 
@@ -30,33 +31,39 @@ class EditProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         var EditProfileCard = view.findViewById<CardView>(R.id.CardEditProfile)
-        var FirstNameEdit = view.findViewById<TextView>(R.id.editFirstName)
-        var LastNameEdit = view.findViewById<TextView>(R.id.editLastName)
+        var FirstNameEdit = view.findViewById<TextView>(R.id.editFirstNameProfile)
+        var LastNameEdit = view.findViewById<TextView>(R.id.editLastNameProfile)
         var CurrentPassEdit = view.findViewById<TextView>(R.id.editCurrentPass)
         var NewPassProfileEdit = view.findViewById<TextView>(R.id.editNewPassProfile)
         var PassConfirmProfileEdit = view.findViewById<TextView>(R.id.editPassConfirmProfile)
         var SaveChangeBtn = view.findViewById<Button>(R.id.btnSaveChange)
+        val items = arrayOf("Camera", "Gallery")
 
-        EditProfileCard.setOnClickListener { View ->
-            Toast.makeText(getActivity(), "1", Toast.LENGTH_SHORT).show()
+        val msg: String =
+            FirstNameEdit.text.toString() + " " + LastNameEdit.text.toString()
+        val msg2: String =
+            CurrentPassEdit.text.toString() + " " + NewPassProfileEdit.text.toString() + " " + PassConfirmProfileEdit.text.toString()
+        val msg3 = "$msg $msg2"
+
+        EditProfileCard.setOnClickListener{view ->
+            MaterialAlertDialogBuilder(context)
+                .setTitle(resources.getString(R.string.PleaseSelectImage))
+                .setNeutralButton(resources.getString(R.string.AlertCancel)) { dialog, which ->
+                    // Respond to neutral button press
+                }
+                .setItems(items) { dialog, which ->
+                   if (items[which] == items[0]){
+
+                   }
+                    else{
+
+                   }
+                }
+                .show()
         }
-        FirstNameEdit.setOnClickListener { View ->
-            Toast.makeText(getActivity(), "2", Toast.LENGTH_SHORT).show()
-        }
-        LastNameEdit.setOnClickListener{view ->
-            Toast.makeText(getActivity(), "3", Toast.LENGTH_SHORT).show()
-        }
-        CurrentPassEdit.setOnClickListener{view ->
-            Toast.makeText(getActivity(), "4", Toast.LENGTH_SHORT).show()
-        }
-        NewPassProfileEdit.setOnClickListener{view ->
-            Toast.makeText(getActivity(), "5", Toast.LENGTH_SHORT).show()
-        }
-        PassConfirmProfileEdit.setOnClickListener{view ->
-            Toast.makeText(getActivity(), "6", Toast.LENGTH_SHORT).show()
-        }
+
         SaveChangeBtn.setOnClickListener{view ->
-            Toast.makeText(getActivity(), "7", Toast.LENGTH_SHORT).show()
+            Toast.makeText(getActivity(), msg3, Toast.LENGTH_SHORT).show()
         }
     }
 

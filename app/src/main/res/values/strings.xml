@@ -58,6 +58,8 @@
     <string name="AlertTitle">Alert!!</string>
     <string name="AlertDescription">Something Wrong</string>
     <string name="AlertOk">OK</string>
+    <string name="AlertCancel">Cancel</string>
+    <string name="PleaseSelectImage">Please Select Image</string>
 
     <!--edit_profile-->
     <string name="CurrentPass">Current Password</string>

@@ -32,16 +32,16 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     }
 
-//    fun ChangeToEditProfileFragment() {
-//
-//        supportFragmentManager
-//            .beginTransaction()
-//            .remove(CurrentFragment)
-//            .commit()
-//
-//        supportFragmentManager
-//            .beginTransaction()
-//            .add(R.id.layout_fragment_container, EditProfileFragment.newInstance())
-//            .commit()
-//    }
+    fun ChangeToEditProfileFragment() {
+
+        supportFragmentManager
+            .beginTransaction()
+            .remove(CurrentFragment)
+            .commit()
+
+        supportFragmentManager
+            .beginTransaction()
+            .add(R.id.layout_fragment_container, EditProfileFragment.newInstance())
+            .commit()
+    }
 }

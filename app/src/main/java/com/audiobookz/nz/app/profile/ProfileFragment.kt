@@ -63,8 +63,8 @@ class ProfileFragment : Fragment() {
             Toast.makeText(getActivity(), "play", Toast.LENGTH_SHORT).show()
         }
         ProfileCard.setOnClickListener{view ->
-//            var NewFragment : MainActivity = activity as MainActivity
-//            NewFragment.ChangeToEditProfileFragment()
+            var NewFragment : MainActivity = activity as MainActivity
+            NewFragment.ChangeToEditProfileFragment()
         }
 
     }
