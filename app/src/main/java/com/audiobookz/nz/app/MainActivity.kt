@@ -2,21 +2,23 @@ package com.audiobookz.nz.app
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Base64
 import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.facebook.*
 import com.facebook.login.LoginResult
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
-import kotlinx.android.synthetic.main.activity_facebooklogin.*
-import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
+import kotlinx.android.synthetic.main.activity_sociallogin.*
 import javax.inject.Inject
+import com.google.android.gms.tasks.Task
 
 
 class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
@@ -24,13 +26,26 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
     lateinit var callbackManager: CallbackManager
+    lateinit var mGoogleSignInClient: GoogleSignInClient
+    private val RC_SIGN_IN = 9001
 
     override fun supportFragmentInjector() = dispatchingAndroidInjector
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_facebooklogin)
+        setContentView(R.layout.activity_sociallogin)
 
         callbackManager = CallbackManager.Factory.create()
+
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken("395719303570-d8bgers9haa3nu2ghqf7rp3p88mjt8tc.apps.googleusercontent.com")
+            .requestEmail()
+            .build()
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+
+        google_login_btn.setOnClickListener {
+            googleLogIn()
+        }
 
 
         btn_facebook.setReadPermissions(listOf("public_profile", "email"))
@@ -38,6 +53,13 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
             facebookLoginIn()
         }
 
+    }
+
+    private fun googleLogIn() {
+        val signInIntent = mGoogleSignInClient.signInIntent
+        startActivityForResult(
+            signInIntent, RC_SIGN_IN
+        )
     }
 
     private fun facebookLoginIn() {
@@ -58,6 +80,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         })
     }
 
+    //facebook
     @SuppressLint("LongLogTag")
     fun getUserProfile(token: AccessToken?, userId: String?) {
 
@@ -150,28 +173,50 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
             }).executeAsync()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        callbackManager.onActivityResult(requestCode, resultCode, data)
-        super.onActivityResult(requestCode, resultCode, data)
+    //google
+    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
+        try {
+            val account = completedTask.getResult(
+                ApiException::class.java
+            )
+            // Signed in successfully
+            val googleId = account?.id ?: ""
+            Log.i("Google ID",googleId)
+
+            val googleFirstName = account?.givenName ?: ""
+            Log.i("Google First Name", googleFirstName)
+
+            val googleLastName = account?.familyName ?: ""
+            Log.i("Google Last Name", googleLastName)
+
+            val googleEmail = account?.email ?: ""
+            Log.i("Google Email", googleEmail)
+
+            val googleProfilePicURL = account?.photoUrl.toString()
+            Log.i("Google Profile Pic URL", googleProfilePicURL)
+
+            val googleIdToken = account?.idToken ?: ""
+            Log.i("Google ID Token", googleIdToken)
+
+        } catch (e: ApiException) {
+            // Sign in was unsuccessful
+            Log.e(
+                "failed code=", e.statusCode.toString()
+            )
+        }
     }
 
-    private fun printKeyHash() {
-        try {
-            val info = packageManager.getPackageInfo("com.audiobookz.nz.app", PackageManager.GET_SIGNATURES)
-            for (signature in info.signatures)
-            {
-                val md = MessageDigest.getInstance("SHA")
-                md.update(signature.toByteArray())
-                Log.e("KEYHASH", Base64.encodeToString(md.digest(), Base64.DEFAULT))
-            }
-        }
-        catch (e:PackageManager.NameNotFoundException)
-        {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
-        }
-        catch (e:NoSuchAlgorithmException)
-        {
+        //facebook
+        callbackManager.onActivityResult(requestCode, resultCode, data)
 
+        //google
+        if (requestCode == RC_SIGN_IN) {
+            val task =
+                GoogleSignIn.getSignedInAccountFromIntent(data)
+            handleSignInResult(task)
         }
     }
 }
