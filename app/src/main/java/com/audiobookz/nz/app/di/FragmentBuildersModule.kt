@@ -4,6 +4,7 @@ package com.audiobookz.nz.app.di
 import com.audiobookz.nz.app.audiobookList.ui.AudiobookListFragment
 import com.audiobookz.nz.app.browse.categories.ui.CategoryFragment
 import com.audiobookz.nz.app.login.ui.LoginEmailFragment
+import com.audiobookz.nz.app.register.ui.SignUpFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -17,6 +18,9 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeLoginEmailFragmentFragment(): LoginEmailFragment
+
+    @ContributesAndroidInjector
+    abstract fun SignUpFragment(): SignUpFragment
 
 //
 //    @ContributesAndroidInjector

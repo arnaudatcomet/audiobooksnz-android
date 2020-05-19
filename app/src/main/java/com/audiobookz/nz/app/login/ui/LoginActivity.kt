@@ -5,9 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
-import com.audiobookz.nz.app.login.ui.LoginEmailActivity
 import com.audiobookz.nz.app.R
-import com.audiobookz.nz.app.login.SignUpActivity
+import com.audiobookz.nz.app.register.ui.SignUpActivity
 
 class LoginActivity : AppCompatActivity() {
 

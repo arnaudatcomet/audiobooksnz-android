@@ -38,7 +38,7 @@ interface AudiobookService {
     ): Response<UserData>
 
     @FormUrlEncoded
-    @POST("users/register")
+    @POST("users")
     suspend fun postRegister(
         @Field("email") email: String? =null,
         @Field("lastName") lastName: String? =null,

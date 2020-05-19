@@ -22,7 +22,7 @@ data class UserData(
     @field: SerializedName("full_name")
     val full_name: String,
     @field: SerializedName("image_file")
-    val image_file: String,
+    val image_file: String?,
     @field: SerializedName("email")
     val email: String,
     @field: SerializedName("status_id")
