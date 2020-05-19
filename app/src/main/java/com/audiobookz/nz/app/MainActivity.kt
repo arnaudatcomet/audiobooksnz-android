@@ -217,6 +217,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
             val task =
                 GoogleSignIn.getSignedInAccountFromIntent(data)
             handleSignInResult(task)
+            Toast.makeText(this@MainActivity, "You Logged In With Google Plus", Toast.LENGTH_LONG).show()
         }
     }
 }
