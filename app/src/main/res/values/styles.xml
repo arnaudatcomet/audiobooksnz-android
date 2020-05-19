@@ -33,4 +33,8 @@
 
     <style name="Shape.original" parent="ShapeAppearance.MaterialComponents.SmallComponent"/>
 
+    <style name="SplashScreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
+    </style>
+
 </resources>
