@@ -1,8 +1,7 @@
 package com.audiobookz.nz.app.register.ui
 
+import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,12 +11,15 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.audiobookz.nz.app.MainActivity
 import com.audiobookz.nz.app.R
+import com.audiobookz.nz.app.SplashScreenActivity
 import com.audiobookz.nz.app.browse.di.Injectable
 import com.audiobookz.nz.app.browse.di.injectViewModel
-import com.audiobookz.nz.app.login.ui.LoginEmailViewModel
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.audiobookz.nz.app.data.Result
+import com.audiobookz.nz.app.login.ui.LoginEmailActivity
 import javax.inject.Inject
 
 class SignUpFragment : Fragment(), Injectable {
@@ -61,15 +63,15 @@ class SignUpFragment : Fragment(), Injectable {
                 Toast.makeText(activity, "confirm password is blank", Toast.LENGTH_SHORT).show()
             } else {
 
+                viewModel.email = edittxtEmail.text.toString()
+                viewModel.firstName = edittxtFistname.text.toString()
+                viewModel.lastName = edittxtLastname.text.toString()
+                viewModel.terms = "1"
+                viewModel.password = edittxtPassword.text.toString()
+                viewModel.cPassword = edittxtPasswordConfirm.text.toString()
+                viewModel.emailSignUp
 
-                Toast.makeText(activity, "OK", Toast.LENGTH_SHORT).show()
-
-//                viewModel.email = edittxtEmail.text.toString()
-//                viewModel.firstName = edittxtFistname.text.toString()
-//                viewModel.lastName = edittxtLastname.text.toString()
-//                viewModel.terms = chkbox.text.toString()
-//                viewModel.password = edittxtPassword.text.toString()
-//                viewModel.cPassword = edittxtPasswordConfirm.text.toString()
+                subscribeUi()
 
 //                MaterialAlertDialogBuilder(getActivity())
 //                    .setTitle(resources.getString(R.string.AlertTitle))
@@ -82,6 +84,30 @@ class SignUpFragment : Fragment(), Injectable {
 
         }
 
+    }
+
+    private fun subscribeUi() {
+        viewModel.emailSignUp.observe(viewLifecycleOwner, Observer { result ->
+            when (result.status) {
+                Result.Status.SUCCESS -> {
+                    if (result.data == null) {
+                        Toast.makeText(activity, result.message, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(activity, "good", Toast.LENGTH_SHORT).show();
+                        val intent = Intent(
+                            activity,
+                            SplashScreenActivity::class.java
+                        ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        startActivity(intent)
+                    }
+
+                }
+                Result.Status.LOADING -> Log.d("TAG", "loading")
+                Result.Status.ERROR -> {
+                    Toast.makeText(activity, result.message, Toast.LENGTH_SHORT).show();
+                }
+            }
+        })
     }
 
 }
