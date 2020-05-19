@@ -14,6 +14,7 @@ import com.audiobookz.nz.app.browse.categories.data.Category
 import com.audiobookz.nz.app.browse.categories.data.CategoryDao
 import com.audiobookz.nz.app.login.data.UserData
 import com.audiobookz.nz.app.login.data.UserDataDao
+import com.audiobookz.nz.app.profile.data.ProfileDataDao
 import com.audiobookz.nz.app.worker.SeedDatabaseWorker
 
 /**
@@ -27,6 +28,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun categoryDao(): CategoryDao
     abstract fun audiobookListDao(): AudiobookListDao
     abstract fun userDataDao(): UserDataDao
+    abstract fun ProfileDataDao(): ProfileDataDao
+
 
 
     companion object {

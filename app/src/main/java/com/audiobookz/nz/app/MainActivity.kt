@@ -2,12 +2,9 @@ package com.audiobookz.nz.app
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
-import androidx.navigation.ui.AppBarConfiguration
-import com.audiobookz.nz.app.profile.EditProfileFragment
-import com.audiobookz.nz.app.profile.ProfileFragment
+import com.audiobookz.nz.app.profile.ui.EditProfileFragment
+import com.audiobookz.nz.app.profile.ui.ProfileFragment
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject

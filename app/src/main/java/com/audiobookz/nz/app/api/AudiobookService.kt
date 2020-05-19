@@ -1,4 +1,5 @@
 package com.audiobookz.nz.app.api
+
 import com.audiobookz.nz.app.audiobookList.data.AudiobookList
 import com.audiobookz.nz.app.browse.categories.data.Category
 import com.audiobookz.nz.app.login.data.UserData
@@ -24,37 +25,37 @@ interface AudiobookService {
 
     @GET("audiobooks")
     suspend fun getAudiobooksList(
-        @Query("filter[category_id]") filter: Int? =null,
+        @Query("filter[category_id]") filter: Int? = null,
         @Query("page") page: Int? = null,
         @Query("per-page") pageSize: Int? = null,
-        @Query("filter[language][]") pageLanguage:String
-        ): Response<List<AudiobookList>>
+        @Query("filter[language][]") pageLanguage: String
+    ): Response<List<AudiobookList>>
 
     @FormUrlEncoded
     @POST("users/login")
     suspend fun postEmailLogin(
-        @Field("username") Username: String? =null,
-        @Field("password") Password: String? =null
+        @Field("username") Username: String? = null,
+        @Field("password") Password: String? = null
     ): Response<UserData>
 
     @FormUrlEncoded
     @POST("users")
     suspend fun postRegister(
-        @Field("email") email: String? =null,
-        @Field("lastName") lastName: String? =null,
-        @Field("password") password: String? =null,
-        @Field("terms") terms: String? =null,
-        @Field("cPassword") cPassword: String? =null,
-        @Field("firstName") firstName: String? =null
+        @Field("email") email: String? = null,
+        @Field("lastName") lastName: String? = null,
+        @Field("password") password: String? = null,
+        @Field("terms") terms: String? = null,
+        @Field("cPassword") cPassword: String? = null,
+        @Field("firstName") firstName: String? = null
     ): Response<UserData>
+
 
     @GET("users/profile")
     suspend fun getProfile(
-        @Query("filter[category_id]") filter: Int? =null,
-        @Query("page") page: Int? = null,
-        @Query("per-page") pageSize: Int? = null,
-        @Query("filter[language][]") pageLanguage:String
-    ): Response<List<AudiobookList>>
+        @Query("firstname")  firstname: String? = null,
+        @Query("lastname")  lastname: String? = null,
+        @Query("email")  email: String? = null
+    ): Response<List<UserData>>
 
 //    @GET("lego/sets/")
 //    suspend fun getSets(@Query("page") page: Int? = null,

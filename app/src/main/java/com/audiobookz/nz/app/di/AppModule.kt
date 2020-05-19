@@ -1,7 +1,9 @@
 package com.audiobookz.nz.app.browse.di
 
 import android.app.Application
+import com.audiobookz.nz.app.BuildConfig
 import com.audiobookz.nz.app.api.AudiobookService
+import com.audiobookz.nz.app.api.AuthInterceptor
 import com.audiobookz.nz.app.data.AppDatabase
 import com.audiobookz.nz.app.browse.categories.data.CategoryRemoteDataSource
 import dagger.Module
@@ -33,7 +35,7 @@ class AppModule {
     fun providePrivateOkHttpClient(
             upstreamClient: OkHttpClient
     ): OkHttpClient {
-        return upstreamClient.newBuilder().build()
+        return upstreamClient.newBuilder().addInterceptor(AuthInterceptor("BuildConfig.API_DEVELOPER_TOKEN")).build()
     }
     @Singleton
     @Provides
@@ -50,6 +52,10 @@ class AppModule {
     @Singleton
     @Provides
     fun provideUserDataDao(db: AppDatabase) = db.userDataDao()
+
+    @Singleton
+    @Provides
+    fun providProfileDataDao(db: AppDatabase) = db.ProfileDataDao()
 //
 //
 //    @Singleton
