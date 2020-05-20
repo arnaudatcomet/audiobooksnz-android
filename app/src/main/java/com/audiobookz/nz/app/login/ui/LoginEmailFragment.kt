@@ -25,7 +25,7 @@ import javax.inject.Inject
 class LoginEmailFragment : Fragment(), Injectable{
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var viewModel: LoginEmailViewModel
+    private lateinit var viewModel: LoginViewModel
     var Username: EditText? =null
     var Password: EditText? =null
     var LoginBtn: Button? =null
