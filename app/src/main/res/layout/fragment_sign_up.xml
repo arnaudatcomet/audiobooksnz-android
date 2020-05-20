@@ -1,19 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".MainActivity">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp">
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp">
 
     <ImageView
         android:id="@+id/img_view_logo"
-        android:layout_width="match_parent"
+        android:layout_width="240dp"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="40dp"
+        android:layout_weight="40"
         app:srcCompat="@drawable/logo" />
 
 
@@ -23,6 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:hint="@string/Firstname_SignUp"
+        android:textColorHint="#000000"
         app:startIconDrawable="@drawable/user_name40"
         app:startIconTint="@null">
 
@@ -39,6 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:hint="@string/Lastname_SignUp"
+        android:textColorHint="#000000"
         app:startIconDrawable="@drawable/user_name40"
         app:startIconTint="@null">
 
@@ -55,6 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:hint="@string/Mail_SignUp"
+        android:textColorHint="#000000"
         app:startIconDrawable="@drawable/mail1_40"
         app:startIconTint="@null">
 
@@ -71,6 +81,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:hint="@string/Password_SignUp"
+        android:textColorHint="#000000"
         app:startIconDrawable="@drawable/password40"
         app:startIconTint="@null">
 
@@ -87,6 +98,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:hint="@string/PasswordConfirm_SignUp"
+        android:textColorHint="#000000"
         app:startIconDrawable="@drawable/password40"
         app:startIconTint="@null">
 
@@ -99,18 +111,24 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:paddingTop="20dp">
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/checkboxTerm"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            />
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="@string/TermAndCondition_SignUp"
+            android:textColor="#000000"
+            android:layout_gravity="center"
+            android:textSize="16dp"
             />
     </LinearLayout>
 
@@ -118,8 +136,9 @@
         android:id="@+id/btnSignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_marginTop="20dp"
         android:backgroundTint="@android:color/background_dark"
         android:text="@string/SignUp" />
 
 </LinearLayout>
+</ScrollView>
