@@ -3,11 +3,22 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center">
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/btn_facebook"
+<!--    <com.facebook.login.widget.LoginButton-->
+<!--        android:id="@+id/btn_facebook"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!-- />-->
+    <Button
+        android:id="@+id/facebook_login_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
- />
+        android:background="@drawable/facebook_rounded_corners"
+        android:drawableStart="@drawable/facebook_icon"
+        android:drawablePadding="8dp"
+        android:padding="8dp"
+        android:text="Log in with Facebook"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white" />
     <Button
         android:id="@+id/google_login_btn"
         android:layout_width="wrap_content"

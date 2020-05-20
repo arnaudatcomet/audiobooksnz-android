@@ -8,6 +8,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.facebook.*
+import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -48,8 +49,8 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         }
 
 
-        btn_facebook.setReadPermissions(listOf("public_profile", "email"))
-        btn_facebook.setOnClickListener {
+        facebook_login_btn.setOnClickListener {
+            LoginManager.getInstance().logInWithReadPermissions(this, listOf("public_profile", "email"))
             facebookLoginIn()
         }
 
@@ -63,11 +64,10 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     }
 
     private fun facebookLoginIn() {
-        btn_facebook.registerCallback(callbackManager, object : FacebookCallback<LoginResult?> {
+        LoginManager.getInstance().registerCallback(callbackManager, object : FacebookCallback<LoginResult?> {
             override fun onSuccess(loginResult: LoginResult?) {
                 Log.d("TAG", "Success Login")
                 getUserProfile(loginResult?.accessToken, loginResult?.accessToken?.userId)
-                // Get User's Info
             }
 
             override fun onCancel() {
