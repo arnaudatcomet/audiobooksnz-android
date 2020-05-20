@@ -1,6 +1,8 @@
 package com.audiobookz.nz.app.profile.ui
 
+import android.os.AsyncTask
 import android.os.Bundle
+import android.service.autofill.UserData
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -16,13 +18,19 @@ import androidx.lifecycle.ViewModelProvider
 import com.audiobookz.nz.app.MainActivity
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.R
+import com.audiobookz.nz.app.browse.di.Injectable
 import com.audiobookz.nz.app.browse.di.injectViewModel
+import com.audiobookz.nz.app.data.AppDatabase
+import com.audiobookz.nz.app.login.data.UserDataDao
+import kotlinx.android.synthetic.main.fragment_profile.*
 import javax.inject.Inject
 
-class ProfileFragment : Fragment() {
+class ProfileFragment : Fragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: ProfileViewModel
+    var tempFullname : String? = null
+    var tempEmail : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,13 +41,26 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? =
-        inflater.inflate(R.layout.fragment_profile, container, false)
+    ): View? {
 
+        viewModel = injectViewModel(viewModelFactory)
+
+        AsyncTask.execute {
+            // Get Data
+            viewModel.token =
+                activity?.let { AppDatabase.getInstance(it).ProfileDataDao().getAccessToken() }.toString()}
+        subscribeUi()
+
+        return inflater.inflate(R.layout.fragment_profile, container, false)
+
+    }
 
     // populate the views now that the layout has been inflated
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+
 
         var FaceBtn = view.findViewById<Button>(R.id.btnFacebook)
         var OutBtn = view.findViewById<Button>(R.id.signOut)
@@ -49,18 +70,11 @@ class ProfileFragment : Fragment() {
         var CustomeCareTxt = view.findViewById<TextView>(R.id.txtEmailCustomer)
         var FAQTxt = view.findViewById<TextView>(R.id.txtfaq)
         var ProfileCard = view.findViewById<CardView>(R.id.CardProfile)
+        var NameTxt = view.findViewById<TextView>(R.id.txtProfile_user)
+        var EmailTxt = view.findViewById<TextView>(R.id.txtProfile_email)
 
-        //call viewmodel
-
-//        viewModel = injectViewModel(viewModelFactory)
-//        viewModel.showProfile
-//        subscribeUi()
-//        var NameTxt = view.findViewById<TextView>(R.id.txtProfile_user)
-//            .apply { text = viewModel.firstname + " " + viewModel.lastname }
-//        var EmailTxt = view.findViewById<TextView>(R.id.txtProfile_email)
-//            .apply { text = viewModel.email }
-
-
+        NameTxt.setText(tempFullname)
+        EmailTxt.setText(tempEmail)
 
         FaceBtn.setOnClickListener { View ->
             Toast.makeText(getActivity(), "facebook", Toast.LENGTH_SHORT).show()
@@ -84,8 +98,8 @@ class ProfileFragment : Fragment() {
             Toast.makeText(getActivity(), "play", Toast.LENGTH_SHORT).show()
         }
         ProfileCard.setOnClickListener { view ->
-            var NewFragment: MainActivity = activity as MainActivity
-            NewFragment.ChangeToEditProfileFragment()
+//            var NewFragment: MainActivity = activity as MainActivity
+//            NewFragment.ChangeToEditProfileFragment()
         }
 
     }
@@ -96,15 +110,12 @@ class ProfileFragment : Fragment() {
     }
 
     private fun subscribeUi() {
-        viewModel.showProfile.observe(viewLifecycleOwner, Observer { result ->
+        viewModel.showProfile?.observe(viewLifecycleOwner, Observer { result ->
             when (result.status) {
                 Result.Status.SUCCESS -> {
-                    if (result.data == null) {
-                        Toast.makeText(activity, result.message, Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(activity, "good", Toast.LENGTH_SHORT).show();
 
-                    }
+                    tempEmail = result.data?.email
+                    tempFullname = result.data?.full_name
 
                 }
                 Result.Status.LOADING -> Log.d("TAG", "loading")

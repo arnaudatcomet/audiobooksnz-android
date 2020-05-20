@@ -9,9 +9,9 @@ class ProfileRepository @Inject constructor(
     private val dao: ProfileDataDao,
     private val remoteSource: ProfileRemoteDataSource
 ) {
-    fun showProfile(firstname: String, lastname: String, email: String) = resultLiveData(
+    fun showProfile(token: String) = resultLiveData(
         databaseQuery = { dao.getProfileData() },
-        networkCall = { remoteSource.queryProfile(firstname, lastname, email) },
+        networkCall = { remoteSource.queryProfile(token) },
         saveCallResult = { dao.insertProfileData(it) },
         nukeAudiobookList = {}
     )

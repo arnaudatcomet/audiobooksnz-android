@@ -9,9 +9,12 @@ import com.audiobookz.nz.app.login.data.UserData
 
 @Dao
 interface ProfileDataDao {
-    @Query("SELECT * FROM userdata ")
+    @Query("SELECT * FROM userdata")
     fun getProfileData(): LiveData<UserData>
 
+    @Query("SELECT access_token FROM userdata ")
+    fun getAccessToken(): String
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertProfileData(Userdata: List<UserData>)
+    suspend fun insertProfileData(Userdata: UserData)
 }

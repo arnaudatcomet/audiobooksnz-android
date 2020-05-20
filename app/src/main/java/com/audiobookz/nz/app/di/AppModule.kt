@@ -1,6 +1,7 @@
 package com.audiobookz.nz.app.browse.di
 
 import android.app.Application
+import android.content.Context
 import com.audiobookz.nz.app.BuildConfig
 import com.audiobookz.nz.app.api.AudiobookService
 import com.audiobookz.nz.app.api.AuthInterceptor
@@ -35,7 +36,7 @@ class AppModule {
     fun providePrivateOkHttpClient(
             upstreamClient: OkHttpClient
     ): OkHttpClient {
-        return upstreamClient.newBuilder().addInterceptor(AuthInterceptor("BuildConfig.API_DEVELOPER_TOKEN")).build()
+        return upstreamClient.newBuilder().build()
     }
     @Singleton
     @Provides
@@ -55,9 +56,9 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun providProfileDataDao(db: AppDatabase) = db.ProfileDataDao()
-//
-//
+    fun provideProfileDataDao(db: AppDatabase) = db.ProfileDataDao()
+
+
 //    @Singleton
 //    @Provides
 //    fun provideLegoThemeDao(db: AppDatabase) = db.legoThemeDao()
