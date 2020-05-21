@@ -9,8 +9,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.audiobookz.nz.app.R
 import com.audiobookz.nz.app.browse.categories.ui.VerticalItemDecoration
-import com.audiobookz.nz.app.browse.di.Injectable
-import com.audiobookz.nz.app.browse.di.injectViewModel
+import com.audiobookz.nz.app.di.Injectable
+import com.audiobookz.nz.app.di.injectViewModel
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.databinding.FragmentAudiobookListBinding
 import com.audiobookz.nz.app.ui.hide
