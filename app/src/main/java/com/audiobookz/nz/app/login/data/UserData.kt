@@ -9,12 +9,12 @@ import com.google.gson.annotations.SerializedName
 @Entity(tableName = "userdata")
 data class UserData(
     @PrimaryKey
-    @field:SerializedName("access_token")
-    val access_token: String,
-    @field: SerializedName("access_token_expire")
-    val access_token_expire: Int,
     @field: SerializedName("id")
     val id: Int,
+    @field:SerializedName("access_token")
+    val access_token: String?,
+    @field: SerializedName("access_token_expire")
+    val access_token_expire: Int,
     @field: SerializedName("first_name")
     val first_name: String,
     @field: SerializedName("last_name")

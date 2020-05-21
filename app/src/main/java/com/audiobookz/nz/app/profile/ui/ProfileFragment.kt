@@ -1,10 +1,9 @@
 package com.audiobookz.nz.app.profile.ui
 
+import android.content.IntentFilter
 import android.os.AsyncTask
 import android.os.Bundle
-import android.service.autofill.UserData
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,24 +12,24 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.audiobookz.nz.app.MainActivity
-import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.R
 import com.audiobookz.nz.app.browse.di.Injectable
 import com.audiobookz.nz.app.browse.di.injectViewModel
 import com.audiobookz.nz.app.data.AppDatabase
-import com.audiobookz.nz.app.login.data.UserDataDao
-import kotlinx.android.synthetic.main.fragment_profile.*
+import com.audiobookz.nz.app.data.Result
 import javax.inject.Inject
 
-class ProfileFragment : Fragment(), Injectable {
+
+class ProfileFragment : Fragment() , Injectable{
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: ProfileViewModel
-    var tempFullname : String? = null
-    var tempEmail : String? = null
+    var fullnameTxt: TextView? =null
+    var emailTxt: TextView? =null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,25 +41,23 @@ class ProfileFragment : Fragment(), Injectable {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         viewModel = injectViewModel(viewModelFactory)
+        var accessToken: String? = null
 
-        AsyncTask.execute {
-            // Get Data
-            viewModel.token =
-                activity?.let { AppDatabase.getInstance(it).ProfileDataDao().getAccessToken() }.toString()}
+        viewModel.token = AsyncTask.execute{
+            accessToken = "Bearer "+ activity?.let {
+                AppDatabase.getInstance(
+                    it
+                ).userDataDao().getAccessToken()
+            }}.toString()
+
         subscribeUi()
+        return inflater.inflate(R.layout.fragment_profile, container, false)}
 
-        return inflater.inflate(R.layout.fragment_profile, container, false)
-
-    }
 
     // populate the views now that the layout has been inflated
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-
 
         var FaceBtn = view.findViewById<Button>(R.id.btnFacebook)
         var OutBtn = view.findViewById<Button>(R.id.signOut)
@@ -70,11 +67,8 @@ class ProfileFragment : Fragment(), Injectable {
         var CustomeCareTxt = view.findViewById<TextView>(R.id.txtEmailCustomer)
         var FAQTxt = view.findViewById<TextView>(R.id.txtfaq)
         var ProfileCard = view.findViewById<CardView>(R.id.CardProfile)
-        var NameTxt = view.findViewById<TextView>(R.id.txtProfile_user)
-        var EmailTxt = view.findViewById<TextView>(R.id.txtProfile_email)
-
-        NameTxt.setText(tempFullname)
-        EmailTxt.setText(tempEmail)
+        emailTxt = view.findViewById(R.id.txtProfile_email)
+        fullnameTxt = view.findViewById(R.id.txtProfile_user)
 
         FaceBtn.setOnClickListener { View ->
             Toast.makeText(getActivity(), "facebook", Toast.LENGTH_SHORT).show()
@@ -82,40 +76,35 @@ class ProfileFragment : Fragment(), Injectable {
         TwitterBtn.setOnClickListener { View ->
             Toast.makeText(getActivity(), "twitter", Toast.LENGTH_SHORT).show()
         }
-        BugTxt.setOnClickListener { view ->
+        BugTxt.setOnClickListener{view ->
             Toast.makeText(getActivity(), "bugtext", Toast.LENGTH_SHORT).show()
         }
-        CustomeCareTxt.setOnClickListener { view ->
+        CustomeCareTxt.setOnClickListener{view ->
             Toast.makeText(getActivity(), "CustomerCare", Toast.LENGTH_SHORT).show()
         }
-        FAQTxt.setOnClickListener { view ->
+        FAQTxt.setOnClickListener{view ->
             Toast.makeText(getActivity(), "FAQ", Toast.LENGTH_SHORT).show()
         }
-        OutBtn.setOnClickListener { view ->
+        OutBtn.setOnClickListener{view ->
             Toast.makeText(getActivity(), "Logout", Toast.LENGTH_SHORT).show()
         }
-        PlayBtn.setOnClickListener { view ->
+        PlayBtn.setOnClickListener{view ->
             Toast.makeText(getActivity(), "play", Toast.LENGTH_SHORT).show()
         }
-        ProfileCard.setOnClickListener { view ->
-//            var NewFragment: MainActivity = activity as MainActivity
-//            NewFragment.ChangeToEditProfileFragment()
+        ProfileCard.setOnClickListener{view ->
+            var NewFragment : MainActivity = activity as MainActivity
+            NewFragment.ChangeToEditProfileFragment()
         }
 
-    }
-
-    companion object {
-        fun newInstance(): ProfileFragment =
-            ProfileFragment()
     }
 
     private fun subscribeUi() {
-        viewModel.showProfile?.observe(viewLifecycleOwner, Observer { result ->
+        viewModel.queryProfile?.observe(viewLifecycleOwner, Observer { result ->
             when (result.status) {
                 Result.Status.SUCCESS -> {
 
-                    tempEmail = result.data?.email
-                    tempFullname = result.data?.full_name
+                    fullnameTxt?.text = result.data?.full_name
+                    emailTxt?.text = result.data?.email
 
                 }
                 Result.Status.LOADING -> Log.d("TAG", "loading")
@@ -125,4 +114,10 @@ class ProfileFragment : Fragment(), Injectable {
             }
         })
     }
+
+    companion object {
+        fun newInstance(): ProfileFragment =
+            ProfileFragment()
+    }
+
 }

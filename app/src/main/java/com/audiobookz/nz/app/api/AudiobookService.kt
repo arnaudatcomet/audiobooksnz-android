@@ -51,7 +51,11 @@ interface AudiobookService {
 
     @GET("users/profile")
     suspend fun getProfile(
+<<<<<<< Updated upstream
         @Header("Authorization") token: String? = null
+=======
+        @Header("Authorization") token:String? = null
+>>>>>>> Stashed changes
     ): Response<UserData>
 
 //    @GET("lego/sets/")

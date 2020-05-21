@@ -22,6 +22,12 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeSignUpFragment(): SignUpFragment
+<<<<<<< Updated upstream
+=======
+
+    @ContributesAndroidInjector
+    abstract fun contributeProfileFragment(): ProfileFragment
+>>>>>>> Stashed changes
 
     @ContributesAndroidInjector
     abstract fun contributeProfileFragment(): ProfileFragment
