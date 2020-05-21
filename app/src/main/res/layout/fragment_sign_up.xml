@@ -38,6 +38,7 @@
             android:id="@+id/editFirstName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textAutoComplete"
             android:maxLines="1"/>
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -56,6 +57,7 @@
             android:id="@+id/editLastName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textAutoComplete"
             android:maxLines="1"/>
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -74,6 +76,7 @@
             android:id="@+id/editEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textAutoComplete"
             android:maxLines="1"/>
 
     </com.google.android.material.textfield.TextInputLayout>
