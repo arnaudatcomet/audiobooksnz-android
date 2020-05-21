@@ -1,4 +1,4 @@
-package com.audiobookz.nz.app.profile
+package com.audiobookz.nz.app.profile.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -68,7 +68,8 @@ class EditProfileFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(): EditProfileFragment = EditProfileFragment()
+        fun newInstance(): EditProfileFragment =
+            EditProfileFragment()
     }
 
 }
