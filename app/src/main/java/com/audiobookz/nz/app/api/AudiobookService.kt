@@ -49,10 +49,13 @@ interface AudiobookService {
         @Field("firstName") firstName: String? = null
     ): Response<UserData>
 
+
     @GET("users/profile")
     suspend fun getProfile(
-        @Header("Authorization") token: String? = null
-    ): Response<UserData>
+        @Query("firstname")  firstname: String? = null,
+        @Query("lastname")  lastname: String? = null,
+        @Query("email")  email: String? = null
+    ): Response<List<UserData>>
 
 //    @GET("lego/sets/")
 //    suspend fun getSets(@Query("page") page: Int? = null,

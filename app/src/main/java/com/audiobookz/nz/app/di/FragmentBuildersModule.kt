@@ -18,13 +18,13 @@ abstract class FragmentBuildersModule {
     abstract fun contributeCategoryDetailFragment(): AudiobookListFragment
 
     @ContributesAndroidInjector
-    abstract fun contributeLoginEmailFragment(): LoginEmailFragment
+    abstract fun contributeLoginEmailFragmentFragment(): LoginEmailFragment
 
     @ContributesAndroidInjector
-    abstract fun contributeSignUpFragment(): SignUpFragment
+    abstract fun SignUpFragment(): SignUpFragment
 
     @ContributesAndroidInjector
-    abstract fun contributeProfileFragment(): ProfileFragment
+    abstract fun ProfileFragment(): ProfileFragment
 //
 //    @ContributesAndroidInjector
 //    abstract fun contributeLegoSetsFragment(): LegoSetsFragment

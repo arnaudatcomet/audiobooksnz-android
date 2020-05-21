@@ -13,8 +13,8 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
 
-//    temp current fragment
-//    var CurrentFragment = ProfileFragment.newInstance()
+    // temp current fragment
+    var CurrentFragment = ProfileFragment.newInstance()
 
     override fun supportFragmentInjector() = dispatchingAndroidInjector
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,23 +22,23 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
         //start main fragment
         setContentView(R.layout.activity_main)
-//        supportFragmentManager
-//            .beginTransaction()
-//            .add(R.id.layout_fragment_container, CurrentFragment)
-//            .commit()
+        supportFragmentManager
+            .beginTransaction()
+            .add(R.id.layout_fragment_container, CurrentFragment)
+            .commit()
 
     }
 
-//    fun ChangeToEditProfileFragment() {
-//
-//        supportFragmentManager
-//            .beginTransaction()
-//            .remove(CurrentFragment)
-//            .commit()
-//
-//        supportFragmentManager
-//            .beginTransaction()
-//            .add(R.id.layout_fragment_container, EditProfileFragment.newInstance())
-//            .commit()
-//    }
+    fun ChangeToEditProfileFragment() {
+
+        supportFragmentManager
+            .beginTransaction()
+            .remove(CurrentFragment)
+            .commit()
+
+        supportFragmentManager
+            .beginTransaction()
+            .add(R.id.layout_fragment_container, EditProfileFragment.newInstance())
+            .commit()
+    }
 }

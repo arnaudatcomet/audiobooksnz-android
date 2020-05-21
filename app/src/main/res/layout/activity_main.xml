@@ -40,14 +40,11 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <fragment
-        android:name="androidx.navigation.fragment.NavHostFragment"
+    <FrameLayout
         android:id="@+id/layout_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/profile_nav"/>
+        android:layout_weight="1"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
