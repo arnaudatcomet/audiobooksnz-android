@@ -18,6 +18,7 @@
 
         <activity android:name=".login.ui.LoginActivity" />
         <activity android:name=".login.ui.LoginEmailActivity" />
+        <activity android:name=".login.ui.ForgotPasswordActivity" />
         <activity
             android:name=".SplashScreenActivity"
             android:theme="@style/SplashScreenTheme">
