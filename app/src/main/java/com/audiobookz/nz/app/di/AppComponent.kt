@@ -1,7 +1,9 @@
-package com.audiobookz.nz.app.browse.di
+package com.audiobookz.nz.app.di
 
 import android.app.Application
 import com.audiobookz.nz.app.App
+import com.audiobookz.nz.app.browse.di.AppModule
+import com.audiobookz.nz.app.browse.di.MainActivityModule
 import com.audiobookz.nz.app.di.LoginEmailActivityModule
 import dagger.BindsInstance
 import dagger.Component
