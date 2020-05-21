@@ -69,7 +69,6 @@ class SignUpFragment : Fragment(), Injectable {
                 viewModel.terms = "1"
                 viewModel.password = edittxtPassword.text.toString()
                 viewModel.cPassword = edittxtPasswordConfirm.text.toString()
-                viewModel.emailSignUp
 
                 subscribeUi()
 
