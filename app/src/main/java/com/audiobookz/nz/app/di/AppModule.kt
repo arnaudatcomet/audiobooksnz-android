@@ -1,10 +1,7 @@
 package com.audiobookz.nz.app.browse.di
 
 import android.app.Application
-import android.content.Context
-import com.audiobookz.nz.app.BuildConfig
 import com.audiobookz.nz.app.api.AudiobookService
-import com.audiobookz.nz.app.api.AuthInterceptor
 import com.audiobookz.nz.app.data.AppDatabase
 import com.audiobookz.nz.app.browse.categories.data.CategoryRemoteDataSource
 import dagger.Module
@@ -53,12 +50,8 @@ class AppModule {
     @Singleton
     @Provides
     fun provideUserDataDao(db: AppDatabase) = db.userDataDao()
-
-    @Singleton
-    @Provides
-    fun provideProfileDataDao(db: AppDatabase) = db.ProfileDataDao()
-
-
+//
+//
 //    @Singleton
 //    @Provides
 //    fun provideLegoThemeDao(db: AppDatabase) = db.legoThemeDao()
