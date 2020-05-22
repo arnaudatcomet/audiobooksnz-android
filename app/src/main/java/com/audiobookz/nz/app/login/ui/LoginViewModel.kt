@@ -9,9 +9,13 @@ import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(private val repository: LoginRepository) : ViewModel() {
     var logInResult = MediatorLiveData<Result<UserData>>()
+    var email: String? = null
+
     fun loginEmail(username: String, password: String) {
         logInResult.addSource(repository.loginEmail(username, password)) { value ->
             logInResult.value = value
         }
     }
+
+    val PassForgoten by lazy { email?.let { repository.forgotPass(it) } }
 }

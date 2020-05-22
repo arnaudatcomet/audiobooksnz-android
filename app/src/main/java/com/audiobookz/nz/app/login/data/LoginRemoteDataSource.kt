@@ -5,4 +5,6 @@ import com.audiobookz.nz.app.api.BaseDataSource
 import javax.inject.Inject
 class LoginRemoteDataSource @Inject constructor(private val service: AudiobookService): BaseDataSource(){
     suspend fun emailLogin(Username:String,Password:String) = getResult { service.postEmailLogin(Username,Password) }
+
+    suspend fun forgotPass(email:String) = getResult { service.getResetPass(email) }
 }
