@@ -1,4 +1,4 @@
-package com.audiobookz.nz.app.browse.di
+package com.audiobookz.nz.app.di
 
 import android.app.Activity
 import android.app.Application
@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import com.audiobookz.nz.app.App
+import com.audiobookz.nz.app.di.Injectable
+import com.audiobookz.nz.app.di.DaggerAppComponent
 import dagger.android.AndroidInjection
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.HasSupportFragmentInjector

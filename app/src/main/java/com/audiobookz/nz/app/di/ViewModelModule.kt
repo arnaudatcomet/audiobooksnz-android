@@ -7,6 +7,7 @@ import com.audiobookz.nz.app.browse.categories.ui.CategoryViewModel
 import com.audiobookz.nz.app.login.ui.LoginEmailViewModel
 import com.audiobookz.nz.app.profile.ui.ProfileViewModel
 import com.audiobookz.nz.app.register.ui.SignUpViewModel
+import com.audiobookz.nz.app.login.ui.LoginViewModel
 //import com.audiobookz.nz.app.browse.categories.ui.viewmo
 
 import dagger.Binds
@@ -28,8 +29,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(LoginEmailViewModel::class)
-    abstract fun bindLoginEmailViewModel(viewModel: LoginEmailViewModel): ViewModel
+    @ViewModelKey(LoginViewModel::class)
+    abstract fun bindLoginViewModel(viewModel: LoginViewModel): ViewModel
 
     @Binds
     @IntoMap

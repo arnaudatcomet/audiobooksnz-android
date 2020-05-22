@@ -14,13 +14,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApp">
-        <activity android:name=".register.ui.SignUpActivity"/>
+        <activity android:name=".login.SignUpActivity"/>
+        <meta-data android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/>
 
-        <activity android:name=".login.ui.LoginActivity" />
-        <activity android:name=".login.ui.LoginEmailActivity" />
-        <activity
-            android:name=".SplashScreenActivity"
-            android:theme="@style/SplashScreenTheme">
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+        <activity android:name=".login.ui.LoginActivity"/>
+        <activity android:name=".login.ui.LoginEmailActivity"/>
+        <activity android:name=".SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

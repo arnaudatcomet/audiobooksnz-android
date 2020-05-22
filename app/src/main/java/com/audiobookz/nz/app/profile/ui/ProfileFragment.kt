@@ -22,7 +22,8 @@ import com.audiobookz.nz.app.browse.di.injectViewModel
 import com.audiobookz.nz.app.data.AppDatabase
 import com.audiobookz.nz.app.data.Result
 import javax.inject.Inject
-
+import com.audiobookz.nz.app.SplashScreenActivity
+import com.audiobookz.nz.app.login.data.UserDataDao
 
 class ProfileFragment : Fragment() , Injectable{
     @Inject
@@ -30,6 +31,7 @@ class ProfileFragment : Fragment() , Injectable{
     private lateinit var viewModel: ProfileViewModel
     var fullnameTxt: TextView? =null
     var emailTxt: TextView? =null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +60,6 @@ class ProfileFragment : Fragment() , Injectable{
     // populate the views now that the layout has been inflated
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         var FaceBtn = view.findViewById<Button>(R.id.btnFacebook)
         var OutBtn = view.findViewById<Button>(R.id.signOut)
         var PlayBtn = view.findViewById<ImageButton>(R.id.imgPlay)
@@ -86,7 +87,15 @@ class ProfileFragment : Fragment() , Injectable{
             Toast.makeText(getActivity(), "FAQ", Toast.LENGTH_SHORT).show()
         }
         OutBtn.setOnClickListener{view ->
-            Toast.makeText(getActivity(), "Logout", Toast.LENGTH_SHORT).show()
+            AsyncTask.execute {
+            getActivity()?.let {
+                AppDatabase.getInstance(
+                    it
+                ).userDataDao().logout()
+            }
+                }
+            val intent = Intent(activity, SplashScreenActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(intent)
         }
         PlayBtn.setOnClickListener{view ->
             Toast.makeText(getActivity(), "play", Toast.LENGTH_SHORT).show()

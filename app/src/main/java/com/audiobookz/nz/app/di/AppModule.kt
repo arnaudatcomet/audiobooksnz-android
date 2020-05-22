@@ -1,18 +1,20 @@
 package com.audiobookz.nz.app.browse.di
 
 import android.app.Application
+import android.content.Context
 import com.audiobookz.nz.app.api.AudiobookService
-import com.audiobookz.nz.app.data.AppDatabase
 import com.audiobookz.nz.app.browse.categories.data.CategoryRemoteDataSource
+import com.audiobookz.nz.app.data.AppDatabase
+import com.google.android.gms.common.api.GoogleApiClient
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
+
 
 @Module(includes = [ViewModelModule::class, CoreDataModule::class])
 class AppModule {
@@ -53,6 +55,7 @@ class AppModule {
 //
 //
 //    @Singleton
+
 //    @Provides
 //    fun provideLegoThemeDao(db: AppDatabase) = db.legoThemeDao()
 

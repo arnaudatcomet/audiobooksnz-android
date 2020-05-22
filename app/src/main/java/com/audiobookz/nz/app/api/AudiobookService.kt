@@ -1,5 +1,5 @@
 package com.audiobookz.nz.app.api
-
+import androidx.lifecycle.LiveData
 import com.audiobookz.nz.app.audiobookList.data.AudiobookList
 import com.audiobookz.nz.app.browse.categories.data.Category
 import com.audiobookz.nz.app.login.data.UserData
@@ -47,6 +47,20 @@ interface AudiobookService {
         @Field("terms") terms: String? = null,
         @Field("cPassword") cPassword: String? = null,
         @Field("firstName") firstName: String? = null
+    ): Response<UserData>
+
+    @FormUrlEncoded
+    @POST("users/google-login")
+    suspend fun postLoginGoogle(
+        @Field("id_token") id_token: String? =null,
+        @Field("device_type") device_type: String? =null
+    ): Response<UserData>
+
+    @FormUrlEncoded
+    @POST("users/facebook-login")
+    suspend fun postLoginFacebook(
+        @Field("id_token") id_token: String? =null,
+        @Field("device_type") device_type: String? =null
     ): Response<UserData>
 
     @GET("users/profile")
