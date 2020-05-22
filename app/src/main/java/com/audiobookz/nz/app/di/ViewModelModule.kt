@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.audiobookz.nz.app.audiobookList.ui.AudiobookListViewModel
 import com.audiobookz.nz.app.browse.categories.ui.CategoryViewModel
 import com.audiobookz.nz.app.login.ui.LoginViewModel
+import com.audiobookz.nz.app.register.ui.SignUpViewModel
 //import com.audiobookz.nz.app.browse.categories.ui.viewmo
 
 import dagger.Binds
