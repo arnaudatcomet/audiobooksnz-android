@@ -8,10 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -25,13 +22,15 @@ import javax.inject.Inject
 import com.audiobookz.nz.app.SplashScreenActivity
 import com.audiobookz.nz.app.di.Injectable
 import com.audiobookz.nz.app.login.data.UserDataDao
+import com.bumptech.glide.Glide
 
-class ProfileFragment : Fragment() , Injectable {
+class ProfileFragment : Fragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: ProfileViewModel
-    var fullnameTxt: TextView? =null
-    var emailTxt: TextView? =null
+    var fullnameTxt: TextView? = null
+    var emailTxt: TextView? = null
+    var profileImg: ImageView? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,17 +44,18 @@ class ProfileFragment : Fragment() , Injectable {
         savedInstanceState: Bundle?
     ): View? {
         viewModel = injectViewModel(viewModelFactory)
-        var accessToken: String? = null
 
-        viewModel.token = AsyncTask.execute{
-            accessToken = "Bearer "+ activity?.let {
+        viewModel.token = AsyncTask.execute {
+            "Bearer " + activity?.let {
                 AppDatabase.getInstance(
                     it
                 ).userDataDao().getAccessToken()
-            }}.toString()
+            }
+        }.toString()
 
         subscribeUi()
-        return inflater.inflate(R.layout.fragment_profile, container, false)}
+        return inflater.inflate(R.layout.fragment_profile, container, false)
+    }
 
 
     // populate the views now that the layout has been inflated
@@ -71,6 +71,8 @@ class ProfileFragment : Fragment() , Injectable {
         var ProfileCard = view.findViewById<CardView>(R.id.CardProfile)
         emailTxt = view.findViewById(R.id.txtProfile_email)
         fullnameTxt = view.findViewById(R.id.txtProfile_user)
+        profileImg = view.findViewById(R.id.imgProfile1)
+
 
         FaceBtn.setOnClickListener { View ->
             Toast.makeText(getActivity(), "facebook", Toast.LENGTH_SHORT).show()
@@ -78,31 +80,34 @@ class ProfileFragment : Fragment() , Injectable {
         TwitterBtn.setOnClickListener { View ->
             Toast.makeText(getActivity(), "twitter", Toast.LENGTH_SHORT).show()
         }
-        BugTxt.setOnClickListener{view ->
+        BugTxt.setOnClickListener { view ->
             Toast.makeText(getActivity(), "bugtext", Toast.LENGTH_SHORT).show()
         }
-        CustomeCareTxt.setOnClickListener{view ->
+        CustomeCareTxt.setOnClickListener { view ->
             Toast.makeText(getActivity(), "CustomerCare", Toast.LENGTH_SHORT).show()
         }
-        FAQTxt.setOnClickListener{view ->
+        FAQTxt.setOnClickListener { view ->
             Toast.makeText(getActivity(), "FAQ", Toast.LENGTH_SHORT).show()
         }
-        OutBtn.setOnClickListener{view ->
+        OutBtn.setOnClickListener { view ->
             AsyncTask.execute {
-            getActivity()?.let {
-                AppDatabase.getInstance(
-                    it
-                ).userDataDao().logout()
-            }
+                getActivity()?.let {
+                    AppDatabase.getInstance(
+                        it
+                    ).userDataDao().logout()
                 }
-            val intent = Intent(activity, SplashScreenActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            }
+            val intent = Intent(
+                activity,
+                SplashScreenActivity::class.java
+            ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(intent)
         }
-        PlayBtn.setOnClickListener{view ->
+        PlayBtn.setOnClickListener { view ->
             Toast.makeText(getActivity(), "play", Toast.LENGTH_SHORT).show()
         }
-        ProfileCard.setOnClickListener{view ->
-            var NewFragment : MainActivity = activity as MainActivity
+        ProfileCard.setOnClickListener { view ->
+            var NewFragment: MainActivity = activity as MainActivity
             NewFragment.ChangeToEditProfileFragment()
         }
 
@@ -115,6 +120,13 @@ class ProfileFragment : Fragment() , Injectable {
 
                     fullnameTxt?.text = result.data?.full_name
                     emailTxt?.text = result.data?.email
+
+                    profileImg?.let {
+                        Glide.with(this)
+                            .load(result.data?.image_url)
+                            .into(it)
+                    }
+
 
                 }
                 Result.Status.LOADING -> Log.d("TAG", "loading")
