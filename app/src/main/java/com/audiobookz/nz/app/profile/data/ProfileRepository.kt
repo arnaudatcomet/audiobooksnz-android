@@ -1,8 +1,10 @@
 package com.audiobookz.nz.app.profile.data
 
 import com.audiobookz.nz.app.data.resultLiveData
+import com.audiobookz.nz.app.data.resultSimpleLiveData
 
 import com.audiobookz.nz.app.login.data.UserDataDao
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 class ProfileRepository @Inject constructor(
@@ -15,4 +17,7 @@ class ProfileRepository @Inject constructor(
         saveCallResult = {dao.insertUserData(it)},
         nukeAudiobookList = {}
     )
+    fun editProfile(Token:String, Image: MultipartBody.Part)= resultSimpleLiveData(
+        networkCall = {remoteSource.sendProfileData(Token,Image)},
+        saveCallResult = {dao.insertUserData(it)})
 }

@@ -3,8 +3,11 @@ import androidx.lifecycle.LiveData
 import com.audiobookz.nz.app.audiobookList.data.AudiobookList
 import com.audiobookz.nz.app.browse.categories.data.Category
 import com.audiobookz.nz.app.login.data.UserData
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
+import java.io.File
 
 /**
  * Lego REST API access points
@@ -67,6 +70,13 @@ interface AudiobookService {
     suspend fun getProfile(
         @Header("Authorization") token: String? = null
     ): Response<UserData>
+
+    @Multipart
+    @POST("users/modify")
+    suspend fun editProfile(
+        @Header("Authorization") token: String? = null,
+        @Part image: MultipartBody.Part
+        ): Response<UserData>
 
 
 //    @GET("lego/sets/")
