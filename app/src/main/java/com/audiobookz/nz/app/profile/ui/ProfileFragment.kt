@@ -1,5 +1,6 @@
 package com.audiobookz.nz.app.profile.ui
 
+import android.content.Intent
 import android.content.IntentFilter
 import android.os.AsyncTask
 import android.os.Bundle
@@ -17,15 +18,15 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.audiobookz.nz.app.MainActivity
 import com.audiobookz.nz.app.R
-import com.audiobookz.nz.app.browse.di.Injectable
-import com.audiobookz.nz.app.browse.di.injectViewModel
+import com.audiobookz.nz.app.di.injectViewModel
 import com.audiobookz.nz.app.data.AppDatabase
 import com.audiobookz.nz.app.data.Result
 import javax.inject.Inject
 import com.audiobookz.nz.app.SplashScreenActivity
+import com.audiobookz.nz.app.di.Injectable
 import com.audiobookz.nz.app.login.data.UserDataDao
 
-class ProfileFragment : Fragment() , Injectable{
+class ProfileFragment : Fragment() , Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: ProfileViewModel
