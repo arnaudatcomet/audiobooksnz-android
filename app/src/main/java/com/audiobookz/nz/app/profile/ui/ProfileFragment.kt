@@ -1,9 +1,10 @@
-package com.audiobookz.nz.app.profile
+package com.audiobookz.nz.app.profile.ui
 
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.AsyncTask
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,14 +13,27 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.audiobookz.nz.app.MainActivity
-
 import com.audiobookz.nz.app.R
-import com.audiobookz.nz.app.SplashScreenActivity
+import com.audiobookz.nz.app.di.injectViewModel
 import com.audiobookz.nz.app.data.AppDatabase
+import com.audiobookz.nz.app.data.Result
+import javax.inject.Inject
+import com.audiobookz.nz.app.SplashScreenActivity
+import com.audiobookz.nz.app.di.Injectable
 import com.audiobookz.nz.app.login.data.UserDataDao
 
-class ProfileFragment : Fragment() {
+class ProfileFragment : Fragment() , Injectable {
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private lateinit var viewModel: ProfileViewModel
+    var fullnameTxt: TextView? =null
+    var emailTxt: TextView? =null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
@@ -29,8 +43,19 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? =
-        inflater.inflate(R.layout.fragment_profile, container, false)
+    ): View? {
+        viewModel = injectViewModel(viewModelFactory)
+        var accessToken: String? = null
+
+        viewModel.token = AsyncTask.execute{
+            accessToken = "Bearer "+ activity?.let {
+                AppDatabase.getInstance(
+                    it
+                ).userDataDao().getAccessToken()
+            }}.toString()
+
+        subscribeUi()
+        return inflater.inflate(R.layout.fragment_profile, container, false)}
 
 
     // populate the views now that the layout has been inflated
@@ -44,6 +69,8 @@ class ProfileFragment : Fragment() {
         var CustomeCareTxt = view.findViewById<TextView>(R.id.txtEmailCustomer)
         var FAQTxt = view.findViewById<TextView>(R.id.txtfaq)
         var ProfileCard = view.findViewById<CardView>(R.id.CardProfile)
+        emailTxt = view.findViewById(R.id.txtProfile_email)
+        fullnameTxt = view.findViewById(R.id.txtProfile_user)
 
         FaceBtn.setOnClickListener { View ->
             Toast.makeText(getActivity(), "facebook", Toast.LENGTH_SHORT).show()
@@ -81,7 +108,26 @@ class ProfileFragment : Fragment() {
 
     }
 
-    companion object {
-        fun newInstance(): ProfileFragment = ProfileFragment()
+    private fun subscribeUi() {
+        viewModel.queryProfile?.observe(viewLifecycleOwner, Observer { result ->
+            when (result.status) {
+                Result.Status.SUCCESS -> {
+
+                    fullnameTxt?.text = result.data?.full_name
+                    emailTxt?.text = result.data?.email
+
+                }
+                Result.Status.LOADING -> Log.d("TAG", "loading")
+                Result.Status.ERROR -> {
+                    Toast.makeText(activity, result.message, Toast.LENGTH_SHORT).show();
+                }
+            }
+        })
     }
+
+    companion object {
+        fun newInstance(): ProfileFragment =
+            ProfileFragment()
+    }
+
 }
