@@ -51,8 +51,9 @@ android {
 
 dependencies {
     //  use material component
+    implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
     implementation "com.google.android.material:material:$rootProject.materialcomponentVersion"
-
+    implementation "com.google.android.gms:play-services-auth:$rootProject.playservicesauth"
     implementation "androidx.annotation:annotation:$rootProject.annotationVersion"
     kapt "androidx.room:room-compiler:$rootProject.roomVersion"
     kapt "com.github.bumptech.glide:compiler:$rootProject.glideVersion"

@@ -1,4 +1,4 @@
-package com.audiobookz.nz.app.browse.di
+package com.audiobookz.nz.app.di
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
