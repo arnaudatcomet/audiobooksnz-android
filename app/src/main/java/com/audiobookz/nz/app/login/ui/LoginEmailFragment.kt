@@ -17,6 +17,7 @@ import com.audiobookz.nz.app.R
 import com.audiobookz.nz.app.di.Injectable
 import com.audiobookz.nz.app.di.injectViewModel
 import com.audiobookz.nz.app.data.Result
+import kotlinx.android.synthetic.main.fragment_login_email.*
 import com.audiobookz.nz.app.ui.hide
 import com.audiobookz.nz.app.ui.show
 import javax.inject.Inject
@@ -29,6 +30,8 @@ class LoginEmailFragment : Fragment(), Injectable {
     var Username: EditText? =null
     var Password: EditText? =null
     var LoginBtn: Button? =null
+    var ForgotPasBtn: Button? =null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -39,9 +42,11 @@ class LoginEmailFragment : Fragment(), Injectable {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         Username = view.findViewById(R.id.EditTextEmail) as EditText
         Password = view.findViewById(R.id.EditTextPassword) as EditText
         LoginBtn = view.findViewById(R.id.btnLogin) as Button
+        ForgotPasBtn = view.findViewById(R.id.btn_forgetpass) as Button
         viewModel = injectViewModel(viewModelFactory)
         LoginBtn!!.setOnClickListener { view ->
             if(Password!!.text.toString()=="" || Username!!.text.toString() == "")
@@ -50,6 +55,11 @@ class LoginEmailFragment : Fragment(), Injectable {
             }else{
                 viewModel.loginEmail(Username?.text.toString(),Password?.text.toString())
             }
+        }
+
+        ForgotPasBtn!!.setOnClickListener {
+            val intent = Intent(activity, ForgotPasswordActivity::class.java)
+            startActivity(intent)
         }
         subscribeUi()
     }

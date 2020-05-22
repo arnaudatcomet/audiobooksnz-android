@@ -1,71 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
     tools:context=".MainActivity">
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp">
 
     <ImageView
         android:id="@+id/img_view_logo"
-        android:layout_width="match_parent"
+        android:layout_width="240dp"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="100dp"
         android:layout_weight="40"
         app:srcCompat="@drawable/logo" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnLoginFacebook"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="6dp"
         android:layout_weight="1"
         android:text="@string/LoginFacebook"
+        android:textColor="#000000"
+        android:textAlignment="textStart"
         android:textAllCaps="false"
         app:icon="@drawable/facebook40"
+        app:iconSize="32dp"
+        app:iconPadding="20dp"
+        app:strokeColor="#000000"
+        app:strokeWidth="2dp"
         app:iconTint="@null" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnLoginGoogle"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="6dp"
         android:layout_weight="1"
         android:text="@string/LoginGoogle"
+        android:textColor="#000000"
+        android:textAlignment="textStart"
         android:textAllCaps="false"
         app:icon="@drawable/google40"
+        app:iconSize="32dp"
+        app:iconPadding="20dp"
+        app:strokeColor="#000000"
+        app:strokeWidth="2dp"
         app:iconTint="@null" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnLoginEmail"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="6dp"
         android:layout_weight="1"
         android:text="@string/LoginEmail"
+        android:textColor="#000000"
+        android:textAlignment="textStart"
         android:textAllCaps="false"
         app:icon="@drawable/mail40"
+        app:iconSize="32dp"
+        app:iconPadding="20dp"
+        app:strokeColor="#000000"
+        app:strokeWidth="2dp"
         app:iconTint="@null" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:paddingTop="20dp"
+        android:paddingBottom="10dp"
         android:orientation="horizontal">
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="2dp"
+            android:layout_height="1dp"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:background="@color/colorTea" />
+            android:background="#000000" />
 
         <TextView
             android:layout_width="match_parent"
@@ -73,14 +98,15 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/Or"
+            android:textColor="#000000"
             android:textAllCaps="false" />
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="2dp"
+            android:layout_height="1dp"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:background="@color/colorTea" />
+            android:background="#000000" />
 
     </LinearLayout>
 
@@ -88,10 +114,11 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="20dp"
-        android:layout_margin="10dp"
+        android:layout_margin="20dp"
         android:layout_weight="1"
         android:gravity="center"
         android:text="@string/DontHaveAcc"
+        android:textColor="#000000"
         android:textAllCaps="false" />
 
     <Button
@@ -112,5 +139,5 @@
         android:backgroundTint="@android:color/background_dark"
         android:text="@string/Discover" />
 
-
 </LinearLayout>
+</ScrollView>

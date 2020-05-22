@@ -24,7 +24,7 @@
     <string name="LoginGoogle">Login With Google</string>
     <string name="LoginEmail">Login With Email</string>
     <string name="DontHaveAcc">Don\'t have Account?</string>
-    <string name="Or">Or</string>
+    <string name="Or">OR</string>
     <string name="SignFree">Sign Up For Free!</string>
     <string name="Discover">Discover Audiobooks</string>
 
@@ -33,6 +33,8 @@
     <string name="Password">Password</string>
     <string name="ForgotPass">Forgot Password?</string>
     <string name="Login">Login</string>
+    <string name="ResetPassword">Reset Password</string>
+    <string name="LostPasswordText">Lost your password? Please enter your username or email address. You will receive a link to create a new password via email.</string>
 
     <!--profile_activity-->
     <string name="BookCredit">Book Credits</string>

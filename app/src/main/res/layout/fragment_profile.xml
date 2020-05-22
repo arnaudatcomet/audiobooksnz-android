@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".MainActivity"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="5"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
         android:background="@color/colorTea"
         android:orientation="vertical">
 
@@ -28,18 +30,18 @@
                     android:id="@+id/imgProfile1"
                     android:layout_width="110dp"
                     android:layout_height="110dp"
-                    app:srcCompat="@drawable/profile"
-                    android:layout_gravity="center"/>
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/profile" />
 
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/CardProfile"
-                android:clickable="true"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="right"
                 android:backgroundTint="@color/colorTea"
+                android:clickable="true"
                 app:cardCornerRadius="15dp">
 
                 <RelativeLayout
@@ -61,7 +63,7 @@
         <TextView
             android:id="@+id/txtProfile_user"
             android:layout_width="match_parent"
-            android:layout_height="20dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:gravity="center"
             android:text="sivixay"
@@ -70,7 +72,7 @@
         <TextView
             android:id="@+id/txtProfile_email"
             android:layout_width="match_parent"
-            android:layout_height="20dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:gravity="center"
             android:text="sivixay@comet.la"
@@ -78,142 +80,187 @@
 
         <TextView
             android:id="@+id/txtBookCredits"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="10dp"
-            android:gravity="center"
-            android:text="@string/BookCredit"
+            android:layout_marginTop="10dp"
             android:background="@drawable/rectangle_bordershape"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/BookCredit"
             android:textColor="@android:color/white" />
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="3"
-        android:orientation="vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btnFacebook"
-                style="@style/Widget.App.Button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:backgroundTint="@color/colorfacebook"
-                android:text="Facebook" />
-
-            <Button
-                android:id="@+id/btnTwitter"
-                style="@style/Widget.App.Button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:backgroundTint="@color/colortwitter"
-                android:text="Twitter" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/submit_bug_report40" />
-
-            <TextView
-                android:id="@+id/txtBugReport"
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_margin="10dp"
-                android:gravity="center"
-                android:text="@string/BugReport" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/mail1_40" />
-
-            <TextView
-                android:id="@+id/txtEmailCustomer"
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_margin="10dp"
-                android:gravity="center"
-                android:text="@string/Email_Customer_care" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/faq40" />
-
-            <TextView
-                android:id="@+id/txtfaq"
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_margin="10dp"
-                android:gravity="center"
-                android:text="@string/FAQ" />
-
-        </LinearLayout>
 
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp">
+            android:paddingBottom="10dp"
+            >
 
-            <Button
-                android:id="@+id/signOut"
-                android:layout_width="200dp"
-                android:layout_height="50dp"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:backgroundTint="@android:color/black"
-                android:text="@string/Signout" />
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
 
-            <ImageButton
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingVertical="20dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btnFacebook"
+                        style="@style/Widget.App.Button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:backgroundTint="@color/colorfacebook"
+                        android:text="Facebook" />
+
+                    <Button
+                        android:id="@+id/btnTwitter"
+                        style="@style/Widget.App.Button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:backgroundTint="@color/colortwitter"
+                        android:text="Twitter" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/submit_bug_report40" />
+
+                    <TextView
+                        android:id="@+id/txtBugReport"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:gravity="center"
+                        android:text="@string/BugReport" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_marginVertical="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_height="0.5dp"
+                    android:background="#000000" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:paddingTop="10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/mail1_40" />
+
+                    <TextView
+                        android:id="@+id/txtEmailCustomer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:gravity="center"
+                        android:text="@string/Email_Customer_care" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_marginVertical="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_height="0.5dp"
+                    android:background="#000000" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:paddingTop="10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/faq40" />
+
+                    <TextView
+                        android:id="@+id/txtfaq"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:gravity="center"
+                        android:text="@string/FAQ" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_marginVertical="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_height="0.5dp"
+                    android:background="#000000" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="30dp"
+                    android:layout_marginBottom="10dp">
+
+                    <Button
+                        android:id="@+id/signOut"
+                        android:layout_width="200dp"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="50dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:backgroundTint="@android:color/black"
+                        android:text="@string/Signout" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            </ScrollView>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/imgPlay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginStart="20dp"
-                android:layout_toEndOf="@+id/signOut"
-                app:srcCompat="@drawable/play40" />
+                android:layout_marginRight="20dp"
+                android:src="@drawable/multimedia"
+                app:tint="#FFFFFF"
+                app:backgroundTint="@color/colorTea"
+                app:elevation="0dp"
+                app:fabSize="mini"
+                app:maxImageSize="18dp" />
 
         </RelativeLayout>
-
-
-    </LinearLayout>
 
 </LinearLayout>
