@@ -2,7 +2,7 @@ package com.audiobookz.nz.app
 
 import android.app.Activity
 import android.app.Application
-import com.audiobookz.nz.app.browse.di.AppInjector
+import com.audiobookz.nz.app.di.AppInjector
 
 import com.facebook.stetho.Stetho
 import dagger.android.DispatchingAndroidInjector

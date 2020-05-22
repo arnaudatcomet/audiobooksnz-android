@@ -1,5 +1,7 @@
 package com.audiobookz.nz.app.profile
 
+import android.content.Intent
+import android.os.AsyncTask
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,6 +15,9 @@ import androidx.cardview.widget.CardView
 import com.audiobookz.nz.app.MainActivity
 
 import com.audiobookz.nz.app.R
+import com.audiobookz.nz.app.SplashScreenActivity
+import com.audiobookz.nz.app.data.AppDatabase
+import com.audiobookz.nz.app.login.data.UserDataDao
 
 class ProfileFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +36,6 @@ class ProfileFragment : Fragment() {
     // populate the views now that the layout has been inflated
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         var FaceBtn = view.findViewById<Button>(R.id.btnFacebook)
         var OutBtn = view.findViewById<Button>(R.id.signOut)
         var PlayBtn = view.findViewById<ImageButton>(R.id.imgPlay)
@@ -57,7 +61,15 @@ class ProfileFragment : Fragment() {
             Toast.makeText(getActivity(), "FAQ", Toast.LENGTH_SHORT).show()
         }
         OutBtn.setOnClickListener{view ->
-            Toast.makeText(getActivity(), "Logout", Toast.LENGTH_SHORT).show()
+            AsyncTask.execute {
+            getActivity()?.let {
+                AppDatabase.getInstance(
+                    it
+                ).userDataDao().logout()
+            }
+                }
+            val intent = Intent(activity, SplashScreenActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(intent)
         }
         PlayBtn.setOnClickListener{view ->
             Toast.makeText(getActivity(), "play", Toast.LENGTH_SHORT).show()
