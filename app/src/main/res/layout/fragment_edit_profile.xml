@@ -34,6 +34,7 @@
                 android:layout_gravity="center"/>
 
             <ImageView
+                android:id="@+id/ImgProfileEdit2"
                 android:layout_width="116dp"
                 android:layout_height="116dp"
                 app:srcCompat="@drawable/profile"
