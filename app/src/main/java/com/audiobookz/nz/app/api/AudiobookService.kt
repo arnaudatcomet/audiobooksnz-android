@@ -2,9 +2,11 @@ package com.audiobookz.nz.app.api
 
 import com.audiobookz.nz.app.audiobookList.data.AudiobookList
 import com.audiobookz.nz.app.browse.categories.data.Category
+import com.audiobookz.nz.app.login.data.SuccessData
 import com.audiobookz.nz.app.login.data.UserData
 import retrofit2.Response
 import retrofit2.http.*
+import java.util.*
 
 /**
  * Lego REST API access points
@@ -72,7 +74,7 @@ interface AudiobookService {
     @POST("users/request-password-reset")
     suspend fun getResetPass(
         @Field("email") email: String? = null
-    ): Response<CheckEmail>
+    ): Response<SuccessData>
 
 
 //    @GET("lego/sets/")

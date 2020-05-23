@@ -21,4 +21,6 @@ interface UserDataDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUserData(Userdata: UserData)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertCheckMailData(SuccessData: SuccessData)
 }

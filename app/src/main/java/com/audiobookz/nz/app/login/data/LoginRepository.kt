@@ -10,4 +10,11 @@ class LoginRepository @Inject constructor(private val dao:UserDataDao,private va
     fun loginEmail(Username:String,Password:String)= resultSimpleLiveData(
         networkCall = {remoteSource.emailLogin(Username,Password)},
         saveCallResult = {dao.insertUserData(it)})
+
+    fun resetPass(email: String) = resultSimpleLiveData(
+        networkCall = {remoteSource.forgotPass(email)},
+        saveCallResult = {dao.insertCheckMailData(it)}
+    )
+
+
 }

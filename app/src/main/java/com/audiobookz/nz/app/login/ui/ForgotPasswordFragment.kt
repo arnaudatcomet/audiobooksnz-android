@@ -45,37 +45,37 @@ class ForgotPasswordFragment : Fragment(), Injectable {
 
         resetBtn.setOnClickListener { view ->
             if (emailEdit.text.isNotEmpty()) {
-                viewModel.email = emailEdit.text.toString()
-               // subscribeUi()
+                viewModel.resetPass(emailEdit.text.toString())
+                subscribeUi()
             } else {
                 Toast.makeText(activity, "email is empty", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-//    private fun subscribeUi() {
-//        viewModel.PassForgoten?.observe(viewLifecycleOwner, Observer { result ->
-//            when (result.status) {
-//                Result.Status.SUCCESS -> {
-//                    if (result.data == null) {
-//                        Toast.makeText(activity, "e-mail don't found", Toast.LENGTH_SHORT).show();
-//                    } else {
-//                        Toast.makeText(activity, "done", Toast.LENGTH_SHORT).show();3
-//                    }
-//
-//                }
-//                Result.Status.LOADING -> {
-//                    Toast.makeText(activity, "loading...", Toast.LENGTH_SHORT).show();3
-//                }
-//                Result.Status.ERROR -> {
-//                    Toast.makeText(
-//                        activity,
-//                        result.message,
-//                        Toast.LENGTH_SHORT
-//                    )
-//                        .show();3
-//                }
-//            }
-//        })
-//    }
+    private fun subscribeUi() {
+        viewModel.emailResult.observe(viewLifecycleOwner, Observer { result ->
+            when (result.status) {
+                Result.Status.SUCCESS -> {
+                    if (result.data == null) {
+                        Toast.makeText(activity, "e-mail not found", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(activity, result.data.success, Toast.LENGTH_SHORT).show();3
+                    }
+
+                }
+                Result.Status.LOADING -> {
+                    Toast.makeText(activity, "loading...", Toast.LENGTH_SHORT).show();3
+                }
+                Result.Status.ERROR -> {
+                    Toast.makeText(
+                        activity,
+                        result.message,
+                        Toast.LENGTH_SHORT
+                    )
+                        .show();3
+                }
+            }
+        })
+    }
 }
