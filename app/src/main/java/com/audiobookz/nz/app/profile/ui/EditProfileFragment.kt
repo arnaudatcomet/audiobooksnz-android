@@ -3,6 +3,7 @@ package com.audiobookz.nz.app.profile.ui
 import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.app.PendingIntent.getActivity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
@@ -11,13 +12,11 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.core.content.FileProvider
 import androidx.core.content.PermissionChecker.checkSelfPermission
@@ -34,6 +33,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.fragment_edit_profile.*
 import java.io.File
 import javax.inject.Inject
+import com.bumptech.glide.Glide
 
 
 class EditProfileFragment : Fragment(), Injectable {
@@ -41,12 +41,17 @@ class EditProfileFragment : Fragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: EditProfileViewModel
+    private lateinit var viewModel2: ProfileViewModel
     private val PICK_IMAGE = 100
     private val PERMISSION_CODE = 1000;
     private val TAKE_IMAGE = 1
     var imageUri: Uri? = null
     var imageFile: File? = null
     var SaveChangeBtn: Button? = null
+    var ProfileCard: ImageView? = null
+    var FirstNameEdit: TextView? = null
+    var LastNameEdit: TextView? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
@@ -57,34 +62,41 @@ class EditProfileFragment : Fragment(), Injectable {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
         viewModel = injectViewModel(viewModelFactory)
+
+        viewModel2 = injectViewModel(viewModelFactory)
+
+        val sharePref = activity?.getSharedPreferences("Token", Context.MODE_PRIVATE)
+
+        viewModel2.token = "Bearer " + sharePref?.getString("Token", "")
+
+        subscribeUi2()
         return inflater.inflate(R.layout.fragment_edit_profile, container, false)
     }
-
 
     // populate the views now that the layout has been inflated
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var accessToken: String? = null
-        subscribeUi()
+        val sharePref = activity?.getSharedPreferences("Token", Context.MODE_PRIVATE)
         var EditProfileCard = view.findViewById<CardView>(R.id.CardEditProfile)
-        var FirstNameEdit = view.findViewById<TextView>(R.id.editFirstNameProfile)
-        var LastNameEdit = view.findViewById<TextView>(R.id.editLastNameProfile)
-        var CurrentPassEdit = view.findViewById<TextView>(R.id.editCurrentPass)
-        var NewPassProfileEdit = view.findViewById<TextView>(R.id.editNewPassProfile)
-        var PassConfirmProfileEdit = view.findViewById<TextView>(R.id.editPassConfirmProfile)
+        ProfileCard = view.findViewById(R.id.ImgProfileEdit2)
+        FirstNameEdit = view.findViewById(R.id.editFirstNameProfile)
+        LastNameEdit = view.findViewById(R.id.editLastNameProfile)
+        var CurrentPassEdit = view.findViewById<EditText>(R.id.editCurrentPass)
+        var NewPassProfileEdit = view.findViewById<EditText>(R.id.editNewPassProfile)
+        var PassConfirmProfileEdit = view.findViewById<EditText>(R.id.editPassConfirmProfile)
         var SaveChangeBtn = view.findViewById<Button>(R.id.btnSaveChange)
-        var profileImage = view.findViewById<ImageView>(R.id.profileImage)
         val items = arrayOf("Camera", "Gallery")
 
-        val msg: String =
-            FirstNameEdit.text.toString() + " " + LastNameEdit.text.toString()
-        val msg2: String =
-            CurrentPassEdit.text.toString() + " " + NewPassProfileEdit.text.toString() + " " + PassConfirmProfileEdit.text.toString()
-        val msg3 = "$msg $msg2"
+
         val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
         val takePicture = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+        subscribeUi()
+
         EditProfileCard.setOnClickListener { view ->
             MaterialAlertDialogBuilder(context)
                 .setTitle(resources.getString(R.string.PleaseSelectImage))
@@ -136,16 +148,22 @@ class EditProfileFragment : Fragment(), Injectable {
         }
 
         SaveChangeBtn.setOnClickListener { view ->
-            Toast.makeText(getActivity(), msg3, Toast.LENGTH_SHORT).show()
-            viewModel.editProfile(
-                "Bearer K9FioHyGOjWT1rjEiwjLIuWU34M8C1bJ",
-                imageUri?.let { getRealPathFromURI(it) }.toString(),
-                FirstNameEdit.text.toString(),
-                LastNameEdit.text.toString(),
-                CurrentPassEdit.text.toString(),
-                NewPassProfileEdit.text.toString(),
-                PassConfirmProfileEdit.text.toString()
-            )
+            if (CurrentPassEdit.text.isEmpty() || NewPassProfileEdit.text.isEmpty() || PassConfirmProfileEdit.text.isEmpty()){
+                Toast.makeText(activity, "Password is blank", Toast.LENGTH_SHORT).show();
+            }
+            else{
+
+                    viewModel.editProfile(
+                        "Bearer " + sharePref?.getString("Token", ""),
+                        imageUri?.let { getRealPathFromURI(it) }.toString(),
+                        FirstNameEdit?.text.toString(),
+                        LastNameEdit?.text.toString(),
+                        CurrentPassEdit.text.toString(),
+                        NewPassProfileEdit.text.toString(),
+                        PassConfirmProfileEdit.text.toString()
+                    )
+
+            }
         }
     }
 
@@ -154,10 +172,10 @@ class EditProfileFragment : Fragment(), Injectable {
         when (requestCode) {
             PICK_IMAGE -> {
                 imageUri = data?.getData();
-                profileImage.setImageURI(imageUri);
+                ProfileCard?.setImageURI(imageUri);
             }
             TAKE_IMAGE -> {
-                profileImage.setImageURI(imageUri);
+                ProfileCard?.setImageURI(imageUri);
             }
         }
     }
@@ -212,6 +230,31 @@ class EditProfileFragment : Fragment(), Injectable {
             }
         })
     }
+
+    private fun subscribeUi2() {
+        viewModel2.queryProfile?.observe(viewLifecycleOwner, Observer { result ->
+            when (result.status) {
+                Result.Status.SUCCESS -> {
+
+                    FirstNameEdit?.text = result.data?.first_name
+                    LastNameEdit?.text = result.data?.last_name
+
+                    ProfileCard?.let {
+                        Glide.with(this)
+                            .load(result.data?.image_url)
+                            .into(it)
+                    }
+
+
+                }
+                Result.Status.LOADING -> Log.d("TAG", "loading")
+                Result.Status.ERROR -> {
+                    Toast.makeText(activity, result.message, Toast.LENGTH_SHORT).show();
+                }
+            }
+        })
+    }
+
 
 }
 

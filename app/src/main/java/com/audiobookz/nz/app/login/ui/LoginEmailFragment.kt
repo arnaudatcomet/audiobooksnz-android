@@ -1,5 +1,6 @@
 package com.audiobookz.nz.app.login.ui
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -67,6 +68,13 @@ class LoginEmailFragment : Fragment(), Injectable {
         viewModel.logInResult.observe(viewLifecycleOwner, Observer { result ->
             when (result.status) {
                 Result.Status.SUCCESS -> {
+
+                    val sharePref = activity?.getSharedPreferences("Token",Context.MODE_PRIVATE)
+                    with(sharePref?.edit()){
+                        this?.putString("Token",result.data?.access_token)
+                        this?.commit()
+                    }
+
                     LoginBtn?.setText("Login")
                         val intent = Intent(activity, MainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                         startActivity(intent)

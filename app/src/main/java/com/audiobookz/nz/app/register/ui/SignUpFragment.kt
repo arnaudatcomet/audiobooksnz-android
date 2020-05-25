@@ -63,12 +63,21 @@ class SignUpFragment : Fragment(), Injectable {
                 Toast.makeText(activity, "confirm password is blank", Toast.LENGTH_SHORT).show()
             } else {
 
-                viewModel.email = edittxtEmail.text.toString()
-                viewModel.firstName = edittxtFistname.text.toString()
-                viewModel.lastName = edittxtLastname.text.toString()
-                viewModel.terms = "1"
-                viewModel.password = edittxtPassword.text.toString()
-                viewModel.cPassword = edittxtPasswordConfirm.text.toString()
+//                viewModel.email = edittxtEmail.text.toString()
+//                viewModel.firstName = edittxtFistname.text.toString()
+//                viewModel.lastName = edittxtLastname.text.toString()
+//                viewModel.terms = "1"
+//                viewModel.password = edittxtPassword.text.toString()
+//                viewModel.cPassword = edittxtPasswordConfirm.text.toString()
+
+                viewModel.emailSignUp(
+                    edittxtEmail.text.toString(),
+                    edittxtLastname.text.toString(),
+                    edittxtPassword.text.toString(),
+                    "1",
+                    edittxtPasswordConfirm.text.toString(),
+                    edittxtFistname.text.toString()
+                )
 
                 subscribeUi()
 
@@ -86,7 +95,7 @@ class SignUpFragment : Fragment(), Injectable {
     }
 
     private fun subscribeUi() {
-        viewModel.emailSignUp.observe(viewLifecycleOwner, Observer { result ->
+        viewModel.RegisterResult.observe(viewLifecycleOwner, Observer { result ->
             when (result.status) {
                 Result.Status.SUCCESS -> {
                     if (result.data == null) {

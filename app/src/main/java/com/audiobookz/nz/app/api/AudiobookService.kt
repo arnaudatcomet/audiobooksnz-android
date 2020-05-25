@@ -1,13 +1,15 @@
 package com.audiobookz.nz.app.api
-import androidx.lifecycle.LiveData
+
 import com.audiobookz.nz.app.audiobookList.data.AudiobookList
 import com.audiobookz.nz.app.browse.categories.data.Category
+import com.audiobookz.nz.app.login.data.SuccessData
 import com.audiobookz.nz.app.login.data.UserData
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
 import java.io.File
+import java.util.*
 
 /**
  * Lego REST API access points
@@ -55,15 +57,15 @@ interface AudiobookService {
     @FormUrlEncoded
     @POST("users/google-login")
     suspend fun postLoginGoogle(
-        @Field("id_token") id_token: String? =null,
-        @Field("device_type") device_type: String? =null
+        @Field("id_token") id_token: String? = null,
+        @Field("device_type") device_type: String? = null
     ): Response<UserData>
 
     @FormUrlEncoded
     @POST("users/facebook-login")
     suspend fun postLoginFacebook(
-        @Field("id_token") id_token: String? =null,
-        @Field("device_type") device_type: String? =null
+        @Field("id_token") id_token: String? = null,
+        @Field("device_type") device_type: String? = null
     ): Response<UserData>
 
     @GET("users/profile")
@@ -77,6 +79,12 @@ interface AudiobookService {
         @Header("Authorization") token: String? = null,
         @Part image: MultipartBody.Part
         ): Response<UserData>
+        
+    @FormUrlEncoded
+    @POST("users/request-password-reset")
+    suspend fun getResetPass(
+        @Field("email") email: String? = null
+    ): Response<SuccessData>
 
 
 //    @GET("lego/sets/")
