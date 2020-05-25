@@ -10,8 +10,8 @@ import javax.inject.Inject
 
 class ProfileRemoteDataSource @Inject constructor(private val service: AudiobookService) :
     BaseDataSource() {
-    suspend fun sendToken(token: String) = getResult { service.getProfile(token) }
+    suspend fun sendToken(token: String) = getResult { service.getProfile() }
 
-    suspend fun sendProfileData(token: String,image: MultipartBody.Part) = getResult { service.editProfile(token,image) }
+    suspend fun sendProfileData(image: MultipartBody.Part) = getResult { service.editProfile(image) }
 
 }
