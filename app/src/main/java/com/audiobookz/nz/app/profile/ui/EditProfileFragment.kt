@@ -124,7 +124,7 @@ class EditProfileFragment : Fragment() , Injectable {
 
         SaveChangeBtn.setOnClickListener{view ->
             Toast.makeText(getActivity(), msg3, Toast.LENGTH_SHORT).show()
-            viewModel.editProfile("Bearer K9FioHyGOjWT1rjEiwjLIuWU34M8C1bJ",
+            viewModel.editProfile(
                 imageUri?.let { getRealPathFromURI(it) }.toString()
             )
         }
