@@ -17,6 +17,8 @@ class EditProfileViewModel  @Inject constructor(private val repository: ProfileR
     var editProfileResult = MediatorLiveData<Result<UserData>>()
 
     fun editProfile(Token:String,Image:String) {
+
+
         val file = File(Image)
 
         val fbody: RequestBody = RequestBody.create(

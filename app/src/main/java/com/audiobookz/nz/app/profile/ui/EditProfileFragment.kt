@@ -1,10 +1,13 @@
 package com.audiobookz.nz.app.profile.ui
 
+import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.app.PendingIntent.getActivity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -17,6 +20,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.core.content.FileProvider
+import androidx.core.content.PermissionChecker.checkSelfPermission
+import androidx.core.content.contentValuesOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -37,6 +42,7 @@ class EditProfileFragment : Fragment() , Injectable {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: EditProfileViewModel
     private val PICK_IMAGE = 100
+    private val PERMISSION_CODE = 1000;
     private val TAKE_IMAGE= 1
     var imageUri: Uri? = null
     var imageFile: File? = null
@@ -85,8 +91,29 @@ class EditProfileFragment : Fragment() , Injectable {
                 }
                 .setItems(items) { dialog, which ->
                    if (items[which] == items[0]){
-                       startActivityForResult(takePicture, TAKE_IMAGE)
+                      // startActivityForResult(takePicture, TAKE_IMAGE)
+                       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                           if (getActivity()?.let { checkSelfPermission(it,Manifest.permission.CAMERA) }
+                               == PackageManager.PERMISSION_DENIED||
+                               getActivity()?.let { checkSelfPermission(it, Manifest.permission.WRITE_EXTERNAL_STORAGE) }
+                               == PackageManager.PERMISSION_DENIED ){
+                               //Permission was not enabled
+                               val permission = arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                               //show popup to request permission
+                               requestPermissions(permission,PERMISSION_CODE)
 
+
+                           }
+                           else{
+                               //permission already granted
+                               takeImage()
+
+                           }
+                       }else{
+                           //system os is < marshmallow
+                           takeImage()
+
+                       }
                    }
                     else{
                        startActivityForResult(gallery, PICK_IMAGE)
@@ -105,29 +132,26 @@ class EditProfileFragment : Fragment() , Injectable {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK && (requestCode == PICK_IMAGE )){
-            imageUri = data?.getData();
-            profileImage.setImageURI(imageUri);
-        }else if(resultCode == TAKE_IMAGE) {
-//            val file =
-//                File(Environment.getExternalStorageDirectory(), "MyPhoto.jpg")
-//
-//            //Uri of camera image
-//            //Uri of camera image
-//            val uri = getActivity()?.let {
-//                FileProvider.getUriForFile(
-//                    it,
-//                    activity?.getPackageName().toString() + ".provider",
-//                    file
-//                )
-//            }
-//            profileImage.setImageURI(uri);
-
+        when (requestCode){
+            PICK_IMAGE -> {
+                imageUri = data?.getData();
+                profileImage.setImageURI(imageUri);
+            }
+            TAKE_IMAGE -> {
+                profileImage.setImageURI(imageUri);
+            }
         }
     }
 
-
-
+    private fun takeImage(){
+        val value = contentValuesOf()
+        value.put(MediaStore.Images.Media.TITLE,"New Picture")
+        value.put(MediaStore.Images.Media.DESCRIPTION,"From the Camera")
+        imageUri = activity?.contentResolver?.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,value)
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
+        TAKE_IMAGE?.let { startActivityForResult(cameraIntent, it) }
+    }
 
     private fun getRealPathFromURI(contentURI: Uri): String? {
         var result: String? = null
