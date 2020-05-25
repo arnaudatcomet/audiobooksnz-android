@@ -30,6 +30,11 @@ class EditProfileViewModel  @Inject constructor(private val repository: ProfileR
         )
         val body =
             MultipartBody.Part.createFormData("imgFile", file.name, fbody)
+            MultipartBody.Part.createFormData("first_name", firstname)
+            MultipartBody.Part.createFormData("last_name", lastname)
+            MultipartBody.Part.createFormData("oldPassword",oldPassword)
+            MultipartBody.Part.createFormData("newPassword", newPassword)
+            MultipartBody.Part.createFormData("confirmPassword", confirmPassword)
 
         editProfileResult.addSource(repository.editProfile( body)){value->
             editProfileResult.value = value

@@ -36,27 +36,29 @@ import java.io.File
 import javax.inject.Inject
 
 
-class EditProfileFragment : Fragment() , Injectable {
+class EditProfileFragment : Fragment(), Injectable {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: EditProfileViewModel
     private val PICK_IMAGE = 100
     private val PERMISSION_CODE = 1000;
-    private val TAKE_IMAGE= 1
+    private val TAKE_IMAGE = 1
     var imageUri: Uri? = null
     var imageFile: File? = null
-    var SaveChangeBtn: Button? =null
+    var SaveChangeBtn: Button? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
     }
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         viewModel = injectViewModel(viewModelFactory)
-       return inflater.inflate(R.layout.fragment_edit_profile, container, false)
+        return inflater.inflate(R.layout.fragment_edit_profile, container, false)
     }
 
 
@@ -82,57 +84,73 @@ class EditProfileFragment : Fragment() , Injectable {
             CurrentPassEdit.text.toString() + " " + NewPassProfileEdit.text.toString() + " " + PassConfirmProfileEdit.text.toString()
         val msg3 = "$msg $msg2"
         val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
-        val takePicture= Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        EditProfileCard.setOnClickListener{view ->
+        val takePicture = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        EditProfileCard.setOnClickListener { view ->
             MaterialAlertDialogBuilder(context)
                 .setTitle(resources.getString(R.string.PleaseSelectImage))
                 .setNeutralButton(resources.getString(R.string.AlertCancel)) { dialog, which ->
                     // Respond to neutral button press
                 }
                 .setItems(items) { dialog, which ->
-                   if (items[which] == items[0]){
-                      // startActivityForResult(takePicture, TAKE_IMAGE)
-                       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                           if (getActivity()?.let { checkSelfPermission(it,Manifest.permission.CAMERA) }
-                               == PackageManager.PERMISSION_DENIED||
-                               getActivity()?.let { checkSelfPermission(it, Manifest.permission.WRITE_EXTERNAL_STORAGE) }
-                               == PackageManager.PERMISSION_DENIED ){
-                               //Permission was not enabled
-                               val permission = arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                               //show popup to request permission
-                               requestPermissions(permission,PERMISSION_CODE)
+                    if (items[which] == items[0]) {
+                        // startActivityForResult(takePicture, TAKE_IMAGE)
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            if (getActivity()?.let {
+                                    checkSelfPermission(
+                                        it,
+                                        Manifest.permission.CAMERA
+                                    )
+                                }
+                                == PackageManager.PERMISSION_DENIED ||
+                                getActivity()?.let {
+                                    checkSelfPermission(
+                                        it,
+                                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                    )
+                                }
+                                == PackageManager.PERMISSION_DENIED) {
+                                //Permission was not enabled
+                                val permission = arrayOf(
+                                    Manifest.permission.CAMERA,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                )
+                                //show popup to request permission
+                                requestPermissions(permission, PERMISSION_CODE)
 
 
-                           }
-                           else{
-                               //permission already granted
-                               takeImage()
+                            } else {
+                                //permission already granted
+                                takeImage()
 
-                           }
-                       }else{
-                           //system os is < marshmallow
-                           takeImage()
+                            }
+                        } else {
+                            //system os is < marshmallow
+                            takeImage()
 
-                       }
-                   }
-                    else{
-                       startActivityForResult(gallery, PICK_IMAGE)
-                   }
+                        }
+                    } else {
+                        startActivityForResult(gallery, PICK_IMAGE)
+                    }
                 }
                 .show()
         }
 
-        SaveChangeBtn.setOnClickListener{view ->
+        SaveChangeBtn.setOnClickListener { view ->
             Toast.makeText(getActivity(), msg3, Toast.LENGTH_SHORT).show()
             viewModel.editProfile(
-                imageUri?.let { getRealPathFromURI(it) }.toString()
+                imageUri?.let { getRealPathFromURI(it) }.toString(),
+                FirstNameEdit.text.toString(),
+                LastNameEdit.text.toString(),
+                CurrentPassEdit.text.toString(),
+                NewPassProfileEdit.text.toString(),
+                PassConfirmProfileEdit.text.toString()
             )
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        when (requestCode){
+        when (requestCode) {
             PICK_IMAGE -> {
                 imageUri = data?.getData();
                 profileImage.setImageURI(imageUri);
@@ -143,11 +161,12 @@ class EditProfileFragment : Fragment() , Injectable {
         }
     }
 
-    private fun takeImage(){
+    private fun takeImage() {
         val value = contentValuesOf()
-        value.put(MediaStore.Images.Media.TITLE,"New Picture")
-        value.put(MediaStore.Images.Media.DESCRIPTION,"From the Camera")
-        imageUri = activity?.contentResolver?.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,value)
+        value.put(MediaStore.Images.Media.TITLE, "New Picture")
+        value.put(MediaStore.Images.Media.DESCRIPTION, "From the Camera")
+        imageUri =
+            activity?.contentResolver?.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, value)
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
         TAKE_IMAGE?.let { startActivityForResult(cameraIntent, it) }
@@ -172,18 +191,22 @@ class EditProfileFragment : Fragment() , Injectable {
         fun newInstance(): EditProfileFragment =
             EditProfileFragment()
     }
+
     private fun subscribeUi() {
         viewModel.editProfileResult.observe(viewLifecycleOwner, Observer { result ->
             when (result.status) {
                 Result.Status.SUCCESS -> {
                     SaveChangeBtn?.setText("Login")
-                    val intent = Intent(activity, MainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    val intent = Intent(
+                        activity,
+                        MainActivity::class.java
+                    ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     startActivity(intent)
                 }
-                Result.Status.LOADING ->  SaveChangeBtn?.setText("Loading")
+                Result.Status.LOADING -> SaveChangeBtn?.setText("Loading")
                 Result.Status.ERROR -> {
                     SaveChangeBtn?.setText("Login")
-                    Toast.makeText(getActivity(),result.message ,Toast.LENGTH_SHORT).show();3
+                    Toast.makeText(getActivity(), result.message, Toast.LENGTH_SHORT).show();3
                 }
             }
         })
