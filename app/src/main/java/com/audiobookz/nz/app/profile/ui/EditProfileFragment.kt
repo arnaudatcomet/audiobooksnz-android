@@ -1,5 +1,6 @@
 package com.audiobookz.nz.app.profile.ui
 
+import android.content.Context
 import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
@@ -39,16 +40,11 @@ class EditProfileFragment : Fragment(), Injectable {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val sharePref = activity?.getSharedPreferences("Token", Context.MODE_PRIVATE)
 
         viewModel = injectViewModel(viewModelFactory)
 
-        viewModel.token = AsyncTask.execute {
-            "Bearer " + activity?.let {
-                AppDatabase.getInstance(
-                    it
-                ).userDataDao().getAccessToken()
-            }
-        }.toString()
+        viewModel.token = "Bearer " + sharePref?.getString("Token","")
 
         subscribeUi()
         return inflater.inflate(R.layout.fragment_edit_profile, container, false)

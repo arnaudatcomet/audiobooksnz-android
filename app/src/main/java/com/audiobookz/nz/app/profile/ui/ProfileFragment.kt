@@ -1,5 +1,6 @@
 package com.audiobookz.nz.app.profile.ui
 
+import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.AsyncTask
@@ -32,7 +33,6 @@ class ProfileFragment : Fragment(), Injectable {
     var emailTxt: TextView? = null
     var profileImg: ImageView? = null
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
@@ -44,16 +44,12 @@ class ProfileFragment : Fragment(), Injectable {
         savedInstanceState: Bundle?
     ): View? {
         viewModel = injectViewModel(viewModelFactory)
+        val sharePref = activity?.getSharedPreferences("Token", Context.MODE_PRIVATE)
 
-        viewModel.token = AsyncTask.execute {
-            "Bearer " + activity?.let {
-                AppDatabase.getInstance(
-                    it
-                ).userDataDao().getAccessToken()
-            }
-        }.toString()
+        viewModel.token = "Bearer " + sharePref?.getString("Token","")
 
         subscribeUi()
+
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 

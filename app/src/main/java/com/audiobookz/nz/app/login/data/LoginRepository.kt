@@ -9,7 +9,7 @@ import javax.inject.Singleton
 class LoginRepository @Inject constructor(private val dao:UserDataDao,private val remoteSource:LoginRemoteDataSource){
     fun loginEmail(Username:String,Password:String)= resultSimpleLiveData(
         networkCall = {remoteSource.emailLogin(Username,Password)},
-        saveCallResult = {dao.insertUserData(it)})
+        saveCallResult = {})
 
     fun resetPass(email: String) = resultSimpleLiveData(
         networkCall = {remoteSource.forgotPass(email)},
