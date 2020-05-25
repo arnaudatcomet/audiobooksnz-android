@@ -69,15 +69,15 @@ interface AudiobookService {
     ): Response<UserData>
 
     @GET("users/profile")
+    @Headers("No-Authentication: false")
     suspend fun getProfile(
-        @Header("Authorization") token: String? = null
     ): Response<UserData>
 
     @Multipart
     @POST("users/modify")
+    @Headers("No-Authentication: false")
     suspend fun editProfile(
-        @Header("Authorization") token: String? = null,
-        @Part image: MultipartBody.Part
+        @Part Body: MultipartBody.Part
         ): Response<UserData>
         
     @FormUrlEncoded

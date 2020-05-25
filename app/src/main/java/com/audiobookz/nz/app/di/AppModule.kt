@@ -3,6 +3,7 @@ package com.audiobookz.nz.app.browse.di
 import android.app.Application
 import android.content.Context
 import com.audiobookz.nz.app.api.AudiobookService
+import com.audiobookz.nz.app.api.AuthInterceptor
 import com.audiobookz.nz.app.browse.categories.data.CategoryRemoteDataSource
 import com.audiobookz.nz.app.data.AppDatabase
 import com.google.android.gms.common.api.GoogleApiClient
@@ -35,7 +36,7 @@ class AppModule {
     fun providePrivateOkHttpClient(
             upstreamClient: OkHttpClient
     ): OkHttpClient {
-        return upstreamClient.newBuilder().build()
+        return upstreamClient.newBuilder().addInterceptor(AuthInterceptor()).build()
     }
     @Singleton
     @Provides

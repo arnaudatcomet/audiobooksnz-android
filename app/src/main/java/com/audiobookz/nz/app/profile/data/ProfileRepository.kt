@@ -17,7 +17,7 @@ class ProfileRepository @Inject constructor(
         saveCallResult = {dao.insertUserData(it)},
         nukeAudiobookList = {}
     )
-    fun editProfile(Token:String, Image: MultipartBody.Part)= resultSimpleLiveData(
-        networkCall = {remoteSource.sendProfileData(Token,Image)},
+    fun editProfile(Image: MultipartBody.Part)= resultSimpleLiveData(
+        networkCall = {remoteSource.sendProfileData(Image)},
         saveCallResult = {dao.insertUserData(it)})
 }

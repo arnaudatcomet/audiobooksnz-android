@@ -1,6 +1,8 @@
 package com.audiobookz.nz.app.profile.ui
 
+import android.app.Application
 import android.net.Uri
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import com.audiobookz.nz.app.data.Result
@@ -13,11 +15,12 @@ import java.io.File
 import javax.inject.Inject
 
 
-class EditProfileViewModel  @Inject constructor(private val repository: ProfileRepository): ViewModel(){
+class EditProfileViewModel  @Inject constructor(private val repository: ProfileRepository,
+                                                application: Application
+): AndroidViewModel(application){
     var editProfileResult = MediatorLiveData<Result<UserData>>()
 
-    fun editProfile(Token:String,Image:String,firstname:String, lastname:String, oldPassword:String, newPassword:String, confirmPassword:String) {
-
+    fun editProfile(Image:String) {
 
         val file = File(Image)
 
@@ -33,8 +36,7 @@ class EditProfileViewModel  @Inject constructor(private val repository: ProfileR
             MultipartBody.Part.createFormData("newPassword", newPassword)
             MultipartBody.Part.createFormData("confirmPassword", confirmPassword)
 
-
-        editProfileResult.addSource(repository.editProfile(Token, body)){value->
+        editProfileResult.addSource(repository.editProfile( body)){value->
             editProfileResult.value = value
         }
     }
