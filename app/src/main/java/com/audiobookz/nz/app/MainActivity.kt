@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.audiobookz.nz.app.api.FacebookSocialService
 import com.facebook.*
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
@@ -48,12 +49,22 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
             googleLogIn()
         }
 
-
+        val fbService = FacebookSocialService.getInstance()
         facebook_login_btn.setOnClickListener {
-            LoginManager.getInstance().logInWithReadPermissions(this, listOf("public_profile", "email"))
-            facebookLoginIn()
-        }
+//            FacebookSocialService().showLogin(this, listOf("email"), onSuccess = (result: LoginResult?) {
+//
+//            })
 
+            fbService?.showLogin(this, listOf("email"), onSuccess = { result: LoginResult? -> println("Arnaud is a test ${result?.accessToken}")})
+
+//            LoginManager.getInstance().logInWithReadPermissions(this, listOf("email"))
+        }
+//        facebookLoginIn()
+
+        if (BuildConfig.DEBUG) {
+            FacebookSdk.setIsDebugEnabled(true)
+            FacebookSdk.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS)
+        }
     }
 
     private fun googleLogIn() {
@@ -89,20 +100,19 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
             "fields",
             "id, first_name, middle_name, last_name, name, picture, email"
         )
+
+        println("UserId $userId")
+        println("AccessToken $token")
         GraphRequest(token,
             "/$userId/",
             parameters,
             HttpMethod.GET,
             GraphRequest.Callback { response ->
                 val jsonObject = response.jsonObject
-
+                /*
                 // Facebook Access Token
                 // You can see Access Token only in Debug mode.
                 // You can't see it in Logcat using Log.d, Facebook did that to avoid leaking user's access token.
-                if (BuildConfig.DEBUG) {
-                    FacebookSdk.setIsDebugEnabled(true)
-                    FacebookSdk.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS)
-                }
 
                 // Facebook Id
                 if (jsonObject.has("id")) {
@@ -170,6 +180,9 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
                 } else {
                     Log.i("Facebook Email: ", "Not exists")
                 }
+                
+                *
+                 */
             }).executeAsync()
     }
 
