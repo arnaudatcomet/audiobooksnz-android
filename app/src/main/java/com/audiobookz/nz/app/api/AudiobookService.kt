@@ -77,9 +77,14 @@ interface AudiobookService {
     @POST("users/modify")
     @Headers("No-Authentication: false")
     suspend fun editProfile(
-        @Part Body: MultipartBody.Part
-        ): Response<UserData>
-        
+        @Part Body: MultipartBody.Part,
+        @Part("first_name") firstName: RequestBody,
+        @Part("last_name") lastname: RequestBody,
+        @Part("oldPassword") oldPassword: RequestBody,
+        @Part("newPassword") newPassword: RequestBody,
+        @Part("confirmPassword") confirmPassword: RequestBody
+    ): Response<UserData>
+
     @FormUrlEncoded
     @POST("users/request-password-reset")
     suspend fun getResetPass(

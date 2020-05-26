@@ -68,10 +68,6 @@ class EditProfileFragment : Fragment(), Injectable {
 
         viewModel2 = injectViewModel(viewModelFactory)
 
-        val sharePref = activity?.getSharedPreferences("Token", Context.MODE_PRIVATE)
-
-        viewModel2.token = "Bearer " + sharePref?.getString("Token", "")
-
         subscribeUi2()
         return inflater.inflate(R.layout.fragment_edit_profile, container, false)
     }
@@ -148,20 +144,19 @@ class EditProfileFragment : Fragment(), Injectable {
         }
 
         SaveChangeBtn.setOnClickListener { view ->
-            if (CurrentPassEdit.text.isEmpty() || NewPassProfileEdit.text.isEmpty() || PassConfirmProfileEdit.text.isEmpty()){
+            if (CurrentPassEdit.text.isEmpty() || NewPassProfileEdit.text.isEmpty() || PassConfirmProfileEdit.text.isEmpty()) {
                 Toast.makeText(activity, "Password is blank", Toast.LENGTH_SHORT).show();
-            }
-            else{
+            } else {
 
-                    viewModel.editProfile(
-                        "Bearer " + sharePref?.getString("Token", ""),
-                        imageUri?.let { getRealPathFromURI(it) }.toString(),
-                        FirstNameEdit?.text.toString(),
-                        LastNameEdit?.text.toString(),
-                        CurrentPassEdit.text.toString(),
-                        NewPassProfileEdit.text.toString(),
-                        PassConfirmProfileEdit.text.toString()
-                    )
+                viewModel.editProfile(
+
+                    imageUri?.let { getRealPathFromURI(it) }.toString(),
+                    FirstNameEdit?.text.toString(),
+                    LastNameEdit?.text.toString(),
+                    CurrentPassEdit.text.toString(),
+                    NewPassProfileEdit.text.toString(),
+                    PassConfirmProfileEdit.text.toString()
+                )
 
             }
         }

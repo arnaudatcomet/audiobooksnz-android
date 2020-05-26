@@ -44,9 +44,6 @@ class ProfileFragment : Fragment(), Injectable {
         savedInstanceState: Bundle?
     ): View? {
         viewModel = injectViewModel(viewModelFactory)
-        val sharePref = activity?.getSharedPreferences("Token", Context.MODE_PRIVATE)
-
-        viewModel.token = "Bearer " + sharePref?.getString("Token","")
 
         subscribeUi()
 
@@ -86,13 +83,21 @@ class ProfileFragment : Fragment(), Injectable {
             Toast.makeText(getActivity(), "FAQ", Toast.LENGTH_SHORT).show()
         }
         OutBtn.setOnClickListener { view ->
-            AsyncTask.execute {
-                getActivity()?.let {
-                    AppDatabase.getInstance(
-                        it
-                    ).userDataDao().logout()
-                }
+//            AsyncTask.execute {
+//                getActivity()?.let {
+//                    AppDatabase.getInstance(
+//                        it
+//                    ).userDataDao().logout()
+//                }
+//            }
+
+            //clear sharedPref
+            val sharePref = activity?.getSharedPreferences("Token",Context.MODE_PRIVATE)
+            with(sharePref?.edit()){
+                this?.putString("Token","")
+                this?.commit()
             }
+
             val intent = Intent(
                 activity,
                 SplashScreenActivity::class.java
