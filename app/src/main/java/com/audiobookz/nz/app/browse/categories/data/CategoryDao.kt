@@ -12,9 +12,9 @@ import androidx.room.Query
  */
 @Dao
 interface CategoryDao {
-    @Query("SELECT * FROM categories ORDER BY id DESC")
+    @Query("SELECT * FROM categories")
     fun getCategory(): LiveData<List<Category>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insertAll(plants: List<Category>)
 }

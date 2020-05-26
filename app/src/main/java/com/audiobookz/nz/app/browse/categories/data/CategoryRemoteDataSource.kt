@@ -10,5 +10,5 @@ import javax.inject.Inject
  */
 class CategoryRemoteDataSource @Inject constructor(private val service: AudiobookService) : BaseDataSource() {
 
-    suspend fun fetchData() = getResult { service.getCategory("children",2,10,0) }
+    suspend fun fetchData(page:Int,pageSize:Int) = getResult { service.getCategory("children",page,pageSize,0) }
 }
