@@ -28,7 +28,7 @@ import com.bumptech.glide.Glide
 class ProfileFragment : Fragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var viewModel: ProfileViewModel
+    private lateinit var viewModel: EditProfileViewModel
     var fullnameTxt: TextView? = null
     var emailTxt: TextView? = null
     var profileImg: ImageView? = null
@@ -80,9 +80,12 @@ class ProfileFragment : Fragment(), Injectable {
             Toast.makeText(getActivity(), "CustomerCare", Toast.LENGTH_SHORT).show()
         }
         FAQTxt.setOnClickListener { view ->
-            Toast.makeText(getActivity(), "FAQ", Toast.LENGTH_SHORT).show()
+            //intent to faqprofilefragment
+            var NewFragment: MainActivity = activity as MainActivity
+            NewFragment.ChangeToFAQFragment()
         }
         OutBtn.setOnClickListener { view ->
+
 //            AsyncTask.execute {
 //                getActivity()?.let {
 //                    AppDatabase.getInstance(
@@ -108,6 +111,7 @@ class ProfileFragment : Fragment(), Injectable {
             Toast.makeText(getActivity(), "play", Toast.LENGTH_SHORT).show()
         }
         ProfileCard.setOnClickListener { view ->
+            //intent to editprofilefragment
             var NewFragment: MainActivity = activity as MainActivity
             NewFragment.ChangeToEditProfileFragment()
         }
@@ -138,6 +142,7 @@ class ProfileFragment : Fragment(), Injectable {
         })
     }
 
+    //binding fragment
     companion object {
         fun newInstance(): ProfileFragment =
             ProfileFragment()

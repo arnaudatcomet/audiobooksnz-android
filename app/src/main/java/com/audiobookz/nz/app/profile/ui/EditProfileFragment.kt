@@ -41,7 +41,7 @@ class EditProfileFragment : Fragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: EditProfileViewModel
-    private lateinit var viewModel2: ProfileViewModel
+
     private val PICK_IMAGE = 100
     private val PERMISSION_CODE = 1000;
     private val TAKE_IMAGE = 1
@@ -63,12 +63,9 @@ class EditProfileFragment : Fragment(), Injectable {
         savedInstanceState: Bundle?
     ): View? {
 
-
         viewModel = injectViewModel(viewModelFactory)
 
-        viewModel2 = injectViewModel(viewModelFactory)
-
-        subscribeUi2()
+        GetInfoSubscribeUi()
         return inflater.inflate(R.layout.fragment_edit_profile, container, false)
     }
 
@@ -76,7 +73,6 @@ class EditProfileFragment : Fragment(), Injectable {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val sharePref = activity?.getSharedPreferences("Token", Context.MODE_PRIVATE)
         var EditProfileCard = view.findViewById<CardView>(R.id.CardEditProfile)
         ProfileCard = view.findViewById(R.id.ImgProfileEdit2)
         FirstNameEdit = view.findViewById(R.id.editFirstNameProfile)
@@ -87,11 +83,10 @@ class EditProfileFragment : Fragment(), Injectable {
         var SaveChangeBtn = view.findViewById<Button>(R.id.btnSaveChange)
         val items = arrayOf("Camera", "Gallery")
 
-
         val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
         val takePicture = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
-        subscribeUi()
+        PutProfileSubscribeUi()
 
         EditProfileCard.setOnClickListener { view ->
             MaterialAlertDialogBuilder(context)
@@ -206,7 +201,7 @@ class EditProfileFragment : Fragment(), Injectable {
             EditProfileFragment()
     }
 
-    private fun subscribeUi() {
+    private fun PutProfileSubscribeUi() {
         viewModel.editProfileResult.observe(viewLifecycleOwner, Observer { result ->
             when (result.status) {
                 Result.Status.SUCCESS -> {
@@ -226,8 +221,8 @@ class EditProfileFragment : Fragment(), Injectable {
         })
     }
 
-    private fun subscribeUi2() {
-        viewModel2.queryProfile?.observe(viewLifecycleOwner, Observer { result ->
+    private fun GetInfoSubscribeUi() {
+        viewModel.queryProfile?.observe(viewLifecycleOwner, Observer { result ->
             when (result.status) {
                 Result.Status.SUCCESS -> {
 

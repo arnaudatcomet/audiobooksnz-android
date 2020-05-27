@@ -13,10 +13,9 @@ import java.io.File
 import javax.inject.Inject
 
 
-class EditProfileViewModel  @Inject constructor(private val repository: ProfileRepository,
-                                                application: Application
-): AndroidViewModel(application){
+class EditProfileViewModel  @Inject constructor(private val repository: ProfileRepository, application: Application): AndroidViewModel(application){
     var editProfileResult = MediatorLiveData<Result<UserData>>()
+    val queryProfile by lazy { repository.queryProfile() }
 
     fun editProfile(Image:String, firstname:String, lastname:String, currentPassword:String,newPassword:String, confirmPassword:String) {
 

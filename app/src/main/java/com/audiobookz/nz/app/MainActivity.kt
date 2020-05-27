@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.audiobookz.nz.app.profile.ui.ProfileFragment
 import com.audiobookz.nz.app.profile.ui.EditProfileFragment
+import com.audiobookz.nz.app.profile.ui.FaqProfileFragment
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
@@ -28,7 +29,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
             .commit()
 
     }
-
+    
     fun ChangeToEditProfileFragment() {
 
         supportFragmentManager
@@ -39,6 +40,19 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         supportFragmentManager
             .beginTransaction()
             .add(R.id.layout_fragment_container, EditProfileFragment.newInstance())
+            .commit()
+    }
+
+    fun ChangeToFAQFragment() {
+
+        supportFragmentManager
+            .beginTransaction()
+            .remove(CurrentFragment)
+            .commit()
+
+        supportFragmentManager
+            .beginTransaction()
+            .add(R.id.layout_fragment_container, FaqProfileFragment.newInstance())
             .commit()
     }
 }

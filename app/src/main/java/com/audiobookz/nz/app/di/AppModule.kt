@@ -33,11 +33,12 @@ class AppModule {
 
     @AudiobooksAPI
     @Provides
-    fun providePrivateOkHttpClient(
+    fun providePrivateOkHttpClient(app: Application,
             upstreamClient: OkHttpClient
     ): OkHttpClient {
-        return upstreamClient.newBuilder().addInterceptor(AuthInterceptor()).build()
+        return upstreamClient.newBuilder().addInterceptor(AuthInterceptor(app)).build()
     }
+
     @Singleton
     @Provides
     fun provideDb(app: Application) = AppDatabase.getInstance(app)
