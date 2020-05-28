@@ -26,6 +26,14 @@ fun <T, A> resultLiveData(
         emit(Result.loading<T>())
         val source = databaseQuery.invoke().map { Result.success(it) }
         emitSource(source)
+        val responseStatus = networkCall.invoke()
+        if (responseStatus.status == SUCCESS) {
+            saveCallResult(responseStatus.data!!)
+        } else if (responseStatus.status == ERROR) {
+            emit(Result.error<T>(responseStatus.message!!))
+            emitSource(source)
+        }
+
     }
 
 fun <A> resultFetchOnlyLiveData(networkCall: suspend () -> Result<A>): LiveData<Result<A>> =
