@@ -16,6 +16,7 @@ import com.audiobookz.nz.app.di.Injectable
 import com.audiobookz.nz.app.di.injectViewModel
 import com.audiobookz.nz.app.ui.hide
 import com.audiobookz.nz.app.ui.show
+import com.audiobookz.nz.app.util.CATEGORY_PAGE_SIZE
 import com.google.android.material.snackbar.Snackbar
 import com.tobibur.pagination.PageListener
 import javax.inject.Inject
@@ -37,23 +38,23 @@ class CategoryFragment: Fragment(), Injectable {
         context ?: return binding.root
 
         val adapter = CategoryAdapter()
-        binding.recyclerView.addItemDecoration(
+        binding.categoryRecyclerView.addItemDecoration(
             VerticalItemDecoration(resources.getDimension(R.dimen.margin_normal).toInt(), true) )
 
 
-        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.categoryRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                if (!recyclerView.canScrollVertically(1) &&viewModel.isLastest==false) {
-                    viewModel.page?.plus( 1)?.let { viewModel.fetchCategory(it,5) }
+                if (!recyclerView.canScrollVertically(1) &&viewModel.isLatest==false) {
+                    viewModel.page?.plus( 1)?.let { viewModel.fetchCategory(it,CATEGORY_PAGE_SIZE) }
                     viewModel.page=viewModel.page?.plus(1)
                 }
             }
         })
 
 
-        binding.recyclerView.adapter = adapter
-        viewModel.fetchCategory(viewModel.page!!,20)
+        binding.categoryRecyclerView.adapter = adapter
+        viewModel.fetchCategory(viewModel.page!!,CATEGORY_PAGE_SIZE)
         subscribeUi(binding, adapter)
         return binding.root
     }

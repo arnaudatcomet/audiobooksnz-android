@@ -34,25 +34,14 @@ fun <T, A> resultLiveData(databaseQuery: () -> LiveData<T>,
             }
         }
 
-fun <T, A> resultPaginationLiveData(databaseQuery: () -> LiveData<T>,
-                          networkCall: suspend () -> Result<A>,
-                          saveCallResult: suspend (A) -> Unit): LiveData<Result<T>> =
+fun <A> resultFetchOnlyLiveData(networkCall: suspend () -> Result<A>): LiveData<Result<A>> =
     liveData(Dispatchers.IO) {
-        emit(Result.loading<T>())
-
-        val source = databaseQuery.invoke().map { Result.success(it) }
-
-        emitSource(source)
-
+        emit(Result.loading<A>())
         val responseStatus = networkCall.invoke()
         if (responseStatus.status == SUCCESS) {
-            try { saveCallResult(responseStatus.data!!)
-            } catch(ex:Exception){
-                emit(Result.Latest<T>())
-            }
+            emit(Result.success<A>(responseStatus.data!!))
         } else if (responseStatus.status == ERROR) {
-            emit(Result.error<T>(responseStatus.message!!))
-            emitSource(source)
+            emit(Result.error<A>(responseStatus.message!!))
         }
     }
 

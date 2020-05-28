@@ -43,14 +43,6 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideCategoryDao(db: AppDatabase) = db.categoryDao()
-
-    @Singleton
-    @Provides
-    fun provideAudiobookListDao(db: AppDatabase) = db.audiobookListDao()
-
-    @Singleton
-    @Provides
     fun provideUserDataDao(db: AppDatabase) = db.userDataDao()
 //
 //

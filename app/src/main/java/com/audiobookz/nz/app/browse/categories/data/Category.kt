@@ -1,23 +1,34 @@
 package com.audiobookz.nz.app.browse.categories.data
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import android.os.Parcelable
+import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
-
-@Entity(tableName = "categories")
-data class Category(
-    @PrimaryKey
-    @field:SerializedName("id")
+@Parcelize
+class Category(
+    @SerializedName("id")
+    @Expose
     val id: String,
-    @field: SerializedName("sort_order")
+    @SerializedName("sort_order")
+    @Expose
     val sortOrder: Int,
-    @field: SerializedName("slug")
+    @SerializedName("slug")
+    @Expose
     val slug: String,
-    @field: SerializedName("title")
+    @SerializedName("title")
+    @Expose
     val title: String,
-    @field: SerializedName("description")
-    val description: String
-) {
-    override fun toString() = title
-}
+    @SerializedName("description")
+    @Expose
+    val description: String,
+    @SerializedName("parent_id")
+    @Expose
+    val parent_id: String,
+    @SerializedName("sub_category_count")
+    @Expose
+    val sub_category_count: String,
+    @SerializedName("children")
+    @Expose
+    val children: List<Category>
+) : Parcelable

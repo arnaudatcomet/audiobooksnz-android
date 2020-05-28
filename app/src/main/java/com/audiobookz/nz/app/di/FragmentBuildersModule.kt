@@ -3,6 +3,7 @@ package com.audiobookz.nz.app.di
 
 import com.audiobookz.nz.app.audiobookList.ui.AudiobookListFragment
 import com.audiobookz.nz.app.browse.categories.ui.CategoryFragment
+import com.audiobookz.nz.app.browse.categories.ui.SubCategoryFragment
 import com.audiobookz.nz.app.login.ui.ForgotPasswordFragment
 import com.audiobookz.nz.app.login.ui.LoginEmailFragment
 import com.audiobookz.nz.app.profile.ui.EditProfileFragment
@@ -16,6 +17,10 @@ import dagger.android.ContributesAndroidInjector
 abstract class FragmentBuildersModule {
     @ContributesAndroidInjector
     abstract fun contributeCategoryFragment(): CategoryFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeSubCategoryFragmentFragment(): SubCategoryFragment
+
     @ContributesAndroidInjector
     abstract fun contributeCategoryDetailFragment(): AudiobookListFragment
 

@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.audiobookz.nz.app.browse.categories.data.Category
 import com.audiobookz.nz.app.databinding.ListItemCategoriesBinding
-import com.audiobookz.nz.app.databinding.ListItemCategoriesBindingImpl
 
 class CategoryAdapter : ListAdapter<Category,CategoryAdapter.ViewHolder>(DiffCallback())
 {
@@ -18,13 +17,19 @@ class CategoryAdapter : ListAdapter<Category,CategoryAdapter.ViewHolder>(DiffCal
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val category = getItem(position)
         holder.apply {
-            bind(createOnClickListener(category.id), category)
+            bind(createOnOpenAudiobookListListener(category.id),createOnOpenSubListListener(category.children), category)
             itemView.tag = category
         }
     }
-    private fun createOnClickListener(id: String): View.OnClickListener {
+    private fun createOnOpenAudiobookListListener(id: String): View.OnClickListener {
         return View.OnClickListener {
             val direction = CategoryFragmentDirections.actionCategoryFragmentToCategoryDetailFragment(id)
+            it.findNavController().navigate(direction)
+        }
+    }
+    private fun createOnOpenSubListListener(SubCategory: List<Category>): View.OnClickListener {
+        return View.OnClickListener {
+            val direction = CategoryFragmentDirections.actionCategoryFragmentToSubCategoryFragment(SubCategory.toTypedArray())
             it.findNavController().navigate(direction)
         }
     }
@@ -32,9 +37,10 @@ class CategoryAdapter : ListAdapter<Category,CategoryAdapter.ViewHolder>(DiffCal
         private val binding: ListItemCategoriesBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(listener: View.OnClickListener, item: Category) {
+        fun bind(OpenAudiobookList: View.OnClickListener,OpenSubCategory:View.OnClickListener, item: Category) {
             binding.apply {
-                clickListener = listener
+                openAudiobookList = OpenAudiobookList
+                openSubCategory = OpenSubCategory
                 audioCategory = item
                 executePendingBindings()
             }
@@ -48,7 +54,7 @@ class CategoryAdapter : ListAdapter<Category,CategoryAdapter.ViewHolder>(DiffCal
         //To change body of created functions use File | Settings | File Templates.
     }
 }
-private class DiffCallback : DiffUtil.ItemCallback<Category>() {
+public class DiffCallback : DiffUtil.ItemCallback<Category>() {
     override fun areItemsTheSame(oldItem: Category, newItem: Category): Boolean {
         return oldItem.id == newItem.id
     }
