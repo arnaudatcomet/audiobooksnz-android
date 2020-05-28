@@ -18,7 +18,6 @@ import com.audiobookz.nz.app.ui.hide
 import com.audiobookz.nz.app.ui.show
 import com.audiobookz.nz.app.util.CATEGORY_PAGE_SIZE
 import com.google.android.material.snackbar.Snackbar
-import com.tobibur.pagination.PageListener
 import javax.inject.Inject
 
 
