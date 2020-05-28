@@ -3,6 +3,8 @@ package com.audiobookz.nz.app.browse.di
 import android.app.Application
 import android.content.Context
 import com.audiobookz.nz.app.api.AudiobookService
+import com.audiobookz.nz.app.api.AuthInterceptor
+import com.audiobookz.nz.app.api.SharedPreferencesService
 import com.audiobookz.nz.app.browse.categories.data.CategoryRemoteDataSource
 import com.audiobookz.nz.app.data.AppDatabase
 import com.google.android.gms.common.api.GoogleApiClient
@@ -32,11 +34,12 @@ class AppModule {
 
     @AudiobooksAPI
     @Provides
-    fun providePrivateOkHttpClient(
-            upstreamClient: OkHttpClient
+    fun providePrivateOkHttpClient(sharePref : SharedPreferencesService,
+                                   upstreamClient: OkHttpClient
     ): OkHttpClient {
-        return upstreamClient.newBuilder().build()
+        return upstreamClient.newBuilder().addInterceptor(AuthInterceptor(sharePref)).build()
     }
+
     @Singleton
     @Provides
     fun provideDb(app: Application) = AppDatabase.getInstance(app)
@@ -44,10 +47,12 @@ class AppModule {
     @Singleton
     @Provides
     fun provideUserDataDao(db: AppDatabase) = db.userDataDao()
-//
-//
-//    @Singleton
 
+    @Singleton
+    @Provides
+    fun provideSharedPreferences(app: Application) = SharedPreferencesService(app)
+
+//    @Singleton
 //    @Provides
 //    fun provideLegoThemeDao(db: AppDatabase) = db.legoThemeDao()
 

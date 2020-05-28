@@ -1,9 +1,8 @@
 package com.audiobookz.nz.app.profile.ui
 
-import android.content.Context
+import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.content.IntentFilter
-import android.os.AsyncTask
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,19 +15,18 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.audiobookz.nz.app.MainActivity
 import com.audiobookz.nz.app.R
-import com.audiobookz.nz.app.di.injectViewModel
-import com.audiobookz.nz.app.data.AppDatabase
-import com.audiobookz.nz.app.data.Result
-import javax.inject.Inject
 import com.audiobookz.nz.app.SplashScreenActivity
+import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.di.Injectable
-import com.audiobookz.nz.app.login.data.UserDataDao
+import com.audiobookz.nz.app.di.injectViewModel
 import com.bumptech.glide.Glide
+import javax.inject.Inject
+
 
 class ProfileFragment : Fragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var viewModel: ProfileViewModel
+    private lateinit var viewModel: EditProfileViewModel
     var fullnameTxt: TextView? = null
     var emailTxt: TextView? = null
     var profileImg: ImageView? = null
@@ -44,9 +42,6 @@ class ProfileFragment : Fragment(), Injectable {
         savedInstanceState: Bundle?
     ): View? {
         viewModel = injectViewModel(viewModelFactory)
-        val sharePref = activity?.getSharedPreferences("Token", Context.MODE_PRIVATE)
-
-        viewModel.token = "Bearer " + sharePref?.getString("Token","")
 
         subscribeUi()
 
@@ -77,32 +72,40 @@ class ProfileFragment : Fragment(), Injectable {
             Toast.makeText(getActivity(), "twitter", Toast.LENGTH_SHORT).show()
         }
         BugTxt.setOnClickListener { view ->
-            Toast.makeText(getActivity(), "bugtext", Toast.LENGTH_SHORT).show()
+            val intent = Intent(Intent.ACTION_SENDTO)
+            intent.data = Uri.parse("mailto:appbugs@audiobooksnz.co.nz" + "?subject=Bug Report")
+            startActivity(intent)
+
         }
         CustomeCareTxt.setOnClickListener { view ->
-            Toast.makeText(getActivity(), "CustomerCare", Toast.LENGTH_SHORT).show()
+            val intent = Intent(Intent.ACTION_SENDTO)
+            intent.data = Uri.parse("mailto:support@audiobooksnz.co.nz" + "?subject=Customers Care")
+            startActivity(intent)
         }
         FAQTxt.setOnClickListener { view ->
-            Toast.makeText(getActivity(), "FAQ", Toast.LENGTH_SHORT).show()
+            //intent to faqprofilefragment
+            var NewFragment: MainActivity = activity as MainActivity
+            NewFragment.ChangeToFAQFragment()
         }
+
         OutBtn.setOnClickListener { view ->
-            AsyncTask.execute {
-                getActivity()?.let {
-                    AppDatabase.getInstance(
-                        it
-                    ).userDataDao().logout()
-                }
-            }
+
+            viewModel.destroyProfile
+
             val intent = Intent(
                 activity,
                 SplashScreenActivity::class.java
             ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(intent)
+            //never go back if done
+            activity?.finish()
         }
+
         PlayBtn.setOnClickListener { view ->
             Toast.makeText(getActivity(), "play", Toast.LENGTH_SHORT).show()
         }
         ProfileCard.setOnClickListener { view ->
+            //intent to editprofilefragment
             var NewFragment: MainActivity = activity as MainActivity
             NewFragment.ChangeToEditProfileFragment()
         }
@@ -116,6 +119,7 @@ class ProfileFragment : Fragment(), Injectable {
 
                     fullnameTxt?.text = result.data?.full_name
                     emailTxt?.text = result.data?.email
+
 
                     profileImg?.let {
                         Glide.with(this)
@@ -133,6 +137,7 @@ class ProfileFragment : Fragment(), Injectable {
         })
     }
 
+    //binding fragment
     companion object {
         fun newInstance(): ProfileFragment =
             ProfileFragment()

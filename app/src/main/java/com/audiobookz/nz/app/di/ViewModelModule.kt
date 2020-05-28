@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.audiobookz.nz.app.audiobookList.ui.AudiobookListViewModel
 import com.audiobookz.nz.app.browse.categories.ui.CategoryViewModel
 import com.audiobookz.nz.app.login.ui.LoginViewModel
-import com.audiobookz.nz.app.profile.ui.ProfileViewModel
+import com.audiobookz.nz.app.profile.ui.EditProfileViewModel
 import com.audiobookz.nz.app.register.ui.SignUpViewModel
 //import com.audiobookz.nz.app.browse.categories.ui.viewmo
 
@@ -38,9 +38,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(ProfileViewModel::class)
-    abstract fun bindProfileViewModel(viewModel: ProfileViewModel): ViewModel
-
+    @ViewModelKey(EditProfileViewModel::class)
+    abstract fun bindEditProfileViewModel(viewModel: EditProfileViewModel): ViewModel
 //    @Binds
 //    @IntoMap
 //    @ViewModelKey(LegoSetsViewModel::class)

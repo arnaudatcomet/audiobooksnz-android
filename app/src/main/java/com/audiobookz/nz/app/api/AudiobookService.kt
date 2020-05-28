@@ -4,8 +4,12 @@ import com.audiobookz.nz.app.audiobookList.data.Audiobook
 import com.audiobookz.nz.app.browse.categories.data.Category
 import com.audiobookz.nz.app.login.data.SuccessData
 import com.audiobookz.nz.app.login.data.UserData
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
+import java.io.File
+import java.util.*
 
 /**
  * Lego REST API access points
@@ -65,8 +69,20 @@ interface AudiobookService {
     ): Response<UserData>
 
     @GET("users/profile")
+    @Headers("No-Authentication: false")
     suspend fun getProfile(
-        @Header("Authorization") token: String? = null
+    ): Response<UserData>
+
+    @Multipart
+    @POST("users/modify")
+    @Headers("No-Authentication: false")
+    suspend fun editProfile(
+        @Part Body: MultipartBody.Part,
+        @Part("first_name") firstName: RequestBody,
+        @Part("last_name") lastname: RequestBody,
+        @Part("oldPassword") oldPassword: RequestBody,
+        @Part("newPassword") newPassword: RequestBody,
+        @Part("confirmPassword") confirmPassword: RequestBody
     ): Response<UserData>
 
     @FormUrlEncoded

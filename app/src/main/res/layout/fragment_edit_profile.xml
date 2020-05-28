@@ -13,7 +13,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingLeft="24dp"
-    android:paddingRight="24dp">
+    android:paddingRight="24dp"
+    android:background="@android:color/white">
 
     <FrameLayout
         android:layout_marginTop="10dp"
