@@ -62,6 +62,7 @@ class LoginEmailFragment : Fragment(), Injectable {
             val intent = Intent(activity, ForgotPasswordActivity::class.java)
             startActivity(intent)
         }
+
         subscribeUi()
     }
     private fun subscribeUi() {
