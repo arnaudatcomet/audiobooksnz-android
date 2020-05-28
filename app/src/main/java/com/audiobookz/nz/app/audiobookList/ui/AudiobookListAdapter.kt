@@ -5,10 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.audiobookz.nz.app.audiobookList.data.AudiobookList
+import com.audiobookz.nz.app.audiobookList.data.Audiobook
 import com.audiobookz.nz.app.databinding.ListItemAudiobookBinding
 
-class AudiobookListAdapter : ListAdapter<AudiobookList, AudiobookListAdapter.ViewHolder>((DiffCallback()))
+class AudiobookListAdapter : ListAdapter<Audiobook, AudiobookListAdapter.ViewHolder>((DiffCallback()))
 {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AudiobookListAdapter.ViewHolder {
@@ -29,7 +29,7 @@ class AudiobookListAdapter : ListAdapter<AudiobookList, AudiobookListAdapter.Vie
         }
     }
     class ViewHolder(private val binding: ListItemAudiobookBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind( item: AudiobookList) {
+        fun bind( item: Audiobook) {
             binding.apply {
                 audiobook = item
                 executePendingBindings()
@@ -38,12 +38,12 @@ class AudiobookListAdapter : ListAdapter<AudiobookList, AudiobookListAdapter.Vie
     }
 
 }
-private class DiffCallback : DiffUtil.ItemCallback<AudiobookList>() {
-    override fun areItemsTheSame(oldItem: AudiobookList, newItem: AudiobookList): Boolean {
+private class DiffCallback : DiffUtil.ItemCallback<Audiobook>() {
+    override fun areItemsTheSame(oldItem: Audiobook, newItem: Audiobook): Boolean {
         return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: AudiobookList, newItem: AudiobookList): Boolean {
+    override fun areContentsTheSame(oldItem: Audiobook, newItem: Audiobook): Boolean {
         return oldItem == newItem
     }
 }

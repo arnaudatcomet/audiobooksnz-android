@@ -1,12 +1,11 @@
 package com.audiobookz.nz.app.api
 
-import com.audiobookz.nz.app.audiobookList.data.AudiobookList
+import com.audiobookz.nz.app.audiobookList.data.Audiobook
 import com.audiobookz.nz.app.browse.categories.data.Category
 import com.audiobookz.nz.app.login.data.SuccessData
 import com.audiobookz.nz.app.login.data.UserData
 import retrofit2.Response
 import retrofit2.http.*
-import java.util.*
 
 /**
  * Lego REST API access points
@@ -31,7 +30,7 @@ interface AudiobookService {
         @Query("page") page: Int? = null,
         @Query("per-page") pageSize: Int? = null,
         @Query("filter[language][]") pageLanguage: String
-    ): Response<List<AudiobookList>>
+    ): Response<List<Audiobook>>
 
     @FormUrlEncoded
     @POST("users/login")
