@@ -1,8 +1,11 @@
 package com.audiobookz.nz.app.profile.ui
 
 import android.app.Application
+import android.os.AsyncTask
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MediatorLiveData
+import com.audiobookz.nz.app.App
+import com.audiobookz.nz.app.data.AppDatabase
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.login.data.UserData
 import com.audiobookz.nz.app.profile.data.ProfileRepository
@@ -16,6 +19,17 @@ import javax.inject.Inject
 class EditProfileViewModel  @Inject constructor(private val repository: ProfileRepository, application: Application): AndroidViewModel(application){
     var editProfileResult = MediatorLiveData<Result<UserData>>()
     val queryProfile by lazy { repository.queryProfile() }
+
+    val destroyProfile by lazy { repository.destroyProfile()
+
+        AsyncTask.execute {
+            getApplication<App>()?.let {
+                AppDatabase.getInstance(
+                    it
+                ).userDataDao().logout()
+            }
+        }
+    }
 
     fun editProfile(Image:String, firstname:String, lastname:String, currentPassword:String,newPassword:String, confirmPassword:String) {
 

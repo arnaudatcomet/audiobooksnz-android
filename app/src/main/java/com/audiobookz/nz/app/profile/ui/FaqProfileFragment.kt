@@ -37,7 +37,7 @@ class FaqProfileFragment : Fragment() {
                 return true
             }
         }
-        myWebView.loadUrl("http://www.google.com")
+        myWebView.loadUrl("https://audiobooksnz.co.nz/other/faq")
     }
 
 

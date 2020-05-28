@@ -69,15 +69,11 @@ class LoginEmailFragment : Fragment(), Injectable {
             when (result.status) {
                 Result.Status.SUCCESS -> {
 
-                    val sharePref = activity?.getSharedPreferences("Token",Context.MODE_PRIVATE)
-                    with(sharePref?.edit()){
-                        this?.putString("Token",result.data?.access_token)
-                        this?.commit()
-                    }
-
                     LoginBtn?.setText("Login")
                         val intent = Intent(activity, MainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                         startActivity(intent)
+                        //never go back if done
+                        activity?.finish()
                 }
                 Result.Status.LOADING ->  LoginBtn?.setText("Loading")
                 Result.Status.ERROR -> {

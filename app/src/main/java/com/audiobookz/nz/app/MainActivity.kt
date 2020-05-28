@@ -2,6 +2,7 @@ package com.audiobookz.nz.app
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.audiobookz.nz.app.profile.ui.ProfileFragment
 import com.audiobookz.nz.app.profile.ui.EditProfileFragment
@@ -29,17 +30,23 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
             .commit()
 
     }
-    
+
+    //back stack for fragment
+    override fun onBackPressed() {
+        var count = supportFragmentManager.backStackEntryCount
+        if (count == 0) {
+            super.onBackPressed()
+        } else {
+            supportFragmentManager.popBackStack()
+        }
+    }
+
     fun ChangeToEditProfileFragment() {
 
         supportFragmentManager
             .beginTransaction()
-            .remove(CurrentFragment)
-            .commit()
-
-        supportFragmentManager
-            .beginTransaction()
             .add(R.id.layout_fragment_container, EditProfileFragment.newInstance())
+            .addToBackStack(null)
             .commit()
     }
 
@@ -47,12 +54,8 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
         supportFragmentManager
             .beginTransaction()
-            .remove(CurrentFragment)
-            .commit()
-
-        supportFragmentManager
-            .beginTransaction()
             .add(R.id.layout_fragment_container, FaqProfileFragment.newInstance())
+            .addToBackStack(null)
             .commit()
     }
 }

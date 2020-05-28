@@ -239,7 +239,7 @@ class EditProfileFragment : Fragment(), Injectable {
                 }
                 Result.Status.LOADING -> Log.d("TAG", "loading")
                 Result.Status.ERROR -> {
-                    Toast.makeText(activity, result.message, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, result.message, Toast.LENGTH_SHORT).show()
                 }
             }
         })
