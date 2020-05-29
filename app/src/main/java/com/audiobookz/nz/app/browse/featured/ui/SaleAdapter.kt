@@ -1,6 +1,5 @@
 package com.audiobookz.nz.app.browse.featured.ui
 
-import com.audiobookz.nz.app.browse.categories.ui.CategoryFragmentDirections
 
 import android.util.Log
 import android.view.LayoutInflater

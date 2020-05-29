@@ -2,22 +2,14 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@id/categoryFragment">
+    app:startDestination="@id/browseFragment">
 
     <fragment
         android:id="@+id/categoryFragment"
         android:name="com.audiobookz.nz.app.browse.categories.ui.CategoryFragment"
         android:label="CategoryFragment"
         tools:layout="@layout/fragment_categories"
-        >
-
-        <action
-            android:id="@+id/action_categoryFragment_to_categoryDetailFragment"
-            app:destination="@id/AudiobookListFragment" />
-        <action
-            android:id="@+id/action_categoryFragment_to_subCategoryFragment"
-            app:destination="@id/subCategoryFragment" />
-    </fragment>
+        />
     <fragment
 
         android:id="@+id/AudiobookListFragment"
@@ -43,6 +35,22 @@
             android:defaultValue="@null"/>
         <action
             android:id="@+id/action_subCategoryFragment_to_AudiobookListFragment"
+            app:destination="@id/AudiobookListFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/browseFragment"
+        android:name="com.audiobookz.nz.app.browse.BrowseFragment"
+        android:label="BrowseFragment"
+        tools:layout="@layout/fragment_browse">
+        <action
+            android:id="@+id/action_browseFragment_to_categoryFragment"
+            app:destination="@id/categoryFragment" />
+        <action
+            android:id="@+id/action_browseFragment_to_subCategoryFragment2"
+            app:destination="@id/subCategoryFragment" />
+        <action
+            android:id="@+id/action_browseFragment_to_AudiobookListFragment2"
             app:destination="@id/AudiobookListFragment" />
     </fragment>
 </navigation>

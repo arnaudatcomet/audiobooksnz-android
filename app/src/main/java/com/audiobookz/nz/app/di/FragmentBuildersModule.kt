@@ -2,6 +2,7 @@ package com.audiobookz.nz.app.di
 
 
 import com.audiobookz.nz.app.audiobookList.ui.AudiobookListFragment
+import com.audiobookz.nz.app.browse.BrowseFragment
 import com.audiobookz.nz.app.browse.categories.ui.CategoryFragment
 import com.audiobookz.nz.app.browse.categories.ui.SubCategoryFragment
 import com.audiobookz.nz.app.browse.featured.ui.FeaturedFragment
@@ -41,8 +42,11 @@ abstract class FragmentBuildersModule {
     @ContributesAndroidInjector
     abstract fun contributeEditProfileFragment(): EditProfileFragment
 
-  @ContributesAndroidInjector
+    @ContributesAndroidInjector
     abstract fun contributeForgotPasswordFragment(): ForgotPasswordFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeBrowseFragment(): BrowseFragment
 
 
 //

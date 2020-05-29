@@ -1,11 +1,7 @@
 package com.audiobookz.nz.app.di
 
 
-import com.audiobookz.nz.app.MainActivity
-import com.audiobookz.nz.app.browse.categories.ui.BrowseActivity
-import com.audiobookz.nz.app.di.FragmentBuildersModule
-import com.audiobookz.nz.app.login.ui.LoginEmailActivity
-import com.audiobookz.nz.app.register.ui.SignUpActivity
+import com.audiobookz.nz.app.browse.BrowseActivity
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector

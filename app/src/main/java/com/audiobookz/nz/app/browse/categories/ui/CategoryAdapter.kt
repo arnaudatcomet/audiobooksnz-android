@@ -7,6 +7,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.audiobookz.nz.app.browse.BrowseFragmentDirections
 import com.audiobookz.nz.app.browse.categories.data.Category
 import com.audiobookz.nz.app.databinding.ListItemCategoriesBinding
 
@@ -23,13 +24,13 @@ class CategoryAdapter : ListAdapter<Category,CategoryAdapter.ViewHolder>(DiffCal
     }
     private fun createOnOpenAudiobookListListener(id: String): View.OnClickListener {
         return View.OnClickListener {
-            val direction = CategoryFragmentDirections.actionCategoryFragmentToCategoryDetailFragment(id)
+            val direction = BrowseFragmentDirections.actionBrowseFragmentToAudiobookListFragment2(id)
             it.findNavController().navigate(direction)
         }
     }
     private fun createOnOpenSubListListener(SubCategory: List<Category>): View.OnClickListener {
         return View.OnClickListener {
-            val direction = CategoryFragmentDirections.actionCategoryFragmentToSubCategoryFragment(SubCategory.toTypedArray())
+            val direction = BrowseFragmentDirections.actionBrowseFragmentToSubCategoryFragment2(SubCategory.toTypedArray())
             it.findNavController().navigate(direction)
         }
     }
