@@ -57,6 +57,11 @@ class CategoryFragment: Fragment(), Injectable {
         subscribeUi(binding, adapter)
         return binding.root
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    }
+
     private fun subscribeUi(binding: FragmentCategoriesBinding, adapter: CategoryAdapter) {
         viewModel.categoryResult.observe(viewLifecycleOwner, Observer { result ->
             when (result.status) {

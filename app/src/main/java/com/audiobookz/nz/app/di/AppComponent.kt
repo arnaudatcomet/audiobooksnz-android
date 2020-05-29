@@ -19,7 +19,8 @@ import javax.inject.Singleton
         MainActivityModule::class,
         LoginEmailActivityModule::class,
         SignUpActivityModule::class,
-        ForgotPasswordActivityModule::class
+        ForgotPasswordActivityModule::class,
+        BrowseActivityModule::class
     ]
 )
 interface AppComponent {
