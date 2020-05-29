@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/saleRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="157dp"
+            android:clipToPadding="false"
+            android:orientation="horizontal"
+            android:scrollbars="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:context="com.audiobookz.nz.app.MainActivity"
+            tools:listitem="@layout/list_item_sale" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/NZRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="157dp"
+            android:clipToPadding="false"
+            android:orientation="horizontal"
+            android:scrollbars="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/saleRecyclerView"
+            tools:context="com.audiobookz.nz.app.MainActivity"
+            tools:listitem="@layout/list_item_featured" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            tools:visibility="visible" />
+
+    </LinearLayout>
+
+</layout>

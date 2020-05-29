@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.audiobookz.nz.app.audiobookList.ui.AudiobookListViewModel
 import com.audiobookz.nz.app.browse.categories.ui.CategoryViewModel
+import com.audiobookz.nz.app.browse.featured.ui.FeaturedViewModel
 import com.audiobookz.nz.app.login.ui.LoginViewModel
 import com.audiobookz.nz.app.profile.ui.EditProfileViewModel
 import com.audiobookz.nz.app.register.ui.SignUpViewModel
@@ -20,6 +21,12 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(CategoryViewModel::class)
     abstract fun bindCategoryViewModel(viewModel: CategoryViewModel): ViewModel
+
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(FeaturedViewModel::class)
+    abstract fun bindFeaturedViewModel(viewModel: FeaturedViewModel): ViewModel
 
     @Binds
     @IntoMap
@@ -40,15 +47,6 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(EditProfileViewModel::class)
     abstract fun bindEditProfileViewModel(viewModel: EditProfileViewModel): ViewModel
-//    @Binds
-//    @IntoMap
-//    @ViewModelKey(LegoSetsViewModel::class)
-//    abstract fun bindLegoSetsViewModel(viewModel: LegoSetsViewModel): ViewModel
-//
-//    @Binds
-//    @IntoMap
-//    @ViewModelKey(LegoSetViewModel::class)
-//    abstract fun bindLegoSetViewModel(viewModel: LegoSetViewModel): ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory

@@ -2,6 +2,7 @@ package com.audiobookz.nz.app.api
 
 import com.audiobookz.nz.app.audiobookList.data.Audiobook
 import com.audiobookz.nz.app.browse.categories.data.Category
+import com.audiobookz.nz.app.browse.featured.data.Featured
 import com.audiobookz.nz.app.login.data.SuccessData
 import com.audiobookz.nz.app.login.data.UserData
 import okhttp3.MultipartBody
@@ -91,14 +92,10 @@ interface AudiobookService {
         @Field("email") email: String? = null
     ): Response<SuccessData>
 
-
-//    @GET("lego/sets/")
-//    suspend fun getSets(@Query("page") page: Int? = null,
-//                        @Query("page_size") pageSize: Int? = null,
-//                        @Query("theme_id") themeId: Int? = null,
-//                        @Query("ordering") order: String? = null): Response<ResultsResponse<LegoSet>>
-//
-//    @GET("lego/sets/{id}/")
-//    suspend fun getSet(@Path("id") id: String): Response<LegoSet>
+    @GET("featured")
+    suspend fun getFeatured(
+        @Query("expand") expand: String? = null,
+        @Query("per-page") pageSize: Int? = null
+    ): Response<List<Featured>>
 
 }
