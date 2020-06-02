@@ -1,4 +1,13 @@
 <resources>
+    <string-array name="Languages">
+        <item>English</item>
+        <item>Kotlin</item>
+        <item>Swift</item>
+        <item>Python</item>
+        <item>Scala</item>
+        <item>Perl</item>
+    </string-array>
+
     <string name="app_name">AudiobooksNZ</string>
     <string name="title_activity_main2">Main2Activity</string>
     <!-- Strings used for fragments for navigation -->

@@ -18,11 +18,11 @@ class CategoryAdapter : ListAdapter<Category,CategoryAdapter.ViewHolder>(DiffCal
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val category = getItem(position)
         holder.apply {
-            bind(createOnOpenAudiobookListListener(category.id),createOnOpenSubListListener(category.children), category)
+            bind(createOnOpenAudiobookListListener(category.id.toInt()),createOnOpenSubListListener(category.children), category)
             itemView.tag = category
         }
     }
-    private fun createOnOpenAudiobookListListener(id: String): View.OnClickListener {
+    private fun createOnOpenAudiobookListListener(id: Int): View.OnClickListener {
         return View.OnClickListener {
             val direction = BrowseFragmentDirections.actionBrowseFragmentToAudiobookListFragment2(id)
             it.findNavController().navigate(direction)

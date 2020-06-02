@@ -15,6 +15,7 @@ import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.databinding.FragmentAudiobookListBinding
 import com.audiobookz.nz.app.ui.hide
 import com.audiobookz.nz.app.ui.show
+import com.audiobookz.nz.app.util.CATEGORY_PAGE_SIZE
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
@@ -30,7 +31,6 @@ class AudiobookListFragment: Fragment(), Injectable {
         savedInstanceState: Bundle?
     ): View? {
         viewModel = injectViewModel(viewModelFactory)
-        viewModel.filterID = args.id.toString()
         val binding = FragmentAudiobookListBinding.inflate(inflater, container, false)
         context ?: return binding.root
 
@@ -39,11 +39,16 @@ class AudiobookListFragment: Fragment(), Injectable {
             VerticalItemDecoration(resources.getDimension(R.dimen.margin_normal).toInt(), true) )
         binding.recyclerViewCatecoryDetail.adapter = adapter
 
+        //xok try to use fake input need to change data later
+        viewModel.fetchCategory(args.id,1, CATEGORY_PAGE_SIZE,"English")
+
+
         subscribeUi(binding, adapter)
+
         return binding.root
     }
     private fun subscribeUi(binding: FragmentAudiobookListBinding, adapter: AudiobookListAdapter) {
-        viewModel.categoryDetail.observe(viewLifecycleOwner, Observer { result ->
+        viewModel.bookListResult.observe(viewLifecycleOwner, Observer { result ->
             when (result.status) {
                 Result.Status.SUCCESS -> {
                     binding.progressBarDetail.hide()

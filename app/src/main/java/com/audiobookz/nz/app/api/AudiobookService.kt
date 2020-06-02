@@ -34,7 +34,7 @@ interface AudiobookService {
         @Query("filter[category_id]") filter: Int? = null,
         @Query("page") page: Int? = null,
         @Query("per-page") pageSize: Int? = null,
-        @Query("filter[language][]") pageLanguage: String
+        @Query("filter[language][]") pageLanguage: String?="English"
     ): Response<List<Audiobook>>
 
     @FormUrlEncoded

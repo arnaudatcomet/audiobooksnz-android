@@ -13,7 +13,7 @@ import javax.inject.Singleton
 @Singleton
 class AudiobookListRepository @Inject constructor(private val remoteSource: AudiobookListRemoteDataSource
 ) {
-    fun categoryDetail(filterID:Int) = resultFetchOnlyLiveData(
-        networkCall = { remoteSource.fetchData(filterID) }
-        ).distinctUntilChanged()
+    fun bookList(filterID:Int,Lang :String?,Page:Int,PageSize:Int) = resultFetchOnlyLiveData(
+        networkCall = { remoteSource.fetchData(filterID,Lang,Page,PageSize) }
+        )
 }

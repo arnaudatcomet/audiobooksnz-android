@@ -40,7 +40,7 @@ class SubCategoryAdapter : ListAdapter<Category,SubCategoryAdapter.ViewHolder>(D
     }
     private fun createOnOpenAudiobookListListener(id: String): View.OnClickListener {
         return View.OnClickListener {
-            val direction = SubCategoryFragmentDirections.actionSubCategoryFragmentToAudiobookListFragment(id)
+            val direction = SubCategoryFragmentDirections.actionSubCategoryFragmentToAudiobookListFragment(id.toInt())
             it.findNavController().navigate(direction)
         }
     }
