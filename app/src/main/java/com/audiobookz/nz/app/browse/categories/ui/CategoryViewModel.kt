@@ -23,7 +23,10 @@ class CategoryViewModel @Inject constructor(private val repository: CategoryRepo
             }
         }
     }
-    fun getBestResult(oldResult:Result<List<Category>>?,newResult:Result<List<Category>>):Result<List<Category>>{
+    fun getBestResult(oldResult:Result<List<Category>>?,newResult:Result<List<Category>>): Result<List<Category>>? {
+        if(oldResult?.data?.get(0)?.id==newResult.data?.get(0)?.id){
+            return oldResult;
+        }
         var bestResult=  oldResult.let {
                 list->
             newResult.data?.let { it1 -> list?.data?.plus(it1) }

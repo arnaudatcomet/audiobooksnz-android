@@ -8,4 +8,4 @@ enum class SocialID{
     Facebook,
     Google
 }
-const val CATEGORY_PAGE_SIZE = 10
+const val CATEGORY_PAGE_SIZE = 50
