@@ -9,35 +9,26 @@ import com.audiobookz.nz.app.register.data.SignUpRepository
 import javax.inject.Inject
 
 class SignUpViewModel @Inject constructor(private val repository: SignUpRepository) : ViewModel() {
-
-//        lateinit var email:String
-//    lateinit var lastName:String
-//    lateinit var password:String
-//    lateinit var terms:String
-//    lateinit var cPassword:String
-//    lateinit var firstName:String
-//    val emailSignUp by lazy { repository.emailSignUp(email,lastName, password, terms, cPassword, firstName) }
-
-    var RegisterResult = MediatorLiveData<Result<UserData>>()
+    var registerResult = MediatorLiveData<Result<UserData>>()
     fun emailSignUp(
         email: String,
-        lastname: String,
+        lastName: String,
         password: String,
         terms: String,
         cPassword: String,
-        firstname: String
+        firstName: String
     ) {
-        RegisterResult.addSource(
+        registerResult.addSource(
             repository.emailSignUp(
                 email,
-                lastname,
+                lastName,
                 password,
                 terms,
                 cPassword,
-                firstname
+                firstName
             )
         ) { value ->
-            RegisterResult.value = value
+            registerResult.value = value
         }
     }
 }

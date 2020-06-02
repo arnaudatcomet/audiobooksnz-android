@@ -48,11 +48,10 @@ class SignUpFragment : Fragment(), Injectable {
         val chkbox = view.findViewById<CheckBox>(R.id.checkboxTerm)
 
         btnSignup.setOnClickListener { view ->
-
             if (!chkbox.isChecked) {
-                Toast.makeText(activity, "please tick checkbok", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, "please tick checkbox", Toast.LENGTH_SHORT).show()
             } else if (edittxtFistname.text.isEmpty()) {
-                Toast.makeText(activity, "fisrtname is blank", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, "firstname is blank", Toast.LENGTH_SHORT).show()
             } else if (edittxtLastname.text.isEmpty()) {
                 Toast.makeText(activity, "lastname is blank", Toast.LENGTH_SHORT).show()
             } else if (edittxtEmail.text.isEmpty()) {
@@ -62,14 +61,6 @@ class SignUpFragment : Fragment(), Injectable {
             } else if (edittxtPasswordConfirm.text.isEmpty()) {
                 Toast.makeText(activity, "confirm password is blank", Toast.LENGTH_SHORT).show()
             } else {
-
-//                viewModel.email = edittxtEmail.text.toString()
-//                viewModel.firstName = edittxtFistname.text.toString()
-//                viewModel.lastName = edittxtLastname.text.toString()
-//                viewModel.terms = "1"
-//                viewModel.password = edittxtPassword.text.toString()
-//                viewModel.cPassword = edittxtPasswordConfirm.text.toString()
-
                 viewModel.emailSignUp(
                     edittxtEmail.text.toString(),
                     edittxtLastname.text.toString(),
@@ -78,37 +69,27 @@ class SignUpFragment : Fragment(), Injectable {
                     edittxtPasswordConfirm.text.toString(),
                     edittxtFistname.text.toString()
                 )
-
-                subscribeUi()
-
-//                MaterialAlertDialogBuilder(getActivity())
-//                    .setTitle(resources.getString(R.string.AlertTitle))
-//                    .setMessage(resources.getString(R.string.AlertDescription))
-//                    .setPositiveButton(resources.getString(R.string.AlertOk)) { dialog, which ->
-//                        // Respond to positive button press
-//                    }
-//                    .show()
             }
-
         }
 
+        subscribeUi()
     }
 
     private fun subscribeUi() {
-        viewModel.RegisterResult.observe(viewLifecycleOwner, Observer { result ->
+        viewModel.registerResult.observe(viewLifecycleOwner, Observer { result ->
+
             when (result.status) {
                 Result.Status.SUCCESS -> {
                     if (result.data == null) {
                         Toast.makeText(activity, result.message, Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(activity, "good", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, "Sign Up Success", Toast.LENGTH_SHORT).show();
                         val intent = Intent(
                             activity,
                             SplashScreenActivity::class.java
                         ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                         startActivity(intent)
                     }
-
                 }
                 Result.Status.LOADING -> Log.d("TAG", "loading")
                 Result.Status.ERROR -> {

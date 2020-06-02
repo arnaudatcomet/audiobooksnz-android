@@ -10,6 +10,6 @@ import javax.inject.Singleton
 @Singleton
 class SignUpRepository @Inject constructor(private val dao: UserDataDao, private val remoteSource: SignUpRemoteDataSource){
     fun emailSignUp(email:String, lastName:String, password:String, terms:String, cPassword:String, firstName:String)= resultSimpleLiveData(
-        networkCall = {remoteSource.SignUpWithEmail(email,lastName, password, terms, cPassword, firstName)},
-        saveCallResult = {dao.insertUserData(it)})
+        networkCall = {remoteSource.signUpWithEmail(email,lastName, password, terms, cPassword, firstName)},
+        saveCallResult = {})
 }
