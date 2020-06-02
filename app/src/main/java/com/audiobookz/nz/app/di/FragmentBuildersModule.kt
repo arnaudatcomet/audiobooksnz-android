@@ -2,6 +2,7 @@ package com.audiobookz.nz.app.di
 
 
 import com.audiobookz.nz.app.audiobookList.ui.AudiobookListFragment
+import com.audiobookz.nz.app.bookdetail.ui.BookDetailFragment
 import com.audiobookz.nz.app.browse.BrowseFragment
 import com.audiobookz.nz.app.browse.categories.ui.CategoryFragment
 import com.audiobookz.nz.app.browse.categories.ui.SubCategoryFragment
@@ -28,6 +29,9 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeCategoryDetailFragment(): AudiobookListFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeBookDetailFragmentFragment(): BookDetailFragment
 
     @ContributesAndroidInjector
     abstract fun contributeLoginEmailFragmentFragment(): LoginEmailFragment
