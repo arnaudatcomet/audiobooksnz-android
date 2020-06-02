@@ -64,4 +64,9 @@ class BrowseFragment : Fragment(), Injectable {
         }
 
     }
+
+    companion object {
+        fun newInstance(): BrowseFragment =
+            BrowseFragment()
+    }
 }

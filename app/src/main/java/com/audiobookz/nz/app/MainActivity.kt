@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
+import com.audiobookz.nz.app.browse.BrowseFragment
 import com.audiobookz.nz.app.browse.categories.ui.CategoryFragment
 import com.audiobookz.nz.app.profile.ui.EditProfileFragment
 import com.audiobookz.nz.app.profile.ui.FaqProfileFragment
@@ -21,24 +23,57 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     val ProfileFrag = ProfileFragment.newInstance()
     val editProfileFragFrag = EditProfileFragment.newInstance()
     val FaqFrag = FaqProfileFragment.newInstance()
-    val BrowseFrag = CategoryFragment.newInstance()
-    var bottomNav: BottomNavigationView? = null
+    val BrowseFrag = BrowseFragment.newInstance()
 
     override fun supportFragmentInjector() = dispatchingAndroidInjector
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        var pointer = arrayOf("home","Profile")
-        bottomNav = findViewById(R.id.bottom_navigation)
-        //start main fragment
         setContentView(R.layout.activity_main)
+
+        var bottomNav:BottomNavigationView = findViewById(R.id.bottom_navigation)
+
         fm
             .beginTransaction()
-            .add(R.id.layout_fragment_container, ProfileFrag)
+            .replace(R.id.layout_fragment_container, ProfileFrag)
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             .commit()
 
-//         bottomNav.setOnNavigationItemSelectedListener( pointer ->
-//        when()
-//        )
+        bottomNav.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.mylibrary -> {
+//                    fm
+//                        .beginTransaction()
+//                        .replace(R.id.layout_fragment_container, ProfileFrag)
+//                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+//                        .commit()
+                }
+
+                R.id.browse -> {
+                    fm
+                        .beginTransaction()
+                        .replace(R.id.layout_fragment_container, BrowseFrag)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .commit()
+                }
+
+                R.id.more -> {
+//                    fm
+//                        .beginTransaction()
+//                        .replace(R.id.layout_fragment_container, ProfileFrag)
+//                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+//                        .commit()
+                }
+
+                R.id.me -> {
+                    fm
+                        .beginTransaction()
+                        .replace(R.id.layout_fragment_container, ProfileFrag)
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .commit()
+                }
+            }
+            true
+        }
 
     }
 
