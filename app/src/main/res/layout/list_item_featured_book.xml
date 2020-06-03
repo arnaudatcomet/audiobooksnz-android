@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="audioFeatured"
+            type="com.audiobookz.nz.app.audiobookList.data.Audiobook"/>
+
+        <import type="android.view.View"/>
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_normal"
+        android:layout_marginRight="@dimen/margin_normal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="0dp"
+            android:background="?android:selectableItemBackground"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/img_card_featured"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal"
+                android:scaleType="fitCenter"
+                app:glideImageURL="@{audioFeatured.cover_image}"/>
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{audioFeatured.title}"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:layout_below="@id/img_card_featured"
+                tools:text="sample" />
+
+            <TextView
+                android:id="@+id/txtNameAuthor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/name"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@{audioFeatured.authors[0]}"
+                android:textSize="@dimen/font_size"
+                tools:text="sample"/>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</layout>

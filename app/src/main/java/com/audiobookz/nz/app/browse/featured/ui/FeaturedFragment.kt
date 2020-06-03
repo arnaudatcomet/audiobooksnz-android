@@ -34,12 +34,13 @@ class FeaturedFragment: Fragment(), Injectable {
         context ?: return binding.root
 
         val saleAdapter = SaleAdapter()
-       // val nzAdapter = NZAdapter()
-        binding.saleRecyclerView.adapter = saleAdapter
-        binding.NZRecyclerView.adapter = saleAdapter
+
+        binding.mainRecyclerView.adapter = saleAdapter
+
         subscribeUi(binding, saleAdapter)
         return binding.root
     }
+
     private fun subscribeUi(binding: FragmentFeaturedBinding, saleAdapter: SaleAdapter) {
         viewModel.featuredList.observe(viewLifecycleOwner, Observer { result ->
             when (result.status) {

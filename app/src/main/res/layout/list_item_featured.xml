@@ -6,30 +6,43 @@
 
     <data>
         <variable
-            name="audioCategory"
-            type="com.audiobookz.nz.app.audiobookList.data.Audiobook"/>
+            name="featuredData"
+            type="com.audiobookz.nz.app.browse.featured.data.Featured"/>
 
         <import type="android.view.View"/>
     </data>
 
-
-    <androidx.cardview.widget.CardView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_normal"
-        android:layout_marginRight="@dimen/margin_normal">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/name"
+            android:id="@+id/type_name"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:text="@{featuredData.type}"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/nestRecyclerView"
+            app:setBooks="@{featuredData.audiobook}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_normal"
-            android:gravity="center"
-            android:text="@{audioCategory.title}"
-            android:textAppearance="?attr/textAppearanceHeadline6"
-            tools:text="Category" />
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:orientation="horizontal"
+            android:scrollbars="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/type_name"
+            tools:itemCount="4"
+            tools:context="com.audiobookz.nz.app.MainActivity"
+            tools:listitem="@layout/list_item_featured_book" />
 
-    </androidx.cardview.widget.CardView>
-
+    </LinearLayout>
 
 </layout>

@@ -31,5 +31,8 @@ class Audiobook(
     val credit_price:Int,
     @SerializedName("avg_rating")
     @Expose
-    val avg_rating:String
+    val avg_rating:String,
+    @SerializedName("authors")
+    @Expose
+    val authors:List<String>
 ) : Parcelable

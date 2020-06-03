@@ -79,4 +79,10 @@
     <string name="SaveChanges">Save Changes</string>
     <string name="facebook_app_id">543431389937515</string>
     <string name="fb_login_protocol_scheme">fb543431389937515</string>
+
+    <!--Featured_Browse-->
+    <string name="Sale">Sale</string>
+    <string name="NewZealand">New Zealand</string>
+    <string name="NewReleases">New Releases</string>
+    <string name="BestSellers">Best Sellers</string>
 </resources>
