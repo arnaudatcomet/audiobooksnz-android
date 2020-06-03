@@ -37,16 +37,18 @@ class FeaturedFragment: Fragment(), Injectable {
        // val nzAdapter = NZAdapter()
         binding.saleRecyclerView.adapter = saleAdapter
         binding.NZRecyclerView.adapter = saleAdapter
+        viewModel.fetchCategory()
         subscribeUi(binding, saleAdapter)
         return binding.root
     }
     private fun subscribeUi(binding: FragmentFeaturedBinding, saleAdapter: SaleAdapter) {
-        viewModel.featuredList.observe(viewLifecycleOwner, Observer { result ->
+        viewModel.featuredListResult.observe(viewLifecycleOwner, Observer { result ->
             when (result.status) {
                 Result.Status.SUCCESS -> {
                     binding.progressBar.hide()
                     result.data?.let {
-                        saleAdapter.submitList(it)
+                        //xok comment to avoid error need to fix adapter first
+                       // saleAdapter.submitList(it)
                     }
                 }
                 Result.Status.LOADING -> binding.progressBar.show()
