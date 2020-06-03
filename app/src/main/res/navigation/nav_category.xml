@@ -19,9 +19,7 @@
         >
         <argument
             android:name="id"
-            app:argType="string"
-            app:nullable="true"
-            android:defaultValue="@null"/>
+            app:argType="integer"/>
         <action
             android:id="@+id/action_AudiobookListFragment_to_bookDetailFragment"
             app:destination="@id/bookDetailFragment" />
