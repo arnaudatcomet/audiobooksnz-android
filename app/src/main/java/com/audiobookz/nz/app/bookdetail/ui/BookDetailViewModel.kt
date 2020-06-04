@@ -1,10 +1,12 @@
 package com.audiobookz.nz.app.bookdetail.ui
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import com.audiobookz.nz.app.audiobookList.data.AudiobookListRepository
 import com.audiobookz.nz.app.bookdetail.data.BookDetailRepository
 import com.audiobookz.nz.app.bookdetail.data.BookReview
+import com.audiobookz.nz.app.bookdetail.data.BookRoomDao
 import com.audiobookz.nz.app.browse.categories.data.Category
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.util.CATEGORY_PAGE_SIZE
@@ -15,7 +17,7 @@ class BookDetailViewModel @Inject constructor(private val repository: BookDetail
     lateinit var bookId: String
     val bookData by lazy {   repository.bookDetailData(bookId.toInt())}
 
-
+    var addCartResult = MediatorLiveData<Result<String>>()
     var reviewResult = MediatorLiveData<Result<List<BookReview>>>()
     var page: Int? = 1
     var isLatest: Boolean? = false
@@ -39,5 +41,11 @@ class BookDetailViewModel @Inject constructor(private val repository: BookDetail
             return Result.success(bestResult);
         }
         return newResult;
+    }
+    fun addCart(){
+        var data =bookData.value?.data
+        addCartResult.addSource(repository.addCard(data?.id?.toInt(),data?.title,data?.cover_image_url,data?.price,data?.credit_price)){value ->
+            addCartResult.value = value
+        }
     }
 }

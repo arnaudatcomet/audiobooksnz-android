@@ -35,6 +35,7 @@ class BookDetailFragment: Fragment(), Injectable {
 
         val binding = FragmentBookDetailBinding.inflate(inflater, container, false)
         context ?: return binding.root
+        binding.viewModel = viewModel
 
 
         subscribeUi(binding)
@@ -64,6 +65,17 @@ class BookDetailFragment: Fragment(), Injectable {
                 Result.Status.ERROR -> {
                     binding.progressBar.hide()
                     Snackbar.make(binding.root, result.message!!, Snackbar.LENGTH_LONG).show()
+                }
+            }
+        })
+        viewModel.addCartResult.observe(viewLifecycleOwner, Observer { result->
+            when(result.status)
+            {
+                Result.Status.SUCCESS -> {
+                    Snackbar.make(binding.root, "added", Snackbar.LENGTH_LONG).show()
+                }
+                Result.Status.ERROR -> {
+                    Snackbar.make(binding.root, "already add", Snackbar.LENGTH_LONG).show()
                 }
             }
         })

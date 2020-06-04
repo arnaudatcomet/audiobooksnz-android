@@ -63,6 +63,20 @@ fun <A> resultSimpleLiveData(
     }
 }
 
+    fun resultRoomSaveOnlyLiveData(
+        saveCallResult: suspend () -> Unit
+    ): LiveData<Result<kotlin.String>> = liveData(Dispatchers.IO)
+    {
+        try {
+            saveCallResult.invoke()
+            emit(Result.success("good"))
+        }
+        catch (e: Exception) {
+            emit(Result.error(e.message.toString()))
+        }
+
+    }
+
 
 
 

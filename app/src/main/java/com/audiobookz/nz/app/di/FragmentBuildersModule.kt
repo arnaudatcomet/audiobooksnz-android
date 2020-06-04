@@ -1,6 +1,7 @@
 package com.audiobookz.nz.app.di
 
 
+import com.audiobookz.nz.app.appbar.AppbarFragment
 import com.audiobookz.nz.app.audiobookList.ui.AudiobookListFragment
 import com.audiobookz.nz.app.bookdetail.ui.BookDetailFragment
 import com.audiobookz.nz.app.browse.BrowseFragment
@@ -52,6 +53,9 @@ abstract class FragmentBuildersModule {
     @ContributesAndroidInjector
     abstract fun contributeBrowseFragment(): BrowseFragment
 
+
+    @ContributesAndroidInjector
+    abstract fun contributeAppbarFragment(): AppbarFragment
 
 //
 //    @ContributesAndroidInjector

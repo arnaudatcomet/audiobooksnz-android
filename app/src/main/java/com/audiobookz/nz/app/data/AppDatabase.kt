@@ -8,6 +8,8 @@ import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
+import com.audiobookz.nz.app.bookdetail.data.BookRoom
+import com.audiobookz.nz.app.bookdetail.data.BookRoomDao
 import com.audiobookz.nz.app.login.data.SuccessData
 import com.audiobookz.nz.app.login.data.UserData
 import com.audiobookz.nz.app.login.data.UserDataDao
@@ -16,13 +18,13 @@ import com.audiobookz.nz.app.worker.SeedDatabaseWorker
 /**
  * The Room database for this app
  */
-@Database(entities = [UserData::class,SuccessData::class],
-        version = 13, exportSchema = false)
+@Database(entities = [UserData::class,BookRoom::class,SuccessData::class],
+        version = 16, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun userDataDao(): UserDataDao
-
+    abstract fun bookRoomDao(): BookRoomDao
 
     companion object {
 
