@@ -26,7 +26,6 @@ class AppbarFragment: Fragment(), Injectable {
 
         val binding = FragmentTopbarBinding.inflate(inflater, container, false)
 
-        val binding1 = ActivityBrowseBinding.inflate(inflater, container, false)
         context ?: return binding.root
         viewModel.count.observe(viewLifecycleOwner, Observer { count ->
             binding.count = count.toString()
