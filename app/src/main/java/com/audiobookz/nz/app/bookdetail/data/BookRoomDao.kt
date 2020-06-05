@@ -15,4 +15,7 @@ interface BookRoomDao {
     fun getCount(): LiveData<Integer>
     @Insert
     fun insertCart(bookRoom: BookRoom)
+
+    @Query("SELECT * FROM bookroom")
+    fun loadBasket(): LiveData<List<BookRoom>>
 }

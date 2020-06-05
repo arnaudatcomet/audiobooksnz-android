@@ -63,7 +63,7 @@ fun <A> resultSimpleLiveData(
     }
 }
 
-    fun resultRoomSaveOnlyLiveData(
+    fun  resultLocalSaveOnlyLiveData(
         saveCallResult: suspend () -> Unit
     ): LiveData<Result<kotlin.String>> = liveData(Dispatchers.IO)
     {
@@ -75,6 +75,14 @@ fun <A> resultSimpleLiveData(
             emit(Result.error(e.message.toString()))
         }
 
+    }
+    fun <T> resultLocalGetOnlyLiveData(
+        databaseQuery: () -> LiveData<T>
+    ): LiveData<Result<T>> = liveData(Dispatchers.IO)
+    {
+        emit(Result.loading())
+        val source = databaseQuery.invoke().map { Result.success(it) }
+        emitSource(source)
     }
 
 

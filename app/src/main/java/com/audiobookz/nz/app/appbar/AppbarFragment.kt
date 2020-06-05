@@ -1,5 +1,6 @@
 package com.audiobookz.nz.app.appbar
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.audiobookz.nz.app.basket.ui.ActivityBasket
 import com.audiobookz.nz.app.databinding.ActivityBrowseBinding
 import com.audiobookz.nz.app.databinding.FragmentTopbarBinding
 import com.audiobookz.nz.app.di.Injectable
@@ -30,6 +32,13 @@ class AppbarFragment: Fragment(), Injectable {
         viewModel.count.observe(viewLifecycleOwner, Observer { count ->
             binding.count = count.toString()
         })
+        binding.openBasket = openBasketListener()
         return binding.root
+    }
+    private fun openBasketListener(): View.OnClickListener {
+        return View.OnClickListener {
+            val intent = Intent(activity, ActivityBasket::class.java)
+            startActivity(intent)
+        }
     }
 }

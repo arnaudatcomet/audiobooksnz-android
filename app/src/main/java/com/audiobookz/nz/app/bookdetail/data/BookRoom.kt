@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class BookRoom(
     @PrimaryKey val id: Int?,
     @ColumnInfo(name = "title") val title: String?,
-    @ColumnInfo(name = "price") val price: String?,
     @ColumnInfo(name = "image_url") val image_url: String?,
+    @ColumnInfo(name = "price") val price: String?,
     @ColumnInfo(name = "credit_price") val credit_price: Int?
 )

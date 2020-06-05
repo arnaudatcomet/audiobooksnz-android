@@ -44,7 +44,12 @@ class BookDetailViewModel @Inject constructor(private val repository: BookDetail
     }
     fun addCart(){
         var data =bookData.value?.data
-        addCartResult.addSource(repository.addCard(data?.id?.toInt(),data?.title,data?.cover_image_url,data?.price,data?.credit_price)){value ->
+        var title =data?.title
+        var id = data?.id?.toInt()
+        var image = data?.cover_image_url
+        var price = data?.price
+        var credit_price = data?.credit_price
+        addCartResult.addSource(repository.addCard(id,title,image,price,credit_price)){value ->
             addCartResult.value = value
         }
     }
