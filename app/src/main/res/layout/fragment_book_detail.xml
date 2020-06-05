@@ -5,8 +5,17 @@
         <variable
             name="book"
             type="com.audiobookz.nz.app.bookdetail.data.BookDetail"/>
+        <variable
+            name="viewModel"
+            type="com.audiobookz.nz.app.bookdetail.ui.BookDetailViewModel"/>
+        <variable
+            name="count"
+            type="String"
+            />
     </data>
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_normal"
             android:gravity="center"
-            android:text="@{book.slug}"
+            android:text="@{count}"
             android:textAppearance="?attr/textAppearanceHeadline6"
             tools:text="Category"
             android:textColor="@color/colorTea"/>
@@ -109,8 +118,13 @@
             android:textAppearance="?attr/textAppearanceHeadline6"
             tools:text="Category"
             android:textColor="@color/colorTea"/>
-
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="buy"
+        android:onClick="@{()->viewModel.addCart()}"
+        />
 
     </LinearLayout>
-
+    </ScrollView>
 </layout>

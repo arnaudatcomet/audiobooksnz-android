@@ -63,6 +63,28 @@ fun <A> resultSimpleLiveData(
     }
 }
 
+    fun  resultLocalSaveOnlyLiveData(
+        saveCallResult: suspend () -> Unit
+    ): LiveData<Result<kotlin.String>> = liveData(Dispatchers.IO)
+    {
+        try {
+            saveCallResult.invoke()
+            emit(Result.success("good"))
+        }
+        catch (e: Exception) {
+            emit(Result.error(e.message.toString()))
+        }
+
+    }
+    fun <T> resultLocalGetOnlyLiveData(
+        databaseQuery: () -> LiveData<T>
+    ): LiveData<Result<T>> = liveData(Dispatchers.IO)
+    {
+        emit(Result.loading())
+        val source = databaseQuery.invoke().map { Result.success(it) }
+        emitSource(source)
+    }
+
 
 
 
