@@ -19,7 +19,7 @@ class SplashScreenActivity : AppCompatActivity() {
         if (accessToken != null && accessToken != "") {
             startActivity(Intent(this, MainActivity::class.java))
         } else {
-            startActivity(Intent(this, BrowseActivity::class.java))
+            startActivity(Intent(this, LoginActivity::class.java))
         }
 
     }
