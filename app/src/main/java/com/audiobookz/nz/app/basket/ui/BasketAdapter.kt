@@ -30,7 +30,6 @@ class BasketAdapter : ListAdapter<BookRoom, BasketAdapter.ViewHolder>(DiffCallba
         fun bind(item: BookRoom) {
             binding.apply {
                 binding.book = item
-                executePendingBindings()
             }
         }
     }

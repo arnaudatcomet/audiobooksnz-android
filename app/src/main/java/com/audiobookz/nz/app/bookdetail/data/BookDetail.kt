@@ -25,7 +25,7 @@ class BookDetail(
     val business_model: Int,
     @SerializedName("cover_image")
     @Expose
-    val cover_image: String,
+    val cover_image: String? = null,
     @SerializedName("price")
     @Expose
     val price: String,
@@ -40,7 +40,7 @@ class BookDetail(
     val avg_rating: String,
     @SerializedName("cover_image_url")
     @Expose
-    val cover_image_url: String,
+    val cover_image_url: String? = null,
     @SerializedName("is_bought")
     @Expose
     val is_bought: Boolean,
@@ -59,10 +59,20 @@ class BookDetail(
     @SerializedName("cover_url")
     @Expose
     val cover_url: String,
+    @SerializedName("audioengine_data")
+    @Expose
+    val BookEngineData: BookEngineData,
     @SerializedName("authors")
     @Expose
-    val authors: List<String>
-
-
+    val authors: List<String>? =null,
+    @SerializedName("narrators")
+    @Expose
+    val narrators: List<String>? =null,
+    @SerializedName("runtime")
+    @Expose
+    val runtime: String? =null,
+    @SerializedName("language")
+    @Expose
+    val language: String? =null
 
     ) : Parcelable

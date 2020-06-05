@@ -15,30 +15,14 @@
     <!--        app:navGraph="@navigation/nav_main"-->
     <!--        />-->
 
-    <com.google.android.material.appbar.AppBarLayout
+    <fragment
+        android:id="@+id/appbarfg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:elevation="0dp">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/topAppBar"
-            style="@style/Widget.MaterialComponents.Toolbar.Primary"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:menu="@menu/top_app_bar">
-
-            <TextView
-                android:id="@+id/mainTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Browse"
-                android:layout_gravity="center"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/font_size"/>
-
-        </com.google.android.material.appbar.MaterialToolbar>
-
-    </com.google.android.material.appbar.AppBarLayout>
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_appbar"
+        />
 
     <FrameLayout
         android:id="@+id/layout_fragment_container"

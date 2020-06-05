@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import com.audiobookz.nz.app.binding.bindImageFromUrl
+import com.audiobookz.nz.app.bookdetail.data.BookDetail
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.databinding.FragmentBookDetailBinding
 import com.audiobookz.nz.app.di.Injectable
@@ -45,8 +47,7 @@ class BookDetailFragment: Fragment(), Injectable {
         viewModel.bookData.observe(viewLifecycleOwner, Observer { result ->
             when (result.status) {
                 Result.Status.SUCCESS -> {
-                    binding.progressBar.hide()
-                    binding.book = result.data
+                    bindView(binding,result.data)
                 }
                 Result.Status.LOADING -> binding.progressBar.show()
                 Result.Status.ERROR -> {
@@ -80,6 +81,16 @@ class BookDetailFragment: Fragment(), Injectable {
             }
         })
 
+    }
+    private fun bindView(binding: FragmentBookDetailBinding, bookDetail: BookDetail?) {
+        bookDetail.apply {
+            binding.progressBar.hide()
+            binding.book = bookDetail
+            binding.rating = bookDetail?.avg_rating?.toFloat()
+            binding.authors = bookDetail?.BookEngineData?.BookDetail?.authors?.joinToString(separator = ",")
+            binding.narrate = bookDetail?.BookEngineData?.BookDetail?.narrators?.joinToString(separator = ",")
+
+        }
     }
 
 }
