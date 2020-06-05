@@ -9,3 +9,4 @@ enum class SocialID{
     Google
 }
 const val CATEGORY_PAGE_SIZE = 50
+const val FEATURED_BOOK_SHOW = 4

@@ -27,7 +27,7 @@
                     android:layout_gravity="center"
                     android:text="Browse"
                     android:textColor="@android:color/white"
-                    android:textSize="@dimen/font_size" />
+                    android:textSize="@dimen/font_size_big" />
 
             </com.google.android.material.appbar.MaterialToolbar>
         </com.google.android.material.appbar.AppBarLayout>

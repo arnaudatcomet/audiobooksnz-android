@@ -9,9 +9,16 @@
         android:orientation="vertical">
 
         <com.google.android.material.tabs.TabLayout
+            android:layout_gravity="center_horizontal"
             android:id="@+id/tab_browse"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_margin="10dp"
+            android:layout_width="300dp"
+            android:layout_height="30dp"
+            android:background="@drawable/tab_layout_bg"
+            app:tabBackground="@drawable/tab_layout_selector"
+            app:tabSelectedTextColor="@android:color/white"
+            app:tabTextColor="@color/colorTea"
+            app:tabIndicatorHeight="0dp" />
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/tab_view_pager"

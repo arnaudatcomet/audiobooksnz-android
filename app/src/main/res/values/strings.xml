@@ -10,6 +10,7 @@
 
     <string name="app_name">AudiobooksNZ</string>
     <string name="title_activity_main2">Main2Activity</string>
+
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
@@ -85,4 +86,5 @@
     <string name="NewZealand">New Zealand</string>
     <string name="NewReleases">New Releases</string>
     <string name="BestSellers">Best Sellers</string>
+    <string name="showAll">Show All</string>
 </resources>

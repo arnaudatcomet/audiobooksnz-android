@@ -7,17 +7,18 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.audiobookz.nz.app.audiobookList.data.Audiobook
+import com.audiobookz.nz.app.browse.featured.data.Featured
 import com.audiobookz.nz.app.databinding.ListItemFeaturedBookBinding
 
 class CustomViewHolder(val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root)
 
-class BookAdapter : ListAdapter<Audiobook, CustomViewHolder>(Companion) {
-    companion object : DiffUtil.ItemCallback<Audiobook>() {
-        override fun areItemsTheSame(oldItem: Audiobook, newItem: Audiobook): Boolean {
+class BookAdapter : ListAdapter<Featured, CustomViewHolder>(Companion) {
+    companion object : DiffUtil.ItemCallback<Featured>() {
+        override fun areItemsTheSame(oldItem: Featured, newItem: Featured): Boolean {
             return  oldItem === newItem
         }
 
-        override fun areContentsTheSame(oldItem: Audiobook, newItem: Audiobook): Boolean {
+        override fun areContentsTheSame(oldItem: Featured, newItem: Featured): Boolean {
             return  oldItem.id == newItem.id
         }
     }
@@ -32,7 +33,8 @@ class BookAdapter : ListAdapter<Audiobook, CustomViewHolder>(Companion) {
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         val currentBook = getItem(position)
         val itemBinding = holder.binding as ListItemFeaturedBookBinding
-        itemBinding.audioFeatured = currentBook
+        itemBinding.audioFeatured = currentBook.audiobook
         itemBinding.executePendingBindings()
+
     }
 }

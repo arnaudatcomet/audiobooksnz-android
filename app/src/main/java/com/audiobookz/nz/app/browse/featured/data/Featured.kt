@@ -22,5 +22,6 @@ class Featured(
     val type: String,
     @SerializedName("audiobook")
     @Expose
-    val audiobook: List<Audiobook>
+    val audiobook: Audiobook
+
 ) : Parcelable

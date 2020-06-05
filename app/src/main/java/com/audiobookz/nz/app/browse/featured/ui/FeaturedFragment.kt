@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.databinding.FragmentFeaturedBinding
 import com.audiobookz.nz.app.di.Injectable
@@ -14,10 +15,11 @@ import com.audiobookz.nz.app.di.injectViewModel
 import com.audiobookz.nz.app.ui.hide
 import com.audiobookz.nz.app.ui.show
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.fragment_featured.*
 import javax.inject.Inject
 
 
-class FeaturedFragment: Fragment(), Injectable {
+class FeaturedFragment : Fragment(), Injectable {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -33,26 +35,22 @@ class FeaturedFragment: Fragment(), Injectable {
         val binding = FragmentFeaturedBinding.inflate(inflater, container, false)
         context ?: return binding.root
 
-        val saleAdapter = SaleAdapter()
-
-        binding.mainRecyclerView.adapter = saleAdapter
-
-       // val nzAdapter = NZAdapter()
-        binding.saleRecyclerView.adapter = saleAdapter
-        binding.NZRecyclerView.adapter = saleAdapter
         viewModel.fetchCategory()
-        subscribeUi(binding, saleAdapter)
+
+        subscribeUi(binding)
         return binding.root
     }
 
-    private fun subscribeUi(binding: FragmentFeaturedBinding, saleAdapter: SaleAdapter) {
+    private fun subscribeUi(binding: FragmentFeaturedBinding) {
         viewModel.featuredListResult.observe(viewLifecycleOwner, Observer { result ->
             when (result.status) {
                 Result.Status.SUCCESS -> {
+
                     binding.progressBar.hide()
-                    result.data?.let {
-                        //xok comment to avoid error need to fix adapter first
-                       // saleAdapter.submitList(it)
+                    result.data.let {
+
+                        val mainAdapter = FeaturedTypeAdapter(result.data!!)
+                        mainRecyclerView.adapter = mainAdapter
                     }
                 }
                 Result.Status.LOADING -> binding.progressBar.show()
@@ -63,6 +61,7 @@ class FeaturedFragment: Fragment(), Injectable {
             }
         })
     }
+
     companion object {
         fun newInstance(): FeaturedFragment =
             FeaturedFragment()
