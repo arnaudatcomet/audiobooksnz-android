@@ -1,19 +1,33 @@
 package com.audiobookz.nz.app
 
 import android.os.Bundle
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.widget.TextView
+import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.get
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.audiobookz.nz.app.browse.BrowseFragment
-import com.audiobookz.nz.app.browse.categories.ui.CategoryFragment
+import com.audiobookz.nz.app.databinding.ViewOverlayBadgeBinding
+import com.audiobookz.nz.app.di.injectViewModel
 import com.audiobookz.nz.app.profile.ui.EditProfileFragment
 import com.audiobookz.nz.app.profile.ui.FaqProfileFragment
 import com.audiobookz.nz.app.profile.ui.ProfileFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
+import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
+
 
 class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     @Inject
@@ -24,7 +38,6 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     val editProfileFragFrag = EditProfileFragment.newInstance()
     val FaqFrag = FaqProfileFragment.newInstance()
     val BrowseFrag = BrowseFragment.newInstance()
-
     override fun supportFragmentInjector() = dispatchingAndroidInjector
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,7 +89,6 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         }
 
     }
-
     //back stack for fragment
     override fun onBackPressed() {
         var count = fm.backStackEntryCount

@@ -1,6 +1,8 @@
 package com.audiobookz.nz.app.api
 
 import com.audiobookz.nz.app.audiobookList.data.Audiobook
+import com.audiobookz.nz.app.bookdetail.data.BookDetail
+import com.audiobookz.nz.app.bookdetail.data.BookReview
 import com.audiobookz.nz.app.browse.categories.data.Category
 import com.audiobookz.nz.app.browse.featured.data.Featured
 import com.audiobookz.nz.app.login.data.SuccessData
@@ -97,5 +99,17 @@ interface AudiobookService {
         @Query("expand") expand: String? = null,
         @Query("per-page") pageSize: Int? = null
     ): Response<List<Featured>>
+
+    @GET("audiobooks/{id}")
+    suspend fun getBookDetail(
+        @Path("id") id: Int
+    ): Response<BookDetail>
+
+    @GET("audiobooks/{id}/reviews")
+    suspend fun getBookReview(
+        @Path("id") id: Int,
+        @Query("page") page: Int? = null,
+        @Query("per-page") pageSize: Int? = null
+    ): Response<List<BookReview>>
 
 }

@@ -3,6 +3,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.audiobookz.nz.app.api.SharedPreferencesService
+import com.audiobookz.nz.app.browse.BrowseActivity
 import com.audiobookz.nz.app.login.ui.LoginActivity
 
 

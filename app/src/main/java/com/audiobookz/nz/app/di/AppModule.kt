@@ -48,6 +48,11 @@ class AppModule {
     @Provides
     fun provideUserDataDao(db: AppDatabase) = db.userDataDao()
 
+
+    @Singleton
+    @Provides
+    fun provideBookRoomDao(db: AppDatabase) = db.bookRoomDao()
+
     @Singleton
     @Provides
     fun provideSharedPreferences(app: Application) = SharedPreferencesService(app)

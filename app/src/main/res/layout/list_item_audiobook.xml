@@ -6,6 +6,10 @@
         <variable
             name="audiobook"
             type="com.audiobookz.nz.app.audiobookList.data.Audiobook"/>
+
+        <variable
+            name="openBookDetail"
+            type="android.view.View.OnClickListener"/>
     </data>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -21,6 +25,8 @@
         android:textColor="@color/colorPrimaryDark"
         android:gravity="center"
         android:textAppearance="?attr/textAppearanceHeadline6"
-        tools:text="Category"/>
+        tools:text="Category"
+        android:onClick="@{openBookDetail}"
+        />
     </androidx.cardview.widget.CardView>
 </layout>

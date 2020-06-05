@@ -20,6 +20,9 @@
         <argument
             android:name="id"
             app:argType="integer"/>
+        <action
+            android:id="@+id/action_AudiobookListFragment_to_bookDetailFragment"
+            app:destination="@id/bookDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/subCategoryFragment"
@@ -50,5 +53,15 @@
         <action
             android:id="@+id/action_browseFragment_to_AudiobookListFragment2"
             app:destination="@id/AudiobookListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bookDetailFragment"
+        android:name="com.audiobookz.nz.app.bookdetail.ui.BookDetailFragment"
+        android:label="BookDetailFragment"
+        tools:layout="@layout/fragment_book_detail"
+        >
+        <argument
+            android:name="id"
+            app:argType="integer"/>
     </fragment>
 </navigation>
