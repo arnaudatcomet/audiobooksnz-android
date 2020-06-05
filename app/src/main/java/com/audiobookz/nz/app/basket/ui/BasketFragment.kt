@@ -9,7 +9,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.databinding.FragmentBasketBinding
-import com.audiobookz.nz.app.databinding.FragmentBookDetailBinding
 import com.audiobookz.nz.app.di.Injectable
 import com.audiobookz.nz.app.di.injectViewModel
 import com.audiobookz.nz.app.ui.hide
@@ -29,7 +28,7 @@ class BasketFragment : Fragment(), Injectable {
         viewModel = injectViewModel(viewModelFactory)
         val binding = FragmentBasketBinding.inflate(inflater, container, false)
         context ?: return binding.root
-        val adapter = BasketAdapter()
+        val adapter = BasketAdapter(viewModel)
         binding.basketRecycleView.adapter = adapter
 
         subscribeUi(binding,adapter)

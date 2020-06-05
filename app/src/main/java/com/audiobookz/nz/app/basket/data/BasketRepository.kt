@@ -15,4 +15,7 @@ class BasketRepository @Inject constructor(private val dao: BookRoomDao
     fun loadBasket() = resultLocalGetOnlyLiveData(
         databaseQuery = {dao.loadBasket()}
     )
+    fun deleteBook(id:Int){
+        dao.deleteById(id)
+    }
 }

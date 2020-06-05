@@ -8,22 +8,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <fragment
-            android:id="@+id/appbarfg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:id="@+id/browse_fragment_container"
             android:name="androidx.navigation.fragment.NavHostFragment"
-            app:defaultNavHost="true"
-            app:navGraph="@navigation/nav_appbar"
-            />
-        <fragment
-            android:id="@+id/fragment_basket"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_height="match_parent"
             app:defaultNavHost="true"
-            app:navGraph="@navigation/nav_basket"
-            />
+            app:navGraph="@navigation/nav_category" />
+
+
     </LinearLayout>
 
 </layout>
