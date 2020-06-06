@@ -8,4 +8,7 @@ import javax.inject.Inject
 
 class BasketViewModel @Inject constructor(private val repository: BasketRepository) : ViewModel() {
     val basketResult by lazy {   repository.loadBasket()}
+    fun deleteCartById(id:Int) {
+        repository.deleteBook(id)
+    }
 }

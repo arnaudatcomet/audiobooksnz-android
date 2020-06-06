@@ -1,25 +1,22 @@
 package com.audiobookz.nz.app.basket.ui
 
+import android.os.AsyncTask
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.audiobookz.nz.app.bookdetail.data.BookRoom
-import com.audiobookz.nz.app.browse.BrowseFragmentDirections
-import com.audiobookz.nz.app.browse.categories.data.Category
 import com.audiobookz.nz.app.databinding.ListItemBasketBinding
-import com.audiobookz.nz.app.databinding.ListItemCategoriesBinding
 
 
-class BasketAdapter : ListAdapter<BookRoom, BasketAdapter.ViewHolder>(DiffCallback())
+class BasketAdapter(val viewModel: BasketViewModel) : ListAdapter<BookRoom, BasketAdapter.ViewHolder>(DiffCallback())
 {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val BookRoom = getItem(position)
         holder.apply {
-            bind(BookRoom)
+            BookRoom.id?.let { createOnRemoveBookListener(it) }?.let { bind(it,BookRoom) }
             itemView.tag = BookRoom
         }
     }
@@ -27,9 +24,17 @@ class BasketAdapter : ListAdapter<BookRoom, BasketAdapter.ViewHolder>(DiffCallba
         private val binding: ListItemBasketBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: BookRoom) {
+        fun bind(remove: View.OnClickListener,item: BookRoom) {
             binding.apply {
                 binding.book = item
+                binding.remove = remove
+            }
+        }
+    }
+    private fun createOnRemoveBookListener(id: Int): View.OnClickListener {
+        return View.OnClickListener {
+            AsyncTask.execute {
+                viewModel.deleteCartById(id)
             }
         }
     }

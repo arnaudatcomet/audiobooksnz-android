@@ -17,6 +17,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.audiobookz.nz.app.browse.BrowseFragment
+import com.audiobookz.nz.app.browse.BrowseNavFragment
 import com.audiobookz.nz.app.databinding.ViewOverlayBadgeBinding
 import com.audiobookz.nz.app.di.injectViewModel
 import com.audiobookz.nz.app.profile.ui.EditProfileFragment
@@ -37,7 +38,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     val ProfileFrag = ProfileFragment.newInstance()
     val editProfileFragFrag = EditProfileFragment.newInstance()
     val FaqFrag = FaqProfileFragment.newInstance()
-    val BrowseFrag = BrowseFragment.newInstance()
+    val BrowseFrag = BrowseNavFragment.newInstance()
     override fun supportFragmentInjector() = dispatchingAndroidInjector
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
