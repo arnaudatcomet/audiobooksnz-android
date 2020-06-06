@@ -1,244 +1,283 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="book"
-            type="com.audiobookz.nz.app.bookdetail.data.BookDetail"/>
+            type="com.audiobookz.nz.app.bookdetail.data.BookDetail" />
+
         <variable
             name="viewModel"
-            type="com.audiobookz.nz.app.bookdetail.ui.BookDetailViewModel"/>
+            type="com.audiobookz.nz.app.bookdetail.ui.BookDetailViewModel" />
+
         <variable
             name="rating"
-            type="Float"
-            />
+            type="Float" />
+
         <variable
             name="authors"
-            type="String"
-            />
+            type="String" />
+
         <variable
             name="narrate"
-            type="String"
-            />
+            type="String" />
     </data>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_normal"
-        android:layout_marginRight="@dimen/margin_normal"
-        android:orientation="vertical"
-        android:gravity="center"
-        >
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:visibility="visible"/>
-        <TextView
-            android:id="@+id/title"
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_normal"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:layout_marginRight="@dimen/margin_normal"
             android:gravity="center"
-            android:text="@{book.title}"
-            android:textAppearance="?attr/textAppearanceHeadline6"
-            tools:text="title"
-            android:textColor="@color/black"/>
-        <ImageView
-            android:id="@+id/image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scaleType="fitXY"
-            android:contentDescription="@string/first_fragment_label"
-            app:imageFromUrl="@{book.cover_image_url}"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        >
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_normal"
-            >
+            android:orientation="vertical">
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:visibility="visible" />
 
             <TextView
-                android:id="@+id/price"
+                android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{`NZ$`+book.price+@string/or+ '('+book.credit_price+@string/bc+')'}"
-                tools:text="price"
-                android:textColor="@color/black"/>
-        </LinearLayout>
-        <TextView
-            android:id="@+id/ratingtext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Rating: "
-            android:textColor="@color/black"
-            tools:text="Rating: " />
+                android:layout_margin="@dimen/margin_normal"
+                android:gravity="center"
+                android:text="@{book.title}"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:textColor="@color/black"
+                tools:text="title" />
 
-        <RatingBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:rating="@{rating}"
-            style="?android:attr/ratingBarStyleSmall"
-            android:clickable="false"
-            />
-        <TextView
-            android:id="@+id/ratingNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{'('+rating.toString()+')'}"
-            android:textColor="@color/black"
-            tools:text="(0)" />
-    </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="4dp"
-            android:background="@android:color/black" />
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="@dimen/margin_normal"
-            android:layout_gravity="start"
-            >
-            <TextView
-                android:id="@+id/writeby"
-                android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Written By : "
-                tools:text="Written By : "
-                android:textColor="@color/black"/>
-            <TextView
-                android:id="@+id/authorName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{authors}"
-                tools:text="MR.D"
-                android:textColor="@color/black"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="@dimen/margin_normal"
-            android:layout_gravity="start"
-            >
-            <TextView
-                android:id="@+id/narratedtext"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Narrated By : "
-                tools:text="Narrated By : "
-                android:textColor="@color/black"/>
-            <TextView
-                android:id="@+id/narratedvalue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{narrate}"
-                tools:text="MR.D"
-                android:textColor="@color/black"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="@dimen/margin_normal"
-            android:layout_gravity="start"
-            >
-            <TextView
-                android:id="@+id/publishertext"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Publisher : "
-                tools:text="Publisher : "
-                android:textColor="@color/black"/>
-            <TextView
-                android:id="@+id/publishervalue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{book.bookEngineData.bookDetail.publisher}"
-                tools:text="MR.D"
-                android:textColor="@color/black"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="@dimen/margin_normal"
-            android:layout_gravity="start"
-            >
-            <TextView
-                android:id="@+id/lengthtext"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Length : "
-                tools:text="Length : "
-                android:textColor="@color/black"/>
-            <TextView
-                android:id="@+id/lengthvalue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{book.bookEngineData.bookDetail.runtime}"
-                tools:text="MR.D"
-                android:textColor="@color/black"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="@dimen/margin_normal"
-            android:layout_gravity="start"
-            >
-            <TextView
-                android:id="@+id/langtext"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Language : "
-                tools:text="Language : "
-                android:textColor="@color/black"/>
-            <TextView
-                android:id="@+id/langvalue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{book.bookEngineData.bookDetail.language}"
-                tools:text="MR.D"
-                android:textColor="@color/black"/>
-        </LinearLayout>
-        <Button
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Play Sample"
-            android:layout_marginHorizontal="@dimen/margin_big"
-        android:backgroundTint="@android:color/background_dark"
-        />
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@{@string/addCart+book.price}"
-            android:layout_marginHorizontal="@dimen/margin_big"
-            android:onClick="@{()->viewModel.addCart()}"
-            android:backgroundTint="@android:color/background_dark"
-            />
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="@dimen/margin_big"
-            android:text="Add to Wishlist"
-            android:backgroundTint="@android:color/background_dark"
-            />
+                android:contentDescription="@string/first_fragment_label"
+                android:scaleType="fitXY"
+                app:imageFromUrl="@{book.cover_image_url}"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_normal">
+
+                    <TextView
+                        android:id="@+id/price"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{`NZ$`+book.price+@string/or+ '('+book.credit_price+@string/bc+')'}"
+                        android:textColor="@color/black"
+                        tools:text="price" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/ratingtext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rating: "
+                    android:textColor="@color/black"
+                    tools:text="Rating: " />
+
+                <RatingBar
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:rating="@{rating}" />
+
+                <TextView
+                    android:id="@+id/ratingNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{'('+rating.toString()+')'}"
+                    android:textColor="@color/black"
+                    tools:text="(0)" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="@android:color/black" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_margin="@dimen/margin_normal"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/writeby"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Written By : "
+                    android:textColor="@color/black"
+                    tools:text="Written By : " />
+
+                <TextView
+                    android:id="@+id/authorName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{authors}"
+                    android:textColor="@color/black"
+                    tools:text="MR.D" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_margin="@dimen/margin_normal"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/narratedtext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Narrated By : "
+                    android:textColor="@color/black"
+                    tools:text="Narrated By : " />
+
+                <TextView
+                    android:id="@+id/narratedvalue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{narrate}"
+                    android:textColor="@color/black"
+                    tools:text="MR.D" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_margin="@dimen/margin_normal"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/publishertext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Publisher : "
+                    android:textColor="@color/black"
+                    tools:text="Publisher : " />
+
+                <TextView
+                    android:id="@+id/publishervalue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{book.bookEngineData.bookDetail.publisher}"
+                    android:textColor="@color/black"
+                    tools:text="MR.D" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_margin="@dimen/margin_normal"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/lengthtext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Length : "
+                    android:textColor="@color/black"
+                    tools:text="Length : " />
+
+                <TextView
+                    android:id="@+id/lengthvalue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{book.bookEngineData.bookDetail.runtime}"
+                    android:textColor="@color/black"
+                    tools:text="MR.D" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_margin="@dimen/margin_normal"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/langtext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Language : "
+                    android:textColor="@color/black"
+                    tools:text="Language : " />
+
+                <TextView
+                    android:id="@+id/langvalue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{book.bookEngineData.bookDetail.language}"
+                    android:textColor="@color/black"
+                    tools:text="MR.D" />
+            </LinearLayout>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/margin_big"
+                android:backgroundTint="@android:color/background_dark"
+                android:text="Play Sample" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/margin_big"
+                android:backgroundTint="@android:color/background_dark"
+                android:onClick="@{()->viewModel.addCart()}"
+                android:text="@{@string/addCart+book.price}" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/margin_big"
+                android:backgroundTint="@android:color/background_dark"
+                android:text="Add to Wishlist" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_book_detail"
+                android:layout_width="300dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="10dp"
+                android:background="@drawable/tab_layout_bg"
+                app:tabBackground="@drawable/tab_layout_selector"
+                app:tabIndicatorHeight="0dp"
+                app:tabSelectedTextColor="@android:color/white"
+                app:tabTextColor="@color/colorTea" />
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/tab_book_detail_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </androidx.viewpager.widget.ViewPager>
+
+        </LinearLayout>
+
     </ScrollView>
+
 </layout>

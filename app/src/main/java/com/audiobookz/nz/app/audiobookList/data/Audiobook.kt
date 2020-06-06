@@ -3,6 +3,7 @@ package com.audiobookz.nz.app.audiobookList.data
 
 import com.google.gson.annotations.SerializedName
 import android.os.Parcelable
+import com.audiobookz.nz.app.bookdetail.data.BookEngineData
 import com.google.gson.annotations.Expose
 import kotlinx.android.parcel.Parcelize
 
@@ -32,7 +33,7 @@ class Audiobook(
     @SerializedName("avg_rating")
     @Expose
     val avg_rating:String,
-    @SerializedName("authors")
+    @SerializedName("audioengine_data")
     @Expose
-    val authors:List<String>
+    val audioengine_data: BookEngineData
 ) : Parcelable

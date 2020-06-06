@@ -1,12 +1,15 @@
 package com.audiobookz.nz.app.browse.featured.ui
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.audiobookz.nz.app.audiobookList.data.Audiobook
+import com.audiobookz.nz.app.browse.BrowseFragmentDirections
 import com.audiobookz.nz.app.browse.featured.data.Featured
 import com.audiobookz.nz.app.databinding.ListItemFeaturedBookBinding
 
@@ -34,7 +37,19 @@ class BookAdapter : ListAdapter<Featured, CustomViewHolder>(Companion) {
         val currentBook = getItem(position)
         val itemBinding = holder.binding as ListItemFeaturedBookBinding
         itemBinding.audioFeatured = currentBook.audiobook
-        itemBinding.executePendingBindings()
+        itemBinding.authorsName = currentBook.audiobook.audioengine_data.BookDetail.authors?.joinToString(separator = ",")
 
+        //click event
+        itemBinding.clickListener = createOnOpenBookDetailListener(currentBook.audiobook.id)
+
+        itemBinding.executePendingBindings()
+    }
+
+    //navigatoion component browse fragment to bookDetail
+    private fun createOnOpenBookDetailListener(id: Int): View.OnClickListener {
+        return View.OnClickListener {
+            val direction = BrowseFragmentDirections.actionBrowseFragmentToBookDetailFragment(id)
+            it.findNavController().navigate(direction)
+        }
     }
 }

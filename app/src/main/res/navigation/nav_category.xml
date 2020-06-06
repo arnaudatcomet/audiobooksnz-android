@@ -48,11 +48,14 @@
             android:id="@+id/action_browseFragment_to_categoryFragment"
             app:destination="@id/categoryFragment" />
         <action
-            android:id="@+id/action_browseFragment_to_subCategoryFragment2"
+            android:id="@+id/action_browseFragment_to_subCategoryFragment"
             app:destination="@id/subCategoryFragment" />
         <action
-            android:id="@+id/action_browseFragment_to_AudiobookListFragment2"
+            android:id="@+id/action_browseFragment_to_AudiobookListFragment"
             app:destination="@id/AudiobookListFragment" />
+        <action
+            android:id="@+id/action_browseFragment_to_bookDetailFragment"
+            app:destination="@id/bookDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/bookDetailFragment"

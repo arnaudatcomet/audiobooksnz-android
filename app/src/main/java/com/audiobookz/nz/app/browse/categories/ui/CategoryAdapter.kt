@@ -24,13 +24,13 @@ class CategoryAdapter : ListAdapter<Category,CategoryAdapter.ViewHolder>(DiffCal
     }
     private fun createOnOpenAudiobookListListener(id: Int): View.OnClickListener {
         return View.OnClickListener {
-            val direction = BrowseFragmentDirections.actionBrowseFragmentToAudiobookListFragment2(id)
+            val direction = BrowseFragmentDirections.actionBrowseFragmentToAudiobookListFragment(id)
             it.findNavController().navigate(direction)
         }
     }
     private fun createOnOpenSubListListener(SubCategory: List<Category>): View.OnClickListener {
         return View.OnClickListener {
-            val direction = BrowseFragmentDirections.actionBrowseFragmentToSubCategoryFragment2(SubCategory.toTypedArray())
+            val direction = BrowseFragmentDirections.actionBrowseFragmentToSubCategoryFragment(SubCategory.toTypedArray())
             it.findNavController().navigate(direction)
         }
     }

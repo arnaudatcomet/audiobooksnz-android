@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.audiobookz.nz.app.binding.bindImageFromUrl
 import com.audiobookz.nz.app.bookdetail.data.BookDetail
+import com.audiobookz.nz.app.browse.BrowseFragment
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.databinding.FragmentBookDetailBinding
 import com.audiobookz.nz.app.di.Injectable
@@ -31,14 +32,21 @@ class BookDetailFragment: Fragment(), Injectable {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         viewModel = injectViewModel(viewModelFactory)
         viewModel.bookId = args.id.toString()
         viewModel.fetchReview(1,REVIEW_PAGE_SIZE)
 
         val binding = FragmentBookDetailBinding.inflate(inflater, container, false)
-        context ?: return binding.root
-        binding.viewModel = viewModel
+        val adapter = BrowseFragment.ViewPagerAdapter(childFragmentManager)
+        adapter.addFragment(SummaryFragment(), "Summary")
+        adapter.addFragment(ReviewsFragment(), "Reviews")
+        binding.tabBookDetailPager.adapter = adapter
+        binding.tabBookDetail.setupWithViewPager(binding.tabBookDetailPager)
 
+        context ?: return binding.root
+
+        binding.viewModel = viewModel
 
         subscribeUi(binding)
         return binding.root
@@ -82,6 +90,7 @@ class BookDetailFragment: Fragment(), Injectable {
         })
 
     }
+
     private fun bindView(binding: FragmentBookDetailBinding, bookDetail: BookDetail?) {
         bookDetail.apply {
             binding.progressBar.hide()

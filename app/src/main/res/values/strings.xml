@@ -1,11 +1,63 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string-array name="Languages">
         <item>English</item>
-        <item>Kotlin</item>
-        <item>Swift</item>
-        <item>Python</item>
-        <item>Scala</item>
-        <item>Perl</item>
+        <item>Vietnamese</item>
+        <item>Zulu</item>
+        <item>Afrikaans</item>
+        <item>Arabic</item>
+        <item>Bahasa+Indonesia</item>
+        <item>Bahasa+Indonesian</item>
+        <item>Bengali</item>
+        <item>Bulgarian</item>
+        <item>Cantonese</item>
+        <item>Cantonese+Chinese</item>
+        <item>Catalan</item>
+        <item>Chinese</item>
+        <item>Creole+of+Guadeloupe</item>
+        <item>Croatian</item>
+        <item>Czech</item>
+        <item>Danish</item>
+        <item>Dutch</item>
+        <item>English%2FFrench</item>
+        <item>English%2CSpanish</item>
+        <item>Estonian</item>
+        <item>Finnish</item>
+        <item>French</item>
+        <item>German</item>
+        <item>Greek</item>
+        <item>Hebrew</item>
+        <item>Hindi</item>
+        <item>Hungarian</item>
+        <item>Icelandic</item>
+        <item>Indonesian</item>
+        <item>Kazakh</item>
+        <item>Italian</item>
+        <item>Japanese</item>
+        <item>Korean</item>
+        <item>Latvian</item>
+        <item>Lithuanian</item>
+        <item>Malay</item>
+        <item>Maori</item>
+        <item>Marathi</item>
+        <item>Norwegian</item>
+        <item>Persian</item>
+        <item>Spanish</item>
+        <item>Swedish</item>
+        <item>Tagalog</item>
+        <item>Turkish</item>
+        <item>Ukrainian</item>
+        <item>Telugu</item>
+        <item>Thai</item>
+        <item>Urdu</item>
+        <item>Slovak</item>
+        <item>Slovenian</item>
+        <item>Tamil</item>
+        <item>Romanian</item>
+        <item>Russian</item>
+        <item>Serbian-Croatian</item>
+        <item>Polish</item>
+        <item>Portuguese</item>
+        <item>Portuguese%28Brazilian%29</item>
     </string-array>
 
     <string name="app_name">AudiobooksNZ</string>
@@ -90,4 +142,5 @@
     <string name="NewReleases">New Releases</string>
     <string name="BestSellers">Best Sellers</string>
     <string name="showAll">Show All</string>
+
 </resources>

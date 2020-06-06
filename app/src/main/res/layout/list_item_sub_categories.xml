@@ -17,20 +17,21 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_normal"
-        android:layout_marginRight="@dimen/margin_normal"
-        android:onClick="@{clickListener}">
+        android:onClick="@{clickListener}"
+        android:layout_marginBottom="@dimen/margin_normal">
 
         <TextView
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_normal"
-            android:textColor="@color/colortwitter"
-            android:gravity="center"
+            android:textColor="@color/colorTea"
+            android:gravity="left"
             android:text="@{audioCategory.title}"
             android:textAppearance="?attr/textAppearanceHeadline6"
-            tools:text="subCategory" />
+            tools:text="subCategory"
+            android:ellipsize="end"
+            android:maxLines="1"/>
 
     </androidx.cardview.widget.CardView>
 
