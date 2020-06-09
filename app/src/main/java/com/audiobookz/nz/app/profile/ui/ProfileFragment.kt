@@ -84,8 +84,8 @@ class ProfileFragment : Fragment(), Injectable {
         }
         FAQTxt.setOnClickListener { view ->
             //intent to faqprofilefragment
-            var NewFragment: MainActivity = activity as MainActivity
-            NewFragment.ChangeToFAQFragment()
+          //  var NewFragment: MainActivity = activity as MainActivity
+         //   NewFragment.ChangeToFAQFragment()
         }
 
         OutBtn.setOnClickListener { view ->
@@ -106,8 +106,8 @@ class ProfileFragment : Fragment(), Injectable {
         }
         ProfileCard.setOnClickListener { view ->
             //intent to editprofilefragment
-            var NewFragment: MainActivity = activity as MainActivity
-            NewFragment.ChangeToEditProfileFragment()
+        //    var NewFragment: MainActivity = activity as MainActivity
+        //    NewFragment.ChangeToEditProfileFragment()
         }
 
     }

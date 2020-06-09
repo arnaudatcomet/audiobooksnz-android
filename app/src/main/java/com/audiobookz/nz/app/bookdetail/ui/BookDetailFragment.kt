@@ -15,6 +15,7 @@ import com.audiobookz.nz.app.databinding.FragmentBookDetailBinding
 import com.audiobookz.nz.app.di.Injectable
 import com.audiobookz.nz.app.di.injectViewModel
 import com.audiobookz.nz.app.ui.hide
+import com.audiobookz.nz.app.ui.setTitle
 import com.audiobookz.nz.app.ui.show
 import com.audiobookz.nz.app.util.REVIEW_PAGE_SIZE
 import com.google.android.material.snackbar.Snackbar
@@ -38,8 +39,7 @@ class BookDetailFragment: Fragment(), Injectable {
         val binding = FragmentBookDetailBinding.inflate(inflater, container, false)
         context ?: return binding.root
         binding.viewModel = viewModel
-
-
+        args.bookName?.let { setTitle(it) }
         subscribeUi(binding)
         return binding.root
     }

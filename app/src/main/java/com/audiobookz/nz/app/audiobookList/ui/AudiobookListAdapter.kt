@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.audiobookz.nz.app.audiobookList.data.Audiobook
-import com.audiobookz.nz.app.browse.BrowseFragmentDirections
 import com.audiobookz.nz.app.databinding.ListItemAudiobookBinding
 
 class AudiobookListAdapter : ListAdapter<Audiobook, AudiobookListAdapter.ViewHolder>((DiffCallback()))
@@ -22,9 +21,9 @@ class AudiobookListAdapter : ListAdapter<Audiobook, AudiobookListAdapter.ViewHol
         )
 
     }
-    private fun createOnOpenBookDetailListener(id: Int): View.OnClickListener {
+    private fun createOnOpenBookDetailListener(id: Int, title: String): View.OnClickListener {
         return View.OnClickListener {
-            val direction = AudiobookListFragmentDirections.actionAudiobookListFragmentToBookDetailFragment(id)
+            val direction = AudiobookListFragmentDirections.actionAudiobookListFragmentToBookDetailFragment(id,title)
             it.findNavController().navigate(direction)
         }
     }
@@ -33,7 +32,7 @@ class AudiobookListAdapter : ListAdapter<Audiobook, AudiobookListAdapter.ViewHol
         val audiobook = getItem(position)
 
         holder.apply {
-            bind(audiobook,createOnOpenBookDetailListener(audiobook.id))
+            bind(audiobook,createOnOpenBookDetailListener(audiobook.id,audiobook.title))
             itemView.tag = audiobook
         }
     }

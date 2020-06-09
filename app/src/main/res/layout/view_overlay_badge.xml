@@ -1,26 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
-    <data>
-        <variable
-            name="count"
-            type="String"
-            />
-        <variable
-            name="openBasket"
-            type="android.view.View.OnClickListener"/>
-    </data>
 <FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="32dp"
     android:layout_height="32dp"
     android:layout_gravity="center">
 
     <ImageButton
+        android:id="@+id/openCart"
         android:layout_width="@dimen/menu_item_icon_size"
         android:layout_height="@dimen/menu_item_icon_size"
         android:layout_gravity="center"
-        android:src="@drawable/cart1_40"/>
+        android:clickable="true"
+        android:src="@drawable/cart1_40"
+        android:focusable="true" />
 
     <FrameLayout
         android:id="@+id/view_alert_red_circle"
@@ -35,10 +28,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textColor="@android:color/holo_red_dark"
-            android:text="@{count}"
+            android:text="0"
             android:textStyle="bold"
             android:textSize="10sp"/>
 
     </FrameLayout>
 </FrameLayout>
-</layout>
