@@ -74,5 +74,14 @@
         android:name="com.audiobookz.nz.app.profile.ui.ProfileFragment"
         android:label="ProfileFragment"
         tools:layout="@layout/fragment_profile"
-        />
+        >
+        <action
+            android:id="@+id/action_me_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.audiobookz.nz.app.profile.ui.EditProfileFragment"
+        tools:layout="@layout/fragment_edit_profile"
+        android:label="EditProfileFragment" />
 </navigation>
