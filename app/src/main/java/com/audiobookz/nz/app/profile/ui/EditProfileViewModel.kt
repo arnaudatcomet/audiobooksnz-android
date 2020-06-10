@@ -31,17 +31,17 @@ class EditProfileViewModel  @Inject constructor(private val repository: ProfileR
         }
     }
 
-    fun editProfile(Image:String, firstname:String, lastname:String, currentPassword:String,newPassword:String, confirmPassword:String) {
+    fun editProfile(image:String?, firstname:String, lastname:String, currentPassword:String,newPassword:String, confirmPassword:String) {
 
-        val file = File(Image)
+
+        val file = File(image)
 
         val fbody: RequestBody = RequestBody.create(
             MediaType.parse("multipart/form-data"),
             file
         )
 
-        val image =
-            MultipartBody.Part.createFormData("imgFile", file.name, fbody)
+        val bodypartImage = MultipartBody.Part.createFormData("imgFile", file.name, fbody)
 
         val nfirstname: RequestBody = RequestBody.create(MediaType.parse("text/plain"), firstname)
         val nlastname: RequestBody = RequestBody.create(MediaType.parse("text/plain"), lastname)
@@ -49,8 +49,14 @@ class EditProfileViewModel  @Inject constructor(private val repository: ProfileR
         val nnewPassword: RequestBody = RequestBody.create(MediaType.parse("text/plain"), newPassword)
         val nconfirmPassword: RequestBody = RequestBody.create(MediaType.parse("text/plain"), confirmPassword)
 
-        editProfileResult.addSource(repository.editProfile(image,nfirstname, nlastname, ncurrentPassword,nnewPassword,nconfirmPassword)){value->
-            editProfileResult.value = value
+        if(image.equals("null")){
+            editProfileResult.addSource(repository.editProfile(null,nfirstname, nlastname, ncurrentPassword,nnewPassword,nconfirmPassword)){value->
+                editProfileResult.value = value
+            }
+        }else{
+            editProfileResult.addSource(repository.editProfile(bodypartImage,nfirstname, nlastname, ncurrentPassword,nnewPassword,nconfirmPassword)){value->
+                editProfileResult.value = value
+            }
         }
     }
 }

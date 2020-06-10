@@ -80,7 +80,7 @@ interface AudiobookService {
     @POST("users/modify")
     @Headers("No-Authentication: false")
     suspend fun editProfile(
-        @Part Body: MultipartBody.Part,
+        @Part Body: MultipartBody.Part? = null,
         @Part("first_name") firstName: RequestBody,
         @Part("last_name") lastname: RequestBody,
         @Part("oldPassword") oldPassword: RequestBody,

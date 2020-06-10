@@ -80,7 +80,7 @@ class EditProfileFragment : Fragment(), Injectable {
         var CurrentPassEdit = view.findViewById<EditText>(R.id.editCurrentPass)
         var NewPassProfileEdit = view.findViewById<EditText>(R.id.editNewPassProfile)
         var PassConfirmProfileEdit = view.findViewById<EditText>(R.id.editPassConfirmProfile)
-        var SaveChangeBtn = view.findViewById<Button>(R.id.btnSaveChange)
+        SaveChangeBtn = view.findViewById(R.id.btnSaveChange) as Button
         val items = arrayOf("Camera", "Gallery")
 
         val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
@@ -138,13 +138,8 @@ class EditProfileFragment : Fragment(), Injectable {
                 .show()
         }
 
-        SaveChangeBtn.setOnClickListener { view ->
-            if (CurrentPassEdit.text.isEmpty() || NewPassProfileEdit.text.isEmpty() || PassConfirmProfileEdit.text.isEmpty()) {
-                Toast.makeText(activity, "Password is blank", Toast.LENGTH_SHORT).show();
-            } else {
-
+        SaveChangeBtn!!.setOnClickListener { view ->
                 viewModel.editProfile(
-
                     imageUri?.let { getRealPathFromURI(it) }.toString(),
                     FirstNameEdit?.text.toString(),
                     LastNameEdit?.text.toString(),
@@ -152,8 +147,6 @@ class EditProfileFragment : Fragment(), Injectable {
                     NewPassProfileEdit.text.toString(),
                     PassConfirmProfileEdit.text.toString()
                 )
-
-            }
         }
     }
 
@@ -205,17 +198,13 @@ class EditProfileFragment : Fragment(), Injectable {
         viewModel.editProfileResult.observe(viewLifecycleOwner, Observer { result ->
             when (result.status) {
                 Result.Status.SUCCESS -> {
-                    SaveChangeBtn?.setText("Login")
-                    val intent = Intent(
-                        activity,
-                        MainActivity::class.java
-                    ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    startActivity(intent)
+                    Toast.makeText(getActivity(), "We changed your information", Toast.LENGTH_SHORT).show();
+                    getFragmentManager()?.popBackStack()
                 }
                 Result.Status.LOADING -> SaveChangeBtn?.setText("Loading")
                 Result.Status.ERROR -> {
                     SaveChangeBtn?.setText("Login")
-                    Toast.makeText(getActivity(), result.message, Toast.LENGTH_SHORT).show();3
+                    Toast.makeText(getActivity(), result.message, Toast.LENGTH_SHORT).show();
                 }
             }
         })

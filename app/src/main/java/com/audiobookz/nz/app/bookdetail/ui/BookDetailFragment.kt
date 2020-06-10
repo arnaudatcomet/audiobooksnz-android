@@ -73,10 +73,10 @@ class BookDetailFragment: Fragment(), Injectable {
             when(result.status)
             {
                 Result.Status.SUCCESS -> {
-                    Snackbar.make(binding.root, "added", Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(binding.root, "This Book is Successfully added to your Cart", Snackbar.LENGTH_LONG).show()
                 }
                 Result.Status.ERROR -> {
-                    Snackbar.make(binding.root, "already add", Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(binding.root, "This Book is already added to your Cart", Snackbar.LENGTH_SHORT).show()
                 }
             }
         })
