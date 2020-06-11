@@ -5,8 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
+import com.audiobookz.nz.app.MainActivity
 import com.audiobookz.nz.app.R
-import com.audiobookz.nz.app.browse.BrowseActivity
 import com.audiobookz.nz.app.register.ui.SignUpActivity
 
 class LoginActivity : AppCompatActivity() {
@@ -40,7 +40,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         btnDiscover.setOnClickListener { view ->
-            val intent = Intent(this, BrowseActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
     }

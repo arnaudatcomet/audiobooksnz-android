@@ -17,6 +17,7 @@ import com.audiobookz.nz.app.databinding.FragmentBookDetailBinding
 import com.audiobookz.nz.app.di.Injectable
 import com.audiobookz.nz.app.di.injectViewModel
 import com.audiobookz.nz.app.ui.hide
+import com.audiobookz.nz.app.ui.setTitle
 import com.audiobookz.nz.app.ui.show
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
@@ -47,6 +48,8 @@ class BookDetailFragment : Fragment(), Injectable {
         val adapter = ReviewViewPagerAdapter(childFragmentManager)
 
         subscribeUi(binding, adapter)
+
+        args.bookName?.let { setTitle(it) }
 
         return binding.root
     }
@@ -81,10 +84,23 @@ class BookDetailFragment : Fragment(), Injectable {
         viewModel.addCartResult.observe(viewLifecycleOwner, Observer { result ->
             when (result.status) {
                 Result.Status.SUCCESS -> {
-                    Snackbar.make(binding.root, "added", Snackbar.LENGTH_LONG).show()
+                    binding.progressBar.hide()
+                }
+                Result.Status.LOADING -> binding.progressBar.show()
+                Result.Status.ERROR -> {
+                    binding.progressBar.hide()
+                    Snackbar.make(binding.root, result.message!!, Snackbar.LENGTH_LONG).show()
+                }
+            }
+        })
+        viewModel.addCartResult.observe(viewLifecycleOwner, Observer { result->
+            when(result.status)
+            {
+                Result.Status.SUCCESS -> {
+                    Snackbar.make(binding.root, "This Book is Successfully added to your Cart", Snackbar.LENGTH_LONG).show()
                 }
                 Result.Status.ERROR -> {
-                    Snackbar.make(binding.root, "already add", Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(binding.root, "This Book is already added to your Cart", Snackbar.LENGTH_SHORT).show()
                 }
             }
         })

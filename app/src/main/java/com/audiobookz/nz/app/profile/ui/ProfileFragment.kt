@@ -13,9 +13,11 @@ import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.audiobookz.nz.app.MainActivity
 import com.audiobookz.nz.app.R
 import com.audiobookz.nz.app.SplashScreenActivity
+import com.audiobookz.nz.app.browse.BrowseFragmentDirections
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.di.Injectable
 import com.audiobookz.nz.app.di.injectViewModel
@@ -84,8 +86,8 @@ class ProfileFragment : Fragment(), Injectable {
         }
         FAQTxt.setOnClickListener { view ->
             //intent to faqprofilefragment
-            var NewFragment: MainActivity = activity as MainActivity
-            NewFragment.ChangeToFAQFragment()
+          //  var NewFragment: MainActivity = activity as MainActivity
+         //   NewFragment.ChangeToFAQFragment()
         }
 
         OutBtn.setOnClickListener { view ->
@@ -105,9 +107,8 @@ class ProfileFragment : Fragment(), Injectable {
             Toast.makeText(getActivity(), "play", Toast.LENGTH_SHORT).show()
         }
         ProfileCard.setOnClickListener { view ->
-            //intent to editprofilefragment
-            var NewFragment: MainActivity = activity as MainActivity
-            NewFragment.ChangeToEditProfileFragment()
+            val direction = ProfileFragmentDirections.actionMeToEditProfileFragment()
+            view.findNavController().navigate(direction)
         }
 
     }

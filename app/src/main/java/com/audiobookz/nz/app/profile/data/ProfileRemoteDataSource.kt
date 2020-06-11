@@ -12,6 +12,6 @@ class ProfileRemoteDataSource @Inject constructor(private val service: Audiobook
     BaseDataSource() {
     suspend fun sendToken() = getResult { service.getProfile() }
 
-    suspend fun sendProfileData(image: MultipartBody.Part, firstname:RequestBody ,lastname:RequestBody, currentPassword:RequestBody,newPassword:RequestBody, confirmPassword:RequestBody) = getResult { service.editProfile(image, firstname,lastname, currentPassword, newPassword, confirmPassword) }
+    suspend fun sendProfileData(image: MultipartBody.Part?, firstname:RequestBody ,lastname:RequestBody, currentPassword:RequestBody,newPassword:RequestBody, confirmPassword:RequestBody) = getResult { service.editProfile(image, firstname,lastname, currentPassword, newPassword, confirmPassword) }
 
 }

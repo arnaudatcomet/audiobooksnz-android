@@ -24,7 +24,7 @@ class ProfileRepository @Inject constructor(
     fun destroyProfile() = sharePref.deleteToken()
 
 
-    fun editProfile(Image: MultipartBody.Part, firstname:RequestBody, lastname:RequestBody, currentPassword:RequestBody,newPassword:RequestBody, confirmPassword:RequestBody)= resultSimpleLiveData(
+    fun editProfile(Image: MultipartBody.Part?, firstname:RequestBody, lastname:RequestBody, currentPassword:RequestBody,newPassword:RequestBody, confirmPassword:RequestBody)= resultSimpleLiveData(
         networkCall = {remoteSource.sendProfileData(Image, firstname, lastname, currentPassword, newPassword, confirmPassword)},
         saveCallResult = {dao.insertUserData(it)})
 }
