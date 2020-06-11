@@ -3,6 +3,7 @@ package com.audiobookz.nz.app.login.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.widget.Button
 import android.widget.Toast
 import com.audiobookz.nz.app.MainActivity
@@ -40,7 +41,9 @@ class LoginActivity : AppCompatActivity() {
         }
 
         btnDiscover.setOnClickListener { view ->
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java).apply {
+                putExtra(EXTRA_MESSAGE, "discover")
+            }
             startActivity(intent)
         }
     }
