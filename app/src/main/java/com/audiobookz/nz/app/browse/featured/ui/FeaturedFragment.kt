@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.navigation.Navigation
+import com.audiobookz.nz.app.App
+import com.audiobookz.nz.app.browse.BrowseFragmentDirections
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.databinding.FragmentFeaturedBinding
 import com.audiobookz.nz.app.di.Injectable
@@ -24,6 +26,7 @@ class FeaturedFragment : Fragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: FeaturedViewModel
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,7 +52,18 @@ class FeaturedFragment : Fragment(), Injectable {
                     binding.progressBar.hide()
                     result.data.let {
 
-                        val mainAdapter = FeaturedTypeAdapter(result.data!!)
+                        //callback apdater
+                        val mainAdapter = FeaturedTypeAdapter(result.data!!) {
+
+                            //App.listFeature = it
+                            val navController = Navigation.findNavController(view!!)
+                            navController.navigate(
+                                BrowseFragmentDirections.actionBrowseFragmentToAudiobookListFragment(
+                                    id = 0, listItem = it.toTypedArray()
+                                )
+                            )
+                        }
+
                         mainRecyclerView.adapter = mainAdapter
                     }
                 }

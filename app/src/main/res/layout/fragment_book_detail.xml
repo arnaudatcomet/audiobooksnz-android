@@ -260,7 +260,7 @@
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tab_book_detail"
-                android:layout_width="300dp"
+                android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="10dp"
@@ -268,13 +268,26 @@
                 app:tabBackground="@drawable/tab_layout_selector"
                 app:tabIndicatorHeight="0dp"
                 app:tabSelectedTextColor="@android:color/white"
-                app:tabTextColor="@color/colorTea" />
+                app:tabTextColor="@color/colorTea"
+                app:tabMode="scrollable">
 
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/tab_book_detail_pager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-            </androidx.viewpager.widget.ViewPager>
+                <com.google.android.material.tabs.TabItem
+                    android:text="Summary"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:text="reviews"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </com.google.android.material.tabs.TabLayout>
+
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/viewPager_review"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp">
+                </androidx.viewpager.widget.ViewPager>
 
         </LinearLayout>
 

@@ -8,5 +8,5 @@ class BookDetailRemoteDataSource @Inject constructor(private val service: Audiob
 
     suspend fun fetchBookData(bookId: Int) = getResult { service.getBookDetail(bookId) }
 
-    suspend fun fetchReviewData(bookId: Int,page:Int,pageSize:Int) = getResult { service.getBookReview(bookId,page,pageSize) }
+    suspend fun fetchReviewData(bookId: Int,page:Int,pageSize:Int) = getResult { service.getBookReview(bookId,"createdBy",page,pageSize) }
 }

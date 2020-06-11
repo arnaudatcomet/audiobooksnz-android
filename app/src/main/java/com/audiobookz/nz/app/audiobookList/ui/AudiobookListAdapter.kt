@@ -41,6 +41,7 @@ class AudiobookListAdapter : ListAdapter<Audiobook, AudiobookListAdapter.ViewHol
         fun bind( item: Audiobook,openBookDetailListener: View.OnClickListener) {
             binding.apply {
                 audiobook = item
+                rateViewList.rating = item.avg_rating.toFloat()
                 openBookDetail = openBookDetailListener
                 executePendingBindings()
             }

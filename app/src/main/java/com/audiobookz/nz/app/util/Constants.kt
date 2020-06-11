@@ -8,6 +8,7 @@ enum class SocialID{
     Facebook,
     Google
 }
+const val FEATURED_PAGE_SIZE = 50
 const val CATEGORY_PAGE_SIZE = 50
 const val FEATURED_BOOK_SHOW = 4
-const val REVIEW_PAGE_SIZE = 10
+const val REVIEW_PAGE_SIZE = 20

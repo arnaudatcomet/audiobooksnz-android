@@ -15,6 +15,9 @@ class Audiobook(
     @SerializedName("title")
     @Expose
     val title: String,
+    @SerializedName("language")
+    @Expose
+    val language: String,
     @SerializedName("cover_image")
     @Expose
     val cover_image: String,

@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.audiobookz.nz.app.browse.featured.ui.FeaturedViewModel
-import com.audiobookz.nz.app.browse.featured.ui.SaleAdapter
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.databinding.FragmentBrowseNavBinding
 import com.audiobookz.nz.app.databinding.FragmentFeaturedBinding

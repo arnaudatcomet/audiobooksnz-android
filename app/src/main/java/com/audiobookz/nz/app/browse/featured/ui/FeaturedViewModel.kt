@@ -7,6 +7,7 @@ import com.audiobookz.nz.app.browse.featured.data.Featured
 import com.audiobookz.nz.app.browse.featured.data.FeaturedRepository
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.util.CATEGORY_PAGE_SIZE
+import com.audiobookz.nz.app.util.FEATURED_PAGE_SIZE
 import javax.inject.Inject
 
 
@@ -21,7 +22,7 @@ class FeaturedViewModel @Inject constructor(private val repository: FeaturedRepo
 //    var isLatest: Boolean? = false
 //
     fun fetchCategory() {
-        featuredListResult.addSource(repository.getFeatured(CATEGORY_PAGE_SIZE)) { value ->
+        featuredListResult.addSource(repository.getFeatured(FEATURED_PAGE_SIZE)) { value ->
             if (value.data?.size != null) {
                 featuredListResult.value = getBestResult(value)
             }

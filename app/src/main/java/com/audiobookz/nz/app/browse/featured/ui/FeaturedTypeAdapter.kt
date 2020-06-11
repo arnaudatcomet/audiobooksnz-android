@@ -8,6 +8,7 @@ import android.widget.LinearLayout
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.audiobookz.nz.app.App
 import com.audiobookz.nz.app.browse.BrowseFragmentDirections
 import com.audiobookz.nz.app.browse.categories.data.Category
 import com.audiobookz.nz.app.browse.featured.data.Featured
@@ -17,7 +18,7 @@ import com.audiobookz.nz.app.util.FEATURED_BOOK_SHOW
 import kotlinx.android.synthetic.main.list_item_featured.view.*
 
 
-class FeaturedTypeAdapter(val resultData: Map<String, List<Featured>>) :
+class FeaturedTypeAdapter(val resultData: Map<String, List<Featured>>, val OpenbookList :(List<Featured>)-> Unit ) :
     RecyclerView.Adapter<FeaturedTypeAdapter.ViewHolder>() {
 
     class ViewHolder(view: ListItemFeaturedBinding) :
@@ -44,21 +45,11 @@ class FeaturedTypeAdapter(val resultData: Map<String, List<Featured>>) :
         bookAdapter.submitList(currentFeaturedList?.take(FEATURED_BOOK_SHOW))
 
         //event click
-        //holder.rvMain.clickListener = createOnOpenAudiobookListListener()
+        holder.rvMain.btnShowAll.setOnClickListener { OpenbookList (currentFeaturedList!!) }
 
         holder.itemView.nestRecyclerView.apply {
             adapter = bookAdapter
         }
     }
-
-    //navigatoion component browse fragment to audioBooklist
-    private fun createOnOpenAudiobookListListener(id: Int): View.OnClickListener {
-        return View.OnClickListener {
-            val direction =
-                BrowseFragmentDirections.actionBrowseFragmentToAudiobookListFragment(id)
-            it.findNavController().navigate(direction)
-        }
-    }
-
 }
 

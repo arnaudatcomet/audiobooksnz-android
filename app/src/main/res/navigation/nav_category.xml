@@ -8,22 +8,31 @@
         android:id="@+id/categoryFragment"
         android:name="com.audiobookz.nz.app.browse.categories.ui.CategoryFragment"
         android:label="CategoryFragment"
-        tools:layout="@layout/fragment_categories"
-        />
-    <fragment
+        tools:layout="@layout/fragment_categories" />
 
+    <fragment
         android:id="@+id/AudiobookListFragment"
         android:name="com.audiobookz.nz.app.audiobookList.ui.AudiobookListFragment"
         android:label="AudiobookListFragment"
-        tools:layout="@layout/fragment_audiobook_list"
-        >
+        tools:layout="@layout/fragment_audiobook_list">
         <argument
             android:name="id"
-            app:argType="integer"/>
+            app:argType="integer" />
+
+        <!--create arg listFeatured nullable to store data from FeaturedTypeAdapter-->
+        <argument
+            android:name="listItem"
+            app:argType="com.audiobookz.nz.app.browse.featured.data.Featured[]"
+            app:nullable="true"
+            android:defaultValue="@null" />
+
         <action
             android:id="@+id/action_AudiobookListFragment_to_bookDetailFragment"
             app:destination="@id/bookDetailFragment" />
+
+
     </fragment>
+
     <fragment
         android:id="@+id/subCategoryFragment"
         android:name="com.audiobookz.nz.app.browse.categories.ui.SubCategoryFragment"
@@ -57,14 +66,17 @@
             android:id="@+id/action_browseFragment_to_bookDetailFragment"
             app:destination="@id/bookDetailFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/bookDetailFragment"
         android:name="com.audiobookz.nz.app.bookdetail.ui.BookDetailFragment"
         android:label="BookDetailFragment"
-        tools:layout="@layout/fragment_book_detail"
-        >
+        tools:layout="@layout/fragment_book_detail">
+
         <argument
             android:name="id"
             app:argType="integer"/>
+
     </fragment>
+
 </navigation>

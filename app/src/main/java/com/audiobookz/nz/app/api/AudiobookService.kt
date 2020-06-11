@@ -108,6 +108,7 @@ interface AudiobookService {
     @GET("audiobooks/{id}/reviews")
     suspend fun getBookReview(
         @Path("id") id: Int,
+        @Query("expand") expand: String ="createdBy",
         @Query("page") page: Int? = null,
         @Query("per-page") pageSize: Int? = null
     ): Response<List<BookReview>>
