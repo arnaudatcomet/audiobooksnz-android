@@ -34,13 +34,13 @@ class SubCategoryAdapter : ListAdapter<Category,SubCategoryAdapter.ViewHolder>(D
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val category = getItem(position)
         holder.apply {
-            bind(createOnOpenAudiobookListListener(category.id),category)
+            bind(createOnOpenAudiobookListListener(category.id, category.title),category)
             itemView.tag = category
         }
     }
-    private fun createOnOpenAudiobookListListener(id: String): View.OnClickListener {
+    private fun createOnOpenAudiobookListListener(id: String, title:String): View.OnClickListener {
         return View.OnClickListener {
-            val direction = SubCategoryFragmentDirections.actionSubCategoryFragmentToAudiobookListFragment(id.toInt())
+            val direction = SubCategoryFragmentDirections.actionSubCategoryFragmentToAudiobookListFragment(id.toInt(), title)
             it.findNavController().navigate(direction)
         }
     }

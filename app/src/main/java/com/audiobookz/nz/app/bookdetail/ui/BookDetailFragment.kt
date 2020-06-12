@@ -1,15 +1,17 @@
 package com.audiobookz.nz.app.bookdetail.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
+import android.widget.FrameLayout
+import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import com.audiobookz.nz.app.R
 import com.audiobookz.nz.app.bookdetail.data.BookDetail
 import com.audiobookz.nz.app.browse.BrowseFragment.ViewPagerAdapter
 import com.audiobookz.nz.app.data.Result
@@ -19,6 +21,7 @@ import com.audiobookz.nz.app.di.injectViewModel
 import com.audiobookz.nz.app.ui.hide
 import com.audiobookz.nz.app.ui.setTitle
 import com.audiobookz.nz.app.ui.show
+import com.audiobookz.nz.app.util.intentShareText
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
@@ -29,6 +32,22 @@ class BookDetailFragment : Fragment(), Injectable {
     private lateinit var viewModel: BookDetailViewModel
     private val args: BookDetailFragmentArgs by navArgs()
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_share, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+    @Suppress("DEPRECATION")
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_share -> {
+                intentShareText(activity!!, //getString(R.string.share_lego_set, set.name, set.url ?: "")
+                "testShare")
+                return true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,7 +56,7 @@ class BookDetailFragment : Fragment(), Injectable {
 
         viewModel = injectViewModel(viewModelFactory)
         viewModel.bookId = args.id.toString()
-     //   viewModel.fetchReview(1, REVIEW_PAGE_SIZE)
+        //   viewModel.fetchReview(1, REVIEW_PAGE_SIZE)
 
         val binding = FragmentBookDetailBinding.inflate(inflater, container, false)
 
@@ -50,7 +69,7 @@ class BookDetailFragment : Fragment(), Injectable {
         subscribeUi(binding, adapter)
 
         args.bookName?.let { setTitle(it) }
-
+        setHasOptionsMenu(true)
         return binding.root
     }
 
@@ -93,14 +112,21 @@ class BookDetailFragment : Fragment(), Injectable {
                 }
             }
         })
-        viewModel.addCartResult.observe(viewLifecycleOwner, Observer { result->
-            when(result.status)
-            {
+        viewModel.addCartResult.observe(viewLifecycleOwner, Observer { result ->
+            when (result.status) {
                 Result.Status.SUCCESS -> {
-                    Snackbar.make(binding.root, "This Book is Successfully added to your Cart", Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(
+                        binding.root,
+                        "This Book is Successfully added to your Cart",
+                        Snackbar.LENGTH_LONG
+                    ).show()
                 }
                 Result.Status.ERROR -> {
-                    Snackbar.make(binding.root, "This Book is already added to your Cart", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(
+                        binding.root,
+                        "This Book is already added to your Cart",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
                 }
             }
         })
@@ -138,8 +164,9 @@ class BookDetailFragment : Fragment(), Injectable {
 
 
         fun addFragment(fragment: Fragment, title: String) {
-                fragments.add(fragment)
-                titles.add(title)}
+            fragments.add(fragment)
+            titles.add(title)
+        }
     }
 
 }

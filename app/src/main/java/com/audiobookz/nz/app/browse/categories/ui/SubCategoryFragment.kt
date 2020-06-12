@@ -12,6 +12,7 @@ import com.audiobookz.nz.app.databinding.FragmentCategoriesBinding
 import com.audiobookz.nz.app.databinding.FragmentSubCategoriesBinding
 import com.audiobookz.nz.app.di.Injectable
 import com.audiobookz.nz.app.di.injectViewModel
+import com.audiobookz.nz.app.ui.setTitle
 
 class SubCategoryFragment : Fragment(), Injectable {
     private val args: SubCategoryFragmentArgs by navArgs()
@@ -20,6 +21,7 @@ class SubCategoryFragment : Fragment(), Injectable {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        args.tileName?.let { setTitle(it) }
         val binding = FragmentSubCategoriesBinding.inflate(inflater, container, false)
         context ?: return binding.root
 
@@ -27,6 +29,7 @@ class SubCategoryFragment : Fragment(), Injectable {
 
         binding.subCategoryRecyclerView.adapter = adapter
         adapter.submitList(args.SubCategories?.toMutableList())
+
         return binding.root
     }
 }

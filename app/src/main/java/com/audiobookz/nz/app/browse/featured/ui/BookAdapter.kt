@@ -18,11 +18,11 @@ class CustomViewHolder(val binding: ViewDataBinding) : RecyclerView.ViewHolder(b
 class BookAdapter : ListAdapter<Featured, CustomViewHolder>(Companion) {
     companion object : DiffUtil.ItemCallback<Featured>() {
         override fun areItemsTheSame(oldItem: Featured, newItem: Featured): Boolean {
-            return  oldItem === newItem
+            return oldItem === newItem
         }
 
         override fun areContentsTheSame(oldItem: Featured, newItem: Featured): Boolean {
-            return  oldItem.id == newItem.id
+            return oldItem.id == newItem.id
         }
     }
 
@@ -37,18 +37,21 @@ class BookAdapter : ListAdapter<Featured, CustomViewHolder>(Companion) {
         val currentBook = getItem(position)
         val itemBinding = holder.binding as ListItemFeaturedBookBinding
         itemBinding.audioFeatured = currentBook.audiobook
-        itemBinding.authorsName = currentBook.audiobook.audioengine_data.BookDetail.authors?.joinToString(separator = ",")
+        itemBinding.authorsName =
+            currentBook.audiobook.audioengine_data.BookDetail.authors?.joinToString(separator = ",")
 
         //click event
-        itemBinding.clickListener = createOnOpenBookDetailListener(currentBook.audiobook.id)
+        itemBinding.clickListener =
+            currentBook.audiobook?.id?.let { createOnOpenBookDetailListener(it, currentBook.audiobook.title) }
 
         itemBinding.executePendingBindings()
     }
 
-    //navigatoion component browse fragment to bookDetail
-    private fun createOnOpenBookDetailListener(id: Int): View.OnClickListener {
+    //navigation component browse fragment to bookDetail
+    private fun createOnOpenBookDetailListener(id: Int, title: String): View.OnClickListener {
         return View.OnClickListener {
-            val direction = BrowseFragmentDirections.actionBrowseFragmentToBookDetailFragment(id)
+            val direction =
+                BrowseFragmentDirections.actionBrowseFragmentToBookDetailFragment(id, title)
             it.findNavController().navigate(direction)
         }
     }

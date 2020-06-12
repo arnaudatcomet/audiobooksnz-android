@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/featuredFragment"
         android:name="com.audiobookz.nz.app.browse.featured.ui.FeaturedFragment"
-        android:label="FeaturedFragment"
+        android:label="Featured"
         tools:layout="@layout/fragment_featured"
         />
 </navigation>

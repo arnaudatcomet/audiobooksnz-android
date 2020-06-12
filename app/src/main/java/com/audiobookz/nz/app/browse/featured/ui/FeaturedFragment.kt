@@ -51,19 +51,7 @@ class FeaturedFragment : Fragment(), Injectable {
 
                     binding.progressBar.hide()
                     result.data.let {
-
-                        //callback apdater
-                        val mainAdapter = FeaturedTypeAdapter(result.data!!) {
-
-                            //App.listFeature = it
-                            val navController = Navigation.findNavController(view!!)
-                            navController.navigate(
-                                BrowseFragmentDirections.actionBrowseFragmentToAudiobookListFragment(
-                                    id = 0, listItem = it.toTypedArray()
-                                )
-                            )
-                        }
-
+                        val mainAdapter = FeaturedTypeAdapter(result.data!!)
                         mainRecyclerView.adapter = mainAdapter
                     }
                 }

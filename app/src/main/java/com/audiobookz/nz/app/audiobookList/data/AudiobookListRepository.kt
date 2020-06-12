@@ -16,4 +16,7 @@ class AudiobookListRepository @Inject constructor(private val remoteSource: Audi
     fun bookList(filterID:Int,Lang :String?,Page:Int,PageSize:Int) = resultFetchOnlyLiveData(
         networkCall = { remoteSource.fetchData(filterID,Lang,Page,PageSize) }
         )
+    fun searchList(filter:String,Page:Int,PageSize:Int) = resultFetchOnlyLiveData(
+        networkCall = { remoteSource.searchData(filter,Page,PageSize) }
+        )
 }

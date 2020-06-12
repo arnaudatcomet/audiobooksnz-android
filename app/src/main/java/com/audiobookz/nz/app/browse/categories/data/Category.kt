@@ -30,5 +30,5 @@ class Category(
     val sub_category_count: String,
     @SerializedName("children")
     @Expose
-    val children: List<Category>
+    val children: List<Category>?=null
 ) : Parcelable

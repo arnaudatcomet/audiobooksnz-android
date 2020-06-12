@@ -8,5 +8,5 @@
     <fragment
         android:id="@+id/SignUpEmailFragment"
         android:name="com.audiobookz.nz.app.register.ui.SignUpFragment"
-        android:label="SignUpEmailFragment" />
+        android:label="Sign Up" />
 </navigation>
