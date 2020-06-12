@@ -1,5 +1,6 @@
 package com.audiobookz.nz.app.data
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.map
@@ -34,6 +35,27 @@ fun <T, A> resultLiveData(
             emitSource(source)
         }
 
+    }
+
+fun <T, A> resultMergeMultiNetworkCallLiveData(
+    databaseQuery: () -> LiveData<T>,
+    listNetworkCall: List<suspend () -> Result<A>>,
+    listSaveCallResult: List<suspend (Any) -> Unit>
+): LiveData<Result<T>> =
+    liveData(Dispatchers.IO) {
+        emit(Result.loading<T>())
+        val source = databaseQuery.invoke().map { Result.success(it) }
+        emitSource(source)
+        for((index,networkCall) in listNetworkCall.withIndex())
+        {
+            val responseStatus = networkCall.invoke()
+            if (responseStatus.status == SUCCESS) {
+                listSaveCallResult[index](responseStatus.data!!)
+            } else if (responseStatus.status == ERROR) {
+                emit(Result.error<T>(responseStatus.message!!))
+                emitSource(source)
+            }
+        }
     }
 
 fun <A> resultFetchOnlyLiveData(networkCall: suspend () -> Result<A>): LiveData<Result<A>> =
@@ -72,7 +94,7 @@ fun <A> resultSimpleLiveData(
             emit(Result.success("good"))
         }
         catch (e: Exception) {
-            emit(Result.error(e.message.toString()))
+//            emit(Result.error(e.message.toString()))
         }
 
     }

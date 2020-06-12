@@ -19,7 +19,7 @@ import com.audiobookz.nz.app.worker.SeedDatabaseWorker
  * The Room database for this app
  */
 @Database(entities = [UserData::class,BookRoom::class,SuccessData::class],
-        version = 16, exportSchema = false)
+        version = 19, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 

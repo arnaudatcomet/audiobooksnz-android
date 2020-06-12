@@ -1,10 +1,7 @@
 package com.audiobookz.nz.app.login.data
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 
 
 @Dao
@@ -20,6 +17,9 @@ interface UserDataDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUserData(Userdata: UserData)
+
+    @Query("UPDATE userdata set credit_count = :credit ")
+    suspend fun updateUsersCredit(credit: Int)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCheckMailData(SuccessData: SuccessData)
