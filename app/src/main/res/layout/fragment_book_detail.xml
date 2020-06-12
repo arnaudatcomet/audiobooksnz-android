@@ -115,126 +115,101 @@
                 android:layout_height="1dp"
                 android:layout_marginTop="4dp"
                 android:background="@android:color/black" />
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:layout_gravity="start"
-                android:layout_margin="@dimen/margin_normal"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/writeby"
-                    android:layout_width="match_parent"
+                android:layout_margin="15dp"
+                >
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Written By : "
-                    android:textColor="@color/black"
-                    tools:text="Written By : " />
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/writeby"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Written By : "
+                        android:textColor="@color/black"
+                        tools:text="Written By : " />
+                    <TextView
+                        android:id="@+id/narratedtext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Narrated By : "
+                        android:textColor="@color/black"
+                        tools:text="Narrated By : " />
+                    <TextView
+                        android:id="@+id/publishertext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Publisher : "
+                        android:textColor="@color/black"
+                        tools:text="Publisher : " />
+                    <TextView
+                        android:id="@+id/lengthtext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Length : "
+                        android:textColor="@color/black"
+                        tools:text="Length : " />
+                    <TextView
+                        android:id="@+id/langtext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Language : "
+                        android:textColor="@color/black"
+                        tools:text="Language : " />
 
-                <TextView
-                    android:id="@+id/authorName"
-                    android:layout_width="match_parent"
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{authors}"
-                    android:textColor="@color/black"
-                    tools:text="MR.D" />
+                    android:orientation="vertical"
+                    android:layout_marginLeft="15dp"
+                    >
+                    <TextView
+                        android:id="@+id/authorName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{authors}"
+                        android:textColor="@color/gray"
+                        tools:text="MR.D" />
+                    <TextView
+                        android:id="@+id/narratedvalue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{narrate}"
+                        android:textColor="@color/gray"
+                        tools:text="MR.D" />
+
+                    <TextView
+                        android:id="@+id/publishervalue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{book.bookEngineData.bookDetail.publisher}"
+                        android:textColor="@color/gray"
+                        tools:text="MR.D" />
+
+                    <TextView
+                        android:id="@+id/lengthvalue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{book.bookEngineData.bookDetail.runtime}"
+                        android:textColor="@color/gray"
+                        tools:text="MR.D" />
+
+                    <TextView
+                        android:id="@+id/langvalue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{book.bookEngineData.bookDetail.language}"
+                        android:textColor="@color/gray"
+                        tools:text="MR.D" />
+                </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_margin="@dimen/margin_normal"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/narratedtext"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Narrated By : "
-                    android:textColor="@color/black"
-                    tools:text="Narrated By : " />
-
-                <TextView
-                    android:id="@+id/narratedvalue"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@{narrate}"
-                    android:textColor="@color/black"
-                    tools:text="MR.D" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_margin="@dimen/margin_normal"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/publishertext"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Publisher : "
-                    android:textColor="@color/black"
-                    tools:text="Publisher : " />
-
-                <TextView
-                    android:id="@+id/publishervalue"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@{book.bookEngineData.bookDetail.publisher}"
-                    android:textColor="@color/black"
-                    tools:text="MR.D" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_margin="@dimen/margin_normal"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/lengthtext"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Length : "
-                    android:textColor="@color/black"
-                    tools:text="Length : " />
-
-                <TextView
-                    android:id="@+id/lengthvalue"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@{book.bookEngineData.bookDetail.runtime}"
-                    android:textColor="@color/black"
-                    tools:text="MR.D" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_margin="@dimen/margin_normal"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/langtext"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Language : "
-                    android:textColor="@color/black"
-                    tools:text="Language : " />
-
-                <TextView
-                    android:id="@+id/langvalue"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@{book.bookEngineData.bookDetail.language}"
-                    android:textColor="@color/black"
-                    tools:text="MR.D" />
-            </LinearLayout>
 
             <Button
                 android:layout_width="match_parent"

@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="black">#000000</color>
+    <color name="gray">#A0A0A0</color>
     <!--new color for app-->
     <color name="colorTea">#5E776E</color>
     <color name="colorfacebook">#496AAE</color>
