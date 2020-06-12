@@ -32,6 +32,7 @@ class ProfileFragment : Fragment(), Injectable {
     var fullnameTxt: TextView? = null
     var emailTxt: TextView? = null
     var profileImg: ImageView? = null
+    var creditText: TextView?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,7 +66,7 @@ class ProfileFragment : Fragment(), Injectable {
         emailTxt = view.findViewById(R.id.txtProfile_email)
         fullnameTxt = view.findViewById(R.id.txtProfile_user)
         profileImg = view.findViewById(R.id.imgProfile1)
-
+        creditText = view.findViewById(R.id.txtBookCreditsValue)
 
         FaceBtn.setOnClickListener { View ->
             Toast.makeText(getActivity(), "facebook", Toast.LENGTH_SHORT).show()
@@ -117,18 +118,33 @@ class ProfileFragment : Fragment(), Injectable {
         viewModel.queryProfile?.observe(viewLifecycleOwner, Observer { result ->
             when (result.status) {
                 Result.Status.SUCCESS -> {
-
                     fullnameTxt?.text = result.data?.full_name
                     emailTxt?.text = result.data?.email
-
-
                     profileImg?.let {
                         Glide.with(this)
                             .load(result.data?.image_url)
                             .into(it)
                     }
-
-
+                    if(result.data?.credit_count!=null){
+                        creditText?.text = result.data?.credit_count.toString()
+                    }
+                }
+                Result.Status.LOADING -> Log.d("TAG", "loading")
+                Result.Status.ERROR -> {
+                    Toast.makeText(activity, result.message, Toast.LENGTH_SHORT).show();
+                }
+            }
+        })
+        viewModel.queryProfile?.observe(viewLifecycleOwner, Observer { result ->
+            when (result.status) {
+                Result.Status.SUCCESS -> {
+                    fullnameTxt?.text = result.data?.full_name
+                    emailTxt?.text = result.data?.email
+                    profileImg?.let {
+                        Glide.with(this)
+                            .load(result.data?.image_url)
+                            .into(it)
+                    }
                 }
                 Result.Status.LOADING -> Log.d("TAG", "loading")
                 Result.Status.ERROR -> {

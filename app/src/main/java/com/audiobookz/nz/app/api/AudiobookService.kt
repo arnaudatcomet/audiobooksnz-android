@@ -83,6 +83,11 @@ interface AudiobookService {
     suspend fun getProfile(
     ): Response<UserData>
 
+    @GET("users/active-credit")
+    @Headers("No-Authentication: false")
+    suspend fun getCredit(
+    ): Response<UserData>
+
     @Multipart
     @POST("users/modify")
     @Headers("No-Authentication: false")

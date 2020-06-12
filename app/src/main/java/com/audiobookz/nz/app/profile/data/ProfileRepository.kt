@@ -1,12 +1,16 @@
 package com.audiobookz.nz.app.profile.data
 
 import com.audiobookz.nz.app.api.SharedPreferencesService
+import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.data.resultLiveData
+import com.audiobookz.nz.app.data.resultMergeMultiNetworkCallLiveData
 import com.audiobookz.nz.app.data.resultSimpleLiveData
+import com.audiobookz.nz.app.login.data.UserData
 
 import com.audiobookz.nz.app.login.data.UserDataDao
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import java.util.Arrays.asList
 import javax.inject.Inject
 
 class ProfileRepository @Inject constructor(
@@ -14,11 +18,13 @@ class ProfileRepository @Inject constructor(
     private val remoteSource: ProfileRemoteDataSource,
     private val sharePref: SharedPreferencesService
 ) {
-    fun queryProfile() = resultLiveData(
+
+    fun queryProfile() = resultMergeMultiNetworkCallLiveData(
         databaseQuery = {dao.getUserData()},
-        networkCall = {remoteSource.sendToken()},
-        saveCallResult = {dao.insertUserData(it)},
-        nukeAudiobookList = {}
+        listNetworkCall = listOf(suspend{ remoteSource.sendToken() },{remoteSource.getCredit()}),
+        listSaveCallResult =  listOf<suspend (Any) -> Unit>({dao.insertUserData(it as UserData)},{ (it as UserData).let { data->data.credit_count }?.let { credit ->
+            dao.updateUsersCredit(credit)
+        } })
     )
 
     fun destroyProfile() = sharePref.deleteToken()
