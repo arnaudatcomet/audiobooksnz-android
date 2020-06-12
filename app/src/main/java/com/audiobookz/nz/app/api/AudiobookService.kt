@@ -39,6 +39,13 @@ interface AudiobookService {
         @Query("filter[language][]") pageLanguage: String?="English"
     ): Response<List<Audiobook>>
 
+    @GET("audiobooks")
+    suspend fun getSearchList(
+        @Query("filter[search_data][like]") filter: String? = null,
+        @Query("page") page: Int? = null,
+        @Query("per-page") pageSize: Int? = null
+    ): Response<List<Audiobook>>
+
     @FormUrlEncoded
     @POST("users/login")
     suspend fun postEmailLogin(

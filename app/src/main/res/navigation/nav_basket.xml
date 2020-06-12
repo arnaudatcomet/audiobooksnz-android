@@ -8,6 +8,6 @@
     <fragment
         android:id="@+id/basketFragment"
         android:name="com.audiobookz.nz.app.basket.ui.BasketFragment"
-        android:label="BasketFragment"
+        android:label="Basket"
         tools:layout="@layout/fragment_basket"/>
 </navigation>

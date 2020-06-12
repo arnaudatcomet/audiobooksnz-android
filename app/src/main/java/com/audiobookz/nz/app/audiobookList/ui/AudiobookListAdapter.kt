@@ -50,10 +50,10 @@ class AudiobookListAdapter : ListAdapter<Audiobook, AudiobookListAdapter.ViewHol
 }
 private class DiffCallback : DiffUtil.ItemCallback<Audiobook>() {
     override fun areItemsTheSame(oldItem: Audiobook, newItem: Audiobook): Boolean {
-        return oldItem.id == newItem.id
+        return oldItem === newItem
     }
 
     override fun areContentsTheSame(oldItem: Audiobook, newItem: Audiobook): Boolean {
-        return oldItem == newItem
+        return oldItem.id == newItem.id
     }
 }

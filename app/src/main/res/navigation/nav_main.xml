@@ -13,11 +13,24 @@
     <fragment
         android:id="@+id/AudiobookListFragment"
         android:name="com.audiobookz.nz.app.audiobookList.ui.AudiobookListFragment"
-        android:label="AudiobookListFragment"
+        android:label="List"
         tools:layout="@layout/fragment_audiobook_list">
         <argument
             android:name="id"
             app:argType="integer" />
+
+        <argument
+            android:name="titleList"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null"/>
+
+        <!--search title and author-->
+        <argument
+            android:name="keyword"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null"/>
 
         <!--create arg listFeatured nullable to store data from FeaturedTypeAdapter-->
         <argument
@@ -35,13 +48,18 @@
     <fragment
         android:id="@+id/subCategoryFragment"
         android:name="com.audiobookz.nz.app.browse.categories.ui.SubCategoryFragment"
-        android:label="SubCategoryFragment"
+        android:label="Category"
         tools:layout="@layout/fragment_sub_categories">
         <argument
             android:name="SubCategories"
             app:argType="com.audiobookz.nz.app.browse.categories.data.Category[]"
             app:nullable="true"
             android:defaultValue="@null"/>
+        <argument
+            android:name="tileName"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
         <action
             android:id="@+id/action_subCategoryFragment_to_AudiobookListFragment"
             app:destination="@id/AudiobookListFragment" />
@@ -69,7 +87,7 @@
     <fragment
         android:id="@+id/bookDetailFragment"
         android:name="com.audiobookz.nz.app.bookdetail.ui.BookDetailFragment"
-        android:label="BookDetailFragment"
+        android:label="Book Detail"
         tools:layout="@layout/fragment_book_detail">
 
         <argument
@@ -84,7 +102,7 @@
     <fragment
         android:id="@+id/me"
         android:name="com.audiobookz.nz.app.profile.ui.ProfileFragment"
-        android:label="ProfileFragment"
+        android:label="Profile"
         tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_me_to_editProfileFragment"
@@ -95,5 +113,5 @@
         android:id="@+id/editProfileFragment"
         android:name="com.audiobookz.nz.app.profile.ui.EditProfileFragment"
         tools:layout="@layout/fragment_edit_profile"
-        android:label="EditProfileFragment" />
+        android:label="Profile" />
 </navigation>

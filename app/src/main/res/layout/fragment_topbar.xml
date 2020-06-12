@@ -4,8 +4,7 @@
     <data>
         <variable
             name="count"
-            type="String"
-            />
+            type="String" />
         <variable
             name="openBasket"
             type="android.view.View.OnClickListener"/>
@@ -19,14 +18,13 @@
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:elevation="0dp"
-            >
+            app:elevation="0dp">
+
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/topAppBar"
                 style="@style/Widget.MaterialComponents.Toolbar.Primary"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:menu="@menu/top_app_bar">
+                android:layout_height="?attr/actionBarSize">
 
                 <TextView
                     android:id="@+id/mainTitle"
@@ -38,6 +36,7 @@
                     android:textSize="@dimen/font_size_big" />
 
             </com.google.android.material.appbar.MaterialToolbar>
+
             <TextView
                 android:id="@+id/test"
                 android:layout_width="wrap_content"
@@ -47,8 +46,7 @@
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/font_size_big"
                 android:visibility="gone"
-                android:onClick="@{openBasket}"
-                />
+                android:onClick="@{openBasket}" />
         </com.google.android.material.appbar.AppBarLayout>
     </LinearLayout>
 </layout>

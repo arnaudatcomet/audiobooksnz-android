@@ -19,11 +19,7 @@ class ActivityBasket : AppCompatActivity(), HasSupportFragmentInjector {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_basket)
-        supFrag(supportFragmentManager)
     }
 
-    fun supFrag(supportFragmentManager: FragmentManager) {
-        val fragsup = supportFragmentManager
-    }
 
 }

@@ -18,7 +18,7 @@ import com.audiobookz.nz.app.util.FEATURED_BOOK_SHOW
 import kotlinx.android.synthetic.main.list_item_featured.view.*
 
 
-class FeaturedTypeAdapter(val resultData: Map<String, List<Featured>>, val OpenbookList :(List<Featured>)-> Unit ) :
+class FeaturedTypeAdapter(val resultData: Map<String, List<Featured>>) :
     RecyclerView.Adapter<FeaturedTypeAdapter.ViewHolder>() {
 
     class ViewHolder(view: ListItemFeaturedBinding) :
@@ -44,11 +44,21 @@ class FeaturedTypeAdapter(val resultData: Map<String, List<Featured>>, val Openb
         holder.rvMain.typeName.text = resultData.keys.toTypedArray()[position]
         bookAdapter.submitList(currentFeaturedList?.take(FEATURED_BOOK_SHOW))
 
-        //event click
-        holder.rvMain.btnShowAll.setOnClickListener { OpenbookList (currentFeaturedList!!) }
+        holder.rvMain.openBookList = openBookList(currentFeaturedList!!.toTypedArray(),currentFeaturedKey)
 
         holder.itemView.nestRecyclerView.apply {
             adapter = bookAdapter
+        }
+    }
+
+    private fun openBookList(listFeature:Array<Featured>, title:String): View.OnClickListener {
+        return View.OnClickListener {
+            val direction = BrowseFragmentDirections.actionBrowseFragmentToAudiobookListFragment(
+                id = 0,
+                listItem = listFeature,
+                titleList = title
+            )
+            it.findNavController().navigate(direction)
         }
     }
 }

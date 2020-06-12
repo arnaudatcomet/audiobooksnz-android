@@ -38,7 +38,6 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector,Injectable 
     private lateinit var BottomNavigation: BottomNavigationView
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
-    val fm: FragmentManager = supportFragmentManager
     override fun supportFragmentInjector() = dispatchingAndroidInjector
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -88,14 +87,5 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector,Injectable 
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.bottomNavigation.setupWithNavController(navController)
 
-    }
-    //back stack for fragment
-    override fun onBackPressed() {
-        var count = fm.backStackEntryCount
-        if (count == 0) {
-            super.onBackPressed()
-        } else {
-            fm.popBackStack()
-        }
     }
 }

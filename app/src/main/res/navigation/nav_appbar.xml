@@ -8,7 +8,6 @@
     <fragment
         android:id="@+id/topbar"
         android:name="com.audiobookz.nz.app.appbar.AppbarFragment"
-        android:label="fragment_topbar"
         tools:layout="@layout/fragment_topbar" >
     </fragment>
 </navigation>
