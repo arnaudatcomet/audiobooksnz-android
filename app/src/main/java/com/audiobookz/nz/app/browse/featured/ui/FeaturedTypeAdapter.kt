@@ -44,7 +44,8 @@ class FeaturedTypeAdapter(val resultData: Map<String, List<Featured>>) :
         holder.rvMain.typeName.text = resultData.keys.toTypedArray()[position]
         bookAdapter.submitList(currentFeaturedList?.take(FEATURED_BOOK_SHOW))
 
-        holder.rvMain.openBookList = openBookList(currentFeaturedList!!.toTypedArray(),currentFeaturedKey)
+        holder.rvMain.openBookList =
+            currentFeaturedList?.toTypedArray()?.let { openBookList(it,currentFeaturedKey) }
 
         holder.itemView.nestRecyclerView.apply {
             adapter = bookAdapter

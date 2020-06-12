@@ -9,5 +9,5 @@ import kotlinx.android.parcel.Parcelize
 class BookEngineData(
     @SerializedName("audiobook")
     @Expose
-    val BookDetail: BookDetail
+    val BookDetail: BookDetail?
 ) : Parcelable

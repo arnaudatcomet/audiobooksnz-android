@@ -1,6 +1,7 @@
 package com.audiobookz.nz.app.audiobookList.ui
 
 import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -43,54 +44,64 @@ class AudiobookListFragment : Fragment(), Injectable {
     var defaultLang: String = "English"
     private val adapter = AudiobookListAdapter()
     lateinit var binding: FragmentAudiobookListBinding
+    private lateinit var fragmentStatus: String
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        fragmentStatus = "onAttach"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        args.titleList?.let { setTitle(it) }
-        viewModel = injectViewModel(viewModelFactory)
-        binding = FragmentAudiobookListBinding.inflate(inflater, container, false)
-        context ?: return binding.root
+        if (fragmentStatus == "onAttach") {
+            fragmentStatus = "onViewCreated"
 
-        //set up selectLangDialog
-        activity?.let {
-            ArrayAdapter.createFromResource(
-                it,
-                R.array.Languages,
-                android.R.layout.simple_spinner_item
-            ).also { adapter ->
+            args.titleList?.let { setTitle(it) }
+            viewModel = injectViewModel(viewModelFactory)
+            binding = FragmentAudiobookListBinding.inflate(inflater, container, false)
+            context ?: return binding.root
 
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                binding.selectLangDialog.adapter = adapter
+            //set up selectLangDialog
+            activity?.let {
+                ArrayAdapter.createFromResource(
+                    it,
+                    R.array.Languages,
+                    android.R.layout.simple_spinner_item
+                ).also { adapter ->
+
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    binding.selectLangDialog.adapter = adapter
+                }
             }
+
+            binding.recyclerViewCatecoryDetail.layoutManager =
+                GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
+            binding.recyclerViewCatecoryDetail.adapter = adapter
+
+            when {
+                //open by showAll
+                args.listItem != null -> {
+                    binding.progressBarDetail.hide()
+                    binding.selectLangDialog.show()
+                    adapter.submitList(args.listItem!!.map { featured -> featured.audiobook })
+                }
+                //open by category
+                args.id != 0 -> {
+                    binding.selectLangDialog.show()
+                    viewModel.fetchCategory(args.id, 1, CATEGORY_PAGE_SIZE, defaultLang)
+                    subscribeUi(binding, adapter)
+                }
+                //open by search
+                else -> {
+                    args.keyword?.let { viewModel.fetchSearch(it, 1, CATEGORY_PAGE_SIZE) }
+                    subscribeUi(binding, adapter)
+                }
+            }
+
+            return binding.root
         }
-
-        binding.recyclerViewCatecoryDetail.layoutManager =
-            GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
-        binding.recyclerViewCatecoryDetail.adapter = adapter
-
-        when {
-            //open by showAll
-            args.listItem != null -> {
-                binding.progressBarDetail.hide()
-                binding.selectLangDialog.show()
-                adapter.submitList(args.listItem!!.map { featured -> featured.audiobook })
-            }
-            //open by category
-            args.id != 0 -> {
-                binding.selectLangDialog.show()
-                viewModel.fetchCategory(args.id, 1, CATEGORY_PAGE_SIZE, defaultLang)
-                subscribeUi(binding, adapter)
-            }
-            //open by search
-            else -> {
-                args.keyword?.let { viewModel.fetchSearch(it, 1, CATEGORY_PAGE_SIZE) }
-                subscribeUi(binding, adapter)
-            }
-        }
-
         return binding.root
     }
 
@@ -111,9 +122,9 @@ class AudiobookListFragment : Fragment(), Injectable {
             ) {
 
                 if (args.id != 0 && defaultLang != spinnerLang.selectedItem.toString()) {
-                    binding.progressBarDetail.show()
                     defaultLang = spinnerLang.selectedItem.toString()
                     viewModel.fetchCategory(args.id, 1, CATEGORY_PAGE_SIZE, defaultLang)
+                    subscribeUi(binding, adapter)
                 } else {
                     //change lang in show all
                 }

@@ -13,6 +13,7 @@ import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.audiobookz.nz.app.MainActivity
 import com.audiobookz.nz.app.R
@@ -29,10 +30,10 @@ class ProfileFragment : Fragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: EditProfileViewModel
-    var fullnameTxt: TextView? = null
+    var fullNameTxt: TextView? = null
     var emailTxt: TextView? = null
     var profileImg: ImageView? = null
-    var creditText: TextView?=null
+    var creditTxt: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,43 +56,42 @@ class ProfileFragment : Fragment(), Injectable {
     // populate the views now that the layout has been inflated
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var FaceBtn = view.findViewById<Button>(R.id.btnFacebook)
-        var OutBtn = view.findViewById<Button>(R.id.signOut)
-        var PlayBtn = view.findViewById<ImageButton>(R.id.imgPlay)
-        var TwitterBtn = view.findViewById<Button>(R.id.btnTwitter)
-        var BugTxt = view.findViewById<TextView>(R.id.txtBugReport)
-        var CustomeCareTxt = view.findViewById<TextView>(R.id.txtEmailCustomer)
-        var FAQTxt = view.findViewById<TextView>(R.id.txtfaq)
-        var ProfileCard = view.findViewById<CardView>(R.id.CardProfile)
+        var faceBtn = view.findViewById<Button>(R.id.btnFacebook)
+        var outBtn = view.findViewById<Button>(R.id.signOut)
+        var playBtn = view.findViewById<ImageButton>(R.id.imgPlay)
+        var twitterBtn = view.findViewById<Button>(R.id.btnTwitter)
+        var bugTxt = view.findViewById<TextView>(R.id.txtBugReport)
+        var customerCareTxt = view.findViewById<TextView>(R.id.txtEmailCustomer)
+        var faqTxt = view.findViewById<TextView>(R.id.txtfaq)
+        var profileCard = view.findViewById<CardView>(R.id.CardProfile)
         emailTxt = view.findViewById(R.id.txtProfile_email)
-        fullnameTxt = view.findViewById(R.id.txtProfile_user)
+        fullNameTxt = view.findViewById(R.id.txtProfile_user)
         profileImg = view.findViewById(R.id.imgProfile1)
-        creditText = view.findViewById(R.id.txtBookCreditsValue)
+        creditTxt = view.findViewById(R.id.txtBookCreditsValue)
 
-        FaceBtn.setOnClickListener { View ->
-            Toast.makeText(getActivity(), "facebook", Toast.LENGTH_SHORT).show()
+        faceBtn.setOnClickListener { View ->
+            Toast.makeText(activity, "facebook", Toast.LENGTH_SHORT).show()
         }
-        TwitterBtn.setOnClickListener { View ->
-            Toast.makeText(getActivity(), "twitter", Toast.LENGTH_SHORT).show()
+        twitterBtn.setOnClickListener { View ->
+            Toast.makeText(activity, "twitter", Toast.LENGTH_SHORT).show()
         }
-        BugTxt.setOnClickListener { view ->
+        bugTxt.setOnClickListener {
             val intent = Intent(Intent.ACTION_SENDTO)
             intent.data = Uri.parse("mailto:appbugs@audiobooksnz.co.nz" + "?subject=Bug Report")
             startActivity(intent)
 
         }
-        CustomeCareTxt.setOnClickListener { view ->
+        customerCareTxt.setOnClickListener {
             val intent = Intent(Intent.ACTION_SENDTO)
             intent.data = Uri.parse("mailto:support@audiobooksnz.co.nz" + "?subject=Customers Care")
             startActivity(intent)
         }
-        FAQTxt.setOnClickListener { view ->
-            //intent to faqprofilefragment
-          //  var NewFragment: MainActivity = activity as MainActivity
-         //   NewFragment.ChangeToFAQFragment()
+        faqTxt.setOnClickListener {
+            val navController = Navigation.findNavController(view!!)
+            navController.navigate(ProfileFragmentDirections.actionMeToFaqProfileFragment())
         }
 
-        OutBtn.setOnClickListener { view ->
+        outBtn.setOnClickListener {
 
             viewModel.destroyProfile
 
@@ -104,10 +104,10 @@ class ProfileFragment : Fragment(), Injectable {
             activity?.finish()
         }
 
-        PlayBtn.setOnClickListener { view ->
-            Toast.makeText(getActivity(), "play", Toast.LENGTH_SHORT).show()
+        playBtn.setOnClickListener {
+            Toast.makeText(activity, "play", Toast.LENGTH_SHORT).show()
         }
-        ProfileCard.setOnClickListener { view ->
+        profileCard.setOnClickListener {
             val direction = ProfileFragmentDirections.actionMeToEditProfileFragment()
             view.findNavController().navigate(direction)
         }
@@ -118,15 +118,15 @@ class ProfileFragment : Fragment(), Injectable {
         viewModel.queryProfile?.observe(viewLifecycleOwner, Observer { result ->
             when (result.status) {
                 Result.Status.SUCCESS -> {
-                    fullnameTxt?.text = result.data?.full_name
+                    fullNameTxt?.text = result.data?.full_name
                     emailTxt?.text = result.data?.email
                     profileImg?.let {
                         Glide.with(this)
                             .load(result.data?.image_url)
                             .into(it)
                     }
-                    if(result.data?.credit_count!=null){
-                        creditText?.text = result.data?.credit_count.toString()
+                    if (result.data?.credit_count != null) {
+                        creditTxt?.text = result.data?.credit_count.toString()
                     }
                 }
                 Result.Status.LOADING -> Log.d("TAG", "loading")
@@ -138,7 +138,7 @@ class ProfileFragment : Fragment(), Injectable {
         viewModel.queryProfile?.observe(viewLifecycleOwner, Observer { result ->
             when (result.status) {
                 Result.Status.SUCCESS -> {
-                    fullnameTxt?.text = result.data?.full_name
+                    fullNameTxt?.text = result.data?.full_name
                     emailTxt?.text = result.data?.email
                     profileImg?.let {
                         Glide.with(this)

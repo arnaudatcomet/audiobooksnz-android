@@ -38,5 +38,5 @@ class Audiobook(
     val avg_rating:String,
     @SerializedName("audioengine_data")
     @Expose
-    val audioengine_data: BookEngineData
+    val audioengine_data: BookEngineData?
 ) : Parcelable

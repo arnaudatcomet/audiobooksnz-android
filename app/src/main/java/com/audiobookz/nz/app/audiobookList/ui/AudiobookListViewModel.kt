@@ -12,8 +12,8 @@ import javax.inject.Inject
 class AudiobookListViewModel @Inject constructor(private val repository: AudiobookListRepository) :
     ViewModel() {
     // Need to inject the data we want
-    var bookListResult = MediatorLiveData<Result<List<Audiobook>>>()
-    var searchListResult = MediatorLiveData<Result<List<Audiobook>>>()
+    val bookListResult = MediatorLiveData<Result<List<Audiobook>>>()
+    val searchListResult = MediatorLiveData<Result<List<Audiobook>>>()
     var isLatest: Boolean? = false
 
     fun fetchCategory(filterId: Int, page: Int, pageSize: Int, lang: String) {
@@ -22,7 +22,7 @@ class AudiobookListViewModel @Inject constructor(private val repository: Audiobo
                 if (value.data.size < CATEGORY_PAGE_SIZE) {
                     isLatest = true
                 }
-                bookListResult.value = checkReloadData(bookListResult.value,value)
+                bookListResult.value = value
             }
         }
     }
@@ -33,24 +33,20 @@ class AudiobookListViewModel @Inject constructor(private val repository: Audiobo
                 if (value.data.size < CATEGORY_PAGE_SIZE) {
                     isLatest = true
                 }
-                searchListResult.value = checkReloadData(searchListResult.value,value)
+                searchListResult.value = value
             }
         }
     }
+//    fun getBestResult(oldResult:Result<List<Audiobook>>?,newResult:Result<List<Audiobook>>): Result<List<Audiobook>>? {
+////        if(oldResult?.data?.get(0)?.id==newResult.data?.get(0)?.id){
+////            return oldResult
+////        }
+//        if (oldResult!=null&&oldResult.data?.size!=newResult.data?.size)
+//        {
+//            return oldResult
+//        }
+//        return newResult
+//    }
 
-    private fun checkReloadData(
-        oldResult: Result<List<Audiobook>>?,
-        newResult: Result<List<Audiobook>>
-    ): Result<List<Audiobook>>? {
-        if (oldResult?.data?.get(0)?.id == newResult.data?.get(0)?.id) {
-            return oldResult
-        }
-        var bestReload = oldResult.let { list ->
-            newResult.data?.let { it1 -> list?.data?.plus(it1) }
-        }
-        if (bestReload != null) {
-            return Result.success(bestReload);
-        }
-        return newResult
-    }
+
 }

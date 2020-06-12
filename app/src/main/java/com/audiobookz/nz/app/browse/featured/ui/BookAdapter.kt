@@ -38,7 +38,7 @@ class BookAdapter : ListAdapter<Featured, CustomViewHolder>(Companion) {
         val itemBinding = holder.binding as ListItemFeaturedBookBinding
         itemBinding.audioFeatured = currentBook.audiobook
         itemBinding.authorsName =
-            currentBook.audiobook.audioengine_data.BookDetail.authors?.joinToString(separator = ",")
+            currentBook.audiobook?.audioengine_data?.BookDetail?.authors?.joinToString(separator = ",")
 
         //click event
         itemBinding.clickListener =

@@ -107,6 +107,9 @@
         <action
             android:id="@+id/action_me_to_editProfileFragment"
             app:destination="@id/editProfileFragment" />
+        <action
+            android:id="@+id/action_me_to_faqProfileFragment"
+            app:destination="@id/faqProfileFragment" />
     </fragment>
 
     <fragment
@@ -114,4 +117,9 @@
         android:name="com.audiobookz.nz.app.profile.ui.EditProfileFragment"
         tools:layout="@layout/fragment_edit_profile"
         android:label="Profile" />
+    <fragment
+        android:id="@+id/faqProfileFragment"
+        android:name="com.audiobookz.nz.app.profile.ui.FaqProfileFragment"
+        android:label="FAQ"
+        tools:layout="@layout/fragment_faq_profile" />
 </navigation>
