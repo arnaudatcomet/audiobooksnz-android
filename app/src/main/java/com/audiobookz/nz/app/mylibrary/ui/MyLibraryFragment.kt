@@ -1,42 +1,33 @@
-package com.audiobookz.nz.app.browse
+package com.audiobookz.nz.app.mylibrary.ui
 
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
 import androidx.navigation.Navigation
-import com.audiobookz.nz.app.R
-import com.audiobookz.nz.app.audiobookList.ui.AudiobookListViewModel
-import com.audiobookz.nz.app.binding.TabLayoutAdapter
-import com.audiobookz.nz.app.browse.categories.ui.CategoryFragment
-import com.audiobookz.nz.app.browse.featured.ui.FeaturedFragment
-import com.audiobookz.nz.app.data.Result
-import com.audiobookz.nz.app.databinding.FragmentAudiobookListBinding
-import com.audiobookz.nz.app.di.Injectable
-import com.audiobookz.nz.app.di.injectViewModel
-import com.audiobookz.nz.app.ui.hide
-import com.audiobookz.nz.app.ui.show
-import com.audiobookz.nz.app.util.CATEGORY_PAGE_SIZE
-import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_browse.view.*
-import javax.inject.Inject
 
-class BrowseFragment : Fragment(), Injectable {
+import com.audiobookz.nz.app.R
+import com.audiobookz.nz.app.binding.TabLayoutAdapter
+import com.audiobookz.nz.app.browse.BrowseFragmentDirections
+import kotlinx.android.synthetic.main.fragment_mylibrary.view.*
+
+class MyLibraryFragment : Fragment() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        val rootView = inflater.inflate(R.layout.fragment_browse, container, false)
+        var rootView = inflater.inflate(R.layout.fragment_mylibrary, container, false)
 
         val adapter = TabLayoutAdapter(childFragmentManager)
-        adapter.addFragment(FeaturedFragment(), "Featured")
-        adapter.addFragment(CategoryFragment(), "Category")
-        rootView.tab_view_pager.adapter = adapter
-        rootView.tab_browse.setupWithViewPager(rootView.tab_view_pager)
+        adapter.addFragment(CloudLibraryFragment(), "Cloud")
+        adapter.addFragment(DeviceLibraryFragment(), "Device")
+        rootView.tab_view_pager_library.adapter = adapter
+        rootView.tab_my_library.setupWithViewPager(rootView.tab_view_pager_library)
         setHasOptionsMenu(true)
 
         return rootView
@@ -56,7 +47,7 @@ class BrowseFragment : Fragment(), Injectable {
 
                 val navController = Navigation.findNavController(view!!)
                 navController.navigate(
-                    BrowseFragmentDirections.actionBrowseFragmentToAudiobookListFragment(
+                    MyLibraryFragmentDirections.actionMylibraryToAudiobookListFragment(
                         id = 0, keyword = query, titleList = "\"$query\""
                     )
                 )
@@ -68,8 +59,4 @@ class BrowseFragment : Fragment(), Injectable {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    companion object {
-        fun newInstance(): BrowseFragment =
-            BrowseFragment()
-    }
 }

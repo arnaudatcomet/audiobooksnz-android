@@ -7,6 +7,7 @@ import com.audiobookz.nz.app.browse.categories.data.Category
 import com.audiobookz.nz.app.browse.featured.data.Featured
 import com.audiobookz.nz.app.login.data.SuccessData
 import com.audiobookz.nz.app.login.data.UserData
+import com.audiobookz.nz.app.mylibrary.data.CloudBook
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -124,5 +125,13 @@ interface AudiobookService {
         @Query("page") page: Int? = null,
         @Query("per-page") pageSize: Int? = null
     ): Response<List<BookReview>>
+
+    @GET("users/audiobooks")
+    @Headers("No-Authentication: false")
+    suspend fun getCloudBook(
+        @Query("expand") expand: String ="audiobook",
+        @Query("page") page: Int? = null,
+        @Query("per-page") pageSize: Int? = null
+    ): Response<List<CloudBook>>
 
 }

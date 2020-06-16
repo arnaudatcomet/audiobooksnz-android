@@ -12,8 +12,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.audiobookz.nz.app.R
+import com.audiobookz.nz.app.binding.TabLayoutAdapter
 import com.audiobookz.nz.app.bookdetail.data.BookDetail
-import com.audiobookz.nz.app.browse.BrowseFragment.ViewPagerAdapter
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.databinding.FragmentBookDetailBinding
 import com.audiobookz.nz.app.di.Injectable
@@ -64,7 +64,7 @@ class BookDetailFragment : Fragment(), Injectable {
 
         binding.viewModel = viewModel
 
-        val adapter = ReviewViewPagerAdapter(childFragmentManager)
+        val adapter = TabLayoutAdapter(childFragmentManager)
 
         subscribeUi(binding, adapter)
 
@@ -75,7 +75,7 @@ class BookDetailFragment : Fragment(), Injectable {
 
     private fun subscribeUi(
         binding: FragmentBookDetailBinding,
-        adapter: ReviewViewPagerAdapter
+        adapter: TabLayoutAdapter
     ) {
 
         viewModel.bookData.observe(viewLifecycleOwner, Observer { result ->
@@ -142,30 +142,6 @@ class BookDetailFragment : Fragment(), Injectable {
             binding.narrate =
                 bookDetail?.BookEngineData?.BookDetail?.narrators?.joinToString(separator = ",")
 
-        }
-    }
-
-    internal class ReviewViewPagerAdapter(fragmentManager: FragmentManager) :
-        FragmentPagerAdapter(
-            fragmentManager,
-            FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
-        ) {
-        private val fragments: ArrayList<Fragment> = ArrayList<Fragment>()
-        private val titles: ArrayList<String> = ArrayList<String>()
-
-        override fun getItem(position: Int): Fragment {
-            return fragments[position]
-        }
-
-        override fun getCount(): Int = fragments.size
-
-
-        override fun getPageTitle(i: Int): CharSequence? = titles[i]
-
-
-        fun addFragment(fragment: Fragment, title: String) {
-            fragments.add(fragment)
-            titles.add(title)
         }
     }
 

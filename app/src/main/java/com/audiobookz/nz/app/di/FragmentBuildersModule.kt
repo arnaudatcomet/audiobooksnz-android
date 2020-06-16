@@ -14,6 +14,9 @@ import com.audiobookz.nz.app.browse.categories.ui.SubCategoryFragment
 import com.audiobookz.nz.app.browse.featured.ui.FeaturedFragment
 import com.audiobookz.nz.app.login.ui.ForgotPasswordFragment
 import com.audiobookz.nz.app.login.ui.LoginEmailFragment
+import com.audiobookz.nz.app.mylibrary.ui.CloudLibraryFragment
+import com.audiobookz.nz.app.mylibrary.ui.DeviceLibraryFragment
+import com.audiobookz.nz.app.mylibrary.ui.MyLibraryFragment
 import com.audiobookz.nz.app.profile.ui.EditProfileFragment
 import com.audiobookz.nz.app.profile.ui.ProfileFragment
 import com.audiobookz.nz.app.register.ui.SignUpFragment
@@ -71,6 +74,15 @@ abstract class FragmentBuildersModule {
     
     @ContributesAndroidInjector
     abstract fun contributeReviewFragment(): ReviewsFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeMyLibraryFragment(): MyLibraryFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeCloudLibraryFragment(): CloudLibraryFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeDeviceLibraryFragment(): DeviceLibraryFragment
 
 //
 //    @ContributesAndroidInjector
