@@ -31,9 +31,9 @@ class CloudLibraryAdapter(private val context: Activity) :
 
     }
 
-    private fun openToDownload(id: Int): View.OnClickListener {
+    private fun openToDownload(title: String, url: String): View.OnClickListener {
         return View.OnClickListener {
-            val direction = MyLibraryFragmentDirections.actionMylibraryToBookDownloadFragment(id)
+            val direction = MyLibraryFragmentDirections.actionMylibraryToBookDownloadFragment(title, url)
             it.findNavController().navigate(direction)
         }
     }
@@ -53,9 +53,9 @@ class CloudLibraryAdapter(private val context: Activity) :
                         it.findNavController().navigate(direction)
                     }
                     R.id.review -> {
-                        val direction =
-                            MyLibraryFragmentDirections.actionMylibraryToRateAndReviewFragment(id)
-                        it.findNavController().navigate(direction)
+//                        val direction =
+//                            MyLibraryFragmentDirections.actionMylibraryToRateAndReviewFragment(id)
+//                        it.findNavController().navigate(direction)
                     }
                     R.id.share -> {
                         intentShareText( context, //getString(R.string.share_lego_set, set.name, set.url ?: "")
@@ -69,10 +69,13 @@ class CloudLibraryAdapter(private val context: Activity) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val cloudBook = getItem(position)
+        val bookTitle = cloudBook.audiobook?.title
 
         holder.apply {
-            cloudBook.audiobook?.id?.let { openToDownload(it) }
-                ?.let { bind(cloudBook, it, openOptionMenu(cloudBook.audiobook.id, cloudBook.audiobook.title)) }
+            bookTitle?.let { openToDownload(it, cloudBook.audiobook?.cover_image) }?.let {
+                bind(cloudBook,
+                    it, openOptionMenu(cloudBook.audiobook?.id, bookTitle))
+            }
             itemView.tag = cloudBook
         }
     }

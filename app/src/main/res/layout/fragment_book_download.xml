@@ -1,28 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".mylibrary.ui.BookDownloadFragment">
+<layout>
 
-    <RelativeLayout
+    <data>
+
+        <variable
+            name="urlImage"
+            type="String" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:context=".mylibrary.ui.BookDownloadFragment">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/imgPlay"
+        <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginRight="20dp"
-            android:src="@drawable/multimedia"
-            app:backgroundTint="@color/colorTea"
-            app:elevation="0dp"
-            app:fabSize="mini"
-            app:maxImageSize="18dp"
-            app:tint="#FFFFFF" />
-    </RelativeLayout>
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="15dp">
 
-</FrameLayout>
+            <ImageView
+                android:id="@+id/imgCardBookDownload"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:padding="10dp"
+                android:scaleType="centerCrop"
+                app:imageFromUrl="@{urlImage}" />
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/txtNameBookDownload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:textAppearance="?attr/textAppearanceHeadline6"
+            android:textColor="@color/colorTea"
+            android:textSize="@dimen/font_size_normal" />
+
+        <Button
+            android:id="@+id/btnDownload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:backgroundTint="@android:color/background_dark"
+            android:text="Download" />
+
+
+        <RelativeLayout
+            android:id="@+id/linear_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="10dp">
+            <TextView
+                android:id="@+id/statusTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Status: ...."
+                android:layout_alignParentLeft="true"/>
+
+            <TextView
+                android:id="@+id/percentTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0.0%"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+
+        <ProgressBar
+            android:id="@+id/progress_download"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/imgPlayDownload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="20dp"
+                android:src="@drawable/multimedia"
+                app:backgroundTint="@color/colorTea"
+                app:elevation="0dp"
+                app:fabSize="mini"
+                app:maxImageSize="18dp"
+                app:tint="#FFFFFF" />
+        </RelativeLayout>
+
+    </LinearLayout>
+</layout>
