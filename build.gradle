@@ -13,6 +13,7 @@ buildscript {
         targetSdkVersion = 28
 
         // App dependencies
+        audioengine = '8.1.0'
         playservicesauth = '17.0.0'
         annotationVersion = '1.1.0'
         materialcomponentVersion = '1.1.0'
@@ -59,7 +60,7 @@ buildscript {
     repositories {
         google()
         jcenter()
-        
+
     }
     dependencies {
         classpath "com.android.tools.build:gradle:$gradleVersion"
@@ -73,7 +74,11 @@ allprojects {
     repositories {
         google()
         jcenter()
-        
+        mavenCentral()
+        maven {
+            url "http://maven.findawayworld.com/artifactory/libs-release/"
+        }
+        maven { url "https://oss.jfrog.org/libs-snapshot" }
     }
 }
 

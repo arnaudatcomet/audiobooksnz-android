@@ -122,4 +122,9 @@
         android:name="com.audiobookz.nz.app.profile.ui.FaqProfileFragment"
         android:label="FAQ"
         tools:layout="@layout/fragment_faq_profile" />
+    <fragment
+        android:id="@+id/mylibrary"
+        android:name="com.audiobookz.nz.app.library.ui.FragmentLibrary"
+        android:label="Library"
+        tools:layout="@layout/fragment_library" />
 </navigation>

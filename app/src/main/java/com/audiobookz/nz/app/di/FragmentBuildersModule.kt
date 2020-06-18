@@ -12,6 +12,7 @@ import com.audiobookz.nz.app.browse.BrowseNavFragment
 import com.audiobookz.nz.app.browse.categories.ui.CategoryFragment
 import com.audiobookz.nz.app.browse.categories.ui.SubCategoryFragment
 import com.audiobookz.nz.app.browse.featured.ui.FeaturedFragment
+import com.audiobookz.nz.app.library.ui.FragmentLibrary
 import com.audiobookz.nz.app.login.ui.ForgotPasswordFragment
 import com.audiobookz.nz.app.login.ui.LoginEmailFragment
 import com.audiobookz.nz.app.profile.ui.EditProfileFragment
@@ -71,6 +72,9 @@ abstract class FragmentBuildersModule {
     
     @ContributesAndroidInjector
     abstract fun contributeReviewFragment(): ReviewsFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeFragmentLibrary(): FragmentLibrary
 
 //
 //    @ContributesAndroidInjector

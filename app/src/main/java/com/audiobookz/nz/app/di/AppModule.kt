@@ -1,13 +1,13 @@
 package com.audiobookz.nz.app.browse.di
 
 import android.app.Application
-import android.content.Context
 import com.audiobookz.nz.app.api.AudiobookService
 import com.audiobookz.nz.app.api.AuthInterceptor
+import com.audiobookz.nz.app.api.BookEngineService
 import com.audiobookz.nz.app.api.SharedPreferencesService
 import com.audiobookz.nz.app.browse.categories.data.CategoryRemoteDataSource
 import com.audiobookz.nz.app.data.AppDatabase
-import com.google.android.gms.common.api.GoogleApiClient
+import com.audiobookz.nz.app.api.NotificationService
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineScope
@@ -56,6 +56,15 @@ class AppModule {
     @Singleton
     @Provides
     fun provideSharedPreferences(app: Application) = SharedPreferencesService(app)
+
+    @Singleton
+    @Provides
+    fun provideBookEngineService() = BookEngineService()
+
+    @Singleton
+    @Provides
+    fun provideNotificationService(app: Application) =
+        NotificationService(app)
 
 //    @Singleton
 //    @Provides
