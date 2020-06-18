@@ -33,7 +33,7 @@ class BookDownloadFragment : Fragment() {
         val binding = FragmentBookDownloadBinding.inflate(inflater, container, false)
         binding.txtNameBookDownload.text = args.title
         binding.urlImage = args.url
-        
+
         //need check status first
         binding.statusTxt.text = "Not Downloaded"
 

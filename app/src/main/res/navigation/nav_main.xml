@@ -110,6 +110,7 @@
         <action
             android:id="@+id/action_me_to_faqProfileFragment"
             app:destination="@id/faqProfileFragment" />
+       
     </fragment>
 
     <fragment
@@ -147,8 +148,14 @@
         android:label="Book Download"
         tools:layout="@layout/fragment_book_download">
         <argument
-            android:name="id"
-            app:argType="integer" />
+            android:name="title"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="url"
+            app:argType="string"
+            app:nullable="true" />
+
     </fragment>
 
     <fragment
@@ -160,4 +167,5 @@
             android:name="id"
             app:argType="integer" />
     </fragment>
+
 </navigation>
