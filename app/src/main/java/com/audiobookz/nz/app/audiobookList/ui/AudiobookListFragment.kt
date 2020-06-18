@@ -29,6 +29,7 @@ import com.audiobookz.nz.app.di.injectViewModel
 import com.audiobookz.nz.app.ui.hide
 import com.audiobookz.nz.app.ui.setTitle
 import com.audiobookz.nz.app.ui.show
+import com.audiobookz.nz.app.util.AUDIOBOOKLIST_PAGE_SIZE
 import com.audiobookz.nz.app.util.CATEGORY_PAGE_SIZE
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_audiobook_list.view.*
@@ -90,12 +91,12 @@ class AudiobookListFragment : Fragment(), Injectable {
                 //open by category
                 args.id != 0 -> {
                     binding.selectLangDialog.show()
-                    viewModel.fetchCategory(args.id, 1, CATEGORY_PAGE_SIZE, defaultLang)
+                    viewModel.fetchCategory(args.id, 1, AUDIOBOOKLIST_PAGE_SIZE, defaultLang)
                     subscribeUi(binding, adapter)
                 }
                 //open by search
                 else -> {
-                    args.keyword?.let { viewModel.fetchSearch(it, 1, CATEGORY_PAGE_SIZE) }
+                    args.keyword?.let { viewModel.fetchSearch(it, 1, AUDIOBOOKLIST_PAGE_SIZE) }
                     subscribeUi(binding, adapter)
                 }
             }

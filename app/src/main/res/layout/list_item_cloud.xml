@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="cloudBook"
+            type="com.audiobookz.nz.app.mylibrary.data.CloudBook" />
+
+        <variable
+            name="authors"
+            type="String" />
+
+        <variable
+            name="clickOptionMenuListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="clickDownloadListener"
+            type="android.view.View.OnClickListener" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_normal"
+        android:layout_marginRight="@dimen/margin_normal"
+        android:layout_marginBottom="@dimen/margin_normal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:onClick="@{clickDownloadListener}">
+
+            <ImageView
+                android:id="@+id/imgCardCloud"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal"
+                android:scaleType="centerCrop"
+                app:imageFromUrl="@{cloudBook.audiobook.cover_image}"
+               />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="5dp">
+
+            <TextView
+                android:id="@+id/txtBookName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginBottom="2dp"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:textSize="@dimen/font_size_normal"
+                android:text="@{cloudBook.audiobook.title}"
+                />
+
+            <TextView
+                android:id="@+id/txtNameAuthor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtBookName"
+                android:layout_gravity="left"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textSize="@dimen/font_size_small"
+                android:text="@{authors}"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtMenuOption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|top"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:text="&#8942;"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:onClick="@{clickOptionMenuListener}"/>
+
+    </androidx.cardview.widget.CardView>
+
+</layout>

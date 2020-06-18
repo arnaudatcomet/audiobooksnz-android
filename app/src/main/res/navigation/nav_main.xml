@@ -21,23 +21,23 @@
 
         <argument
             android:name="titleList"
+            android:defaultValue="@null"
             app:argType="string"
-            app:nullable="true"
-            android:defaultValue="@null"/>
+            app:nullable="true" />
 
         <!--search title and author-->
         <argument
             android:name="keyword"
+            android:defaultValue="@null"
             app:argType="string"
-            app:nullable="true"
-            android:defaultValue="@null"/>
+            app:nullable="true" />
 
         <!--create arg listFeatured nullable to store data from FeaturedTypeAdapter-->
         <argument
             android:name="listItem"
+            android:defaultValue="@null"
             app:argType="com.audiobookz.nz.app.browse.featured.data.Featured[]"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:nullable="true" />
 
         <action
             android:id="@+id/action_AudiobookListFragment_to_bookDetailFragment"
@@ -52,14 +52,14 @@
         tools:layout="@layout/fragment_sub_categories">
         <argument
             android:name="SubCategories"
+            android:defaultValue="@null"
             app:argType="com.audiobookz.nz.app.browse.categories.data.Category[]"
-            app:nullable="true"
-            android:defaultValue="@null"/>
+            app:nullable="true" />
         <argument
             android:name="tileName"
+            android:defaultValue="@null"
             app:argType="string"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:nullable="true" />
         <action
             android:id="@+id/action_subCategoryFragment_to_AudiobookListFragment"
             app:destination="@id/AudiobookListFragment" />
@@ -92,12 +92,12 @@
 
         <argument
             android:name="id"
-            app:argType="integer"/>
+            app:argType="integer" />
         <argument
             android:name="bookName"
+            android:defaultValue="@null"
             app:argType="string"
-            app:nullable="true"
-            android:defaultValue="@null"/>
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/me"
@@ -110,13 +110,14 @@
         <action
             android:id="@+id/action_me_to_faqProfileFragment"
             app:destination="@id/faqProfileFragment" />
+       
     </fragment>
 
     <fragment
         android:id="@+id/editProfileFragment"
         android:name="com.audiobookz.nz.app.profile.ui.EditProfileFragment"
-        tools:layout="@layout/fragment_edit_profile"
-        android:label="Profile" />
+        android:label="Profile"
+        tools:layout="@layout/fragment_edit_profile" />
     <fragment
         android:id="@+id/faqProfileFragment"
         android:name="com.audiobookz.nz.app.profile.ui.FaqProfileFragment"
@@ -124,7 +125,47 @@
         tools:layout="@layout/fragment_faq_profile" />
     <fragment
         android:id="@+id/mylibrary"
-        android:name="com.audiobookz.nz.app.library.ui.FragmentLibrary"
-        android:label="Library"
-        tools:layout="@layout/fragment_library" />
+        android:name="com.audiobookz.nz.app.mylibrary.ui.MyLibraryFragment"
+        android:label="My Library"
+        tools:layout="@layout/fragment_mylibrary">
+        <action
+            android:id="@+id/action_mylibrary_to_bookDetailFragment"
+            app:destination="@id/bookDetailFragment" />
+        <action
+            android:id="@+id/action_mylibrary_to_bookDownloadFragment"
+            app:destination="@id/bookDownloadFragment" />
+        <action
+            android:id="@+id/action_mylibrary_to_rateAndReviewFragment"
+            app:destination="@id/rateAndReviewFragment" />
+        <action
+            android:id="@+id/action_mylibrary_to_AudiobookListFragment"
+            app:destination="@id/AudiobookListFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/bookDownloadFragment"
+        android:name="com.audiobookz.nz.app.mylibrary.ui.BookDownloadFragment"
+        android:label="Book Download"
+        tools:layout="@layout/fragment_book_download">
+        <argument
+            android:name="title"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="url"
+            app:argType="string"
+            app:nullable="true" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/rateAndReviewFragment"
+        android:name="com.audiobookz.nz.app.mylibrary.ui.RateAndReviewFragment"
+        android:label="@string/optionReview"
+        tools:layout="@layout/fragment_rate_and_review" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </fragment>
+
 </navigation>
