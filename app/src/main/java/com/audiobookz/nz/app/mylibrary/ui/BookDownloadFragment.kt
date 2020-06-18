@@ -69,10 +69,10 @@ class BookDownloadFragment : Fragment() {
         }
 
         playBtn.setOnClickListener {
-            val navController = Navigation.findNavController(view!!)
-            navController.navigate(
-                BookDownloadFragmentDirections.actionBookDownloadFragmentToAudioPlayerFragment()
-            )
+//            val navController = Navigation.findNavController(view!!)
+//            navController.navigate(
+//                BookDownloadFragmentDirections.actionBookDownloadFragmentToAudioPlayerFragment()
+//            )
         }
     }
 
