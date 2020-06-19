@@ -29,6 +29,10 @@ class BookEngineService{
         val request = DownloadRequest(contentId = contentId, part = 0, chapter = 0, type = DownloadRequest.Type.TO_END_WRAP, licenseId = licenseId)
         downloadEngine.delete(request)
     }
+    fun cancelDownload(contentId:String,licenseId:String){
+        val request = DownloadRequest(contentId = contentId, part = 0, chapter = 0, type = DownloadRequest.Type.TO_END_WRAP, licenseId = licenseId)
+        downloadEngine.cancel(request)
+    }
     fun getLocalBook(status: DownloadStatus): Observable<List<String>>{
        return downloadEngine.get(status)
     }

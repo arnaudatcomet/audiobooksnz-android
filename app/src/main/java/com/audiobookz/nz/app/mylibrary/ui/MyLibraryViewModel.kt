@@ -44,6 +44,9 @@ class MyLibraryViewModel @Inject constructor(private val repository: MyLibraryRe
     fun deleteContent(contentId :String,licenseId: String) {
         repository.deleteAudiobook(contentId, licenseId)
     }
+    fun cancelDownload(contentId :String,licenseId: String) {
+        repository.cancelDownload(contentId, licenseId)
+    }
     fun getLocalBookList(){
         repository.getLocalBookList({downloadStatus ->listLocalBookResult.postValue(downloadStatus)},DownloadStatus.DOWNLOADED)
     }

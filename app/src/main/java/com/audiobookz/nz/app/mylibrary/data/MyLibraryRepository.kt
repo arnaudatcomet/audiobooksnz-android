@@ -43,6 +43,8 @@ class MyLibraryRepository @Inject constructor(private val remoteSource: MyLibrar
     )
     fun deleteAudiobook(contentId: String, licenseId: String) = remoteSource.delete(contentId, licenseId)
 
+    fun cancelDownload(contentId: String, licenseId: String) = remoteSource.cancelDownload(contentId, licenseId)
+
     fun getLocalBookList (callback: (List<String>) -> Unit, status: DownloadStatus ) = resulObservableData(
         networkCall = remoteSource.getLocalBook(status),
         onDownloading = {callback(it)},
