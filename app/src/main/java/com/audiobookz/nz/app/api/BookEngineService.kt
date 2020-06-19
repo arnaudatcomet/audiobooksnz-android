@@ -5,10 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.MutableLiveData
 import com.audiobookz.nz.app.data.Result
-import io.audioengine.mobile.AudioEngine
-import io.audioengine.mobile.DownloadEngine
-import io.audioengine.mobile.DownloadEvent
-import io.audioengine.mobile.DownloadRequest
+import io.audioengine.mobile.*
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import org.reactivestreams.Publisher
@@ -20,35 +17,45 @@ import rx.schedulers.Schedulers
 
 class BookEngineService{
     val downloadEngine: DownloadEngine = AudioEngine.getInstance().downloadEngine
-    fun download(): Observable<DownloadEvent>? {
-
-        val request = DownloadRequest(contentId = "69617", part = 0, chapter = 0, type = DownloadRequest.Type.TO_END_WRAP, licenseId = "5ed31f783f0f62143c261adf")
-
-//
-//        downloadEngine.submit(request).subscribeOn(Schedulers.io()).subscribe(object: Observer<DownloadEvent>{
-//            override fun onError(e: Throwable?) {
-//                TODO("Not yet implemented")
-//            }
-//
-//            override fun onNext(t: DownloadEvent?) {
-//                if (t?.code?.equals(DownloadEvent.DOWNLOAD_PROGRESS_UPDATE)!!) {
-//                    Log.d("TAG", "onNext: "+t?.contentPercentage)
-//                }else{
-//
-//                }
-//            }
-//
-//            override fun onCompleted() {
-//                TODO("Not yet implemented")
-//            }
-//
-//        });
-          val test =  downloadEngine.submit(request).subscribeOn(Schedulers.io());
-        return test;
-
+    val playbackEngine: PlaybackEngine = AudioEngine.getInstance().playbackEngine
+    fun download(contentId:String,licenseId:String): Observable<DownloadEvent>? {
+        val request = DownloadRequest(contentId = contentId, part = 0, chapter = 0, type = DownloadRequest.Type.TO_END_WRAP, licenseId = licenseId)
+        return downloadEngine.submit(request).subscribeOn(Schedulers.io());
     }
-    fun delete(){
-        downloadEngine.deleteAll()
+    fun contentStatus(contentId:String):Observable<DownloadStatus>?{
+       return downloadEngine.getStatus(contentId)
     }
+    fun delete(contentId:String,licenseId:String){
+        val request = DownloadRequest(contentId = contentId, part = 0, chapter = 0, type = DownloadRequest.Type.TO_END_WRAP, licenseId = licenseId)
+        downloadEngine.delete(request)
+    }
+    fun getLocalBook(status: DownloadStatus): Observable<List<String>>{
+       return downloadEngine.get(status)
+    }
+
+    fun getChapterList(contentId:String): Observable<List<Chapter>> {
+        return downloadEngine.getChapters(contentId)
+    }
+
+    fun play(contentId:String,licenseId:String,partNumber:Int,chapterNumber:Int,position:Long): Observable<PlaybackEvent>? {
+        val playRequest = PlayRequest(licenseId,contentId,partNumber,chapterNumber,position )
+        return playbackEngine.play(playRequest)
+    }
+    fun pausePlay(){
+         playbackEngine.pause()
+    }
+    fun resumePlay(){
+         playbackEngine.resume()
+    }
+    fun nextChapter(){
+         playbackEngine.nextChapter()
+    }
+    fun previousChapter(){
+         playbackEngine.previousChapter()
+    }
+    fun getPosition(): Long {
+       return playbackEngine.getPosition()
+    }
+
 
 }
