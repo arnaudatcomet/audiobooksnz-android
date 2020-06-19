@@ -8,6 +8,7 @@ import com.audiobookz.nz.app.browse.featured.data.Featured
 import com.audiobookz.nz.app.login.data.SuccessData
 import com.audiobookz.nz.app.login.data.UserData
 import com.audiobookz.nz.app.mylibrary.data.CloudBook
+import com.audiobookz.nz.app.mylibrary.data.SessionData
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -133,5 +134,9 @@ interface AudiobookService {
         @Query("page") page: Int? = null,
         @Query("per-page") pageSize: Int? = null
     ): Response<List<CloudBook>>
+
+    @GET("users/session-key")
+    @Headers("No-Authentication: false")
+    suspend fun getSession(): Response<SessionData>
 
 }

@@ -31,9 +31,9 @@ class CloudLibraryAdapter(private val context: Activity) :
 
     }
 
-    private fun openToDownload(title: String, url: String): View.OnClickListener {
+    private fun openToDownload(title: String, url: String,id: String,licenseId:String): View.OnClickListener {
         return View.OnClickListener {
-            val direction = MyLibraryFragmentDirections.actionMylibraryToBookDownloadFragment(title, url)
+            val direction = MyLibraryFragmentDirections.actionMylibraryToBookDownloadFragment(title,licenseId, id,url)
             it.findNavController().navigate(direction)
         }
     }
@@ -70,11 +70,13 @@ class CloudLibraryAdapter(private val context: Activity) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val cloudBook = getItem(position)
         val bookTitle = cloudBook.audiobook?.title
+        val licenseId = cloudBook.audioengineLicenseData?.licenses?.get(0)?.id
+
 
         holder.apply {
-            bookTitle?.let { openToDownload(it, cloudBook.audiobook?.cover_image) }?.let {
+            bookTitle?.let { openToDownload(it, cloudBook.audiobook.cover_image,cloudBook.audiobook.audioengine_audiobook_id,licenseId!!) }?.let {
                 bind(cloudBook,
-                    it, openOptionMenu(cloudBook.audiobook?.id, bookTitle))
+                    it, openOptionMenu(cloudBook.audiobook.id, bookTitle),true)
             }
             itemView.tag = cloudBook
         }
@@ -85,12 +87,13 @@ class CloudLibraryAdapter(private val context: Activity) :
         fun bind(
             item: CloudBook,
             openDownloadListener: View.OnClickListener,
-            openOptionListener: View.OnClickListener
+            openOptionListener: View.OnClickListener,
+            isDownload: Boolean
         ) {
             binding.apply {
                 cloudBook = item
-                authors =
-                    item.audiobook?.audioengine_data?.BookDetail?.authors?.joinToString(separator = ",")
+                isDownloaded = isDownload
+                authors = item.audiobook?.audioengine_data?.BookDetail?.authors?.joinToString(separator = ",")
                 clickDownloadListener = openDownloadListener
                 clickOptionMenuListener = openOptionListener
                 executePendingBindings()

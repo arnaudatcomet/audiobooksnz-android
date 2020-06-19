@@ -55,6 +55,10 @@ class AppModule {
 
     @Singleton
     @Provides
+    fun provideSessionDataDao(db: AppDatabase) = db.sessionDataDao()
+
+    @Singleton
+    @Provides
     fun provideSharedPreferences(app: Application) = SharedPreferencesService(app)
 
     @Singleton

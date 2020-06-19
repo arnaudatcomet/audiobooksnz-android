@@ -12,6 +12,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.provider.AlarmClock.EXTRA_MESSAGE
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.FrameLayout
@@ -30,12 +31,15 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.audiobookz.nz.app.basket.ui.ActivityBasket
+import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.databinding.ActivityMainBinding
 import com.audiobookz.nz.app.di.Injectable
 import com.audiobookz.nz.app.di.injectViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
+import io.audioengine.mobile.AudioEngine
+import io.audioengine.mobile.LogLevel
 import javax.inject.Inject
 
 
@@ -47,11 +51,6 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector,Injectable 
     private lateinit var BottomNavigation: BottomNavigationView
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
-    lateinit var notificationManager : NotificationManager
-    lateinit var notificationChannel : NotificationChannel
-    lateinit var builder : Notification.Builder
-    private val channelId = "com.audiobookz.nz.app"
-    private val description = "Test notification"
     override fun supportFragmentInjector() = dispatchingAndroidInjector
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -90,6 +89,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector,Injectable 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel = injectViewModel(viewModelFactory)
         val isDiscover = intent.getStringExtra(EXTRA_MESSAGE)
         val binding: ActivityMainBinding = DataBindingUtil.setContentView(this,
             R.layout.activity_main)
@@ -101,38 +101,13 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector,Injectable 
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.bottomNavigation.setupWithNavController(navController)
 
-        notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        val intent = Intent(this,MainActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(this,0,intent, PendingIntent.FLAG_UPDATE_CURRENT)
-        val contentView = RemoteViews(packageName,R.layout.notification_layout)
-        contentView.setTextViewText(R.id.tv_title,"CodeAndroid")
-        contentView.setTextViewText(R.id.tv_content,"Text notification")
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            notificationChannel = NotificationChannel(channelId,description,NotificationManager.IMPORTANCE_HIGH)
-            notificationChannel.enableLights(false)
-            notificationChannel.lightColor = Color.GREEN
-            notificationChannel.enableVibration(true)
-            notificationManager.createNotificationChannel(notificationChannel)
-            builder = Notification.Builder(this,channelId)
-                .setContent(contentView)
-                .setSmallIcon(R.drawable.facebook40)
-                .setLargeIcon(BitmapFactory.decodeResource(this.resources,R.drawable.facebook40))
-                .setContentIntent(pendingIntent)
-        }
-
-
-        val timer = object: CountDownTimer(3000, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-               // notificationManager.notify(Random.nextInt(0, 10000),builder.build())
+        subscribeUi()
+    }
+    private fun subscribeUi() {
+        viewModel.sessionId.observe(this, Observer { result ->
+            when(result.status){
+                Result.Status.SUCCESS ->{AudioEngine.init(this, result.data?.key!!, LogLevel.VERBOSE); }
             }
-            override fun onFinish() {
-             //   notificationManager.notify(Random.nextInt(0, 10000),builder.build())
-             //   viewModel.notifier("test","test")
-            }
-        }
-
-        timer.start()
+        })
     }
 }

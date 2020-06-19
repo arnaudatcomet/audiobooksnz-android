@@ -10,6 +10,9 @@
             type="com.audiobookz.nz.app.mylibrary.data.CloudBook" />
 
         <variable
+            name="isDownloaded"
+            type="Boolean" />
+        <variable
             name="authors"
             type="String" />
 
@@ -61,6 +64,7 @@
                 android:layout_marginBottom="2dp"
                 android:textAppearance="?attr/textAppearanceHeadline6"
                 android:textSize="@dimen/font_size_normal"
+                android:textColor="@{isDownloaded? @color/black:@color/colorTea}"
                 android:text="@{cloudBook.audiobook.title}"
                 />
 

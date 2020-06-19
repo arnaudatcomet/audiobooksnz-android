@@ -1,6 +1,7 @@
 package com.audiobookz.nz.app.mylibrary.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -52,7 +53,7 @@ class CloudLibraryFragment : Fragment(), Injectable {
             when (result.status) {
                 Result.Status.SUCCESS -> {
                     binding.progressBar.hide()
-                    result.data?.let { adapter.submitList(it) }
+                 //   result.data?.let { adapter.submitList(it["bookList"]) }
                 }
                 Result.Status.LOADING -> binding.progressBar.show()
                 Result.Status.ERROR -> {
