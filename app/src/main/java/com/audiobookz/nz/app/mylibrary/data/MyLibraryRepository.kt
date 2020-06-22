@@ -6,6 +6,7 @@ import com.audiobookz.nz.app.data.resultLiveData
 import com.audiobookz.nz.app.util.DOWNLOAD_COMPLETE
 import io.audioengine.mobile.DownloadEvent
 import io.audioengine.mobile.DownloadStatus
+import io.audioengine.mobile.PlaybackEvent
 import javax.inject.Inject
 
 class MyLibraryRepository @Inject constructor(private val remoteSource: MyLibraryRemoteDataSource,private val sessionDataDao: SessionDataDao
@@ -34,6 +35,15 @@ class MyLibraryRepository @Inject constructor(private val remoteSource: MyLibrar
         onComplete = {},
         onDataError = {}
     )
+
+    fun PlayAudioBook(chapterNumber:Int,contentId: String, licenseId: String,partNumber:Int,position:Long,callback: (PlaybackEvent) -> Unit)= resulObservableData(
+        networkCall = remoteSource.playAudiobook(contentId,licenseId,partNumber,chapterNumber,position),
+        onDownloading = {callback(it)},
+        onPartComplete = {},
+        onComplete = {},
+        onDataError = {}
+    );
+
     fun getContentStatus (callback: (DownloadStatus) -> Unit, contentId :String) = resulObservableData(
         networkCall = remoteSource.getContentStatus(contentId),
         onDownloading = {callback(it)},

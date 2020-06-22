@@ -56,7 +56,6 @@ class BookDownloadFragment : Fragment(), Injectable {
                 "Cancel" -> {
                     binding.bookStatus = "Download"
                     binding.downloadStatus = "Status"
-                    // viewModel.cancelDownload(args.id,args.licenseId)
                     viewModel.deleteContent(args.id, args.licenseId)
                     binding.progressDownload.isIndeterminate = false
                 }
@@ -110,12 +109,12 @@ class BookDownloadFragment : Fragment(), Injectable {
                 DownloadStatus.DOWNLOADING -> {
                     binding.bookStatus = "Cancel"
                     if (binding.downloadStatus == "Status") {
-                        binding.percentTxt.text = "%"
+                        binding.downloadStatus ="Downloading"
+                        binding.percentTxt.text = ""
                         binding.progressDownload.isIndeterminate = true
                     }
                 }
                 DownloadStatus.PAUSED -> {
-                    binding.bookStatus = "Paused"
                 }
                 DownloadStatus.DOWNLOADED -> {
                     binding.bookStatus = "Delete"

@@ -16,6 +16,7 @@ class MyLibraryRemoteDataSource @Inject constructor(private val service: Audiobo
     fun notifySimpleNotification(title:String, body:String)=notificationService.simple(title,body)
     fun getLocalBook(status: DownloadStatus)= bookEngineService.getLocalBook(status)
     fun getContentStatus(contentId :String) = bookEngineService.contentStatus(contentId)
+    fun playAudiobook(contentId:String,licenseId: String, partNumber: Int,chapterNumber:Int,position:Long)= bookEngineService.play(contentId,licenseId,partNumber,chapterNumber,position);
     suspend fun fetchSession() = getResult { service.getSession() }
 
 }
