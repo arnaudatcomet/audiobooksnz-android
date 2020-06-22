@@ -28,8 +28,8 @@ class MyLibraryViewModel @Inject constructor(private val repository: MyLibraryRe
                     isLatest = true
                 }
                 val map: MutableMap<String, List<Any>> = mutableMapOf()
-                map.put("cloudList",value.data)
-                repository.getLocalBookList({downloadStatus ->map.put("localList", downloadStatus)},DownloadStatus.DOWNLOADED)
+                map["cloudList"] = value.data
+                repository.getLocalBookList({downloadStatus -> map["localList"] = downloadStatus },DownloadStatus.DOWNLOADED)
                 cloudBookResult.value = Result.success(map)
             }
         }

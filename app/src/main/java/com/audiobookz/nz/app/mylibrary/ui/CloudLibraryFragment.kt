@@ -38,22 +38,23 @@ class CloudLibraryFragment : Fragment(), Injectable {
     ): View? {
         viewModel = injectViewModel(viewModelFactory)
         var rootView = FragmentCloudLibraryBinding.inflate(inflater, container, false)
-        val adapter = CloudLibraryAdapter(activity!!)
         context ?: return rootView.root
-        rootView.CouldRecyclerView.adapter = adapter
+
         viewModel.getCloudBook(1, CLOUDBOOK_PAGE_SIZE)
-        subscribeUi(rootView, adapter)
+        subscribeUi(rootView)
 
         return rootView.root
     }
 
-    private fun subscribeUi(binding: FragmentCloudLibraryBinding, adapter: CloudLibraryAdapter) {
+    private fun subscribeUi(binding: FragmentCloudLibraryBinding) {
 
         viewModel.cloudBookResult.observe(viewLifecycleOwner, Observer { result ->
             when (result.status) {
                 Result.Status.SUCCESS -> {
                     binding.progressBar.hide()
-                 //   result.data?.let { adapter.submitList(it["bookList"]) }
+                    val adapter = activity?.let { result.data?.let { it1 -> CloudLibraryAdapter(it, it1) } }
+                    binding.CouldRecyclerView.adapter = adapter
+
                 }
                 Result.Status.LOADING -> binding.progressBar.show()
                 Result.Status.ERROR -> {

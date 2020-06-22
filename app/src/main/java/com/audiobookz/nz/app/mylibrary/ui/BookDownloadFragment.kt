@@ -14,11 +14,11 @@ import com.audiobookz.nz.app.di.injectViewModel
 import io.audioengine.mobile.DownloadEvent
 import io.audioengine.mobile.DownloadStatus
 import javax.inject.Inject
-class BookDownloadFragment : Fragment(), Injectable  {
+
+class BookDownloadFragment : Fragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: MyLibraryViewModel
-    var statusCheck = "Not Downloaded"
     private val args: BookDownloadFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -26,14 +26,12 @@ class BookDownloadFragment : Fragment(), Injectable  {
         savedInstanceState: Bundle?
     ): View? {
 
-
         viewModel = injectViewModel(viewModelFactory)
         val binding = FragmentBookDownloadBinding.inflate(inflater, container, false)
         binding.nameBookDownload = args.title
         binding.urlImage = args.url
 
-        binding.download = download(binding)
-        binding.delete = detele()
+        binding.statusButton = downloadAndDeleteButton(binding)
         subscribeUi(binding)
 
         //need check status first
@@ -44,18 +42,35 @@ class BookDownloadFragment : Fragment(), Injectable  {
         return binding.root
     }
 
-    private fun detele(): View.OnClickListener? {
+    private fun downloadAndDeleteButton(binding: FragmentBookDownloadBinding): View.OnClickListener {
         return View.OnClickListener {
-            viewModel.deleteContent(args.id,args.licenseId)
+
+            when (binding.bookStatus) {
+                "Download" -> {
+                    binding.downloadStatus = "Pending"
+                    args.title?.let { it1 -> viewModel.download(it1, args.id, args.licenseId) }
+                }
+                "Queued" -> {
+
+                }
+                "Cancel" -> {
+                    binding.bookStatus = "Download"
+                    binding.downloadStatus = "Status"
+                    // viewModel.cancelDownload(args.id,args.licenseId)
+                    viewModel.deleteContent(args.id, args.licenseId)
+                    binding.progressDownload.isIndeterminate = false
+                }
+                "Paused" -> {
+                    args.title?.let { it1 -> viewModel.download(it1, args.id, args.licenseId) }
+                }
+                "Delete" -> {
+                    viewModel.deleteContent(args.id, args.licenseId)
+                    binding.downloadStatus = "status"
+                }
+            }
         }
     }
 
-    private fun download(binding: FragmentBookDownloadBinding): View.OnClickListener {
-        return View.OnClickListener {
-            binding.downloadStatus = "Pending"
-            args.title?.let { it1 -> viewModel.download(it1,args.id,args.licenseId) }
-        }
-    }
     private fun subscribeUi(binding: FragmentBookDownloadBinding) {
         viewModel.downloadResult.observe(viewLifecycleOwner, Observer { result ->
             when (result.code) {
@@ -66,35 +81,48 @@ class BookDownloadFragment : Fragment(), Injectable  {
                     }
                 }
                 DownloadEvent.DOWNLOAD_STARTED -> {
-                    if(!binding.downloadStatus.equals("Downloading"))
-                    {
+                    if (binding.downloadStatus != "Downloading") {
                         binding.downloadStatus = "Starting"
                     }
                 }
                 DownloadEvent.DOWNLOAD_PAUSED -> {
                     binding.downloadStatus = "Paused"
+                    binding.contentProcess = result.contentPercentage
                 }
                 DownloadEvent.CONTENT_DOWNLOAD_COMPLETED -> {
                     binding.downloadStatus = "Completed"
+                    binding.contentProcess = 100
+                    binding.progressDownload.isIndeterminate = false
+
                 }
             }
         })
-        viewModel.contentStatusResult.observe(viewLifecycleOwner, Observer { result->
-            when(result){
-                DownloadStatus.NOT_DOWNLOADED ->{
-                    binding.bookStatus = "download"
+        viewModel.contentStatusResult.observe(viewLifecycleOwner, Observer { result ->
+            when (result) {
+                DownloadStatus.NOT_DOWNLOADED -> {
+                    binding.bookStatus = "Download"
+                    binding.contentProcess = 0
+
                 }
-                DownloadStatus.QUEUED ->{
-                    binding.bookStatus = "QUEUED"
+                DownloadStatus.QUEUED -> {
+                    binding.bookStatus = "Queued"
                 }
-                DownloadStatus.DOWNLOADING ->{
-                    binding.bookStatus = "cancel"
+                DownloadStatus.DOWNLOADING -> {
+                    binding.bookStatus = "Cancel"
+                    if (binding.downloadStatus == "Status") {
+                        binding.percentTxt.text = "%"
+                        binding.progressDownload.isIndeterminate = true
+                    }
                 }
-                DownloadStatus.PAUSED ->{
-                    binding.bookStatus = "PAUSED"
+                DownloadStatus.PAUSED -> {
+                    binding.bookStatus = "Paused"
                 }
-                DownloadStatus.DOWNLOADED ->{
-                    binding.bookStatus = "delete"
+                DownloadStatus.DOWNLOADED -> {
+                    binding.bookStatus = "Delete"
+                    binding.downloadStatus = "Completed"
+                    binding.contentProcess = 100
+                    binding.progressDownload.isIndeterminate = false
+
                 }
             }
         })

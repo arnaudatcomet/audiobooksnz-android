@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector,Injectable 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
     override fun supportFragmentInjector() = dispatchingAndroidInjector
-
+    var isDiscover: String? = null
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_basket,menu)
         val badgeLayout: FrameLayout =
@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector,Injectable 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = injectViewModel(viewModelFactory)
-        val isDiscover = intent.getStringExtra(EXTRA_MESSAGE)
+        isDiscover = intent.getStringExtra(EXTRA_MESSAGE)
         val binding: ActivityMainBinding = DataBindingUtil.setContentView(this,
             R.layout.activity_main)
         BottomNavigation = binding.bottomNavigation
@@ -101,12 +101,16 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector,Injectable 
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.bottomNavigation.setupWithNavController(navController)
 
-        subscribeUi()
+        if (isDiscover != "discover"){
+            subscribeUi()
+        }
     }
     private fun subscribeUi() {
         viewModel.sessionId.observe(this, Observer { result ->
             when(result.status){
-                Result.Status.SUCCESS ->{AudioEngine.init(this, result.data?.key!!, LogLevel.VERBOSE); }
+
+                Result.Status.SUCCESS ->{
+                    result.data?.key?.let { AudioEngine.init(this, it, LogLevel.VERBOSE) };}
             }
         })
     }

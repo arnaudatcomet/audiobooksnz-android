@@ -12,6 +12,7 @@
         <variable
             name="isDownloaded"
             type="Boolean" />
+
         <variable
             name="authors"
             type="String" />
@@ -47,6 +48,7 @@
                 android:layout_height="100dp"
                 android:layout_gravity="center_horizontal"
                 android:scaleType="centerCrop"
+                android:alpha="@{isDownloaded? 1f:0.4f}"
                 app:imageFromUrl="@{cloudBook.audiobook.cover_image}"
                />
 
@@ -64,7 +66,7 @@
                 android:layout_marginBottom="2dp"
                 android:textAppearance="?attr/textAppearanceHeadline6"
                 android:textSize="@dimen/font_size_normal"
-                android:textColor="@{isDownloaded? @color/black:@color/colorTea}"
+                android:textColor="@color/colorTea"
                 android:text="@{cloudBook.audiobook.title}"
                 />
 
