@@ -60,6 +60,9 @@ class BookEngineService{
     fun getPosition(): Long {
        return playbackEngine.getPosition()
     }
+    fun setSpeed(speed:Float)  {
+         playbackEngine.speed = speed
+    }
 
 
 }
