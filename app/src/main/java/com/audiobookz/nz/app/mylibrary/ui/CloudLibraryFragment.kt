@@ -53,7 +53,7 @@ class CloudLibraryFragment : Fragment(), Injectable {
                 Result.Status.SUCCESS -> {
                     binding.progressBar.hide()
                     val adapter = activity?.let { result.data?.let { it1 -> CloudLibraryAdapter(it, it1) } }
-                    binding.CouldRecyclerView.adapter = adapter
+                    binding.CloudRecyclerView.adapter = adapter
 
                 }
                 Result.Status.LOADING -> binding.progressBar.show()

@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector,Injectable 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
     override fun supportFragmentInjector() = dispatchingAndroidInjector
-    var isDiscover: String? = null
+    private var isDiscover: Boolean = false
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_basket,menu)
         val badgeLayout: FrameLayout =
@@ -90,20 +90,18 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector,Injectable 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = injectViewModel(viewModelFactory)
-        isDiscover = intent.getStringExtra(EXTRA_MESSAGE)
+        isDiscover = intent.getBooleanExtra(EXTRA_MESSAGE, false)
         val binding: ActivityMainBinding = DataBindingUtil.setContentView(this,
             R.layout.activity_main)
         BottomNavigation = binding.bottomNavigation
-        binding.isDiscover = isDiscover!=null
+        binding.isDiscover = isDiscover
         navController = findNavController(R.id.nav_fragment)
         appBarConfiguration =  AppBarConfiguration.Builder(R.id.browse,R.id.mylibrary, R.id.more, R.id.me).build()
         setSupportActionBar(binding.toolbar)
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.bottomNavigation.setupWithNavController(navController)
 
-        if (isDiscover != "discover"){
-            subscribeUi()
-        }
+        subscribeUi()
     }
     private fun subscribeUi() {
         viewModel.sessionId.observe(this, Observer { result ->

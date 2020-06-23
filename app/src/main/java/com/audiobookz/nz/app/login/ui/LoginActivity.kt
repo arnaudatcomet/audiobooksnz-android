@@ -22,27 +22,27 @@ class LoginActivity : AppCompatActivity() {
         val btnSignUp = findViewById<Button>(R.id.btnSignFree)
         val btnDiscover = findViewById<Button>(R.id.btnDiscover)
 
-        btnloginFacebook.setOnClickListener { view ->
+        btnloginFacebook.setOnClickListener {
             Toast.makeText(this, "loginfacebook", Toast.LENGTH_SHORT).show()
         }
 
-        btnloginGoogle.setOnClickListener { view ->
+        btnloginGoogle.setOnClickListener {
             Toast.makeText(this, "loginGoogle", Toast.LENGTH_SHORT).show()
         }
 
-        btnloginEmail.setOnClickListener { view ->
+        btnloginEmail.setOnClickListener {
             val intent = Intent(this, LoginEmailActivity::class.java)
             startActivity(intent)
         }
 
-        btnSignUp.setOnClickListener { view ->
+        btnSignUp.setOnClickListener {
             val intent = Intent(this, SignUpActivity::class.java)
             startActivity(intent)
         }
 
-        btnDiscover.setOnClickListener { view ->
+        btnDiscover.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java).apply {
-                putExtra(EXTRA_MESSAGE, "discover")
+                putExtra(EXTRA_MESSAGE, true)
             }
             startActivity(intent)
         }

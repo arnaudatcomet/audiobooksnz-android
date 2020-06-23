@@ -9,30 +9,26 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/filterBookView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_normal"
-            android:layout_marginRight="@dimen/margin_normal"
-            android:layout_marginBottom="@dimen/margin_normal"
-            android:hint="@string/searchLibrary"
-            android:textColorHint="@android:color/darker_gray">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textAutoComplete"
-                android:maxLines="1" />
-        </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="40dp"
+            android:layout_margin="@dimen/margin_normal"
+            android:background="@drawable/tab_layout_bg"
+            app:defaultQueryHint="@string/searchLibrary"
+            app:iconifiedByDefault="false"
+            app:searchIcon="@null" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_my_library"
-            android:layout_width="304dp"
-            android:layout_height="35dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="10dp"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:layout_marginRight="@dimen/margin_normal"
+            android:layout_marginBottom="@dimen/margin_normal"
             android:background="@drawable/tab_layout_bg"
+            android:padding="0dp"
             app:tabBackground="@drawable/tab_layout_selector"
             app:tabIndicatorHeight="0dp"
             app:tabSelectedTextColor="@android:color/white"
@@ -41,7 +37,7 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-            
+
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/tab_view_pager_library"
                 android:layout_width="wrap_content"
@@ -61,6 +57,7 @@
                 app:maxImageSize="18dp"
                 app:tint="#FFFFFF" />
         </RelativeLayout>
+
     </LinearLayout>
 
 </layout>
