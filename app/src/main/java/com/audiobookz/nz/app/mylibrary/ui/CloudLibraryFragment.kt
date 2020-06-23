@@ -60,7 +60,7 @@ class CloudLibraryFragment : Fragment(), Injectable {
 
                     //add delay to fix item render before data available
                     Handler().postDelayed({
-                        binding.CouldRecyclerView.adapter = adapter
+                        binding.CloudRecyclerView.adapter = adapter
                     }, 100)
 
                 }
