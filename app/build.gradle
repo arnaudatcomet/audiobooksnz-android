@@ -43,18 +43,28 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions{
+        exclude 'META-INF/rxjava.properties'
+    }
+
 
 // To inline the bytecode built with JVM target 1.8 into
-// bytecode that is being built with JVM target 1.6. (e.g. navArgs)
+// bytecode that is being built with JVM target 1.6. (e.g. navArgs)3
 
 }
 
 dependencies {
     //  use material component
     implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
+    implementation "io.audioengine.mobile:all-android:$rootProject.audioengine"
+    implementation "io.reactivex.rxjava2:rxjava:2.2.18"
+    implementation 'io.reactivex:rxjava:1.0.10'
+    implementation 'android.arch.lifecycle:reactivestreams:1.1.1'
+    implementation "io.reactivex.rxjava2:rxkotlin:2.0.0"
     implementation "com.google.android.material:material:$rootProject.materialcomponentVersion"
     implementation "com.google.android.gms:play-services-auth:$rootProject.playservicesauth"
     implementation "androidx.annotation:annotation:$rootProject.annotationVersion"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     kapt "androidx.room:room-compiler:$rootProject.roomVersion"
     kapt "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
     implementation "androidx.appcompat:appcompat:$rootProject.appCompatVersion"

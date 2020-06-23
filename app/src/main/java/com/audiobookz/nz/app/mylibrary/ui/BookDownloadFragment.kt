@@ -2,82 +2,130 @@ package com.audiobookz.nz.app.mylibrary.ui
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ProgressBar
-import android.widget.TextView
-import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
-import com.audiobookz.nz.app.R
 import com.audiobookz.nz.app.databinding.FragmentBookDownloadBinding
-import com.audiobookz.nz.app.player.ui.PlayerActivity
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.audiobookz.nz.app.di.Injectable
+import com.audiobookz.nz.app.di.injectViewModel
+import io.audioengine.mobile.DownloadEvent
+import io.audioengine.mobile.DownloadStatus
+import javax.inject.Inject
 
-
-class BookDownloadFragment : Fragment() {
+class BookDownloadFragment : Fragment(), Injectable {
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private lateinit var viewModel: MyLibraryViewModel
     private val args: BookDownloadFragmentArgs by navArgs()
-    var statusCheck = "Not Downloaded"
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
+        viewModel = injectViewModel(viewModelFactory)
         val binding = FragmentBookDownloadBinding.inflate(inflater, container, false)
-
-//        val mainBottomNav: BottomNavigationView = activity!!.findViewById(R.id.bottom_navigation)
-//        mainBottomNav.visibility = View.GONE
-
-        binding.txtNameBookDownload.text = args.title
+        binding.nameBookDownload = args.title
         binding.urlImage = args.url
 
+        binding.statusButton = downloadAndDeleteButton(binding)
+        subscribeUi(binding)
+
         //need check status first
-        binding.statusTxt.text = "Not Downloaded"
+        binding.bookStatus = "Download"
+        binding.downloadStatus = "Status"
+        viewModel.getContentStatus(args.id)
 
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    private fun downloadAndDeleteButton(binding: FragmentBookDownloadBinding): View.OnClickListener {
+        return View.OnClickListener {
 
-        var playBtn = view.findViewById<FloatingActionButton>(R.id.imgPlayDownload)
-        var downloadBtn = view.findViewById<Button>(R.id.btnDownload)
-        var percetBar = view.findViewById<ProgressBar>(R.id.progress_download)
-        var txtPercet = view.findViewById<TextView>(R.id.percentTxt)
-        //use mock data test
-        var percet = 0
+            when (binding.bookStatus) {
+                "Download" -> {
+                    binding.downloadStatus = "Pending"
+                    args.title?.let { it1 -> viewModel.download(it1, args.id, args.licenseId) }
+                }
+                "Queued" -> {
 
-        downloadBtn.setOnClickListener {
-            if (statusCheck == "Not Downloaded"){
-                statusCheck = "Downloading"
-                downloadBtn.text = "Cancel"
-//                while (percet < 100){
-//                    percet += 10
-//                    percetBar.progress = percet
-//                    txtPercet.text = percet.toString()
-//                    if (percet == 100){
-//                        statusCheck = "Downloaded"
-//                    }
-//                }
-            }
-            else if(statusCheck == "Downloading"){
-                statusCheck = "Not Downloaded"
-                downloadBtn.text = "Download"
+                }
+                "Cancel" -> {
+                    binding.bookStatus = "Download"
+                    binding.downloadStatus = "Status"
+                    viewModel.deleteContent(args.id, args.licenseId)
+                    binding.progressDownload.isIndeterminate = false
+                }
+                "Paused" -> {
+                    args.title?.let { it1 -> viewModel.download(it1, args.id, args.licenseId) }
+                }
+                "Delete" -> {
+                    viewModel.deleteContent(args.id, args.licenseId)
+                    binding.downloadStatus = "status"
+                }
             }
         }
+    }
 
-        playBtn.setOnClickListener {
-            val intent = Intent(activity, PlayerActivity::class.java)
-            startActivity(intent)
-        }
+    private fun subscribeUi(binding: FragmentBookDownloadBinding) {
+        viewModel.downloadResult.observe(viewLifecycleOwner, Observer { result ->
+            when (result.code) {
+                DownloadEvent.DOWNLOAD_PROGRESS_UPDATE -> {
+                    binding.downloadStatus = "Downloading"
+                    if (result.contentPercentage != 0) {
+                        binding.contentProcess = result.contentPercentage
+                    }
+                }
+                DownloadEvent.DOWNLOAD_STARTED -> {
+                    if (binding.downloadStatus != "Downloading") {
+                        binding.downloadStatus = "Starting"
+                    }
+                }
+                DownloadEvent.DOWNLOAD_PAUSED -> {
+                    binding.downloadStatus = "Paused"
+                    binding.contentProcess = result.contentPercentage
+                }
+                DownloadEvent.CONTENT_DOWNLOAD_COMPLETED -> {
+                    binding.downloadStatus = "Completed"
+                    binding.contentProcess = 100
+                    binding.progressDownload.isIndeterminate = false
+
+                }
+            }
+        })
+        viewModel.contentStatusResult.observe(viewLifecycleOwner, Observer { result ->
+            when (result) {
+                DownloadStatus.NOT_DOWNLOADED -> {
+                    binding.bookStatus = "Download"
+                    binding.contentProcess = 0
+
+                }
+                DownloadStatus.QUEUED -> {
+                    binding.bookStatus = "Queued"
+                }
+                DownloadStatus.DOWNLOADING -> {
+                    binding.bookStatus = "Cancel"
+                    if (binding.downloadStatus == "Status") {
+                        binding.downloadStatus ="Downloading"
+                        binding.percentTxt.text = ""
+                        binding.progressDownload.isIndeterminate = true
+                    }
+                }
+                DownloadStatus.PAUSED -> {
+                }
+                DownloadStatus.DOWNLOADED -> {
+                    binding.bookStatus = "Delete"
+                    binding.downloadStatus = "Completed"
+                    binding.contentProcess = 100
+                    binding.progressDownload.isIndeterminate = false
+
+                }
+            }
+        })
     }
 
 }

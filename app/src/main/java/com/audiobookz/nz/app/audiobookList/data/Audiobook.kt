@@ -12,6 +12,9 @@ class Audiobook(
     @SerializedName("id")
     @Expose
     val id: Int,
+    @SerializedName("audioengine_audiobook_id")
+    @Expose
+    val audioengine_audiobook_id: String,
     @SerializedName("title")
     @Expose
     val title: String,

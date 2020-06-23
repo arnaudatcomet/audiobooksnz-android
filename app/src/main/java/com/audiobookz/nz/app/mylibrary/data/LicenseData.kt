@@ -7,15 +7,8 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-class CloudBook(
-    @SerializedName("id")
+class LicenseData(
+    @SerializedName("licenses")
     @Expose
-    val id: Int,
-    @SerializedName("audiobook")
-    @Expose
-    val audiobook: Audiobook?,
-    @SerializedName("audioengine_license_data")
-    @Expose
-    val audioengineLicenseData: LicenseData?
-
+    val licenses: List<License>
 ) : Parcelable

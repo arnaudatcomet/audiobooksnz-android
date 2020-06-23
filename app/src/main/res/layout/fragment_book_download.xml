@@ -6,6 +6,23 @@
         <variable
             name="urlImage"
             type="String" />
+        <variable
+            name="nameBookDownload"
+            type="String" />
+
+        <variable
+            name="statusButton"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="downloadStatus"
+            type="String" />
+        <variable
+            name="bookStatus"
+            type="String" />
+        <variable
+            name="contentProcess"
+            type="int" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -41,17 +58,25 @@
             android:layout_margin="10dp"
             android:textAppearance="?attr/textAppearanceHeadline6"
             android:textColor="@color/colorTea"
+            android:text="@{nameBookDownload}"
             android:textSize="@dimen/font_size_normal" />
 
-        <Button
-            android:id="@+id/btnDownload"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:backgroundTint="@android:color/background_dark"
-            android:text="Download" />
+            android:orientation="vertical">
 
+            <Button
+                android:id="@+id/btnDownload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:onClick="@{statusButton}"
+                android:backgroundTint="@android:color/background_dark"
+                android:text="@{bookStatus}"
+                android:textAllCaps="false"/>
+        </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/linear_status"
@@ -63,14 +88,14 @@
                 android:id="@+id/statusTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Status: ...."
+                android:text="@{downloadStatus}"
                 android:layout_alignParentLeft="true"/>
 
             <TextView
                 android:id="@+id/percentTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0.0%"
+                android:text="@{Integer.toString(contentProcess)+'%'}"
                 android:layout_alignParentRight="true"/>
         </RelativeLayout>
 
@@ -79,6 +104,7 @@
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:progress="@{contentProcess}"
             android:padding="16dp" />
 
         <RelativeLayout

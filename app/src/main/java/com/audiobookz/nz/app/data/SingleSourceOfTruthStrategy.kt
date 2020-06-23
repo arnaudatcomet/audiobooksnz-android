@@ -2,11 +2,14 @@ package com.audiobookz.nz.app.data
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.liveData
 import androidx.lifecycle.map
 import com.audiobookz.nz.app.data.Result.Status.ERROR
 import com.audiobookz.nz.app.data.Result.Status.SUCCESS
+import io.audioengine.mobile.DownloadEvent
 import kotlinx.coroutines.Dispatchers
+import rx.Observable
 
 /**
  * The database serves as the single source of truth.
@@ -19,11 +22,9 @@ import kotlinx.coroutines.Dispatchers
 fun <T, A> resultLiveData(
     databaseQuery: () -> LiveData<T>,
     networkCall: suspend () -> Result<A>,
-    saveCallResult: suspend (A) -> Unit,
-    nukeAudiobookList: () -> Unit
+    saveCallResult: suspend (A) -> Unit
 ): LiveData<Result<T>> =
     liveData(Dispatchers.IO) {
-        nukeAudiobookList()
         emit(Result.loading<T>())
         val source = databaseQuery.invoke().map { Result.success(it) }
         emitSource(source)
@@ -67,6 +68,36 @@ fun <A> resultFetchOnlyLiveData(networkCall: suspend () -> Result<A>): LiveData<
         } else if (responseStatus.status == ERROR) {
             emit(Result.error<A>(responseStatus.message!!))
         }
+    }
+
+ fun <A> resulObservableData(
+     networkCall: Observable<A>?,
+     onDownloading: (A) -> Unit,
+     onPartComplete: ()->Unit,
+     onComplete:()->Unit,
+     onDataError : (Throwable)->Unit)
+    {
+        networkCall?.subscribe(object: rx.Observer<A> {
+            override fun onError(e: Throwable?) {
+                if (e != null) {
+                    onDataError(e)
+                };
+            }
+            override fun onNext(t: A?) {
+                if (t!=null){
+                    onDownloading(t)
+                    if(t is DownloadEvent) {
+                        if(t.code?.equals(DownloadEvent.CONTENT_DOWNLOAD_COMPLETED)!!){
+                            onPartComplete()
+                        }
+                    }
+                }
+            }
+            override fun onCompleted() {
+                onComplete();
+            }
+
+        })
     }
 
 fun <A> resultSimpleLiveData(

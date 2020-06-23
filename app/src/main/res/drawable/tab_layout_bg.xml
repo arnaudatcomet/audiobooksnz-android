@@ -6,7 +6,7 @@
     <corners android:radius="5dp"/>
 
     <!-- TabLayout background color -->
-    <solid android:color="#fff"/>
+    <solid android:color="@android:color/transparent"/>
 
     <stroke android:width="2dp" android:color="@color/colorTea" />
 
