@@ -15,6 +15,10 @@
             type="android.view.View.OnClickListener" />
 
         <variable
+            name="goToPlayerClick"
+            type="android.view.View.OnClickListener" />
+
+        <variable
             name="downloadStatus"
             type="String" />
         <variable
@@ -123,7 +127,8 @@
                 app:elevation="0dp"
                 app:fabSize="mini"
                 app:maxImageSize="18dp"
-                app:tint="#FFFFFF" />
+                app:tint="#FFFFFF"
+                android:onClick="@{goToPlayerClick}"/>
         </RelativeLayout>
 
     </LinearLayout>

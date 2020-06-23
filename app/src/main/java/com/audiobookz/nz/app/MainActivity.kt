@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector,Injectable 
         isDiscover = intent.getBooleanExtra(EXTRA_MESSAGE, false)
         val binding: ActivityMainBinding = DataBindingUtil.setContentView(this,
             R.layout.activity_main)
-        BottomNavigation = binding.bottomNavigation
+        bottomNavigation = binding.bottomNavigation
         binding.isDiscover = isDiscover
         navController = findNavController(R.id.nav_fragment)
         appBarConfiguration =  AppBarConfiguration.Builder(R.id.browse,R.id.mylibrary, R.id.more, R.id.me).build()
@@ -117,7 +117,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector,Injectable 
                     bottomNavigation.visibility = View.GONE
                 }
                 else -> {
-                    if(isDiscover != true){
+                    if(!isDiscover){
                     bottomNavigation.visibility = View.VISIBLE}
                 }
             }

@@ -2,6 +2,7 @@ package com.audiobookz.nz.app.mylibrary.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.provider.AlarmClock.EXTRA_MESSAGE
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.navigation.fragment.navArgs
 import com.audiobookz.nz.app.databinding.FragmentBookDownloadBinding
 import com.audiobookz.nz.app.di.Injectable
 import com.audiobookz.nz.app.di.injectViewModel
+import com.audiobookz.nz.app.player.ui.PlayerActivity
 import io.audioengine.mobile.DownloadEvent
 import io.audioengine.mobile.DownloadStatus
 import javax.inject.Inject
@@ -38,6 +40,7 @@ class BookDownloadFragment : Fragment(), Injectable {
         //need check status first
         binding.bookStatus = "Download"
         binding.downloadStatus = "Status"
+        binding.goToPlayerClick = goToPlayerClick()
         viewModel.getContentStatus(args.id)
 
         return binding.root
@@ -127,5 +130,13 @@ class BookDownloadFragment : Fragment(), Injectable {
             }
         })
     }
+
+    private fun goToPlayerClick(): View.OnClickListener {
+        return View.OnClickListener {
+            val intent = Intent(activity, PlayerActivity::class.java).apply {
+                putExtra(EXTRA_MESSAGE, true)
+            }
+            startActivity(intent)
+        }}
 
 }
