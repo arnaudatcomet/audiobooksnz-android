@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_player"
+    app:startDestination="@id/audioPlayerFragment">
+
+    <fragment
+        android:id="@+id/audioPlayerFragment"
+        android:name="com.audiobookz.nz.app.player.ui.AudioPlayerFragment"
+        android:label="AudioPlayerFragment" >
+        <action
+            android:id="@+id/action_audioPlayerFragment_to_playerSpeedFragment"
+            app:destination="@id/playerSpeedFragment" />
+        <action
+            android:id="@+id/action_audioPlayerFragment_to_chapterFragment"
+            app:destination="@id/chapterFragment" />
+        <action
+            android:id="@+id/action_audioPlayerFragment_to_playerSleepTimeFragment"
+            app:destination="@id/playerSleepTimeFragment" />
+        <action
+            android:id="@+id/action_audioPlayerFragment_to_playerBookmarkFragment"
+            app:destination="@id/playerBookmarkFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/playerSpeedFragment"
+        android:name="com.audiobookz.nz.app.player.ui.PlayerSpeedFragment"
+        android:label="fragment_player_speed"
+        tools:layout="@layout/fragment_player_speed" />
+    <fragment
+        android:id="@+id/chapterFragment"
+        android:name="com.audiobookz.nz.app.player.ui.PlayerChapterFragment"
+        android:label="fragment_player_chapter"
+        tools:layout="@layout/fragment_player_chapter" />
+    <fragment
+        android:id="@+id/playerBookmarkFragment"
+        android:name="com.audiobookz.nz.app.player.ui.PlayerBookmarkFragment"
+        android:label="fragment_player_bookmark"
+        tools:layout="@layout/fragment_player_bookmark" />
+    <fragment
+        android:id="@+id/playerSleepTimeFragment"
+        android:name="com.audiobookz.nz.app.player.ui.PlayerSleepTimeFragment"
+        android:label="fragment_player_sleep_time"
+        tools:layout="@layout/fragment_player_sleep_time" />
+</navigation>

@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+        <variable
+            name="speedSelectClick"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="chapterSelectClick"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="sleepTimeSelectClick"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="addToBookmarkClick"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="skipPreviousClick"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="replay30sClick"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="playClick"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="forward30sClick"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="skipNextClick"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="cloudBook"
+            type="com.audiobookz.nz.app.mylibrary.data.CloudBook" />
+        <import type="android.view.View"/>
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:scrollbars="vertical"
+        tools:context=".player.ui.AudioPlayerFragment">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="20dp"
+                    app:cardCornerRadius="15dp">
+
+                    <ImageView
+                        android:id="@+id/imgCardBookDownload"
+                        android:layout_width="250dp"
+                        android:layout_height="250dp"
+                        android:padding="10dp"
+                        android:scaleType="centerCrop"
+                        app:imageFromUrl="@{cloudBook.audiobook.cover_image}" />
+
+                </androidx.cardview.widget.CardView>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/statusTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="00.00" />
+
+                    <ProgressBar
+                        android:id="@+id/progressPlayerTimePlay"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_toLeftOf="@+id/percentTxt"
+                        android:layout_toRightOf="@+id/statusTxt" />
+
+                    <TextView
+                        android:id="@+id/percentTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="00.00" />
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_player"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/skipPreviousButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="?android:selectableItemBackgroundBorderless"
+                        android:src="@drawable/skip_previous_48dp"
+                        android:onClick="@{skipPreviousClick}"/>
+
+                    <ImageButton
+                        android:id="@+id/replay30sButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="?android:selectableItemBackgroundBorderless"
+                        android:src="@drawable/replay_30_48dp"
+                        android:onClick="@{replay30sClick}"/>
+
+                    <ImageButton
+                        android:id="@+id/playButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/circle_sharp_play"
+                        android:src="@drawable/play_arrow96"
+                        android:onClick="@{playClick}"/>
+
+                    <ImageButton
+                        android:id="@+id/forward30sButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="?android:selectableItemBackgroundBorderless"
+                        android:src="@drawable/forward_30_48dp"
+                        android:onClick="@{forward30sClick}"/>
+
+                    <ImageButton
+                        android:id="@+id/skipNextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="?android:selectableItemBackgroundBorderless"
+                        android:src="@drawable/skip_next_48dp"
+                        android:onClick="@{skipNextClick}"/>
+
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <RelativeLayout
+            android:id="@+id/layout_bottom_option"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="10">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@android:color/white"
+                android:orientation="horizontal">
+
+
+                <LinearLayout
+                    android:id="@+id/speedLinear"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:orientation="vertical"
+                    android:paddingBottom="10dp"
+                    android:onClick="@{speedSelectClick}">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/speed_black_24dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/speed" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/chapterLinear"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:orientation="vertical"
+                    android:paddingBottom="10dp"
+                    android:onClick="@{chapterSelectClick}">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/chapter_black_24dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/chapter" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/sleepTimeLinear"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:orientation="vertical"
+                    android:paddingBottom="10dp"
+                    android:onClick="@{sleepTimeSelectClick}">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/time_black_24dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/sleepTime" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/bookMarkLinear"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:orientation="vertical"
+                    android:paddingBottom="10dp"
+                    android:onClick="@{addToBookmarkClick}">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/bookmarks_black_24dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/bookMark" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+</layout>

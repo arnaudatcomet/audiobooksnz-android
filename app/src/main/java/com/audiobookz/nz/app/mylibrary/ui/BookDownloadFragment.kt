@@ -1,21 +1,22 @@
 package com.audiobookz.nz.app.mylibrary.ui
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
-
 import com.audiobookz.nz.app.R
-import com.audiobookz.nz.app.audiobookList.ui.AudiobookListFragmentArgs
 import com.audiobookz.nz.app.databinding.FragmentBookDownloadBinding
+import com.audiobookz.nz.app.player.ui.PlayerActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+
 
 class BookDownloadFragment : Fragment() {
     private val args: BookDownloadFragmentArgs by navArgs()
@@ -31,6 +32,10 @@ class BookDownloadFragment : Fragment() {
     ): View? {
 
         val binding = FragmentBookDownloadBinding.inflate(inflater, container, false)
+
+//        val mainBottomNav: BottomNavigationView = activity!!.findViewById(R.id.bottom_navigation)
+//        mainBottomNav.visibility = View.GONE
+
         binding.txtNameBookDownload.text = args.title
         binding.urlImage = args.url
 
@@ -42,6 +47,7 @@ class BookDownloadFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         var playBtn = view.findViewById<FloatingActionButton>(R.id.imgPlayDownload)
         var downloadBtn = view.findViewById<Button>(R.id.btnDownload)
         var percetBar = view.findViewById<ProgressBar>(R.id.progress_download)
@@ -69,10 +75,8 @@ class BookDownloadFragment : Fragment() {
         }
 
         playBtn.setOnClickListener {
-            val navController = Navigation.findNavController(view!!)
-            navController.navigate(
-                BookDownloadFragmentDirections.actionBookDownloadFragmentToAudioPlayerFragment()
-            )
+            val intent = Intent(activity, PlayerActivity::class.java)
+            startActivity(intent)
         }
     }
 

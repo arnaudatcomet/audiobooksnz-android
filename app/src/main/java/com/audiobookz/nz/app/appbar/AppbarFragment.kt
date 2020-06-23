@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.audiobookz.nz.app.basket.ui.ActivityBasket
-import com.audiobookz.nz.app.databinding.ActivityBrowseBinding
 import com.audiobookz.nz.app.databinding.FragmentTopbarBinding
 import com.audiobookz.nz.app.di.Injectable
 import com.audiobookz.nz.app.di.injectViewModel

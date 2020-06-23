@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.TextView
@@ -35,9 +36,10 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector,Injectable 
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: MainActivityViewModel
-    private lateinit var BottomNavigation: BottomNavigationView
+    private lateinit var bottomNavigation: BottomNavigationView
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
+
     override fun supportFragmentInjector() = dispatchingAndroidInjector
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -65,6 +67,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector,Injectable 
             else -> super.onOptionsItemSelected(item)
         }
     }
+
     private fun openBasket(){
         val intent = Intent(this, ActivityBasket::class.java)
         startActivity(intent)
@@ -79,7 +82,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector,Injectable 
         val isDiscover = intent.getStringExtra(EXTRA_MESSAGE)
         val binding: ActivityMainBinding = DataBindingUtil.setContentView(this,
             R.layout.activity_main)
-        BottomNavigation = binding.bottomNavigation
+        bottomNavigation = binding.bottomNavigation
         binding.isDiscover = isDiscover!=null
         navController = findNavController(R.id.nav_fragment)
         appBarConfiguration =  AppBarConfiguration.Builder(R.id.browse,R.id.mylibrary, R.id.more, R.id.me).build()
@@ -87,5 +90,23 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector,Injectable 
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.bottomNavigation.setupWithNavController(navController)
 
+        //hide bottomNav on some fragment
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.bookDownloadFragment -> {
+                    bottomNavigation.visibility = View.GONE
+                }
+                R.id.editProfileFragment -> {
+                    bottomNavigation.visibility = View.GONE
+                }
+                R.id.faqProfileFragment -> {
+                    bottomNavigation.visibility = View.GONE
+                }
+                else -> {
+                    if(isDiscover != "discover"){
+                    bottomNavigation.visibility = View.VISIBLE}
+                }
+            }
+        }
     }
 }

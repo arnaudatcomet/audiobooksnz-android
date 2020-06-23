@@ -13,15 +13,13 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_normal"
-            android:layout_marginRight="@dimen/margin_normal"
-            android:layout_marginBottom="@dimen/margin_normal"
+            android:layout_margin="@dimen/margin_normal"
             android:hint="@string/searchLibrary"
             android:textColorHint="@android:color/darker_gray">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:inputType="textAutoComplete"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>

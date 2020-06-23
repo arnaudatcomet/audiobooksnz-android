@@ -105,8 +105,10 @@ class ProfileFragment : Fragment(), Injectable {
         }
 
         playBtn.setOnClickListener {
-            Toast.makeText(activity, "play", Toast.LENGTH_SHORT).show()
+            //use test navi
+
         }
+
         profileCard.setOnClickListener {
             val direction = ProfileFragmentDirections.actionMeToEditProfileFragment()
             view.findNavController().navigate(direction)
