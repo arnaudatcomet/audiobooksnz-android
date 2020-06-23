@@ -5,12 +5,17 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="cloudBook"
             type="com.audiobookz.nz.app.mylibrary.data.CloudBook" />
 
         <variable
             name="isDownloaded"
+            type="Boolean" />
+
+        <variable
+            name="isPlayed"
             type="Boolean" />
 
         <variable
@@ -25,6 +30,10 @@
             name="clickDownloadListener"
             type="android.view.View.OnClickListener" />
 
+        <variable
+            name="contentProcess"
+            type="int" />
+
         <import type="android.view.View" />
     </data>
 
@@ -38,48 +47,92 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{clickDownloadListener}"
             android:orientation="horizontal"
-            android:padding="@dimen/activity_horizontal_margin"
-            android:onClick="@{clickDownloadListener}">
+            android:padding="@dimen/activity_horizontal_margin">
 
-            <ImageView
-                android:id="@+id/imgCardCloud"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_gravity="center_horizontal"
-                android:scaleType="centerCrop"
-                android:alpha="@{isDownloaded? 1f:0.4f}"
-                app:imageFromUrl="@{cloudBook.audiobook.cover_image}"
-               />
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imgCardCloud"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center_horizontal"
+                    android:alpha="@{isDownloaded? 1f:0.4f}"
+                    android:scaleType="centerCrop"
+                    app:imageFromUrl="@{cloudBook.audiobook.cover_image}" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/CardProfile"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="bottom|right"
+                    android:layout_margin="5dp"
+                    android:backgroundTint="@color/colorTea"
+                    app:cardCornerRadius="15dp"
+                    android:visibility="@{isDownloaded? View.GONE:View.VISIBLE}">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/cloud_download_white_18dp"
+                        android:layout_gravity="center" />
+
+                </com.google.android.material.card.MaterialCardView>
+            </FrameLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginLeft="5dp">
+                android:layout_marginLeft="10dp"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/txtBookName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:layout_marginBottom="2dp"
-                android:textAppearance="?attr/textAppearanceHeadline6"
-                android:textSize="@dimen/font_size_normal"
-                android:textColor="@color/colorTea"
-                android:text="@{cloudBook.audiobook.title}"
-                />
+                <TextView
+                    android:id="@+id/txtBookName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginBottom="2dp"
+                    android:text="@{cloudBook.audiobook.title}"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    android:textColor="@color/colorTea"
+                    android:textSize="@dimen/font_size_normal" />
 
-            <TextView
-                android:id="@+id/txtNameAuthor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/txtBookName"
-                android:layout_gravity="left"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textSize="@dimen/font_size_small"
-                android:text="@{authors}"/>
+                <TextView
+                    android:id="@+id/txtNameAuthor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txtBookName"
+                    android:layout_gravity="left"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@{authors}"
+                    android:textSize="@dimen/font_size_small" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_below="@id/txtNameAuthor"
+                    android:visibility="@{isPlayed? View.VISIBLE:View.GONE}">
+
+                    <ProgressBar
+                        android:id="@+id/progressTimeRemain"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:progress="@{contentProcess}"
+                        android:padding="5dp" />
+
+                    <TextView
+                        android:id="@+id/progressStatusTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Minutes Remaining and Download finish"/>
+
+                </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>
@@ -89,10 +142,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|top"
+            android:onClick="@{clickOptionMenuListener}"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:text="&#8942;"
-            android:textAppearance="?android:textAppearanceLarge"
-            android:onClick="@{clickOptionMenuListener}"/>
+            android:textAppearance="?android:textAppearanceLarge" />
 
     </androidx.cardview.widget.CardView>
 
