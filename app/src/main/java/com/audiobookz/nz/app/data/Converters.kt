@@ -9,7 +9,7 @@ import java.util.*
  */
 class Converters {
 
-    @TypeConverter fun listToString(value: List<String>?) = value?.joinToString()?:"test123"
+    @TypeConverter fun listToString(value: List<String>?) = value?.joinToString(",")?:""
 
     @TypeConverter fun stringToList(value: String):List<String> {
         return value.split(',')
