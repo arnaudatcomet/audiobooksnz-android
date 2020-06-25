@@ -11,6 +11,9 @@ class CloudBook(
     @SerializedName("id")
     @Expose
     val id: Int,
+    @SerializedName("audiobook_id")
+    @Expose
+    val audiobook_id: Int,
     @SerializedName("audiobook")
     @Expose
     val audiobook: Audiobook?,

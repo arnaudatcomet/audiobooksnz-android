@@ -61,7 +61,7 @@ class CloudLibraryFragment : Fragment(), Injectable {
                     //add delay to fix item render before data available
                     Handler().postDelayed({
                         binding.CloudRecyclerView.adapter = adapter
-                    }, 100)
+                    }, 500)
 
                 }
                 Result.Status.LOADING -> binding.progressBar.show()

@@ -38,9 +38,9 @@ class CloudLibraryAdapter(private val context: Activity, private val resultDataL
         return ViewHolder(ListItemCloudBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
-    private fun openToDownload(title: String, url: String,id: String,licenseId:String): View.OnClickListener {
+    private fun openToDownload(title: String, url: String,id: String,licenseId:String,apiBookId:Int): View.OnClickListener {
         return View.OnClickListener {
-            val direction = MyLibraryFragmentDirections.actionMylibraryToBookDownloadFragment(title,licenseId, id,url)
+            val direction = MyLibraryFragmentDirections.actionMylibraryToBookDownloadFragment(title,licenseId,apiBookId, id,url)
             it.findNavController().navigate(direction)
         }
     }
@@ -90,7 +90,8 @@ class CloudLibraryAdapter(private val context: Activity, private val resultDataL
                     it,
                     cloudBook.audiobook.cover_image,
                     cloudBook.audiobook?.audioengine_audiobook_id,
-                    licenseId!!
+                    licenseId!!,
+                    cloudBook.audiobook_id
                 )
             }?.let {
                 bind(cloudBook, it, openOptionMenu(cloudBook.audiobook.id, bookTitle), resultCheckDownload)

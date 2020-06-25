@@ -32,5 +32,6 @@ class ProfileRepository @Inject constructor(
 
     fun editProfile(Image: MultipartBody.Part?, firstname:RequestBody, lastname:RequestBody, currentPassword:RequestBody,newPassword:RequestBody, confirmPassword:RequestBody)= resultSimpleLiveData(
         networkCall = {remoteSource.sendProfileData(Image, firstname, lastname, currentPassword, newPassword, confirmPassword)},
-        saveCallResult = {dao.insertUserData(it)})
+        saveCallResult = {dao.insertUserData(it)},
+        onCallSuccess = {})
 }
