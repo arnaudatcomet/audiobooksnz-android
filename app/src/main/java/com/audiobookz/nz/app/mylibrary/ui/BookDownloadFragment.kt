@@ -2,16 +2,17 @@ package com.audiobookz.nz.app.mylibrary.ui
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
-import com.audiobookz.nz.app.bookdetail.ui.BookDetailViewModel
-import com.audiobookz.nz.app.bookdetail.ui.ReviewsFragment
-import com.audiobookz.nz.app.bookdetail.ui.SummaryFragment
+import com.audiobookz.nz.app.R
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.databinding.FragmentBookDownloadBinding
 import com.audiobookz.nz.app.di.Injectable
@@ -24,22 +25,22 @@ import io.audioengine.mobile.DownloadEvent
 import io.audioengine.mobile.DownloadStatus
 import javax.inject.Inject
 
+
 class BookDownloadFragment : Fragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var viewModel: MyLibraryViewModel
+    private lateinit var viewModel: BookDownloadViewModel
     private val args: BookDownloadFragmentArgs by navArgs()
+    lateinit var binding: FragmentBookDownloadBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         viewModel = injectViewModel(viewModelFactory)
         val binding = FragmentBookDownloadBinding.inflate(inflater, container, false)
         binding.nameBookDownload = args.title
         binding.urlImage = args.url
-
         binding.statusButton = downloadAndDeleteButton(binding)
         subscribeUi(binding)
 
@@ -48,7 +49,6 @@ class BookDownloadFragment : Fragment(), Injectable {
         binding.downloadStatus = "Status"
         binding.goToPlayerClick = goToPlayerClick(binding)
         viewModel.getContentStatus(args.id)
-
         return binding.root
     }
 
@@ -58,7 +58,7 @@ class BookDownloadFragment : Fragment(), Injectable {
             when (binding.bookStatus) {
                 "Download" -> {
                     binding.downloadStatus = "Pending"
-                    viewModel.download( args.id, args.licenseId)
+                    viewModel.download(args.id, args.licenseId)
                 }
                 "Queued" -> {
 
@@ -70,7 +70,7 @@ class BookDownloadFragment : Fragment(), Injectable {
                     binding.progressDownload.isIndeterminate = false
                 }
                 "Paused" -> {
-                   viewModel.download( args.id, args.licenseId)
+                    viewModel.download(args.id, args.licenseId)
                 }
                 "Delete" -> {
                     viewModel.deleteContent(args.id, args.licenseId)
@@ -96,7 +96,7 @@ class BookDownloadFragment : Fragment(), Injectable {
 
     private fun subscribeUi(binding: FragmentBookDownloadBinding) {
 
-        viewModel.bookDetail.observe(viewLifecycleOwner, Observer { result->
+        viewModel.bookDetail.observe(viewLifecycleOwner, Observer { result ->
             when (result.status) {
                 Result.Status.SUCCESS -> {
                     binding.downloadStatus = "Completed"
@@ -107,7 +107,7 @@ class BookDownloadFragment : Fragment(), Injectable {
             }
         })
 
-        viewModel.downloadResult.observe(viewLifecycleOwner, Observer { result ->
+        viewModel.downloadResult.observe(viewLifecycleOwner){ result ->
             when (result.code) {
                 DownloadEvent.DOWNLOAD_PROGRESS_UPDATE -> {
                     binding.downloadStatus = "Downloading"
@@ -126,10 +126,10 @@ class BookDownloadFragment : Fragment(), Injectable {
                 }
                 DownloadEvent.CONTENT_DOWNLOAD_COMPLETED -> {
                     binding.downloadStatus = "Fetching information"
-                    viewModel.getDetailBook(args.apiBookId.toString(),args.title?:"Book")
+                    viewModel.getDetailBook(args.apiBookId.toString(), args.title ?: "Book")
                 }
             }
-        })
+        }
         viewModel.contentStatusResult.observe(viewLifecycleOwner, Observer { result ->
             when (result) {
                 DownloadStatus.NOT_DOWNLOADED -> {
@@ -142,11 +142,9 @@ class BookDownloadFragment : Fragment(), Injectable {
                 }
                 DownloadStatus.DOWNLOADING -> {
                     binding.bookStatus = "Cancel"
-                    if (binding.downloadStatus == "Status") {
-                        binding.downloadStatus = "Downloading"
-                        binding.percentTxt.text = ""
-                        binding.progressDownload.isIndeterminate = true
-                    }
+                    binding.downloadStatus = "Downloading"
+                    binding.percentTxt.text = ""
+                    binding.progressDownload.isIndeterminate = true
                 }
                 DownloadStatus.PAUSED -> {
                 }
