@@ -15,9 +15,11 @@ class LoginRepository @Inject constructor(
     fun loginEmail(Username: String, Password: String) =
         resultSimpleLiveData(
             networkCall = { remoteSource.emailLogin(Username, Password) },
-            saveCallResult = { it.access_token?.let { it1 -> sharePref.saveToken(it1) } })
+            saveCallResult = { it.access_token?.let { it1 -> sharePref.saveToken(it1) } },
+            onCallSuccess = {})
 
     fun resetPass(email: String) = resultSimpleLiveData(
         networkCall = { remoteSource.forgotPass(email) },
-        saveCallResult = {})
+        saveCallResult = {},
+        onCallSuccess = {})
 }

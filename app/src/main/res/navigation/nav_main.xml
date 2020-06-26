@@ -155,6 +155,9 @@
             android:name="licenseId"
             app:argType="string"/>
         <argument
+            android:name="apiBookId"
+            app:argType="integer" />
+        <argument
             android:name="id"
             app:argType="string"/>
         <argument

@@ -9,10 +9,17 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import com.audiobookz.nz.app.bookdetail.ui.BookDetailViewModel
+import com.audiobookz.nz.app.bookdetail.ui.ReviewsFragment
+import com.audiobookz.nz.app.bookdetail.ui.SummaryFragment
+import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.databinding.FragmentBookDownloadBinding
 import com.audiobookz.nz.app.di.Injectable
 import com.audiobookz.nz.app.di.injectViewModel
 import com.audiobookz.nz.app.player.ui.PlayerActivity
+import com.audiobookz.nz.app.ui.hide
+import com.audiobookz.nz.app.ui.show
+import com.google.android.material.snackbar.Snackbar
 import io.audioengine.mobile.DownloadEvent
 import io.audioengine.mobile.DownloadStatus
 import javax.inject.Inject
@@ -51,7 +58,7 @@ class BookDownloadFragment : Fragment(), Injectable {
             when (binding.bookStatus) {
                 "Download" -> {
                     binding.downloadStatus = "Pending"
-                    args.title?.let { it1 -> viewModel.download(it1, args.id, args.licenseId) }
+                    viewModel.download( args.id, args.licenseId)
                 }
                 "Queued" -> {
 
@@ -63,7 +70,7 @@ class BookDownloadFragment : Fragment(), Injectable {
                     binding.progressDownload.isIndeterminate = false
                 }
                 "Paused" -> {
-                    args.title?.let { it1 -> viewModel.download(it1, args.id, args.licenseId) }
+                   viewModel.download( args.id, args.licenseId)
                 }
                 "Delete" -> {
                     viewModel.deleteContent(args.id, args.licenseId)
@@ -88,6 +95,18 @@ class BookDownloadFragment : Fragment(), Injectable {
     }
 
     private fun subscribeUi(binding: FragmentBookDownloadBinding) {
+
+        viewModel.bookDetail.observe(viewLifecycleOwner, Observer { result->
+            when (result.status) {
+                Result.Status.SUCCESS -> {
+                    binding.downloadStatus = "Completed"
+                    binding.contentProcess = 100
+                    binding.progressDownload.isIndeterminate = false
+
+                }
+            }
+        })
+
         viewModel.downloadResult.observe(viewLifecycleOwner, Observer { result ->
             when (result.code) {
                 DownloadEvent.DOWNLOAD_PROGRESS_UPDATE -> {
@@ -106,10 +125,8 @@ class BookDownloadFragment : Fragment(), Injectable {
                     binding.contentProcess = result.contentPercentage
                 }
                 DownloadEvent.CONTENT_DOWNLOAD_COMPLETED -> {
-                    binding.downloadStatus = "Completed"
-                    binding.contentProcess = 100
-                    binding.progressDownload.isIndeterminate = false
-
+                    binding.downloadStatus = "Fetching information"
+                    viewModel.getDetailBook(args.apiBookId.toString(),args.title?:"Book")
                 }
             }
         })

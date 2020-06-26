@@ -102,7 +102,8 @@ fun <A> resultFetchOnlyLiveData(networkCall: suspend () -> Result<A>): LiveData<
 
 fun <A> resultSimpleLiveData(
     networkCall: suspend () -> Result<A>,
-    saveCallResult: suspend (A) -> Unit
+    saveCallResult: suspend (A) -> Unit,
+    onCallSuccess:()->Unit
 ): LiveData<Result<A>> = liveData(Dispatchers.IO)
 
 {
@@ -111,6 +112,7 @@ fun <A> resultSimpleLiveData(
     if (responseStatus.status == SUCCESS) {
         saveCallResult(responseStatus.data!!)
         emit(Result.success<A>(responseStatus.data))
+        onCallSuccess();
     } else if (responseStatus.status == ERROR) {
         emit(Result.error<A>(responseStatus.message!!))
     }

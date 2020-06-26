@@ -8,6 +8,7 @@ import com.audiobookz.nz.app.browse.featured.data.Featured
 import com.audiobookz.nz.app.login.data.SuccessData
 import com.audiobookz.nz.app.login.data.UserData
 import com.audiobookz.nz.app.mylibrary.data.CloudBook
+import com.audiobookz.nz.app.mylibrary.data.LocalBookData
 import com.audiobookz.nz.app.mylibrary.data.SessionData
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -118,6 +119,11 @@ interface AudiobookService {
     suspend fun getBookDetail(
         @Path("id") id: Int
     ): Response<BookDetail>
+
+    @GET("audiobooks/{id}")
+    suspend fun getLocalBookDetail(
+        @Path("id") id: Int
+    ): Response<LocalBookData>
 
     @GET("audiobooks/{id}/reviews")
     suspend fun getBookReview(

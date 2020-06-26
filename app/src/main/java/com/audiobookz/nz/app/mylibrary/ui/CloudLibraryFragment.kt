@@ -1,6 +1,7 @@
 package com.audiobookz.nz.app.mylibrary.ui
 
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.R
 import com.audiobookz.nz.app.audiobookList.ui.AudiobookListViewModel
+import com.audiobookz.nz.app.browse.categories.ui.CategoryAdapter
 import com.audiobookz.nz.app.databinding.FragmentCloudLibraryBinding
 import com.audiobookz.nz.app.di.Injectable
 import com.audiobookz.nz.app.di.injectViewModel
@@ -19,7 +21,9 @@ import com.audiobookz.nz.app.ui.show
 import com.audiobookz.nz.app.util.CATEGORY_PAGE_SIZE
 import com.audiobookz.nz.app.util.CLOUDBOOK_PAGE_SIZE
 import com.google.android.material.snackbar.Snackbar
+import java.util.*
 import javax.inject.Inject
+import kotlin.concurrent.schedule
 
 class CloudLibraryFragment : Fragment(), Injectable {
     @Inject
@@ -53,7 +57,11 @@ class CloudLibraryFragment : Fragment(), Injectable {
                 Result.Status.SUCCESS -> {
                     binding.progressBar.hide()
                     val adapter = activity?.let { result.data?.let { it1 -> CloudLibraryAdapter(it, it1) } }
-                    binding.CloudRecyclerView.adapter = adapter
+
+                    //add delay to fix item render before data available
+                    Handler().postDelayed({
+                        binding.CloudRecyclerView.adapter = adapter
+                    }, 500)
 
                 }
                 Result.Status.LOADING -> binding.progressBar.show()

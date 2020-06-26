@@ -65,6 +65,10 @@ class AppModule {
 
     @Singleton
     @Provides
+    fun provideLocalBookDataDao(db: AppDatabase) = db.localBookDataDao()
+
+    @Singleton
+    @Provides
     fun provideSharedPreferences(app: Application) = SharedPreferencesService(app)
 
     @Singleton
