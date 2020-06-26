@@ -18,6 +18,9 @@ class MyLibraryRepository @Inject constructor(
     fun getCloudBook(Page: Int, PageSize: Int) = resultFetchOnlyLiveData(
         networkCall = { remoteSource.getCloudBook(Page, PageSize) }
     )
+    val getLocalbook = resultLocalGetOnlyLiveData (
+        databaseQuery={localBookDataDao.getLocalBookData()}
+    )
 
     fun getDetailBook(
         id: String,

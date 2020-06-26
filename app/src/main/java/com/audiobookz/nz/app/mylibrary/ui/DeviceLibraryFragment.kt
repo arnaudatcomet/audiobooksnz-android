@@ -10,14 +10,16 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 
 import com.audiobookz.nz.app.R
+import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.di.Injectable
 import com.audiobookz.nz.app.di.injectViewModel
+import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
 class DeviceLibraryFragment : Fragment() ,Injectable{
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var viewModel: MyLibraryViewModel
+    private lateinit var viewModel: DeviceLibraryViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,16 +27,18 @@ class DeviceLibraryFragment : Fragment() ,Injectable{
     ): View? {
         viewModel = injectViewModel(viewModelFactory)
         // Inflate the layout for this fragment
-        viewModel.getLocalBookList();
-        subscribeUi()
         return inflater.inflate(R.layout.fragment_device_libraryfragment, container, false)
 
     }
 
     private fun subscribeUi() {
-        viewModel.listLocalBookResult.observe(viewLifecycleOwner, Observer{result->
-            Log.d("TAG", "subscribeUi: "+ result.toString())
-        } )
+        viewModel.localBookList.observe(viewLifecycleOwner, Observer { result ->
+            when (result.status) {
+                Result.Status.SUCCESS ->{}
+                Result.Status.LOADING ->{}
+
+            }
+        })
     }
 
 }
