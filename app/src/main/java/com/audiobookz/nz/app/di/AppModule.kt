@@ -15,6 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 
@@ -37,7 +38,12 @@ class AppModule {
     fun providePrivateOkHttpClient(sharePref : SharedPreferencesService,
                                    upstreamClient: OkHttpClient
     ): OkHttpClient {
-        return upstreamClient.newBuilder().addInterceptor(AuthInterceptor(sharePref)).build()
+        return upstreamClient.newBuilder()
+            //set time for test when long fetch data time out
+            .connectTimeout(60,TimeUnit.SECONDS)
+            .readTimeout(60,TimeUnit.SECONDS)
+            .writeTimeout(60,TimeUnit.SECONDS)
+            .addInterceptor(AuthInterceptor(sharePref)).build()
     }
 
     @Singleton

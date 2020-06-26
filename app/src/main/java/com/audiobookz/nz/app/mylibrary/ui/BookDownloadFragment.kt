@@ -2,7 +2,6 @@ package com.audiobookz.nz.app.mylibrary.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.provider.AlarmClock.EXTRA_MESSAGE
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -40,7 +39,7 @@ class BookDownloadFragment : Fragment(), Injectable {
         //need check status first
         binding.bookStatus = "Download"
         binding.downloadStatus = "Status"
-        binding.goToPlayerClick = goToPlayerClick()
+        binding.goToPlayerClick = goToPlayerClick(binding)
         viewModel.getContentStatus(args.id)
 
         return binding.root
@@ -70,6 +69,20 @@ class BookDownloadFragment : Fragment(), Injectable {
                     viewModel.deleteContent(args.id, args.licenseId)
                     binding.downloadStatus = "status"
                 }
+            }
+        }
+    }
+
+    private fun goToPlayerClick(binding: FragmentBookDownloadBinding): View.OnClickListener {
+        return View.OnClickListener {
+            if (binding.downloadStatus == "Completed") {
+                val intent = Intent(activity, PlayerActivity::class.java).apply {
+                    putExtra("idBook", args.id)
+                    putExtra("urlImage", args.url)
+                    putExtra("titleBook", args.title)
+                    putExtra("licenseIDBook", args.licenseId)
+                }
+                startActivity(intent)
             }
         }
     }
@@ -113,7 +126,7 @@ class BookDownloadFragment : Fragment(), Injectable {
                 DownloadStatus.DOWNLOADING -> {
                     binding.bookStatus = "Cancel"
                     if (binding.downloadStatus == "Status") {
-                        binding.downloadStatus ="Downloading"
+                        binding.downloadStatus = "Downloading"
                         binding.percentTxt.text = ""
                         binding.progressDownload.isIndeterminate = true
                     }
@@ -130,13 +143,5 @@ class BookDownloadFragment : Fragment(), Injectable {
             }
         })
     }
-
-    private fun goToPlayerClick(): View.OnClickListener {
-        return View.OnClickListener {
-            val intent = Intent(activity, PlayerActivity::class.java).apply {
-                putExtra(EXTRA_MESSAGE, true)
-            }
-            startActivity(intent)
-        }}
 
 }

@@ -8,7 +8,9 @@
     <fragment
         android:id="@+id/audioPlayerFragment"
         android:name="com.audiobookz.nz.app.player.ui.AudioPlayerFragment"
-        android:label="AudioPlayerFragment" >
+        android:label="AudioPlayerFragment"
+        tools:layout="@layout/fragment_audio_player">
+
         <action
             android:id="@+id/action_audioPlayerFragment_to_playerSpeedFragment"
             app:destination="@id/playerSpeedFragment" />
@@ -22,15 +24,20 @@
             android:id="@+id/action_audioPlayerFragment_to_playerBookmarkFragment"
             app:destination="@id/playerBookmarkFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/playerSpeedFragment"
         android:name="com.audiobookz.nz.app.player.ui.PlayerSpeedFragment"
-        android:label="fragment_player_speed"
-        tools:layout="@layout/fragment_player_speed" />
+        android:label="@string/narrationSpeed"
+        tools:layout="@layout/fragment_player_speed" >
+        <argument
+            android:name="speedX"
+            app:argType="float"/>
+    </fragment>
     <fragment
         android:id="@+id/chapterFragment"
         android:name="com.audiobookz.nz.app.player.ui.PlayerChapterFragment"
-        android:label="fragment_player_chapter"
+        android:label="@string/chapter"
         tools:layout="@layout/fragment_player_chapter" />
     <fragment
         android:id="@+id/playerBookmarkFragment"
@@ -40,6 +47,6 @@
     <fragment
         android:id="@+id/playerSleepTimeFragment"
         android:name="com.audiobookz.nz.app.player.ui.PlayerSleepTimeFragment"
-        android:label="fragment_player_sleep_time"
+        android:label="@string/sleepTime"
         tools:layout="@layout/fragment_player_sleep_time" />
 </navigation>

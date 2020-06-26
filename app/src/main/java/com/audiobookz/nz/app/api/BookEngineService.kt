@@ -37,7 +37,7 @@ class BookEngineService{
        return downloadEngine.get(status)
     }
 
-    fun getChapterList(contentId:String): Observable<List<Chapter>> {
+    fun getChapterLists(contentId:String): Observable<List<Chapter>> {
         return downloadEngine.getChapters(contentId)
     }
 
@@ -45,24 +45,41 @@ class BookEngineService{
         val playRequest = PlayRequest(licenseId,contentId,partNumber,chapterNumber,position )
         return playbackEngine.play(playRequest)
     }
+
     fun pausePlay(){
          playbackEngine.pause()
     }
+
     fun resumePlay(){
          playbackEngine.resume()
     }
+
     fun nextChapter(){
          playbackEngine.nextChapter()
     }
+
     fun previousChapter(){
          playbackEngine.previousChapter()
     }
+
     fun getPosition(): Long {
-       return playbackEngine.getPosition()
+       return playbackEngine.position
     }
+
     fun setSpeed(speed:Float)  {
          playbackEngine.speed = speed
     }
 
+    fun isPlaying():Boolean{
+        return playbackEngine.isPlaying
+    }
+
+    fun seekTo(position: Long){
+        playbackEngine.seekTo(position)
+    }
+
+    fun getPlayerState():Observable<PlayerState>?{
+        return playbackEngine.state
+    }
 
 }

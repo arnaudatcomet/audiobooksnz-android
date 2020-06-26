@@ -162,4 +162,6 @@
     <string name="bookMarks">Bookmarks</string>
     <string name="viewDetail">View Details</string>
 
+    <string name="narrationSpeed">Narration Speed</string>
+
 </resources>
