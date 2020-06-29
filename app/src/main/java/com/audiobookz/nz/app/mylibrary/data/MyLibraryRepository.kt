@@ -2,6 +2,7 @@ package com.audiobookz.nz.app.mylibrary.data
 
 import com.audiobookz.nz.app.bookdetail.data.BookDetailRemoteDataSource
 import com.audiobookz.nz.app.data.*
+import com.audiobookz.nz.app.util.DOWNLOAD_COMPLETE
 import io.audioengine.mobile.DownloadEvent
 import io.audioengine.mobile.DownloadStatus
 import io.audioengine.mobile.PlaybackEvent
@@ -54,12 +55,16 @@ class MyLibraryRepository @Inject constructor(
     fun downloadAudiobook(
         callback: (DownloadEvent) -> Unit,
         contentId: String,
-        licenseId: String
+        licenseId: String,
+        title: String,
+        imageUrl: String?,
+        authors: String,
+        narrators: String
     ) = resulObservableData(
         networkCall = audioEngineDataSource.download(contentId, licenseId),
         onDownloading = { callback(it) },
-        onPartComplete = {},
-        onComplete = {},
+        onPartComplete = { localBookDataDao.insertLocalBookData(LocalBookData(it.content?.id?.toInt()!!,title,imageUrl,licenseId,narrators,authors))},
+        onComplete = {audioEngineDataSource.notifySimpleNotification(title, DOWNLOAD_COMPLETE)},
         onDataError = {}
     )
 

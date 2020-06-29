@@ -73,7 +73,7 @@ fun <A> resultFetchOnlyLiveData(networkCall: suspend () -> Result<A>): LiveData<
  fun <A> resulObservableData(
      networkCall: Observable<A>?,
      onDownloading: (A) -> Unit,
-     onPartComplete: ()->Unit,
+     onPartComplete: (A)->Unit,
      onComplete:()->Unit,
      onDataError : (Throwable)->Unit)
     {
@@ -88,7 +88,8 @@ fun <A> resultFetchOnlyLiveData(networkCall: suspend () -> Result<A>): LiveData<
                     onDownloading(t)
                     if(t is DownloadEvent) {
                         if(t.code?.equals(DownloadEvent.CONTENT_DOWNLOAD_COMPLETED)!!){
-                            onPartComplete()
+                           onPartComplete(t)
+                           onComplete();
                         }
                     }
                 }

@@ -15,7 +15,8 @@ class BookDownloadViewModel @Inject constructor(private val repository: MyLibrar
     val downloadResult = MutableLiveData<DownloadEvent>()
     var contentStatusResult = MutableLiveData<DownloadStatus>()
     var bookDetail = MediatorLiveData<Result<String>>()
-//    lateinit var timer : CountDownTimer
+
+    //    lateinit var timer : CountDownTimer
 //    var timerData =  MutableLiveData<Long>()
 //
 //    fun startTimer(){
@@ -40,18 +41,33 @@ class BookDownloadViewModel @Inject constructor(private val repository: MyLibrar
         authors: String,
         narrators: String
     ) {
-        bookDetail.addSource(repository.saveDetailBook(id,title,licenseId,imageUrl,authors,narrators)) { value ->
+        bookDetail.addSource(
+            repository.saveDetailBook(
+                id,
+                title,
+                licenseId,
+                imageUrl,
+                authors,
+                narrators
+            )
+        ) { value ->
             bookDetail.value = value
         }
     }
 
 
-    fun download(contentId: String, licenseId: String) {
+    fun download(
+        contentId: String, licenseId: String, title: String,
+        imageUrl: String?,
+        authors: String,
+        narrators: String
+    ) {
 
         repository.downloadAudiobook(
             { downloadEvent -> downloadResult.postValue(downloadEvent) },
             contentId,
-            licenseId
+            licenseId,
+            title, imageUrl, authors, narrators
         )
     }
 
@@ -69,7 +85,6 @@ class BookDownloadViewModel @Inject constructor(private val repository: MyLibrar
     fun cancelDownload(downloadId: String) {
         repository.cancelDownload(downloadId)
     }
-
 
 
 }

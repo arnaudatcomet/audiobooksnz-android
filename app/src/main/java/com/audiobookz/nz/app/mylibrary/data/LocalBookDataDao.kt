@@ -11,7 +11,7 @@ interface LocalBookDataDao {
     fun getLocalBookData(): LiveData<List<LocalBookData>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertLocalBookData(localBookData: LocalBookData)
+    fun insertLocalBookData(localBookData: LocalBookData)
 
     @Query("DELETE FROM localbook WHERE id = :id")
     fun deleteById(id:Int)

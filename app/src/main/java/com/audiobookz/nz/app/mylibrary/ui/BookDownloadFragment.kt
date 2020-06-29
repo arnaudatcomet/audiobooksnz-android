@@ -51,8 +51,9 @@ class BookDownloadFragment : Fragment(), Injectable {
             when (binding.bookStatus) {
                 "Download" -> {
                     binding.downloadStatus = "Pending"
-                    viewModel.download(args.id, args.licenseId)
+                    viewModel.download(args.id, args.licenseId,args.title ?: "Book", args.url,args.authors,args.narrators)
                 }
+
                 "Queued" -> {
 
                 }
@@ -62,7 +63,7 @@ class BookDownloadFragment : Fragment(), Injectable {
                     viewModel.cancelDownload(downloadId)
                 }
                 "Paused" -> {
-                    viewModel.download(args.id, args.licenseId)
+                    viewModel.download(args.id, args.licenseId,args.title ?: "Book", args.url,args.authors,args.narrators)
                 }
                 "Delete" -> {
                     AsyncTask.execute {
@@ -75,15 +76,6 @@ class BookDownloadFragment : Fragment(), Injectable {
     }
 
     private fun subscribeUi(binding: FragmentBookDownloadBinding) {
-
-        viewModel.bookDetail.observe(viewLifecycleOwner, Observer { result ->
-            when (result.status) {
-                Result.Status.SUCCESS -> {
-                    binding.downloadStatus = "Completed"
-                    binding.contentProcess = 100
-                }
-            }
-        })
 
         viewModel.downloadResult.observe(viewLifecycleOwner){ result ->
             when (result.code) {
@@ -104,8 +96,7 @@ class BookDownloadFragment : Fragment(), Injectable {
                     binding.contentProcess = result.contentPercentage
                 }
                 DownloadEvent.CONTENT_DOWNLOAD_COMPLETED -> {
-                    binding.downloadStatus = "Fetching information"
-                    viewModel.saveDetailBook(args.id.toInt(), args.title ?: "Book", args.licenseId,args.url,args.authors,args.narrators)
+                    binding.downloadStatus = "Completed"
                 }
             }
         }
