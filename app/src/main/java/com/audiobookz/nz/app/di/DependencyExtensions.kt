@@ -15,5 +15,6 @@ inline fun <reified T : ViewModel> FragmentActivity.injectViewModel(factory: Vie
 }
 
 inline fun <reified T : ViewModel> Fragment.injectViewModel(factory: ViewModelProvider.Factory): T {
-    return ViewModelProviders.of(this, factory)[T::class.java]
+    //xok : bind viewmodel to activity to avoid viewmodel got destroyed when destroy fragment
+    return ViewModelProvider(requireActivity(), factory)[T::class.java]
 }

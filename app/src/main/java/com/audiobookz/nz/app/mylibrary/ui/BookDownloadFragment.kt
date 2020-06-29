@@ -1,6 +1,7 @@
 package com.audiobookz.nz.app.mylibrary.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +25,7 @@ class BookDownloadFragment : Fragment(), Injectable {
     private lateinit var viewModel: BookDownloadViewModel
     private val args: BookDownloadFragmentArgs by navArgs()
     lateinit var binding: FragmentBookDownloadBinding
-
+    private lateinit var downloadId:String;
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,7 +36,7 @@ class BookDownloadFragment : Fragment(), Injectable {
         binding.urlImage = args.url
         binding.statusButton = downloadAndDeleteButton(binding)
         subscribeUi(binding)
-
+       // viewModel.startTimer()
         //need check status first
         binding.bookStatus = "Download"
         binding.downloadStatus = "Status"
@@ -57,8 +58,7 @@ class BookDownloadFragment : Fragment(), Injectable {
                 "Cancel" -> {
                     binding.bookStatus = "Download"
                     binding.downloadStatus = "Status"
-                    viewModel.deleteContent(args.id, args.licenseId)
-                    binding.progressDownload.isIndeterminate = false
+                    viewModel.cancelDownload(downloadId)
                 }
                 "Paused" -> {
                     viewModel.download(args.id, args.licenseId)
@@ -78,8 +78,6 @@ class BookDownloadFragment : Fragment(), Injectable {
                 Result.Status.SUCCESS -> {
                     binding.downloadStatus = "Completed"
                     binding.contentProcess = 100
-                    binding.progressDownload.isIndeterminate = false
-
                 }
             }
         })
@@ -88,7 +86,8 @@ class BookDownloadFragment : Fragment(), Injectable {
             when (result.code) {
                 DownloadEvent.DOWNLOAD_PROGRESS_UPDATE -> {
                     binding.downloadStatus = "Downloading"
-                    if (result.contentPercentage != 0) {
+                    if (result.contentPercentage != 0&&result.contentPercentage!=binding.contentProcess) {
+                        downloadId = result.id ?:"null"
                         binding.contentProcess = result.contentPercentage
                     }
                 }
@@ -121,7 +120,6 @@ class BookDownloadFragment : Fragment(), Injectable {
                     binding.bookStatus = "Cancel"
                     binding.downloadStatus = "Downloading"
                     binding.percentTxt.text = ""
-                    binding.progressDownload.isIndeterminate = true
                 }
                 DownloadStatus.PAUSED -> {
                 }
@@ -129,7 +127,6 @@ class BookDownloadFragment : Fragment(), Injectable {
                     binding.bookStatus = "Delete"
                     binding.downloadStatus = "Completed"
                     binding.contentProcess = 100
-                    binding.progressDownload.isIndeterminate = false
 
                 }
             }

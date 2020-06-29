@@ -1,5 +1,6 @@
 package com.audiobookz.nz.app.mylibrary.ui
 
+import android.os.CountDownTimer
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,7 +15,23 @@ class BookDownloadViewModel @Inject constructor(private val repository: MyLibrar
     val downloadResult = MutableLiveData<DownloadEvent>()
     var contentStatusResult = MutableLiveData<DownloadStatus>()
     var bookDetail = MediatorLiveData<Result<String>>()
-
+//    lateinit var timer : CountDownTimer
+//    var timerData =  MutableLiveData<Long>()
+//
+//    fun startTimer(){
+//        timer = object : CountDownTimer(30000,1000){
+//            override fun onTick(millisUntilFinished: Long) {
+//                timerData.value = millisUntilFinished/1000
+//            }
+//
+//            override fun onFinish() {
+//                timerData.value = 1000
+//            }
+//        }
+//        if (timerData.value==null){
+//            timer.start()
+//        }
+//    }
     fun saveDetailBook(
         id: String,
         title: String,
@@ -49,8 +66,8 @@ class BookDownloadViewModel @Inject constructor(private val repository: MyLibrar
         repository.deleteAudiobook(contentId, licenseId)
     }
 
-    fun cancelDownload(contentId: String, licenseId: String) {
-        repository.cancelDownload(contentId, licenseId)
+    fun cancelDownload(downloadId: String) {
+        repository.cancelDownload(downloadId)
     }
 
 

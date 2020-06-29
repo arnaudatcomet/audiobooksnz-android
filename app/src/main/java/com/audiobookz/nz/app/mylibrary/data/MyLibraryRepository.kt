@@ -17,8 +17,9 @@ class MyLibraryRepository @Inject constructor(
     fun getCloudBook(Page: Int, PageSize: Int) = resultFetchOnlyLiveData(
         networkCall = { remoteSource.getCloudBook(Page, PageSize) }
     )
-    val getLocalbook = resultLocalGetOnlyLiveData (
-        databaseQuery={localBookDataDao.getLocalBookData()}
+
+    val getLocalbook = resultLocalGetOnlyLiveData(
+        databaseQuery = { localBookDataDao.getLocalBookData() }
     )
 
     fun saveDetailBook(
@@ -28,10 +29,20 @@ class MyLibraryRepository @Inject constructor(
         imageUrl: String?,
         authors: String,
         narrators: String
-    ) = resultLocalSaveOnlyLiveData (
-        saveCallResult = {localBookDataDao.insertLocalBookData(LocalBookData(id,title,imageUrl,licenseId,narrators,authors))}
+    ) = resultLocalSaveOnlyLiveData(
+        saveCallResult = {
+            localBookDataDao.insertLocalBookData(
+                LocalBookData(
+                    id,
+                    title,
+                    imageUrl,
+                    licenseId,
+                    narrators,
+                    authors
+                )
+            )
+        }
     )
-
 
 
     fun getSession() = resultLiveData(
@@ -83,12 +94,12 @@ class MyLibraryRepository @Inject constructor(
         )
 
     fun deleteAudiobook(contentId: String, licenseId: String) {
-        localBookDataDao.deleteById(contentId);
+        suspend { localBookDataDao.deleteById(contentId); }
         audioEngineDataSource.delete(contentId, licenseId);
     }
 
-    fun cancelDownload(contentId: String, licenseId: String) =
-        audioEngineDataSource.cancelDownload(contentId, licenseId)
+    fun cancelDownload(downloadId: String) =
+        audioEngineDataSource.cancelDownload(downloadId)
 
     fun getLocalBookList(callback: (List<String>) -> Unit, status: DownloadStatus) =
         resulObservableData(
