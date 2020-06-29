@@ -1,31 +1,29 @@
 package com.audiobookz.nz.app.mylibrary.ui
 
-import android.util.Log
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.audiobookz.nz.app.bookdetail.data.BookDetail
-import com.audiobookz.nz.app.browse.featured.data.Featured
 import javax.inject.Inject
 import com.audiobookz.nz.app.data.Result
-import com.audiobookz.nz.app.mylibrary.data.CloudBook
-import com.audiobookz.nz.app.mylibrary.data.LocalBookData
 import com.audiobookz.nz.app.mylibrary.data.MyLibraryRepository
-import com.audiobookz.nz.app.util.CLOUDBOOK_PAGE_SIZE
 import io.audioengine.mobile.DownloadEvent
-import io.audioengine.mobile.DownloadRequest
 import io.audioengine.mobile.DownloadStatus
 
 class BookDownloadViewModel @Inject constructor(private val repository: MyLibraryRepository) :
     ViewModel() {
     val downloadResult = MutableLiveData<DownloadEvent>()
     var contentStatusResult = MutableLiveData<DownloadStatus>()
-    var bookDetail = MediatorLiveData<Result<LocalBookData>>()
+    var bookDetail = MediatorLiveData<Result<String>>()
 
-    fun getDetailBook(
+    fun saveDetailBook(
         id: String,
-        title: String ) {
-        bookDetail.addSource(repository.getDetailBook(id,title)) { value ->
+        title: String,
+        licenseId: String,
+        imageUrl: String?,
+        authors: String,
+        narrators: String
+    ) {
+        bookDetail.addSource(repository.saveDetailBook(id,title,licenseId,imageUrl,authors,narrators)) { value ->
             bookDetail.value = value
         }
     }

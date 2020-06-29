@@ -2,7 +2,6 @@ package com.audiobookz.nz.app.mylibrary.data
 
 import com.audiobookz.nz.app.bookdetail.data.BookDetailRemoteDataSource
 import com.audiobookz.nz.app.data.*
-import com.audiobookz.nz.app.util.DOWNLOAD_COMPLETE
 import io.audioengine.mobile.DownloadEvent
 import io.audioengine.mobile.DownloadStatus
 import io.audioengine.mobile.PlaybackEvent
@@ -22,18 +21,18 @@ class MyLibraryRepository @Inject constructor(
         databaseQuery={localBookDataDao.getLocalBookData()}
     )
 
-    fun getDetailBook(
+    fun saveDetailBook(
         id: String,
-        title: String ) = resultSimpleLiveData(
-        networkCall = { bookDetailDataSource.fetchLocalBookData(id.toInt()) },
-        saveCallResult = { localBookDataDao.insertLocalBookData(it) },
-        onCallSuccess = {
-            audioEngineDataSource.notifySimpleNotification(
-                title, DOWNLOAD_COMPLETE
-            )
-        }
-
+        title: String,
+        licenseId: String,
+        imageUrl: String?,
+        authors: String,
+        narrators: String
+    ) = resultLocalSaveOnlyLiveData (
+        saveCallResult = {localBookDataDao.insertLocalBookData(LocalBookData(id,title,imageUrl,licenseId,narrators,authors))}
     )
+
+
 
     fun getSession() = resultLiveData(
         networkCall = { remoteSource.fetchSession() },
@@ -83,8 +82,10 @@ class MyLibraryRepository @Inject constructor(
             onDataError = {}
         )
 
-    fun deleteAudiobook(contentId: String, licenseId: String) =
-        audioEngineDataSource.delete(contentId, licenseId)
+    fun deleteAudiobook(contentId: String, licenseId: String) {
+        localBookDataDao.deleteById(contentId);
+        audioEngineDataSource.delete(contentId, licenseId);
+    }
 
     fun cancelDownload(contentId: String, licenseId: String) =
         audioEngineDataSource.cancelDownload(contentId, licenseId)

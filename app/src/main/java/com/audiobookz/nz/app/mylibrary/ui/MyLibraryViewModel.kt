@@ -23,13 +23,7 @@ class MyLibraryViewModel @Inject constructor(private val repository: MyLibraryRe
 
     var isLatest: Boolean? = false
 
-    fun getDetailBook(
-        id: String,
-        title: String ) {
-        bookDetail.addSource(repository.getDetailBook(id,title)) { value ->
-            bookDetail.value = value
-        }
-    }
+
 
     fun getCloudBook(page: Int, pageSize: Int) {
         cloudBookResult.addSource(repository.getCloudBook(page, pageSize)) { value ->

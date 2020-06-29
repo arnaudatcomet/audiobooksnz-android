@@ -1,17 +1,14 @@
 package com.audiobookz.nz.app.mylibrary.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
-import com.audiobookz.nz.app.R
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.databinding.FragmentBookDownloadBinding
 import com.audiobookz.nz.app.di.Injectable
@@ -106,7 +103,7 @@ class BookDownloadFragment : Fragment(), Injectable {
                 }
                 DownloadEvent.CONTENT_DOWNLOAD_COMPLETED -> {
                     binding.downloadStatus = "Fetching information"
-                    viewModel.getDetailBook(args.apiBookId.toString(), args.title ?: "Book")
+                    viewModel.saveDetailBook(args.apiBookId.toString(), args.title ?: "Book", args.licenseId,args.url,args.authors,args.narrators)
                 }
             }
         }
