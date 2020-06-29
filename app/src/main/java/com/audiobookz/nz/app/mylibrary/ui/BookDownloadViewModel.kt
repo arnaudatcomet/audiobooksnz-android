@@ -33,7 +33,7 @@ class BookDownloadViewModel @Inject constructor(private val repository: MyLibrar
 //        }
 //    }
     fun saveDetailBook(
-        id: String,
+        id: Int,
         title: String,
         licenseId: String,
         imageUrl: String?,

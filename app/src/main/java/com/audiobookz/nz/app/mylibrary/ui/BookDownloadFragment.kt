@@ -1,5 +1,6 @@
 package com.audiobookz.nz.app.mylibrary.ui
 
+import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -64,7 +65,9 @@ class BookDownloadFragment : Fragment(), Injectable {
                     viewModel.download(args.id, args.licenseId)
                 }
                 "Delete" -> {
-                    viewModel.deleteContent(args.id, args.licenseId)
+                    AsyncTask.execute {
+                        viewModel.deleteContent(args.id, args.licenseId)
+                    }
                     binding.downloadStatus = "status"
                 }
             }
@@ -102,7 +105,7 @@ class BookDownloadFragment : Fragment(), Injectable {
                 }
                 DownloadEvent.CONTENT_DOWNLOAD_COMPLETED -> {
                     binding.downloadStatus = "Fetching information"
-                    viewModel.saveDetailBook(args.apiBookId.toString(), args.title ?: "Book", args.licenseId,args.url,args.authors,args.narrators)
+                    viewModel.saveDetailBook(args.id.toInt(), args.title ?: "Book", args.licenseId,args.url,args.authors,args.narrators)
                 }
             }
         }

@@ -23,7 +23,7 @@ class MyLibraryRepository @Inject constructor(
     )
 
     fun saveDetailBook(
-        id: String,
+        id: Int,
         title: String,
         licenseId: String,
         imageUrl: String?,
@@ -94,7 +94,7 @@ class MyLibraryRepository @Inject constructor(
         )
 
     fun deleteAudiobook(contentId: String, licenseId: String) {
-        suspend { localBookDataDao.deleteById(contentId); }
+        localBookDataDao.deleteById(contentId.toInt())
         audioEngineDataSource.delete(contentId, licenseId);
     }
 

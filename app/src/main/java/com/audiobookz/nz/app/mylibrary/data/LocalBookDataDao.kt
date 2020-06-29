@@ -14,5 +14,5 @@ interface LocalBookDataDao {
     suspend fun insertLocalBookData(localBookData: LocalBookData)
 
     @Query("DELETE FROM localbook WHERE id = :id")
-    fun deleteById(id:String)
+    fun deleteById(id:Int)
 }
