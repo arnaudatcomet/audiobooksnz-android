@@ -38,9 +38,17 @@ class CloudLibraryAdapter(private val context: Activity, private val resultDataL
         return ViewHolder(ListItemCloudBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
-    private fun openToDownload(title: String, url: String,id: String,licenseId:String,apiBookId:Int): View.OnClickListener {
+    private fun openToDownload(title: String, imageUrl: String,id: String,licenseId:String,apiBookId:Int,narrators:String,authors:String): View.OnClickListener {
         return View.OnClickListener {
-            val direction = MyLibraryFragmentDirections.actionMylibraryToBookDownloadFragment(title,licenseId,apiBookId, id,url)
+            val direction = MyLibraryFragmentDirections.actionMylibraryToBookDownloadFragment(
+                title,
+                licenseId,
+                apiBookId,
+                id,
+                authors,
+                narrators,
+                imageUrl
+            )
             it.findNavController().navigate(direction)
         }
     }
@@ -83,15 +91,19 @@ class CloudLibraryAdapter(private val context: Activity, private val resultDataL
         val bookTitle = cloudBook.audiobook?.title
         val licenseId = cloudBook.audioengineLicenseData?.licenses?.get(0)?.id
         var resultCheckDownload = checkDownloaded(cloudBook)
+        val authors = cloudBook.audiobook?.audioengine_data?.BookDetail?.authors?.joinToString(",")
+        val narrators = cloudBook.audiobook?.audioengine_data?.BookDetail?.narrators?.joinToString(",")
 
         holder.apply {
             bookTitle?.let {
                 openToDownload(
                     it,
                     cloudBook.audiobook.cover_image,
-                    cloudBook.audiobook?.audioengine_audiobook_id,
+                    cloudBook.audiobook.audioengine_audiobook_id,
                     licenseId!!,
-                    cloudBook.audiobook_id
+                    cloudBook.audiobook_id,
+                    narrators!!,
+                    authors!!
                 )
             }?.let {
                 bind(cloudBook, it, openOptionMenu(cloudBook.audiobook.id, bookTitle), resultCheckDownload)

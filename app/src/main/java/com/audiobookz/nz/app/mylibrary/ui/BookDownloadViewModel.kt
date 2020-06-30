@@ -1,42 +1,73 @@
 package com.audiobookz.nz.app.mylibrary.ui
 
-import android.util.Log
+import android.os.CountDownTimer
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.audiobookz.nz.app.bookdetail.data.BookDetail
-import com.audiobookz.nz.app.browse.featured.data.Featured
 import javax.inject.Inject
 import com.audiobookz.nz.app.data.Result
-import com.audiobookz.nz.app.mylibrary.data.CloudBook
-import com.audiobookz.nz.app.mylibrary.data.LocalBookData
 import com.audiobookz.nz.app.mylibrary.data.MyLibraryRepository
-import com.audiobookz.nz.app.util.CLOUDBOOK_PAGE_SIZE
 import io.audioengine.mobile.DownloadEvent
-import io.audioengine.mobile.DownloadRequest
 import io.audioengine.mobile.DownloadStatus
 
 class BookDownloadViewModel @Inject constructor(private val repository: MyLibraryRepository) :
     ViewModel() {
     val downloadResult = MutableLiveData<DownloadEvent>()
     var contentStatusResult = MutableLiveData<DownloadStatus>()
-    var bookDetail = MediatorLiveData<Result<LocalBookData>>()
+    var bookDetail = MediatorLiveData<Result<String>>()
 
-    fun getDetailBook(
-        id: String,
-        title: String ) {
-        bookDetail.addSource(repository.getDetailBook(id,title)) { value ->
+    //    lateinit var timer : CountDownTimer
+//    var timerData =  MutableLiveData<Long>()
+//
+//    fun startTimer(){
+//        timer = object : CountDownTimer(30000,1000){
+//            override fun onTick(millisUntilFinished: Long) {
+//                timerData.value = millisUntilFinished/1000
+//            }
+//
+//            override fun onFinish() {
+//                timerData.value = 1000
+//            }
+//        }
+//        if (timerData.value==null){
+//            timer.start()
+//        }
+//    }
+    fun saveDetailBook(
+        id: Int,
+        title: String,
+        licenseId: String,
+        imageUrl: String?,
+        authors: String,
+        narrators: String
+    ) {
+        bookDetail.addSource(
+            repository.saveDetailBook(
+                id,
+                title,
+                licenseId,
+                imageUrl,
+                authors,
+                narrators
+            )
+        ) { value ->
             bookDetail.value = value
         }
     }
 
 
-    fun download(contentId: String, licenseId: String) {
+    fun download(
+        contentId: String, licenseId: String, title: String,
+        imageUrl: String?,
+        authors: String,
+        narrators: String
+    ) {
 
         repository.downloadAudiobook(
             { downloadEvent -> downloadResult.postValue(downloadEvent) },
             contentId,
-            licenseId
+            licenseId,
+            title, imageUrl, authors, narrators
         )
     }
 
@@ -51,10 +82,9 @@ class BookDownloadViewModel @Inject constructor(private val repository: MyLibrar
         repository.deleteAudiobook(contentId, licenseId)
     }
 
-    fun cancelDownload(contentId: String, licenseId: String) {
-        repository.cancelDownload(contentId, licenseId)
+    fun cancelDownload(downloadId: String) {
+        repository.cancelDownload(downloadId)
     }
-
 
 
 }

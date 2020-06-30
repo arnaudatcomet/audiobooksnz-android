@@ -1,18 +1,17 @@
 package com.audiobookz.nz.app.mylibrary.ui
 
 import android.content.Intent
+import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
-import com.audiobookz.nz.app.R
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.databinding.FragmentBookDownloadBinding
 import com.audiobookz.nz.app.di.Injectable
@@ -32,7 +31,7 @@ class BookDownloadFragment : Fragment(), Injectable {
     private lateinit var viewModel: BookDownloadViewModel
     private val args: BookDownloadFragmentArgs by navArgs()
     lateinit var binding: FragmentBookDownloadBinding
-
+    private lateinit var downloadId:String;
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,7 +42,7 @@ class BookDownloadFragment : Fragment(), Injectable {
         binding.urlImage = args.url
         binding.statusButton = downloadAndDeleteButton(binding)
         subscribeUi(binding)
-
+       // viewModel.startTimer()
         //need check status first
         binding.bookStatus = "Download"
         binding.downloadStatus = "Status"
@@ -58,22 +57,24 @@ class BookDownloadFragment : Fragment(), Injectable {
             when (binding.bookStatus) {
                 "Download" -> {
                     binding.downloadStatus = "Pending"
-                    viewModel.download(args.id, args.licenseId)
+                    viewModel.download(args.id, args.licenseId,args.title ?: "Book", args.url,args.authors,args.narrators)
                 }
+
                 "Queued" -> {
 
                 }
                 "Cancel" -> {
                     binding.bookStatus = "Download"
                     binding.downloadStatus = "Status"
-                    viewModel.deleteContent(args.id, args.licenseId)
-                    binding.progressDownload.isIndeterminate = false
+                    viewModel.cancelDownload(downloadId)
                 }
                 "Paused" -> {
-                    viewModel.download(args.id, args.licenseId)
+                    viewModel.download(args.id, args.licenseId,args.title ?: "Book", args.url,args.authors,args.narrators)
                 }
                 "Delete" -> {
-                    viewModel.deleteContent(args.id, args.licenseId)
+                    AsyncTask.execute {
+                        viewModel.deleteContent(args.id, args.licenseId)
+                    }
                     binding.downloadStatus = "status"
                 }
             }
@@ -96,22 +97,12 @@ class BookDownloadFragment : Fragment(), Injectable {
 
     private fun subscribeUi(binding: FragmentBookDownloadBinding) {
 
-        viewModel.bookDetail.observe(viewLifecycleOwner, Observer { result ->
-            when (result.status) {
-                Result.Status.SUCCESS -> {
-                    binding.downloadStatus = "Completed"
-                    binding.contentProcess = 100
-                    binding.progressDownload.isIndeterminate = false
-
-                }
-            }
-        })
-
         viewModel.downloadResult.observe(viewLifecycleOwner){ result ->
             when (result.code) {
                 DownloadEvent.DOWNLOAD_PROGRESS_UPDATE -> {
                     binding.downloadStatus = "Downloading"
-                    if (result.contentPercentage != 0) {
+                    if (result.contentPercentage != 0&&result.contentPercentage!=binding.contentProcess) {
+                        downloadId = result.id ?:"null"
                         binding.contentProcess = result.contentPercentage
                     }
                 }
@@ -125,8 +116,7 @@ class BookDownloadFragment : Fragment(), Injectable {
                     binding.contentProcess = result.contentPercentage
                 }
                 DownloadEvent.CONTENT_DOWNLOAD_COMPLETED -> {
-                    binding.downloadStatus = "Fetching information"
-                    viewModel.getDetailBook(args.apiBookId.toString(), args.title ?: "Book")
+                    binding.downloadStatus = "Completed"
                 }
             }
         }
@@ -144,7 +134,6 @@ class BookDownloadFragment : Fragment(), Injectable {
                     binding.bookStatus = "Cancel"
                     binding.downloadStatus = "Downloading"
                     binding.percentTxt.text = ""
-                    binding.progressDownload.isIndeterminate = true
                 }
                 DownloadStatus.PAUSED -> {
                 }
@@ -152,7 +141,6 @@ class BookDownloadFragment : Fragment(), Injectable {
                     binding.bookStatus = "Delete"
                     binding.downloadStatus = "Completed"
                     binding.contentProcess = 100
-                    binding.progressDownload.isIndeterminate = false
 
                 }
             }

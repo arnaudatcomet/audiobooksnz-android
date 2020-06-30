@@ -16,22 +16,33 @@ class MyLibraryRepository @Inject constructor(
     fun getCloudBook(Page: Int, PageSize: Int) = resultFetchOnlyLiveData(
         networkCall = { remoteSource.getCloudBook(Page, PageSize) }
     )
-    val getLocalbook = resultLocalGetOnlyLiveData (
-        databaseQuery={localBookDataDao.getLocalBookData()}
+
+    val getLocalbook = resultLocalGetOnlyLiveData(
+        databaseQuery = { localBookDataDao.getLocalBookData() }
     )
 
-    fun getDetailBook(
-        id: String,
-        title: String ) = resultSimpleLiveData(
-        networkCall = { bookDetailDataSource.fetchLocalBookData(id.toInt()) },
-        saveCallResult = { localBookDataDao.insertLocalBookData(it) },
-        onCallSuccess = {
-            audioEngineDataSource.notifySimpleNotification(
-                title, DOWNLOAD_COMPLETE
+    fun saveDetailBook(
+        id: Int,
+        title: String,
+        licenseId: String,
+        imageUrl: String?,
+        authors: String,
+        narrators: String
+    ) = resultLocalSaveOnlyLiveData(
+        saveCallResult = {
+            localBookDataDao.insertLocalBookData(
+                LocalBookData(
+                    id,
+                    title,
+                    imageUrl,
+                    licenseId,
+                    narrators,
+                    authors
+                )
             )
         }
-
     )
+
 
     fun getSession() = resultLiveData(
         networkCall = { remoteSource.fetchSession() },
@@ -42,12 +53,16 @@ class MyLibraryRepository @Inject constructor(
     fun downloadAudiobook(
         callback: (DownloadEvent) -> Unit,
         contentId: String,
-        licenseId: String
+        licenseId: String,
+        title: String,
+        imageUrl: String?,
+        authors: String,
+        narrators: String
     ) = resulObservableData(
         networkCall = audioEngineDataSource.download(contentId, licenseId),
         onDownloading = { callback(it) },
-        onPartComplete = {},
-        onComplete = {},
+        onPartComplete = { localBookDataDao.insertLocalBookData(LocalBookData(it.content?.id?.toInt()!!,title,imageUrl,licenseId,narrators,authors))},
+        onComplete = {audioEngineDataSource.notifySimpleNotification(title, DOWNLOAD_COMPLETE)},
         onDataError = {}
     )
 
@@ -119,11 +134,13 @@ class MyLibraryRepository @Inject constructor(
             onDataError = {}
         )
 
-    fun deleteAudiobook(contentId: String, licenseId: String) =
-        audioEngineDataSource.delete(contentId, licenseId)
+    fun deleteAudiobook(contentId: String, licenseId: String) {
+        localBookDataDao.deleteById(contentId.toInt())
+        audioEngineDataSource.delete(contentId, licenseId);
+    }
 
-    fun cancelDownload(contentId: String, licenseId: String) =
-        audioEngineDataSource.cancelDownload(contentId, licenseId)
+    fun cancelDownload(downloadId: String) =
+        audioEngineDataSource.cancelDownload(downloadId)
 
     fun getLocalBookList(callback: (List<String>) -> Unit, status: DownloadStatus) =
         resulObservableData(

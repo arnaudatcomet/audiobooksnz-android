@@ -161,6 +161,12 @@
             android:name="id"
             app:argType="string"/>
         <argument
+            android:name="authors"
+            app:argType="string"/>
+        <argument
+            android:name="narrators"
+            app:argType="string"/>
+        <argument
             android:name="url"
             app:argType="string"
             app:nullable="true" />

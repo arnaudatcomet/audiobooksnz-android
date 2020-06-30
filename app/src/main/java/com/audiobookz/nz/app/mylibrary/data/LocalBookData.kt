@@ -6,32 +6,40 @@ import com.google.gson.annotations.SerializedName
 
 
 @Entity(tableName = "localbook")
-data class LocalBookData (
-    @PrimaryKey
-    @field: SerializedName("audioengine_audiobook_id")
-    val id: String,
-    @field:SerializedName("title")
-    val title: String,
-    @field:SerializedName("cover_image")
-    val cover_image: String,
-    @Embedded
-    @field:SerializedName("audioengine_data")
-    val audioengine_data: AudioEngineData
+data class LocalBookData(
+    @PrimaryKey val id: Int,
+    @ColumnInfo(name = "title") val title: String?,
+    @ColumnInfo(name = "image_url") val image_url: String?,
+    @ColumnInfo(name = "licenseId") val licenseId: String?,
+    @ColumnInfo(name = "narrators") val narrators: String?,
+    @ColumnInfo(name = "authors") val authors: String?
 )
-
-data class AudioEngineData
-    (
-    @SerializedName("audiobook")
-    @Embedded
-    val copyright: AudioBookData
-)
-
-data class AudioBookData(
-    @field:SerializedName("authors")
-    val authors: List<String>,
-    @field:SerializedName("narrators")
-    val narrators: List<String>
-)
+//data class LocalBookData (
+//    @PrimaryKey
+//    @field: SerializedName("audioengine_audiobook_id")
+//    val id: String,
+//    @field:SerializedName("title")
+//    val title: String,
+//    @field:SerializedName("cover_image")
+//    val cover_image: String,
+//    @Embedded
+//    @field:SerializedName("audioengine_data")
+//    val audioengine_data: AudioEngineData
+//)
+//
+//data class AudioEngineData
+//    (
+//    @SerializedName("audiobook")
+//    @Embedded
+//    val copyright: AudioBookData
+//)
+//
+//data class AudioBookData(
+//    @field:SerializedName("authors")
+//    val authors: List<String>,
+//    @field:SerializedName("narrators")
+//    val narrators: List<String>
+//)
 
 //@Entity(tableName = "AudioBookData")
 //data class AudioBookData

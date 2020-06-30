@@ -19,17 +19,9 @@ class MyLibraryViewModel @Inject constructor(private val repository: MyLibraryRe
     ViewModel() {
     var listLocalBookResult = MutableLiveData<List<String>>()
     var cloudBookResult = MediatorLiveData<Result<MutableMap<String, List<Any>>?>>()
-    var bookDetail = MediatorLiveData<Result<LocalBookData>>()
-
     var isLatest: Boolean? = false
 
-    fun getDetailBook(
-        id: String,
-        title: String ) {
-        bookDetail.addSource(repository.getDetailBook(id,title)) { value ->
-            bookDetail.value = value
-        }
-    }
+
 
     fun getCloudBook(page: Int, pageSize: Int) {
         cloudBookResult.addSource(repository.getCloudBook(page, pageSize)) { value ->
@@ -46,14 +38,6 @@ class MyLibraryViewModel @Inject constructor(private val repository: MyLibraryRe
                 cloudBookResult.value = Result.success(map)
             }
         }
-    }
-
-    fun deleteContent(contentId: String, licenseId: String) {
-        repository.deleteAudiobook(contentId, licenseId)
-    }
-
-    fun cancelDownload(contentId: String, licenseId: String) {
-        repository.cancelDownload(contentId, licenseId)
     }
 
     fun getLocalBookList() {

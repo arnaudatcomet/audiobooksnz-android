@@ -9,7 +9,7 @@ class AudioEngineDataSource @Inject constructor(private val bookEngineService: B
 
     fun download(contentId: String, licenseId: String) = bookEngineService.download(contentId,licenseId)
     fun delete(contentId: String, licenseId: String) = bookEngineService.delete(contentId, licenseId)
-    fun cancelDownload(contentId: String, licenseId: String) = bookEngineService.cancelDownload(contentId, licenseId)
+    fun cancelDownload(downloadId: String) = bookEngineService.cancelDownload(downloadId)
     fun notifySimpleNotification(title:String, body:String)=notificationService.simple(title,body)
     fun getLocalBook(status: DownloadStatus)= bookEngineService.getLocalBook(status)
     fun getContentStatus(contentId :String) = bookEngineService.contentStatus(contentId)
