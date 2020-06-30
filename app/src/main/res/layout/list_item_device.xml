@@ -49,7 +49,7 @@
                     android:layout_height="100dp"
                     android:layout_gravity="center_horizontal"
                     android:scaleType="centerCrop"
-                    app:imageFromUrl="@{localBook.cover_image}" />
+                    app:imageFromUrl="@{localBook.image_url}" />
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/CardProfile"

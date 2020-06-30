@@ -37,7 +37,7 @@ class DeviceLibraryAdapter  : ListAdapter<LocalBookData, CustomViewHolder>(Compa
         val currentBook = getItem(position)
         val itemBinding = holder.binding as ListItemDeviceBinding
         itemBinding.localBook = currentBook
-        itemBinding.authors = currentBook.audioengine_data.copyright.authors.joinToString(separator = ",")
+        itemBinding.authors = currentBook.authors
 
         //click event
 //        itemBinding.clickDirectPlay =
