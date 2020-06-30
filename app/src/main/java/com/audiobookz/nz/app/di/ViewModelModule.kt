@@ -25,11 +25,11 @@ import dagger.multibindings.IntoMap
 @Suppress("unused")
 @Module
 abstract class ViewModelModule {
+
     @Binds
     @IntoMap
     @ViewModelKey(CategoryViewModel::class)
     abstract fun bindCategoryViewModel(viewModel: CategoryViewModel): ViewModel
-
 
     @Binds
     @IntoMap
@@ -76,7 +76,6 @@ abstract class ViewModelModule {
     @ViewModelKey(MyLibraryViewModel::class)
     abstract fun bindMyLibraryViewModel(viewModel: MyLibraryViewModel): ViewModel
 
-
     @Binds
     @IntoMap
     @ViewModelKey(MainActivityViewModel::class)
@@ -86,6 +85,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(PlayerViewModel::class)
     abstract fun bindPlayerViewModel(viewModel: PlayerViewModel): ViewModel
+
+    @Binds
+    @IntoMap
     @ViewModelKey(BookDownloadViewModel::class)
     abstract fun bindBookDownloadViewModel(viewModel: BookDownloadViewModel): ViewModel
 

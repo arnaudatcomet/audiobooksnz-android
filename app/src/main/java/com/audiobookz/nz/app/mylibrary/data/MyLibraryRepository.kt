@@ -51,7 +51,7 @@ class MyLibraryRepository @Inject constructor(
         onDataError = {}
     )
 
-    fun PlayAudioBook(
+    fun playAudioBook(
         chapterNumber: Int,
         contentId: String,
         licenseId: String,
@@ -80,31 +80,10 @@ class MyLibraryRepository @Inject constructor(
         resulObservableData(
             networkCall = audioEngineDataSource.getChapterLists(contentId),
             onDownloading = { callback(it)},
-    );
-
-    fun getContentStatus(callback: (DownloadStatus) -> Unit, contentId: String) =
-        resulObservableData(
-            networkCall = audioEngineDataSource.getContentStatus(contentId),
-            onDownloading = { callback(it) },
             onPartComplete = {},
             onComplete = {},
             onDataError = {}
-        )
-
-    fun deleteAudiobook(contentId: String, licenseId: String) =
-        audioEngineDataSource.delete(contentId, licenseId)
-
-    fun cancelDownload(contentId: String, licenseId: String) =
-        audioEngineDataSource.cancelDownload(contentId, licenseId)
-
-    fun getLocalBookList(callback: (List<String>) -> Unit, status: DownloadStatus) =
-        resulObservableData(
-            networkCall = audioEngineDataSource.getLocalBook(status),
-            onDownloading = { callback(it) },
-            onPartComplete = {},
-            onComplete = {},
-            onDataError = {}
-        )
+    )
 
     fun getPlayerState(callback:(PlayerState) -> Unit) =
         resulObservableData(
@@ -114,7 +93,6 @@ class MyLibraryRepository @Inject constructor(
         onComplete = {},
         onDataError = {}
     )
-    // fun getLocalBookList() = remoteSource.getLocalBook(status)
 
     fun nextChapterOfBook() = audioEngineDataSource.nextChapter()
 
@@ -128,6 +106,10 @@ class MyLibraryRepository @Inject constructor(
 
     fun seekTo(position: Long) = audioEngineDataSource.seekTo(position)
 
+    fun getCurrentChapter() = audioEngineDataSource.getCurrentChapter()
+
+    fun getCurrentSpeed() = audioEngineDataSource.getCurrentSpeed()
+
     fun getContentStatus(callback: (DownloadStatus) -> Unit, contentId: String) =
         resulObservableData(
             networkCall = audioEngineDataSource.getContentStatus(contentId),
@@ -151,6 +133,5 @@ class MyLibraryRepository @Inject constructor(
             onComplete = {},
             onDataError = {}
         )
-    // fun getLocalBookList() = remoteSource.getLocalBook(status)
 
 }

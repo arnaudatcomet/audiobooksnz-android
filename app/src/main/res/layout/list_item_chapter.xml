@@ -1,34 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-    <RelativeLayout
-        android:layout_width="match_parent"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="isClick"
+            type="Boolean" />
+        <variable
+            name="onClick"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="listChapterData"
+            type="io.audioengine.mobile.Chapter" />
+        <variable
+            name="duration"
+            type="String" />
+        <import type="android.view.View" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="10dp">
-
-        <TextView
-            android:id="@+id/chapterNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:text="Chapter Sample (Part 0)"/>
-
-        <TextView
-            android:id="@+id/timeStartChapter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:text="sample 00:00:16"/>
-    </RelativeLayout>
-
-    <view
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
         android:layout_margin="10dp"
-        android:background="#000000"
-        />
-</LinearLayout>
+        android:orientation="vertical"
+        android:clickable="true"
+        android:onClick="@{onClick}">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/chapterNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="@{`Chapter `+ listChapterData.chapter() +` (Part `+ listChapterData.part() +` )`}"
+                android:textColor="@{isClick? @color/colorYellowBorder:@android:color/black}"/>
+
+            <TextView
+                android:id="@+id/timeStartChapter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="@{duration.toString()}"
+                android:textColor="@{isClick? @color/colorYellowBorder:@android:color/black}"/>
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

@@ -18,6 +18,7 @@ import rx.schedulers.Schedulers
 class BookEngineService{
     val downloadEngine: DownloadEngine = AudioEngine.getInstance().downloadEngine
     val playbackEngine: PlaybackEngine = AudioEngine.getInstance().playbackEngine
+
     fun download(contentId:String,licenseId:String): Observable<DownloadEvent>? {
         val request = DownloadRequest(contentId = contentId, part = 0, chapter = 0, type = DownloadRequest.Type.TO_END_WRAP, licenseId = licenseId)
         return downloadEngine.submit(request).subscribeOn(Schedulers.io());
@@ -42,7 +43,7 @@ class BookEngineService{
     }
 
     fun play(contentId:String,licenseId:String,partNumber:Int,chapterNumber:Int,position:Long): Observable<PlaybackEvent>? {
-        val playRequest = PlayRequest(licenseId,contentId,partNumber,chapterNumber,position )
+        val playRequest = PlayRequest(licenseId,contentId,partNumber,chapterNumber,position)
         return playbackEngine.play(playRequest)
     }
 
@@ -80,6 +81,14 @@ class BookEngineService{
 
     fun getPlayerState():Observable<PlayerState>?{
         return playbackEngine.state
+    }
+
+    fun getCurrentChapter():Chapter?{
+        return playbackEngine.chapter
+    }
+
+    fun getCurrentSpeed():Float{
+        return playbackEngine.speed
     }
 
 }

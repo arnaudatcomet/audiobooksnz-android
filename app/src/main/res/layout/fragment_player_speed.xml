@@ -3,8 +3,42 @@
 
     <data>
         <variable
-            name="selectClick"
+            name="select05Click"
             type="android.view.View.OnClickListener" />
+        <variable
+            name="select075Click"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="select1Click"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="select125Click"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="select15Click"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="select175Click"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="is05Click"
+            type="Boolean" />
+        <variable
+            name="is075Click"
+            type="Boolean" />
+        <variable
+            name="is1Click"
+            type="Boolean" />
+        <variable
+            name="is125Click"
+            type="Boolean" />
+        <variable
+            name="is15Click"
+            type="Boolean" />
+        <variable
+            name="is175Click"
+            type="Boolean" />
 
         <import type="android.view.View" />
     </data>
@@ -23,12 +57,13 @@
             android:layout_height="40dp"
             android:layout_margin="10dp"
             android:clickable="true"
-            android:onClick="@{selectClick}">
+            android:onClick="@{select05Click}">
 
             <TextView
                 android:id="@+id/speed05xText"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
+                android:textColor="@{is05Click? @color/colorYellowBorder:@android:color/black}"
                 android:text="0.5x"
                 />
 
@@ -39,7 +74,7 @@
                 android:layout_gravity="right"
                 android:backgroundTint="@android:color/holo_orange_light"
                 app:cardCornerRadius="15dp"
-                android:visibility="invisible">
+                android:visibility="@{is05Click? View.VISIBLE:View.GONE}">>
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -56,12 +91,13 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:clickable="true"
-            android:onClick="@{selectClick}">
+            android:onClick="@{select075Click}">
 
             <TextView
                 android:id="@+id/speed075xText"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
+                android:textColor="@{is075Click? @color/colorYellowBorder:@android:color/black}"
                 android:text="0.75x" />
 
             <com.google.android.material.card.MaterialCardView
@@ -71,7 +107,7 @@
                 android:layout_gravity="right"
                 android:backgroundTint="@android:color/holo_orange_light"
                 app:cardCornerRadius="15dp"
-                android:visibility="invisible">
+                android:visibility="@{is075Click? View.VISIBLE:View.GONE}">>
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -87,13 +123,13 @@
             android:layout_height="40dp"
             android:layout_margin="10dp"
             android:clickable="true"
-            android:onClick="@{selectClick}">
+            android:onClick="@{select1Click}">
 
             <TextView
                 android:id="@+id/speed1xText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorYellowBorder"
+                android:textColor="@{is1Click? @color/colorYellowBorder:@android:color/black}"
                 android:text="1x" />
 
             <com.google.android.material.card.MaterialCardView
@@ -103,7 +139,7 @@
                 android:layout_gravity="right"
                 android:backgroundTint="@android:color/holo_orange_light"
                 app:cardCornerRadius="15dp"
-                android:visibility="invisible">
+                android:visibility="@{is1Click? View.VISIBLE:View.GONE}">>
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -119,12 +155,13 @@
             android:layout_height="40dp"
             android:layout_margin="10dp"
             android:clickable="true"
-            android:onClick="@{selectClick}">
+            android:onClick="@{select125Click}">
 
             <TextView
                 android:id="@+id/speed125xText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@{is125Click? @color/colorYellowBorder:@android:color/black}"
                 android:text="1.25x" />
 
             <com.google.android.material.card.MaterialCardView
@@ -134,7 +171,7 @@
                 android:layout_gravity="right"
                 android:backgroundTint="@android:color/holo_orange_light"
                 app:cardCornerRadius="15dp"
-                android:visibility="invisible">
+                android:visibility="@{is125Click? View.VISIBLE:View.GONE}">>
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -150,12 +187,13 @@
             android:layout_height="40dp"
             android:layout_margin="10dp"
             android:clickable="true"
-            android:onClick="@{selectClick}">
+            android:onClick="@{select15Click}">
 
             <TextView
                 android:id="@+id/speed15xText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@{is15Click? @color/colorYellowBorder:@android:color/black}"
                 android:text="1.5x" />
 
             <com.google.android.material.card.MaterialCardView
@@ -165,7 +203,7 @@
                 android:layout_gravity="right"
                 android:backgroundTint="@android:color/holo_orange_light"
                 app:cardCornerRadius="15dp"
-                android:visibility="invisible">
+                android:visibility="@{is15Click? View.VISIBLE:View.GONE}">
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -181,12 +219,13 @@
             android:layout_height="40dp"
             android:layout_margin="10dp"
             android:clickable="true"
-            android:onClick="@{selectClick}">
+            android:onClick="@{select175Click}">
 
             <TextView
                 android:id="@+id/speed175xText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@{is175Click? @color/colorYellowBorder:@android:color/black}"
                 android:text="1.75x" />
 
             <com.google.android.material.card.MaterialCardView
@@ -196,7 +235,7 @@
                 android:layout_gravity="right"
                 android:backgroundTint="@android:color/holo_orange_light"
                 app:cardCornerRadius="15dp"
-                android:visibility="invisible">
+                android:visibility="@{is175Click? View.VISIBLE:View.GONE}">>
 
                 <ImageView
                     android:layout_width="match_parent"

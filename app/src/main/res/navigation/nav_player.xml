@@ -30,9 +30,6 @@
         android:name="com.audiobookz.nz.app.player.ui.PlayerSpeedFragment"
         android:label="@string/narrationSpeed"
         tools:layout="@layout/fragment_player_speed" >
-        <argument
-            android:name="speedX"
-            app:argType="float"/>
     </fragment>
     <fragment
         android:id="@+id/chapterFragment"

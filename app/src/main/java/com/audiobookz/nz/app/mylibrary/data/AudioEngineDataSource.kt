@@ -24,4 +24,6 @@ class AudioEngineDataSource @Inject constructor(private val bookEngineService: B
     fun getPosition() = bookEngineService.getPosition()
     fun seekTo(position: Long) = bookEngineService.seekTo(position)
     fun getPlayerState() = bookEngineService.getPlayerState()
+    fun getCurrentChapter()= bookEngineService.getCurrentChapter()
+    fun getCurrentSpeed() = bookEngineService.getCurrentSpeed()
 }

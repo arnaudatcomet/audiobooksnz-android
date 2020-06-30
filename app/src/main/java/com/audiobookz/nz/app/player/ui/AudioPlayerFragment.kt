@@ -1,5 +1,6 @@
 package com.audiobookz.nz.app.player.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,8 +13,9 @@ import androidx.navigation.findNavController
 import com.audiobookz.nz.app.R
 import com.audiobookz.nz.app.databinding.FragmentAudioPlayerBinding
 import com.audiobookz.nz.app.di.Injectable
-import com.audiobookz.nz.app.di.injectViewModel
+import com.audiobookz.nz.app.di.injectViewModelWithActivityLifeCycle
 import com.audiobookz.nz.app.ui.setTitle
+import com.audiobookz.nz.app.util.ThirtySec
 import io.audioengine.mobile.PlaybackEvent
 import javax.inject.Inject
 
@@ -22,17 +24,23 @@ class AudioPlayerFragment : Fragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: PlayerViewModel
-    lateinit var extraID:String
-    lateinit var extraLicenseId:String
+    lateinit var extraID: String
+    lateinit var extraLicenseId: String
     var statePlay = true
-    var currentPosition : Long = 0
-    var speedEngine:Float = 1F
+    var currentPosition: Long = 0
+    private lateinit var fragmentStatus: String
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        fragmentStatus = "onAttach"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = injectViewModel(viewModelFactory)
+
+        viewModel = injectViewModelWithActivityLifeCycle(viewModelFactory)
         var binding = FragmentAudioPlayerBinding.inflate(inflater, container, false)
         extraID = activity?.intent?.getStringExtra("idBook").toString()
         extraLicenseId = activity?.intent?.getStringExtra("licenseIDBook").toString()
@@ -47,12 +55,13 @@ class AudioPlayerFragment : Fragment(), Injectable {
         binding.skipNextClick = skipNextClick()
         binding.forward30sClick = forward30sClick()
         binding.replay30sClick = replay30sClick()
-        binding.playClick = playClick(binding)
+        binding.playClick = playClick()
         viewModel.getChapters(extraID)
         subscribeUi(binding)
         viewModel.getPlayerState()
         return binding.root
     }
+
 
     private fun skipPreviousClick(): View.OnClickListener {
         return View.OnClickListener {
@@ -66,7 +75,7 @@ class AudioPlayerFragment : Fragment(), Injectable {
         }
     }
 
-    private fun playClick(binding: FragmentAudioPlayerBinding): View.OnClickListener {
+    private fun playClick(): View.OnClickListener {
         return View.OnClickListener {
             when (statePlay) {
                 true -> {
@@ -82,34 +91,37 @@ class AudioPlayerFragment : Fragment(), Injectable {
     private fun forward30sClick(): View.OnClickListener {
         return View.OnClickListener {
             currentPosition = viewModel.getPosition()
-            viewModel.seekTo( currentPosition + 30000)
+            viewModel.seekTo(currentPosition + ThirtySec)
         }
     }
 
     private fun replay30sClick(): View.OnClickListener {
         return View.OnClickListener {
             currentPosition = viewModel.getPosition()
-            viewModel.seekTo( currentPosition - 30000)
+            viewModel.seekTo(currentPosition - ThirtySec)
         }
     }
 
     private fun speedSelectClick(): View.OnClickListener {
         return View.OnClickListener {
-            val direction = AudioPlayerFragmentDirections.actionAudioPlayerFragmentToPlayerSpeedFragment(speedEngine)
+            val direction =
+                AudioPlayerFragmentDirections.actionAudioPlayerFragmentToPlayerSpeedFragment()
             it.findNavController().navigate(direction)
         }
     }
 
     private fun chapterSelectClick(): View.OnClickListener {
         return View.OnClickListener {
-            val direction = AudioPlayerFragmentDirections.actionAudioPlayerFragmentToChapterFragment()
+            val direction =
+                AudioPlayerFragmentDirections.actionAudioPlayerFragmentToChapterFragment()
             it.findNavController().navigate(direction)
         }
     }
 
     private fun sleepTimeClick(): View.OnClickListener {
         return View.OnClickListener {
-            val direction = AudioPlayerFragmentDirections.actionAudioPlayerFragmentToPlayerSleepTimeFragment()
+            val direction =
+                AudioPlayerFragmentDirections.actionAudioPlayerFragmentToPlayerSleepTimeFragment()
             it.findNavController().navigate(direction)
         }
     }
@@ -120,18 +132,18 @@ class AudioPlayerFragment : Fragment(), Injectable {
         }
     }
 
-    fun convertAndUpdateTime(position:Long, duration:Long, binding: FragmentAudioPlayerBinding){
+    fun convertAndUpdateTime(position: Long, duration: Long, binding: FragmentAudioPlayerBinding) {
 
         var totalDuration = duration / 1000
 
-        var spentTime = position/ 1000
+        var spentTime = position / 1000
         var leftTime = (totalDuration - spentTime).toInt()
         var hourLeft = (leftTime / 3600)
-        var minLeft = ((leftTime / 60) %60)
+        var minLeft = ((leftTime / 60) % 60)
         var secLeft = (leftTime % 60)
 
         var hourSpent = (spentTime / 3600).toInt()
-        var minSpent = ((spentTime / 60) %60).toInt()
+        var minSpent = ((spentTime / 60) % 60).toInt()
         var secSpent = (spentTime % 60).toInt()
 
         //need fix seekbar progress and duration text
@@ -140,51 +152,58 @@ class AudioPlayerFragment : Fragment(), Injectable {
 
         if (hourLeft != 0) {
             binding.timeLeftTxt.text = "$hourLeft:$minLeft:$secLeft"
-        }
-        else{
+        } else {
             binding.timeLeftTxt.text = "$minLeft:$secLeft"
         }
 
         if (hourSpent == 0) {
             binding.timeSpentTxt.text = "$minSpent:$secSpent"
-        }
-        else{
+        } else {
             binding.timeSpentTxt.text = "$hourSpent:$minSpent:$secSpent"
         }
 
     }
 
     private fun subscribeUi(binding: FragmentAudioPlayerBinding) {
-        viewModel.listChapterResult.observe(viewLifecycleOwner, Observer { result ->
-            viewModel.playAudioBook(result[0].chapter, extraID, extraLicenseId, result[0].part)
-            //recycleview adapter for chapter fragment
-        })
+        if (fragmentStatus == "onAttach") {
+            fragmentStatus = "onViewCreated"
+            viewModel.listChapterResult.observe(viewLifecycleOwner, Observer { result ->
+                viewModel.playAudioBook(result[0].chapter, extraID, extraLicenseId, result[0].part)
+                //recycleview adapter for chapter fragment
+            })
+        }
 
         viewModel.playBackResult.observe(viewLifecycleOwner, Observer { result ->
             var titleBook = activity?.findViewById<TextView>(R.id.titleBook)
             titleBook?.text = "Chapter ${result.chapter?.chapter}"
-            speedEngine = result.speed!!
 
-           when(result.code){
-               PlaybackEvent.PLAYBACK_PROGRESS_UPDATE ->{
-                   result.position?.let { result.duration?.let { it1 -> convertAndUpdateTime(it, it1, binding) } }
+            when (result.code) {
+                PlaybackEvent.PLAYBACK_PROGRESS_UPDATE -> {
+                    result.position?.let {
+                        result.duration?.let { it1 ->
+                            convertAndUpdateTime(
+                                it,
+                                it1,
+                                binding
+                            )
+                        }
+                    }
 
-               }
-           }
+                }
+            }
         })
 
         viewModel.playerStateResult.observe(viewLifecycleOwner, Observer { result ->
-           when(result.name){
-               "PLAYING" -> {
-                   statePlay = true
-                   binding.playButton.setImageResource(R.drawable.pause96)
-               }
-               "PAUSED" -> {
-                   statePlay = false
-                   binding.playButton.setImageResource(R.drawable.play_arrow96)
-               }
-           }
+            when (result.name) {
+                "PLAYING" -> {
+                    statePlay = true
+                    binding.playButton.setImageResource(R.drawable.pause96)
+                }
+                "PAUSED" -> {
+                    statePlay = false
+                    binding.playButton.setImageResource(R.drawable.play_arrow96)
+                }
+            }
         })
     }
-
 }

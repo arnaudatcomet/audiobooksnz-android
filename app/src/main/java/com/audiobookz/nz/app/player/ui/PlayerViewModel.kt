@@ -13,16 +13,22 @@ class PlayerViewModel @Inject constructor(private val repository: MyLibraryRepos
     var playBackResult = MutableLiveData<PlaybackEvent>()
     var listChapterResult = MutableLiveData<List<Chapter>>()
     var playerStateResult = MutableLiveData<PlayerState>()
+    var currentPlay =  repository.getCurrentChapter()
 
-    fun playAudioBook(chapterNumber: Int, contentId: String, licenseId: String, partNumber: Int) {
-        if (!repository.isPlaying()) {
-            repository.playAudioBook(chapterNumber, contentId, licenseId, partNumber, 0
+    fun playAudioBook(firstChapter: Int, contentId: String, licenseId: String, partNumber: Int) {
+        if (currentPlay?.chapter!! <= firstChapter){
+            repository.playAudioBook(firstChapter, contentId, licenseId, partNumber, getPosition()
             ) { playBackEvent -> playBackResult.postValue(playBackEvent) }
         }
         else{
-            repository.playAudioBook(chapterNumber, contentId, licenseId, partNumber, getPosition()
+            repository.playAudioBook(currentPlay?.chapter!!, contentId, licenseId, currentPlay!!.part, getPosition()
             ) { playBackEvent -> playBackResult.postValue(playBackEvent) }
         }
+    }
+
+    fun chooseNewChapter(targetChapter: Int, contentId: String, licenseId: String, partNumber: Int) {
+        repository.playAudioBook(targetChapter, contentId, licenseId, partNumber, getPosition()
+        ) { playBackEvent -> playBackResult.postValue(playBackEvent) }
     }
 
     fun pauseAudioBook(){
@@ -55,6 +61,10 @@ class PlayerViewModel @Inject constructor(private val repository: MyLibraryRepos
 
     fun getPosition():Long{
        return repository.getPosition()
+    }
+
+    fun getCurrentSpeed(): Float {
+        return repository.getCurrentSpeed()
     }
 
     fun getPlayerState(){
