@@ -10,23 +10,96 @@ import androidx.recyclerview.widget.RecyclerView
 import com.audiobookz.nz.app.R
 import com.audiobookz.nz.app.databinding.ListItemCloudBinding
 import com.audiobookz.nz.app.mylibrary.data.CloudBook
+import com.audiobookz.nz.app.util.HOUR_MILI_SEC
+import com.audiobookz.nz.app.util.MINUTE_MILI_SEC
 import com.audiobookz.nz.app.util.intentShareText
 
-class CloudLibraryAdapter(private val context: Activity, private val resultDataLibrary: Map<String, List<Any>>) :
+class CloudLibraryAdapter(
+    private val context: Activity,
+    private val resultDataLibrary: Map<String, List<Any>>,
+    private val viewModel: MyLibraryViewModel
+) :
     RecyclerView.Adapter<CloudLibraryAdapter.ViewHolder>() {
+    var bookDuration = 0
+    var resultCalculate = 0
+    var timeRemainingText = ""
 
-    class ViewHolder(private val binding: ListItemCloudBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+
+    override fun getItemCount(): Int {
+        return resultDataLibrary["cloudList"]?.size ?: 1
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        return ViewHolder(
+            ListItemCloudBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
+        val cloudBookList = resultDataLibrary["cloudList"] as List<CloudBook>
+        val cloudBook = cloudBookList?.get(position) as CloudBook
+        val bookTitle = cloudBook.audiobook?.title
+        var bookContentID = cloudBook.audiobook?.audioengine_audiobook_id
+        val licenseId = cloudBook.audioengineLicenseData?.licenses?.get(0)?.id
+        var resultCheckDownload = checkDownloaded(cloudBook)
+        val authors = cloudBook.audiobook?.audioengine_data?.BookDetail?.authors?.joinToString(",")
+        val narrators =
+            cloudBook.audiobook?.audioengine_data?.BookDetail?.narrators?.joinToString(",")
+
+
+        if (resultCheckDownload) {
+            bookDuration = viewModel.getBookDuration(bookContentID!!.toInt()).toInt()
+            resultCalculate = viewModel.calculateRemainingTime(bookContentID!!.toInt(), bookDuration)
+            timeRemainingText = viewModel.timeRemaining
+        }
+
+        holder.apply {
+            bookTitle?.let {
+                openToDownload(
+                    it,
+                    cloudBook.audiobook.cover_image,
+                    cloudBook.id.toString(),
+                    bookContentID!!,
+                    licenseId!!,
+                    narrators!!,
+                    authors!!
+                )
+            }?.let {
+                bind(
+                    cloudBook, it, openOptionMenu(cloudBook.audiobook.id, bookTitle),
+                    resultCheckDownload, bookDuration, resultCalculate, timeRemainingText
+                )
+            }
+        }
+        holder.itemView.tag = cloudBook
+    }
+
+    class ViewHolder(private val binding: ListItemCloudBinding) : RecyclerView.ViewHolder(binding.root) {
+
         fun bind(
             item: CloudBook,
             openDownloadListener: View.OnClickListener,
             openOptionListener: View.OnClickListener,
-            isDownload: Boolean
+            isDownload: Boolean,
+            duration: Int,
+            remainingTime: Int,
+            remainingText: String
         ) {
+
             binding.apply {
+
                 cloudBook = item
                 isDownloaded = isDownload
-                authors = item.audiobook?.audioengine_data?.BookDetail?.authors?.joinToString(separator = ",")
+                authors =
+                    item.audiobook?.audioengine_data?.BookDetail?.authors?.joinToString(separator = ",")
+                progressTimeRemain.max = duration
+                contentProcess = remainingTime
+                timeRemaining = "$remainingText remaining"
                 clickDownloadListener = openDownloadListener
                 clickOptionMenuListener = openOptionListener
                 executePendingBindings()
@@ -34,17 +107,13 @@ class CloudLibraryAdapter(private val context: Activity, private val resultDataL
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(ListItemCloudBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-    }
-
-    private fun openToDownload(title: String, imageUrl: String,id: String,licenseId:String,apiBookId:Int,narrators:String,authors:String): View.OnClickListener {
+    private fun openToDownload(title: String, imageUrl: String, cloudBookId:String, contentId: String, licenseId: String, narrators: String, authors: String): View.OnClickListener {
         return View.OnClickListener {
             val direction = MyLibraryFragmentDirections.actionMylibraryToBookDownloadFragment(
                 title,
                 licenseId,
-                apiBookId,
-                id,
+                cloudBookId,
+                contentId,
                 authors,
                 narrators,
                 imageUrl
@@ -73,8 +142,10 @@ class CloudLibraryAdapter(private val context: Activity, private val resultDataL
 //                        it.findNavController().navigate(direction)
                     }
                     R.id.share -> {
-                        intentShareText( context, //getString(R.string.share_lego_set, set.name, set.url ?: "")
-                            "testShare")
+                        intentShareText(
+                            context, //getString(R.string.share_lego_set, set.name, set.url ?: "")
+                            "testShare"
+                        )
                     }
                 };true
             }
@@ -82,46 +153,12 @@ class CloudLibraryAdapter(private val context: Activity, private val resultDataL
         }
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
-
-        val cloudBookList =  resultDataLibrary["cloudList"]
-
-        val cloudBook = cloudBookList?.get(position) as CloudBook
-        val bookTitle = cloudBook.audiobook?.title
-        val licenseId = cloudBook.audioengineLicenseData?.licenses?.get(0)?.id
-        var resultCheckDownload = checkDownloaded(cloudBook)
-        val authors = cloudBook.audiobook?.audioengine_data?.BookDetail?.authors?.joinToString(",")
-        val narrators = cloudBook.audiobook?.audioengine_data?.BookDetail?.narrators?.joinToString(",")
-
-        holder.apply {
-            bookTitle?.let {
-                openToDownload(
-                    it,
-                    cloudBook.audiobook.cover_image,
-                    cloudBook.audiobook.audioengine_audiobook_id,
-                    licenseId!!,
-                    cloudBook.audiobook_id,
-                    narrators!!,
-                    authors!!
-                )
-            }?.let {
-                bind(cloudBook, it, openOptionMenu(cloudBook.audiobook.id, bookTitle), resultCheckDownload)
-            }
-        }
-        holder.itemView.tag = cloudBook
-    }
-
-    override fun getItemCount(): Int {
-        return resultDataLibrary["cloudList"]?.size ?: 1
-    }
-
-    private fun checkDownloaded(cloudBook: CloudBook):Boolean{
+    private fun checkDownloaded(cloudBook: CloudBook): Boolean {
         val localBookList = resultDataLibrary["localList"] as List<String>?
 
         if (localBookList != null) {
-            for (bookId in localBookList){
-                if (cloudBook.audiobook?.audioengine_audiobook_id == bookId){
+            for (contentId in localBookList) {
+                if (cloudBook.audiobook?.audioengine_audiobook_id == contentId) {
                     return true
                 }
             }

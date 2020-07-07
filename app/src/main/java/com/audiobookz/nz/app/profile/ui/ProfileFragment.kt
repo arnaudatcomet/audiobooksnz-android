@@ -22,6 +22,7 @@ import com.audiobookz.nz.app.browse.BrowseFragmentDirections
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.di.Injectable
 import com.audiobookz.nz.app.di.injectViewModel
+import com.audiobookz.nz.app.player.ui.PlayerActivity
 import com.bumptech.glide.Glide
 import javax.inject.Inject
 
@@ -105,7 +106,6 @@ class ProfileFragment : Fragment(), Injectable {
         }
 
         playBtn.setOnClickListener {
-            //use test navi
 
         }
 

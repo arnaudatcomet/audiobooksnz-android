@@ -8,6 +8,7 @@ import com.audiobookz.nz.app.data.resultSimpleLiveData
 import com.audiobookz.nz.app.login.data.UserData
 
 import com.audiobookz.nz.app.login.data.UserDataDao
+import com.audiobookz.nz.app.mylibrary.data.AudioEngineDataSource
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.util.Arrays.asList
@@ -16,7 +17,8 @@ import javax.inject.Inject
 class ProfileRepository @Inject constructor(
     private val dao: UserDataDao,
     private val remoteSource: ProfileRemoteDataSource,
-    private val sharePref: SharedPreferencesService
+    private val sharePref: SharedPreferencesService,
+    private val audioEngineDataSource: AudioEngineDataSource
 ) {
 
     fun queryProfile() = resultMergeMultiNetworkCallLiveData(
@@ -34,4 +36,5 @@ class ProfileRepository @Inject constructor(
         networkCall = {remoteSource.sendProfileData(Image, firstname, lastname, currentPassword, newPassword, confirmPassword)},
         saveCallResult = {dao.insertUserData(it)},
         onCallSuccess = {})
+
 }

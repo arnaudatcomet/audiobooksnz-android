@@ -1,5 +1,6 @@
 package com.audiobookz.nz.app.data
 
+import android.os.CountDownTimer
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -139,6 +140,22 @@ fun <A> resultSimpleLiveData(
         emit(Result.loading())
         val source = databaseQuery.invoke().map { Result.success(it) }
         emitSource(source)
+    }
+
+    fun cownDownTimerSleepTime(countTime:Long, onComplete: () -> Unit, saveCountTimeToShare: (Long) -> Unit){
+
+        saveCountTimeToShare(countTime)
+        var countdown_timer = object : CountDownTimer(countTime, 1000){
+            override fun onFinish() {
+                onComplete()
+            }
+
+            override fun onTick(millisUntilFinished: Long) {
+               //do nothing
+            }
+
+        }
+        countdown_timer.start()
     }
 
 

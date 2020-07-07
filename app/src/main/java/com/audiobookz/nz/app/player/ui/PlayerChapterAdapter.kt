@@ -13,12 +13,13 @@ import io.audioengine.mobile.Chapter
 class CustomViewHolder(val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root)
 
 class PlayerChapterAdapter(
-    private val currentChapter: Int,
+
     private val viewModel: PlayerViewModel,
     private val id: String,
-    private val licenseId: String
+    private val licenseId: String,
+    currentChapter: Int
 ) : ListAdapter<Chapter, CustomViewHolder>(Companion) {
-    var oldPosition: Int = currentChapter
+    var oldChapter: Int = currentChapter
 
     companion object : DiffUtil.ItemCallback<Chapter>() {
         override fun areItemsTheSame(oldItem: Chapter, newItem: Chapter): Boolean {
@@ -46,9 +47,14 @@ class PlayerChapterAdapter(
         var sec = (totalDuration % 60)
 
         itemBinding.listChapterData = currentItem
-        itemBinding.duration = "$hour:$min:$sec"
 
-        itemBinding.isClick = oldPosition == position
+        if (hour != 0L) {
+            itemBinding.duration = String.format("%02d:%02d:%02d",hour,min,sec)
+        } else {
+            itemBinding.duration = String.format("%02d:%02d",min,sec)
+        }
+
+        itemBinding.isClick = oldChapter == currentItem.chapter
 
         itemBinding.onClick = chooseChapter(currentItem,position)
 
@@ -62,7 +68,7 @@ class PlayerChapterAdapter(
             var chapter = currentItem.chapter
             var part = currentItem.part
             viewModel.chooseNewChapter(chapter, id, licenseId, part)
-            oldPosition = position
+            oldChapter = currentItem.chapter
             notifyDataSetChanged()
         }
     }

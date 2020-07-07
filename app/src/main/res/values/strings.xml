@@ -148,6 +148,7 @@
     <string name="Search">search</string>
     <string name="basket">Basket</string>
     <string name="share">Share</string>
+    <string name="save">Save</string>
 
     <!--mylibrary-->
     <string name="searchLibrary">Search your book in your library</string>
@@ -161,7 +162,10 @@
     <string name="bookMark">Bookmark</string>
     <string name="bookMarks">Bookmarks</string>
     <string name="viewDetail">View Details</string>
-
     <string name="narrationSpeed">Narration Speed</string>
+
+    <!--bookmark-->
+    <string name="yourBookmarksSaved">Your Bookmarks are saved</string>
+    <string name="addNote">Add Note</string>
 
 </resources>

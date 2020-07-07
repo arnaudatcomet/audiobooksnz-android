@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.R
 import com.audiobookz.nz.app.databinding.FragmentPlayerChapterBinding
 import com.audiobookz.nz.app.di.Injectable
@@ -20,7 +19,7 @@ class PlayerChapterFragment : Fragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: PlayerViewModel
-    lateinit var extraID: String
+    lateinit var extraContentID: String
     lateinit var extraLicenseId: String
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,11 +29,11 @@ class PlayerChapterFragment : Fragment(), Injectable {
 
         var binding = FragmentPlayerChapterBinding.inflate(inflater, container, false)
         var titleBook = activity?.findViewById<TextView>(R.id.titleBook)
-        extraID = activity?.intent?.getStringExtra("idBook").toString()
+        extraContentID = activity?.intent?.getStringExtra("contentId").toString()
         extraLicenseId = activity?.intent?.getStringExtra("licenseIDBook").toString()
         titleBook?.text = ""
         setTitle("Chapter")
-        viewModel.getChapters(extraID)
+        viewModel.getChapters(extraContentID)
 
         subscribeUi(binding)
         return binding.root
@@ -42,12 +41,14 @@ class PlayerChapterFragment : Fragment(), Injectable {
 
     private fun subscribeUi(binding: FragmentPlayerChapterBinding) {
         viewModel.listChapterResult.observe(viewLifecycleOwner, Observer { result ->
-            var currentChapter = viewModel.currentPlay?.chapter
-            val adapter =
-                currentChapter?.let { PlayerChapterAdapter(it, viewModel, extraID,extraLicenseId) }
+            var currentChapter = 0
+            if (viewModel.currentPlay?.contentId == extraContentID){
+                currentChapter = viewModel.currentPlay!!.chapter
+            }
+
+            val adapter = PlayerChapterAdapter(viewModel, extraContentID, extraLicenseId, currentChapter)
             adapter?.submitList(result)
             binding.chapterRecycleView.adapter = adapter
-
         })
     }
 

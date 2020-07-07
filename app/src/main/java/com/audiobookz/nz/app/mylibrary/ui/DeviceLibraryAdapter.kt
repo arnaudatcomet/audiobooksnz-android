@@ -1,20 +1,25 @@
 package com.audiobookz.nz.app.mylibrary.ui
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.startActivity
 import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.audiobookz.nz.app.databinding.FragmentDeviceLibraryfragmentBinding
 import com.audiobookz.nz.app.databinding.ListItemDeviceBinding
 import com.audiobookz.nz.app.mylibrary.data.LocalBookData
+import com.audiobookz.nz.app.player.ui.PlayerActivity
 
 class CustomViewHolder(val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root)
 
-class DeviceLibraryAdapter  : ListAdapter<LocalBookData, CustomViewHolder>(Companion) {
+class DeviceLibraryAdapter(private val activity: Context) : ListAdapter<LocalBookData, CustomViewHolder>(Companion) {
 
     companion object : DiffUtil.ItemCallback<LocalBookData>() {
         override fun areItemsTheSame(oldItem: LocalBookData, newItem: LocalBookData): Boolean {
@@ -39,26 +44,42 @@ class DeviceLibraryAdapter  : ListAdapter<LocalBookData, CustomViewHolder>(Compa
         itemBinding.localBook = currentBook
         itemBinding.authors = currentBook.authors
 
-        //click event
-//        itemBinding.clickDirectPlay =
-//            currentBook.audiobook?.id?.let { directPlay(it, currentBook.audiobook.title) }
-//        itemBinding.clickDeleteListener = openToDownload(currentBook.title, currentBook.)
+
+        itemBinding.clickDirectPlay = directPlay(currentBook.id, currentBook.contentId.toString(), currentBook.title!!, currentBook.image_url!!,currentBook.licenseId!!)
+
+        itemBinding.clickDeleteListener = currentBook.narrators?.let {
+            openToDownload(currentBook.title!!, currentBook.image_url!!, currentBook.id, currentBook.contentId.toString(), currentBook.licenseId!!,
+                it, currentBook.authors!!)
+        }
 
         itemBinding.executePendingBindings()
     }
 
-//    private fun directPlay(id: Int, title: String): View.OnClickListener {
-//        return View.OnClickListener {
-//            val direction =
-//                BrowseFragmentDirections.actionBrowseFragmentToBookDetailFragment(id, title)
-//            it.findNavController().navigate(direction)
-//        }
-//    }
+    private fun directPlay(id:Int, contentId: String, title: String, url:String, licenseId: String): View.OnClickListener {
+        return View.OnClickListener {
+            val intent = Intent(activity, PlayerActivity::class.java).apply {
+                putExtra("cloudBookId", id)
+                putExtra("contentId", contentId)
+                putExtra("urlImage", url)
+                putExtra("titleBook", title)
+                putExtra("licenseIDBook", licenseId)
+            }
+            activity.startActivity(intent)
+        }
+    }
 
-//    private fun openToDownload(title: String, url: String,id: String,licenseId:String,apiBookId:Int): View.OnClickListener {
-//        return View.OnClickListener {
-//            val direction = MyLibraryFragmentDirections.actionMylibraryToBookDownloadFragment(title,licenseId,apiBookId, id,url)
-//            it.findNavController().navigate(direction)
-//        }
-//    }
+    private fun openToDownload(title: String, imageUrl: String, id: Int, contentId:String, licenseId:String, narrators:String, authors:String): View.OnClickListener {
+        return View.OnClickListener {
+            val direction = MyLibraryFragmentDirections.actionMylibraryToBookDownloadFragment(
+                title,
+                licenseId,
+                id.toString(),
+                contentId,
+                authors,
+                narrators,
+                imageUrl
+            )
+            it.findNavController().navigate(direction)
+        }
+    }
 }

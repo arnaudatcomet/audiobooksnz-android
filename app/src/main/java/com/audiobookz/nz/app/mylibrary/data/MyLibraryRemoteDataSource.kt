@@ -13,5 +13,7 @@ class MyLibraryRemoteDataSource @Inject constructor(private val service: Audiobo
 
     suspend fun fetchSession() = getResult { service.getSession() }
 
+    suspend fun postChapterPosition(bookID:Int, chapter:Int, position:Long, part:Int) = getResult {service.postChapterPosition(bookID, chapter, position, part)}
+
 
 }

@@ -5,25 +5,50 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
 
 import com.audiobookz.nz.app.R
+import com.audiobookz.nz.app.databinding.FragmentPlayerSleepTimeBinding
+import com.audiobookz.nz.app.di.Injectable
+import com.audiobookz.nz.app.di.injectViewModel
+import com.audiobookz.nz.app.ui.setTitle
+import javax.inject.Inject
 
 
-class PlayerSleepTimeFragment : Fragment() {
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+class PlayerSleepTimeFragment : Fragment(), Injectable {
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private lateinit var viewModel: PlayerViewModel
+    lateinit var extraID: String
+    lateinit var extraLicenseId: String
+    var mapTimeSleep: Map<String, Int> = mapOf(
+        "Off" to 0,
+        "8 Mins" to 8,
+        "15 Mins" to 15,
+        "30 Mins" to 30,
+        "45 Mins" to 45,
+        "60 Mins" to 60
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_player_sleep_time, container, false)
-    }
 
+        viewModel = injectViewModel(viewModelFactory)
+        var binding = FragmentPlayerSleepTimeBinding.inflate(inflater, container, false)
+        var titleBook = activity?.findViewById<TextView>(R.id.titleBook)
+        var previousTimer = (viewModel.currentSleepTimer?.div(60000))?.toInt()
+        var adapter = PlayerSleepTimeAdapter(mapTimeSleep, viewModel, previousTimer)
+
+        extraID = activity?.intent?.getStringExtra("idBook").toString()
+        extraLicenseId = activity?.intent?.getStringExtra("licenseIDBook").toString()
+        titleBook?.text = ""
+        setTitle("Chapter")
+        binding.timeSleepRecycleView.adapter = adapter
+
+        return binding.root
+    }
 
 }

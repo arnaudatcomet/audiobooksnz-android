@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="selectClick"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="isClick"
+            type="Boolean" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="10dp"
+        android:clickable="true"
+        android:onClick="@{selectClick}">
+
+        <TextView
+           android:id="@+id/timeSleepText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="sample"
+            android:textColor="@{isClick? @color/colorYellowBorder:@android:color/black}"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/speed175xIcon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="right"
+            android:backgroundTint="@android:color/holo_orange_light"
+            app:cardCornerRadius="15dp"
+            android:visibility="@{isClick? View.VISIBLE:View.GONE}">>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:srcCompat="@drawable/done_white_18dp" />
+
+        </com.google.android.material.card.MaterialCardView>
+    </androidx.cardview.widget.CardView>
+</layout>

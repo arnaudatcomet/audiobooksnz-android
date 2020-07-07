@@ -15,4 +15,6 @@ const val CLOUDBOOK_PAGE_SIZE = 10
 const val FEATURED_BOOK_SHOW = 4
 const val REVIEW_PAGE_SIZE = 20
 const val DOWNLOAD_COMPLETE = "Download Completed"
-const val ThirtySec = 30000
+const val THIRTY_MILI_SEC = 30000
+const val HOUR_MILI_SEC = 3600000
+const val MINUTE_MILI_SEC = 60000

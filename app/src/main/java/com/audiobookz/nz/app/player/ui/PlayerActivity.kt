@@ -10,7 +10,9 @@ import android.widget.LinearLayout
 import android.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.audiobookz.nz.app.R
 import com.audiobookz.nz.app.databinding.ActivityPlayerBinding
 import com.audiobookz.nz.app.util.intentShareText

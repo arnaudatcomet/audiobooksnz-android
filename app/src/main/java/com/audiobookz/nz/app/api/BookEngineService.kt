@@ -23,9 +23,8 @@ class BookEngineService{
         val request = DownloadRequest(contentId = contentId, part = 0, chapter = 0, type = DownloadRequest.Type.TO_END_WRAP, licenseId = licenseId)
         return downloadEngine.submit(request).subscribeOn(Schedulers.io());
     }
-    fun contentStatus(contentId:String):Observable<DownloadStatus>?{
-       return downloadEngine.getStatus(contentId)
-    }
+    fun contentStatus(contentId:String):Observable<DownloadStatus>?{ return downloadEngine.getStatus(contentId) }
+
     fun delete(contentId:String,licenseId:String){
         val request = DownloadRequest(contentId = contentId, part = 0, chapter = 0, type = DownloadRequest.Type.TO_END_WRAP, licenseId = licenseId)
         downloadEngine.delete(request)
@@ -36,61 +35,23 @@ class BookEngineService{
             downloadEngine.cancel(request)
         }
     }
-    fun getLocalBook(status: DownloadStatus): Observable<List<String>>{
-       return downloadEngine.get(status)
-    }
 
-    fun getChapterLists(contentId:String): Observable<List<Chapter>> {
-        return downloadEngine.getChapters(contentId)
-    }
+    fun getLocalBook(status: DownloadStatus): Observable<List<String>>{ return downloadEngine.get(status) }
+    fun getChapterLists(contentId:String): Observable<List<Chapter>> { return downloadEngine.getChapters(contentId) }
 
     fun play(contentId:String,licenseId:String,partNumber:Int,chapterNumber:Int,position:Long): Observable<PlaybackEvent>? {
         val playRequest = PlayRequest(licenseId,contentId,partNumber,chapterNumber,position)
-        return playbackEngine.play(playRequest)
-    }
+        return playbackEngine.play(playRequest) }
 
-    fun pausePlay(){
-         playbackEngine.pause()
-    }
-
-    fun resumePlay(){
-         playbackEngine.resume()
-    }
-
-    fun nextChapter(){
-         playbackEngine.nextChapter()
-    }
-
-    fun previousChapter(){
-         playbackEngine.previousChapter()
-    }
-
-    fun getPosition(): Long {
-       return playbackEngine.position
-    }
-
-    fun setSpeed(speed:Float)  {
-         playbackEngine.speed = speed
-    }
-
-    fun isPlaying():Boolean{
-        return playbackEngine.isPlaying
-    }
-
-    fun seekTo(position: Long){
-        playbackEngine.seekTo(position)
-    }
-
-    fun getPlayerState():Observable<PlayerState>?{
-        return playbackEngine.state
-    }
-
-    fun getCurrentChapter():Chapter?{
-        return playbackEngine.chapter
-    }
-
-    fun getCurrentSpeed():Float{
-        return playbackEngine.speed
-    }
+    fun pausePlay(){ playbackEngine.pause() }
+    fun resumePlay(){ playbackEngine.resume() }
+    fun nextChapter(){ playbackEngine.nextChapter() }
+    fun previousChapter(){ playbackEngine.previousChapter() }
+    fun getPosition(): Long { return playbackEngine.position }
+    fun setSpeed(speed:Float)  { playbackEngine.speed = speed }
+    fun seekTo(position: Long){ playbackEngine.seekTo(position) }
+    fun getPlayerState():Observable<PlayerState>?{ return playbackEngine.state }
+    fun getCurrentChapter():Chapter?{ return playbackEngine.chapter }
+    fun getCurrentSpeed():Float{ return playbackEngine.speed }
 
 }

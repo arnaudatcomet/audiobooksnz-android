@@ -35,6 +35,7 @@ class BookDownloadViewModel @Inject constructor(private val repository: MyLibrar
 //    }
     fun saveDetailBook(
         id: Int,
+        contentId: String,
         title: String,
         licenseId: String,
         imageUrl: String?,
@@ -44,6 +45,7 @@ class BookDownloadViewModel @Inject constructor(private val repository: MyLibrar
         bookDetail.addSource(
             repository.saveDetailBook(
                 id,
+                contentId,
                 title,
                 licenseId,
                 imageUrl,
@@ -57,6 +59,7 @@ class BookDownloadViewModel @Inject constructor(private val repository: MyLibrar
 
 
     fun download(
+        id: Int,
         contentId: String, licenseId: String, title: String,
         imageUrl: String?,
         authors: String,
@@ -65,6 +68,7 @@ class BookDownloadViewModel @Inject constructor(private val repository: MyLibrar
 
         repository.downloadAudiobook(
             { downloadEvent -> downloadResult.postValue(downloadEvent) },
+            id,
             contentId,
             licenseId,
             title, imageUrl, authors, narrators

@@ -47,7 +47,7 @@ class BookDownloadFragment : Fragment(), Injectable {
         binding.bookStatus = "Download"
         binding.downloadStatus = "Status"
         binding.goToPlayerClick = goToPlayerClick(binding)
-        viewModel.getContentStatus(args.id)
+        viewModel.getContentStatus(args.contentId)
         return binding.root
     }
 
@@ -57,7 +57,7 @@ class BookDownloadFragment : Fragment(), Injectable {
             when (binding.bookStatus) {
                 "Download" -> {
                     binding.downloadStatus = "Pending"
-                    viewModel.download(args.id, args.licenseId,args.title ?: "Book", args.url,args.authors,args.narrators)
+                    viewModel.download(args.id.toInt(), args.contentId, args.licenseId,args.title ?: "Book", args.url,args.authors,args.narrators)
                 }
 
                 "Queued" -> {
@@ -69,11 +69,11 @@ class BookDownloadFragment : Fragment(), Injectable {
                     viewModel.cancelDownload(downloadId)
                 }
                 "Paused" -> {
-                    viewModel.download(args.id, args.licenseId,args.title ?: "Book", args.url,args.authors,args.narrators)
+                    viewModel.download(args.id.toInt(), args.contentId, args.licenseId,args.title ?: "Book", args.url,args.authors,args.narrators)
                 }
                 "Delete" -> {
                     AsyncTask.execute {
-                        viewModel.deleteContent(args.id, args.licenseId)
+                        viewModel.deleteContent(args.contentId, args.licenseId)
                     }
                     binding.downloadStatus = "status"
                 }
@@ -85,7 +85,8 @@ class BookDownloadFragment : Fragment(), Injectable {
         return View.OnClickListener {
             if (binding.downloadStatus == "Completed") {
                 val intent = Intent(activity, PlayerActivity::class.java).apply {
-                    putExtra("idBook", args.id)
+                    putExtra("cloudBookId", args.id)
+                    putExtra("contentId", args.contentId)
                     putExtra("urlImage", args.url)
                     putExtra("titleBook", args.title)
                     putExtra("licenseIDBook", args.licenseId)

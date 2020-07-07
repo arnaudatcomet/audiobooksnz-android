@@ -23,6 +23,9 @@
         <action
             android:id="@+id/action_audioPlayerFragment_to_playerBookmarkFragment"
             app:destination="@id/playerBookmarkFragment" />
+        <action
+            android:id="@+id/action_audioPlayerFragment_to_bookmarkNoteFragment"
+            app:destination="@id/bookmarkNoteFragment" />
     </fragment>
 
     <fragment
@@ -46,4 +49,9 @@
         android:name="com.audiobookz.nz.app.player.ui.PlayerSleepTimeFragment"
         android:label="@string/sleepTime"
         tools:layout="@layout/fragment_player_sleep_time" />
+    <fragment
+        android:id="@+id/bookmarkNoteFragment"
+        android:name="com.audiobookz.nz.app.player.ui.BookmarkNoteFragment"
+        android:label="fragment_bookmark_note"
+        tools:layout="@layout/fragment_bookmark_note" />
 </navigation>

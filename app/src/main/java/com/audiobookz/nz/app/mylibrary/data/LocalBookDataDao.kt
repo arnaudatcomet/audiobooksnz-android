@@ -13,6 +13,6 @@ interface LocalBookDataDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertLocalBookData(localBookData: LocalBookData)
 
-    @Query("DELETE FROM localbook WHERE id = :id")
+    @Query("DELETE FROM localbook WHERE contentId = :id")
     fun deleteById(id:Int)
 }

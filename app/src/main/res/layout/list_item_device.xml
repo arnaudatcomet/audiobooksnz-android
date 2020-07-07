@@ -60,7 +60,7 @@
                     android:backgroundTint="@color/colorTea"
                     app:cardCornerRadius="25dp"
                     android:clickable="true"
-                    android:onClick="@{clickDeleteListener}">
+                    android:onClick="@{clickDirectPlay}">
 
                     <ImageView
                         android:layout_width="wrap_content"

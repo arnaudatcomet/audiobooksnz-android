@@ -15,10 +15,6 @@
             type="Boolean" />
 
         <variable
-            name="isPlayed"
-            type="Boolean" />
-
-        <variable
             name="authors"
             type="String" />
 
@@ -33,6 +29,10 @@
         <variable
             name="contentProcess"
             type="int" />
+
+        <variable
+            name="timeRemaining"
+            type="String" />
 
         <import type="android.view.View" />
     </data>
@@ -116,7 +116,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_below="@id/txtNameAuthor"
-                    android:visibility="@{isPlayed? View.VISIBLE:View.GONE}">
+                    android:visibility="@{isDownloaded? View.VISIBLE:View.GONE}">
 
                     <ProgressBar
                         android:id="@+id/progressTimeRemain"
@@ -130,7 +130,7 @@
                         android:id="@+id/progressStatusTxt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Minutes Remaining and Download finish"/>
+                        android:text="@{timeRemaining}"/>
 
                 </LinearLayout>
             </LinearLayout>
