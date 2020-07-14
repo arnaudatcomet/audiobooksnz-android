@@ -31,7 +31,7 @@ class BookDownloadFragment : Fragment(), Injectable {
     private lateinit var viewModel: BookDownloadViewModel
     private val args: BookDownloadFragmentArgs by navArgs()
     lateinit var binding: FragmentBookDownloadBinding
-    private lateinit var downloadId:String;
+    private var downloadId:String =""
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,7 +42,7 @@ class BookDownloadFragment : Fragment(), Injectable {
         binding.urlImage = args.url
         binding.statusButton = downloadAndDeleteButton(binding)
         subscribeUi(binding)
-       // viewModel.startTimer()
+
         //need check status first
         binding.bookStatus = "Download"
         binding.downloadStatus = "Status"
@@ -57,7 +57,7 @@ class BookDownloadFragment : Fragment(), Injectable {
             when (binding.bookStatus) {
                 "Download" -> {
                     binding.downloadStatus = "Pending"
-                    viewModel.download(args.id.toInt(), args.contentId, args.licenseId,args.title ?: "Book", args.url,args.authors,args.narrators)
+                    viewModel.download(args.id.toInt(),args.bookId, args.contentId, args.licenseId,args.title ?: "Book", args.url,args.authors,args.narrators)
                 }
 
                 "Queued" -> {
@@ -69,7 +69,7 @@ class BookDownloadFragment : Fragment(), Injectable {
                     viewModel.cancelDownload(downloadId)
                 }
                 "Paused" -> {
-                    viewModel.download(args.id.toInt(), args.contentId, args.licenseId,args.title ?: "Book", args.url,args.authors,args.narrators)
+                    viewModel.download(args.id.toInt(), args.bookId, args.contentId, args.licenseId,args.title ?: "Book", args.url,args.authors,args.narrators)
                 }
                 "Delete" -> {
                     AsyncTask.execute {
@@ -86,10 +86,13 @@ class BookDownloadFragment : Fragment(), Injectable {
             if (binding.downloadStatus == "Completed") {
                 val intent = Intent(activity, PlayerActivity::class.java).apply {
                     putExtra("cloudBookId", args.id)
+                    putExtra("bookId", args.bookId)
                     putExtra("contentId", args.contentId)
                     putExtra("urlImage", args.url)
                     putExtra("titleBook", args.title)
                     putExtra("licenseIDBook", args.licenseId)
+                    putExtra("authorBook", args.authors)
+                    putExtra("narratorBook", args.narrators)
                 }
                 startActivity(intent)
             }

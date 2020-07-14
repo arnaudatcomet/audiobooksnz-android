@@ -16,6 +16,7 @@ import com.audiobookz.nz.app.mylibrary.ui.MyLibraryViewModel
 import com.audiobookz.nz.app.player.ui.PlayerViewModel
 import com.audiobookz.nz.app.profile.ui.EditProfileViewModel
 import com.audiobookz.nz.app.register.ui.SignUpViewModel
+import com.audiobookz.nz.app.review.RateReviewViewModel
 //import com.audiobookz.nz.app.browse.categories.ui.viewmo
 
 import dagger.Binds
@@ -95,6 +96,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(DeviceLibraryViewModel::class)
     abstract fun bindDeviceLibraryViewModel(viewModel: DeviceLibraryViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(RateReviewViewModel::class)
+    abstract fun bindRateReviewViewModel(viewModel: RateReviewViewModel): ViewModel
 
 
     @Binds

@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="bought"
+            type="Boolean" />
+        
         <variable
             name="book"
             type="com.audiobookz.nz.app.bookdetail.data.BookDetail" />
@@ -210,28 +213,30 @@
                 </LinearLayout>
             </LinearLayout>
 
-
-            <Button
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="@dimen/margin_big"
-                android:backgroundTint="@android:color/background_dark"
-                android:text="Play Sample" />
+                android:orientation="vertical">
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="@android:color/background_dark"
+                    android:text="Play Sample" />
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="@dimen/margin_big"
-                android:backgroundTint="@android:color/background_dark"
-                android:onClick="@{()->viewModel.addCart()}"
-                android:text="@{@string/addCart+book.price}" />
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="@android:color/background_dark"
+                    android:onClick="@{()->viewModel.addCart()}"
+                    android:text="@{@string/addCart+book.price}" />
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="@dimen/margin_big"
-                android:backgroundTint="@android:color/background_dark"
-                android:text="Add to Wishlist" />
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="@android:color/background_dark"
+                    android:text="Add to Wishlist" />
+            </LinearLayout>
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tab_book_detail"

@@ -4,6 +4,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import javax.inject.Inject
 import com.audiobookz.nz.app.data.Result
+import com.audiobookz.nz.app.mylibrary.data.CloudBook
 import com.audiobookz.nz.app.mylibrary.data.MyLibraryRepository
 import com.audiobookz.nz.app.util.CLOUDBOOK_PAGE_SIZE
 import com.audiobookz.nz.app.util.HOUR_MILI_SEC
@@ -15,48 +16,73 @@ import java.util.concurrent.TimeUnit
 class MyLibraryViewModel @Inject constructor(private val repository: MyLibraryRepository) :
     ViewModel() {
     var cloudBookResult = MediatorLiveData<Result<MutableMap<String, List<Any>>?>>()
+    var oldCloudBook: List<CloudBook>? = null
     var isLatest: Boolean? = false
     var timeRemaining = ""
+    var pageCount: Int? = 1
 
-    fun getCloudBook(page: Int, pageSize: Int) {
+    fun getCloudBook(page: Int, pageSize: Int, searchText: String) {
         cloudBookResult.addSource(repository.getCloudBook(page, pageSize)) { value ->
             if (value.data?.size != null) {
-                if (value.data.size < CLOUDBOOK_PAGE_SIZE) {
-                    isLatest = true
-                }
+
                 val map: MutableMap<String, List<Any>> = mutableMapOf()
-                map["cloudList"] = value.data
+                var afterSearchCould = value.data.filter {
+                    it.audiobook?.title!!.contains(
+                        searchText,
+                        ignoreCase = true
+                    )
+                }
+                var resultFetch =
+                    fetchMoreCloudBook(oldCloudBook, afterSearchCould) as List<CloudBook>
+                oldCloudBook = resultFetch
+
+                map["cloudList"] = resultFetch
                 repository.getLocalBookList(
                     { downloadStatus -> map["localList"] = downloadStatus },
                     DownloadStatus.DOWNLOADED
                 )
                 cloudBookResult.value = Result.success(map)
+
             }
         }
+    }
+
+    fun fetchMoreCloudBook(oldData: List<CloudBook>?, newData: List<CloudBook>): List<CloudBook>? {
+
+        if (oldData != null) {
+            if (oldData.takeLast(10)[0].id == newData[0]?.id) {
+                isLatest = true
+                return oldData
+            }
+        }
+
+        var mergeData = oldData.let { list ->
+            newData.let { it1 -> list?.plus(it1) }
+        }
+        if (mergeData != null) {
+            return mergeData
+        }
+        return newData
     }
 
     fun getPositionPlay(bookId: Int, chapter: Int): Long {
         return repository.getSavePositionPlay(bookId, chapter)
     }
 
-    fun getBookChapterSize(bookId: Int): Int {
-        return repository.getBookChapterSize(bookId)
-
-    }
-
     fun getBookDuration(bookId: Int): Long {
         return repository.getBookDuration(bookId)
     }
 
-    fun calculateRemainingTime(id: Int, duration: Int): Int {
-        var bookSize = getBookChapterSize(id)
-        var chapterCurrent = repository.getSaveBookCurrentChapter(id)
+    fun calculateRemainingTime(contentId: Int): Int {
+        var bookSize = repository.getBookChapterSize(contentId)
+        var chapterCurrent = repository.getSaveBookCurrentChapter(contentId)
+        var duration = repository.getBookDuration(contentId)
         var remainingTime = 0
 
         for (i in 0..bookSize) {
             //sum only before chapter and current play
             if (i <= chapterCurrent) {
-                remainingTime += getPositionPlay(id, i).toInt()
+                remainingTime += getPositionPlay(contentId, i).toInt()
             }
         }
 
@@ -65,12 +91,12 @@ class MyLibraryViewModel @Inject constructor(private val repository: MyLibraryRe
         var minLeft = (timeLeft / MINUTE_MILI_SEC)
         var minMinuteHour = minLeft - (hourLeft * 60)
         var secLeft =
-            TimeUnit.MILLISECONDS.toSeconds(timeLeft.toLong()) % TimeUnit.MINUTES.toSeconds(1)
+            TimeUnit.MILLISECONDS.toSeconds(timeLeft) % TimeUnit.MINUTES.toSeconds(1)
 
         if (timeLeft > 0) {
-            if (hourLeft != 0) {
+            if (hourLeft != 0L) {
                 timeRemaining = "$hourLeft hour $minMinuteHour minute"
-            } else if (minLeft != 0) {
+            } else if (minLeft != 0L) {
                 timeRemaining = "$minLeft minute"
             } else if (secLeft != 0L) {
                 timeRemaining = "less than minute"

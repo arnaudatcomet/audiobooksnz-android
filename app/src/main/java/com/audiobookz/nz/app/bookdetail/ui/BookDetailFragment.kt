@@ -34,14 +34,26 @@ class BookDetailFragment : Fragment(), Injectable {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_share, menu)
+
+        //hide menu player when come from playerActivity
+        var menuItemPlayer: MenuItem? = null
+        menuItemPlayer = menu.findItem(R.id.action_option_player)
+
+        if (menuItemPlayer != null) {
+            menuItemPlayer.isVisible = false
+        }
+
         super.onCreateOptionsMenu(menu, inflater)
     }
+
     @Suppress("DEPRECATION")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_share -> {
-                intentShareText(activity!!, //getString(R.string.share_lego_set, set.name, set.url ?: "")
-                "testShare")
+                intentShareText(
+                    activity!!, //getString(R.string.share_lego_set, set.name, set.url ?: "")
+                    "testShare"
+                )
                 return true
             }
             else -> super.onOptionsItemSelected(item)

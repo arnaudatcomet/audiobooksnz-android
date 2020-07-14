@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.app.ActivityCompat.invalidateOptionsMenu
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.audiobookz.nz.app.R
@@ -28,13 +29,10 @@ class PlayerChapterFragment : Fragment(), Injectable {
         viewModel = injectViewModel(viewModelFactory)
 
         var binding = FragmentPlayerChapterBinding.inflate(inflater, container, false)
-        var titleBook = activity?.findViewById<TextView>(R.id.titleBook)
         extraContentID = activity?.intent?.getStringExtra("contentId").toString()
         extraLicenseId = activity?.intent?.getStringExtra("licenseIDBook").toString()
-        titleBook?.text = ""
         setTitle("Chapter")
         viewModel.getChapters(extraContentID)
-
         subscribeUi(binding)
         return binding.root
     }

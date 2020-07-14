@@ -1,6 +1,5 @@
 package com.audiobookz.nz.app.api
 
-import android.icu.text.Transliterator
 import com.audiobookz.nz.app.audiobookList.data.Audiobook
 import com.audiobookz.nz.app.bookdetail.data.BookDetail
 import com.audiobookz.nz.app.bookdetail.data.BookReview
@@ -11,13 +10,14 @@ import com.audiobookz.nz.app.login.data.UserData
 import com.audiobookz.nz.app.mylibrary.data.CloudBook
 import com.audiobookz.nz.app.mylibrary.data.LocalBookData
 import com.audiobookz.nz.app.mylibrary.data.SessionData
+import com.audiobookz.nz.app.player.data.BookmarksData
 import com.audiobookz.nz.app.player.data.PositionData
+import okhttp3.Call
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.*
-import java.io.File
-import java.util.*
 
 /**
  * Lego REST API access points
@@ -140,7 +140,8 @@ interface AudiobookService {
     suspend fun getCloudBook(
         @Query("expand") expand: String ="audiobook",
         @Query("page") page: Int? = null,
-        @Query("per-page") pageSize: Int? = null
+        @Query("per-page") pageSize: Int? = null,
+        @Query("sort") sort: String? = null
     ): Response<List<CloudBook>>
 
     @GET("users/session-key")
@@ -148,23 +149,56 @@ interface AudiobookService {
     suspend fun getSession(): Response<SessionData>
 
     @FormUrlEncoded
-    @POST("users/audiobooks/{bookId}/position")
+    @POST("users/audiobooks/{cloudBookID}/position")
     @Headers("No-Authentication: false")
     suspend fun postChapterPosition(
-        @Path("bookId") bookId: Int,
+        @Path("cloudBookID") bookId: Int,
         @Field("chapter") chapter: Int? = null,
         @Field("time") time: Long? = null,
         @Field("part_number") part_number: Int? = null
     ): Response<PositionData>
 
-//    @FormUrlEncoded
-//    @POST("users/audiobooks/{bookId}/bookmarks")
-//    @Headers("No-Authentication: false")
-//    suspend fun postChapterBookmars(
-//        @Path("bookId") bookId: Int,
-//        @Field("chapter") chapter: Int? = null,
-//        @Field("time") time: Long? = null,
-//        @Field("subtitle") subtitle: String? = null,
-//        @Field("part_number") part_number: Int? = null
-//    ): Response<List<CloudBook>>
+    @Multipart
+    @POST("users/audiobooks/{cloudBookId}/bookmarks")
+    @Headers("No-Authentication: false")
+    suspend fun postBookmars(
+        @Path("cloudBookId") cloudBookId: Int,
+        @Part("chapter") chapter: RequestBody,
+        @Part("time") time: RequestBody,
+        @Part("subtitle") subtitle: RequestBody,
+        @Part("part_number") part_number: RequestBody,
+        @Part("title") title: RequestBody
+    ): Response<BookmarksData>
+
+    @GET("users/audiobooks/{cloudBookId}/bookmarks")
+    @Headers("No-Authentication: false")
+    suspend fun getBookmarks(
+        @Path("cloudBookId") cloudBookId: Int,
+        @Query("page") page: Int? = null,
+        @Query("per-page") pageSize: Int? = null
+    ): Response<List<BookmarksData>>
+
+    @DELETE("users/audiobooks/bookmarks/{bookmarkId}")
+    @Headers("No-Authentication: false")
+    fun deleteBookmark(@Path("bookmarkId") bookmarkId: Int): retrofit2.Call<Unit>
+
+    @FormUrlEncoded
+    @PATCH("users/audiobooks/bookmarks/{bookmarkId}")
+    @Headers("No-Authentication: false")
+    suspend fun updateBookmarks(
+        @Path("bookmarkId") bookmarkId: Int,
+        @Field("title") title: String? = null
+    ): Response<BookmarksData>
+
+    @FormUrlEncoded
+    @POST("audiobooks/{id}/reviews")
+    @Headers("No-Authentication: false")
+    suspend fun postBookReview(
+        @Path("id") id: Int,
+        @Field("comment") comment: String? = null,
+        @Field("statification_rating") statification_rating: Float? = null,
+        @Field("story_rating") story_rating: Float? = null,
+        @Field("narration_rating") narration_rating: Float? = null
+    ): Response<BookReview>
+
 }

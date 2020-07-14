@@ -38,13 +38,11 @@ class PlayerSleepTimeFragment : Fragment(), Injectable {
 
         viewModel = injectViewModel(viewModelFactory)
         var binding = FragmentPlayerSleepTimeBinding.inflate(inflater, container, false)
-        var titleBook = activity?.findViewById<TextView>(R.id.titleBook)
         var previousTimer = (viewModel.currentSleepTimer?.div(60000))?.toInt()
         var adapter = PlayerSleepTimeAdapter(mapTimeSleep, viewModel, previousTimer)
 
         extraID = activity?.intent?.getStringExtra("idBook").toString()
         extraLicenseId = activity?.intent?.getStringExtra("licenseIDBook").toString()
-        titleBook?.text = ""
         setTitle("Chapter")
         binding.timeSleepRecycleView.adapter = adapter
 

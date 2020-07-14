@@ -158,6 +158,9 @@
             android:name="id"
             app:argType="string"/>
         <argument
+            android:name="bookId"
+            app:argType="string"/>
+        <argument
             android:name="contentId"
             app:argType="string"/>
         <argument
@@ -175,12 +178,22 @@
 
     <fragment
         android:id="@+id/rateAndReviewFragment"
-        android:name="com.audiobookz.nz.app.mylibrary.ui.RateAndReviewFragment"
+        android:name="com.audiobookz.nz.app.review.RateAndReviewFragment"
         android:label="@string/optionReview"
         tools:layout="@layout/fragment_rate_and_review" >
         <argument
             android:name="id"
             app:argType="integer" />
+         <argument
+            android:name="author"
+            app:argType="string" />
+         <argument
+            android:name="narrator"
+            app:argType="string" />
+        <argument
+            android:name="title"
+            app:argType="string" />
+
     </fragment>
 
 </navigation>

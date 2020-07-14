@@ -10,8 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.audiobookz.nz.app.R
 import com.audiobookz.nz.app.databinding.ListItemCloudBinding
 import com.audiobookz.nz.app.mylibrary.data.CloudBook
-import com.audiobookz.nz.app.util.HOUR_MILI_SEC
-import com.audiobookz.nz.app.util.MINUTE_MILI_SEC
 import com.audiobookz.nz.app.util.intentShareText
 
 class CloudLibraryAdapter(
@@ -51,10 +49,10 @@ class CloudLibraryAdapter(
         val narrators =
             cloudBook.audiobook?.audioengine_data?.BookDetail?.narrators?.joinToString(",")
 
-
         if (resultCheckDownload) {
+
             bookDuration = viewModel.getBookDuration(bookContentID!!.toInt()).toInt()
-            resultCalculate = viewModel.calculateRemainingTime(bookContentID!!.toInt(), bookDuration)
+            resultCalculate = viewModel.calculateRemainingTime(bookContentID!!.toInt())
             timeRemainingText = viewModel.timeRemaining
         }
 
@@ -64,6 +62,7 @@ class CloudLibraryAdapter(
                     it,
                     cloudBook.audiobook.cover_image,
                     cloudBook.id.toString(),
+                    cloudBook.audiobook.id.toString(),
                     bookContentID!!,
                     licenseId!!,
                     narrators!!,
@@ -71,7 +70,7 @@ class CloudLibraryAdapter(
                 )
             }?.let {
                 bind(
-                    cloudBook, it, openOptionMenu(cloudBook.audiobook.id, bookTitle),
+                    cloudBook, it, openOptionMenu(cloudBook.audiobook.id, bookTitle,authors!!,narrators!!),
                     resultCheckDownload, bookDuration, resultCalculate, timeRemainingText
                 )
             }
@@ -107,12 +106,13 @@ class CloudLibraryAdapter(
         }
     }
 
-    private fun openToDownload(title: String, imageUrl: String, cloudBookId:String, contentId: String, licenseId: String, narrators: String, authors: String): View.OnClickListener {
+    private fun openToDownload(title: String, imageUrl: String, cloudBookId: String, bookId: String, contentId: String, licenseId: String, narrators: String, authors: String): View.OnClickListener {
         return View.OnClickListener {
             val direction = MyLibraryFragmentDirections.actionMylibraryToBookDownloadFragment(
                 title,
                 licenseId,
                 cloudBookId,
+                bookId,
                 contentId,
                 authors,
                 narrators,
@@ -122,7 +122,7 @@ class CloudLibraryAdapter(
         }
     }
 
-    private fun openOptionMenu(id: Int, title: String): View.OnClickListener {
+    private fun openOptionMenu(id: Int, title: String, authors: String, narrators: String): View.OnClickListener {
         return View.OnClickListener {
             val pop = PopupMenu(it.context, it)
             pop.inflate(R.menu.cloud_library_option)
@@ -137,9 +137,9 @@ class CloudLibraryAdapter(
                         it.findNavController().navigate(direction)
                     }
                     R.id.review -> {
-//                        val direction =
-//                            MyLibraryFragmentDirections.actionMylibraryToRateAndReviewFragment(id)
-//                        it.findNavController().navigate(direction)
+                        val direction =
+                            MyLibraryFragmentDirections.actionMylibraryToRateAndReviewFragment(id,authors,narrators,title)
+                        it.findNavController().navigate(direction)
                     }
                     R.id.share -> {
                         intentShareText(

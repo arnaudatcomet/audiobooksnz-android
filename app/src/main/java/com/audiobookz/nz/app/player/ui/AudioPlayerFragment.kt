@@ -1,6 +1,7 @@
 package com.audiobookz.nz.app.player.ui
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,10 +9,14 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.navArgs
+import com.audiobookz.nz.app.MainActivity
 import com.audiobookz.nz.app.R
 import com.audiobookz.nz.app.databinding.FragmentAudioPlayerBinding
 import com.audiobookz.nz.app.di.Injectable
@@ -21,7 +26,12 @@ import com.audiobookz.nz.app.util.THIRTY_MILI_SEC
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.audiobookz.nz.app.data.Result
+import com.bumptech.glide.Glide
 import io.audioengine.mobile.PlaybackEvent
+import kotlinx.android.synthetic.main.fragment_book_detail.view.*
+import kotlinx.android.synthetic.main.fragment_rate_and_review.view.*
+import kotlinx.android.synthetic.main.rating_dialog_layout.view.*
+import kotlinx.android.synthetic.main.rating_dialog_layout.view.reviewCommentTxt
 import java.sql.Time
 import java.text.SimpleDateFormat
 import java.util.*
@@ -33,13 +43,20 @@ class AudioPlayerFragment : Fragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: PlayerViewModel
-    lateinit var extraBookId: String
+    lateinit var extraCloudBookId: String
     lateinit var extraContentID: String
     lateinit var extraLicenseId: String
+    lateinit var extraImageUrl: String
+    lateinit var extraBookTitle: String
+    lateinit var extraBookId: String
     var statePlay = true
-    var currentPosition: Long = 0
     var durationLeft = 0L
     private lateinit var fragmentStatus: String
+    private var currentPositionPlay: Long? = 0
+    private var currentPlayChapter = 0
+    private var currentPlayPart = 0
+    private var chapterBookTxt: TextView? = null
+    private var bookmarkId = 0
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -54,12 +71,16 @@ class AudioPlayerFragment : Fragment(), Injectable {
 
         viewModel = injectViewModelWithActivityLifeCycle(viewModelFactory)
         var binding = FragmentAudioPlayerBinding.inflate(inflater, container, false)
+        chapterBookTxt = activity?.findViewById(R.id.titleBook)
         extraContentID = activity?.intent?.getStringExtra("contentId").toString()
         extraLicenseId = activity?.intent?.getStringExtra("licenseIDBook").toString()
-        extraBookId = activity?.intent?.getStringExtra("cloudBookId").toString()
+        extraCloudBookId = activity?.intent?.getStringExtra("cloudBookId").toString()
+        extraBookTitle = activity?.intent?.getStringExtra("titleBook").toString()
+        extraImageUrl = activity?.intent?.getStringExtra("urlImage").toString()
+        extraBookId = activity?.intent?.getStringExtra("bookId").toString()
 
-        activity?.intent?.getStringExtra("titleBook")?.let { setTitle(it) }
-        binding.urlImage = activity?.intent?.getStringExtra("urlImage")
+        setTitle(extraBookTitle)
+        binding.urlImage = extraImageUrl
         binding.speedSelectClick = speedSelectClick()
         binding.chapterSelectClick = chapterSelectClick()
         binding.sleepTimeSelectClick = sleepTimeClick()
@@ -124,18 +145,16 @@ class AudioPlayerFragment : Fragment(), Injectable {
 
     private fun forward30sClick(): View.OnClickListener {
         return View.OnClickListener {
-            currentPosition = viewModel.getPosition()
             if (durationLeft > THIRTY_MILI_SEC) {
-                viewModel.seekTo(currentPosition + THIRTY_MILI_SEC)
+                viewModel.seekTo(currentPositionPlay!! + THIRTY_MILI_SEC)
             }
         }
     }
 
     private fun replay30sClick(): View.OnClickListener {
         return View.OnClickListener {
-            currentPosition = viewModel.getPosition()
-            if (currentPosition > THIRTY_MILI_SEC) {
-                viewModel.seekTo(currentPosition - THIRTY_MILI_SEC)
+            if (currentPositionPlay!! > THIRTY_MILI_SEC) {
+                viewModel.seekTo(currentPositionPlay!! - THIRTY_MILI_SEC)
             }
         }
     }
@@ -166,6 +185,16 @@ class AudioPlayerFragment : Fragment(), Injectable {
 
     private fun addBookmarkClick(): View.OnClickListener {
         return View.OnClickListener {
+
+            viewModel.postBookmarks(
+                extraCloudBookId.toInt(),
+                currentPlayChapter.toString(),
+                currentPositionPlay.toString(),
+                "Chapter $currentPlayChapter / $currentPositionPlay",
+                currentPlayPart.toString(),
+                ""
+            )
+
             MaterialAlertDialogBuilder(context)
                 .setTitle(resources.getString(R.string.yourBookmarksSaved))
 
@@ -174,7 +203,9 @@ class AudioPlayerFragment : Fragment(), Injectable {
                 }
                 .setPositiveButton(resources.getString(R.string.addNote)) { dialog, which ->
                     val direction =
-                        AudioPlayerFragmentDirections.actionAudioPlayerFragmentToBookmarkNoteFragment()
+                        AudioPlayerFragmentDirections.actionAudioPlayerFragmentToBookmarkNoteFragment(
+                            bookmarkId
+                        )
                     it.findNavController().navigate(direction)
                 }
                 .show()
@@ -216,27 +247,84 @@ class AudioPlayerFragment : Fragment(), Injectable {
 
     }
 
-    private fun subscribeUi(binding: FragmentAudioPlayerBinding) {
-        var currentPositonPlay: Long? = 0
-        var currentPlayChapter = 0
-        var chapterBookTxt = activity?.findViewById<TextView>(R.id.titleBook)
+    private fun customReviewDialog() {
+        //go to main Activity when read all chapter
+        val intent = Intent(activity, MainActivity::class.java)
 
+        val customDialogView =
+            LayoutInflater.from(activity).inflate(R.layout.rating_dialog_layout, null)
+        val customBuilder = activity?.let { AlertDialog.Builder(it).setView(customDialogView) }
+        val customAlertDialog = customBuilder?.show()
+
+        customDialogView.dialogTitle.text = "$extraBookTitle"
+        Glide.with(this).load(extraImageUrl).into(customDialogView.dialogImage)
+
+        customDialogView.reviewBtn.setOnClickListener {
+
+            if (!customDialogView.reviewCommentTxt.text.isNullOrBlank()) {
+                customAlertDialog?.dismiss()
+                var commentText = customDialogView.reviewCommentTxt.text.toString()
+                var rateSatisfaction = customDialogView.dRatingSatisfactionBar.rating
+                var rateNarrator = customDialogView.dRatingNarrationBar.rating
+                var rateAuthor = customDialogView.dRatingStoryBar.rating
+                viewModel.postBookReview(
+                    extraBookId.toInt(),
+                    commentText,
+                    rateSatisfaction,
+                    rateAuthor,
+                    rateNarrator
+                )
+
+            } else {
+                Toast.makeText(activity, "comment is blank", Toast.LENGTH_SHORT).show();3
+                startActivity(intent)
+                activity?.finish()
+            }
+
+        }
+
+        customDialogView.cancelBtn.setOnClickListener {
+            customAlertDialog?.dismiss()
+            startActivity(intent)
+            activity?.finish()
+        }
+
+    }
+
+    private fun subscribeUi(binding: FragmentAudioPlayerBinding) {
+        //check come from button option
         if (fragmentStatus == "onAttach") {
             fragmentStatus = "onViewCreated"
             viewModel.listChapterResult.observe(viewLifecycleOwner, Observer { result ->
-                viewModel.playAudioBook(result[0].chapter, extraContentID, extraLicenseId, result[0].part)
+                viewModel.playAudioBook(
+                    result[0].chapter,
+                    extraContentID,
+                    extraLicenseId,
+                    result[0].part
+                )
+
+                //sum book duration if first time
+                if (viewModel.getBookDuration(extraContentID.toInt()) == 0L) {
+                    var totalBookDuration = 0L
+                    for (chapter in result) {
+                        totalBookDuration += chapter.duration
+                    }
+                    viewModel.saveBookSize(extraContentID.toInt(), result.size)
+                    viewModel.saveBookTotalDuration(extraContentID.toInt(), totalBookDuration)
+                }
+
             })
         }
 
         viewModel.playBackResult.observe(viewLifecycleOwner, Observer { result ->
-
+            currentPlayPart = result.chapter!!.part
             currentPlayChapter = result.chapter!!.chapter
             chapterBookTxt?.text = "Chapter $currentPlayChapter"
             viewModel.saveCurrentChapter(extraContentID.toInt(), currentPlayChapter!!)
 
             when (result.code) {
                 PlaybackEvent.PLAYBACK_PROGRESS_UPDATE -> {
-                    currentPositonPlay = result.position
+                    currentPositionPlay = result.position
                     result.position?.let {
                         result.duration?.let { it1 ->
                             convertAndUpdateTime(
@@ -248,7 +336,7 @@ class AudioPlayerFragment : Fragment(), Injectable {
                     }
 
                     viewModel.savePositionPlay(
-                        currentPositonPlay!!,
+                        currentPositionPlay!!,
                         extraContentID.toInt(),
                         currentPlayChapter!!
                     )
@@ -258,17 +346,25 @@ class AudioPlayerFragment : Fragment(), Injectable {
                 PlaybackEvent.PLAYBACK_ENDED -> {
 
                     viewModel.savePositionPlay(
-                        currentPositonPlay!!,
+                        currentPositionPlay!!,
                         extraContentID.toInt(),
                         currentPlayChapter!!
                     )
                     viewModel.saveBookReadComplete(extraContentID.toInt())
+
+                    customReviewDialog()
+
                 }
 
                 PlaybackEvent.CHAPTER_PLAYBACK_COMPLETED -> {
-                    viewModel.postChapterPosition(extraBookId.toInt(), currentPlayChapter!!, currentPositonPlay!!, result.chapter!!.part)
+                    viewModel.postChapterPosition(
+                        extraCloudBookId.toInt(),
+                        currentPlayChapter!!,
+                        currentPositionPlay!!,
+                        result.chapter!!.part
+                    )
                     viewModel.savePositionPlay(
-                        currentPositonPlay!!,
+                        currentPositionPlay!!,
                         extraContentID.toInt(),
                         currentPlayChapter!!
                     )
@@ -276,7 +372,7 @@ class AudioPlayerFragment : Fragment(), Injectable {
 
                 PlaybackEvent.PLAYBACK_PAUSED -> {
                     viewModel.savePositionPlay(
-                        currentPositonPlay!!,
+                        currentPositionPlay!!,
                         extraContentID.toInt(),
                         currentPlayChapter!!
                     )
@@ -299,15 +395,27 @@ class AudioPlayerFragment : Fragment(), Injectable {
         })
 
         viewModel.positionPostResult.observe(viewLifecycleOwner, Observer { result ->
-            when(result.status){
-                Result.Status.SUCCESS ->{
-                  //  Toast.makeText(activity, "done", Toast.LENGTH_SHORT).show();3
+            when (result.status) {
+                Result.Status.SUCCESS -> {
+                    Toast.makeText(activity, "done", Toast.LENGTH_SHORT).show();3
                 }
-                Result.Status.LOADING -> {
-                  //  Toast.makeText(activity, "loading...", Toast.LENGTH_SHORT).show();3
+            }
+        })
+
+        viewModel.postBookmarksResult.observe(viewLifecycleOwner, Observer { result ->
+            when (result.status) {
+                Result.Status.SUCCESS -> {
+                    bookmarkId = result.data!!.id
                 }
-                Result.Status.ERROR -> {
-                  //  Toast.makeText(activity, result.message, Toast.LENGTH_SHORT).show();3
+            }
+        })
+
+        viewModel.postBookReviewResult.observe(viewLifecycleOwner, Observer { result ->
+            when (result.status) {
+                Result.Status.SUCCESS -> {
+                    val intent = Intent(activity, MainActivity::class.java)
+                    startActivity(intent)
+                    activity?.finish()
                 }
             }
         })

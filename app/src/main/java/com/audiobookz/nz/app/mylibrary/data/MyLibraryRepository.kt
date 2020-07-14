@@ -22,6 +22,7 @@ class MyLibraryRepository @Inject constructor(
 
     fun saveDetailBook(
         id: Int,
+        bookId:String,
         contentId: String,
         title: String,
         licenseId: String,
@@ -33,6 +34,7 @@ class MyLibraryRepository @Inject constructor(
             localBookDataDao.insertLocalBookData(
                 LocalBookData(
                     id,
+                    bookId,
                     contentId,
                     title,
                     imageUrl,
@@ -44,7 +46,6 @@ class MyLibraryRepository @Inject constructor(
         }
     )
 
-
     fun getSession() = resultLiveData(
         networkCall = { remoteSource.fetchSession() },
         saveCallResult = { sessionDataDao.insertSessionData(it) },
@@ -53,7 +54,7 @@ class MyLibraryRepository @Inject constructor(
 
     fun downloadAudiobook(
         callback: (DownloadEvent) -> Unit,
-        id: Int,
+        id: Int, bookId:String,
         contentId: String,
         licenseId: String,
         title: String,
@@ -67,6 +68,7 @@ class MyLibraryRepository @Inject constructor(
             localBookDataDao.insertLocalBookData(
                 LocalBookData(
                     id,
+                    bookId,
                     it.content?.id,
                     title,
                     imageUrl,
@@ -80,115 +82,21 @@ class MyLibraryRepository @Inject constructor(
         onDataError = {}
     )
 
-    fun setSleepTimer(countTimer: Long) = cownDownTimerSleepTime(
-        countTimer,
-        onComplete = {
-            audioEngineDataSource.notifySimpleNotification(
-                "Sleep Time",
-                "Player is pause"
-            )
-            pauseAudioBook()
-            sharePref.deleteCountTime()
-        },
-        saveCountTimeToShare = { sharePref.saveSleepTime(it) }
-    )
-
-    fun savePositionPlay(position: Long, bookId: Int, chapter: Int) {
-        sharePref.savePositionPlay(position, bookId, chapter)
-    }
-
-    fun saveBookChapterSize(bookId: Int, size: Int) {
-        sharePref.saveBookChapterSize(bookId, size)
-    }
-
-    fun saveBookDuration(bookId: Int, duration: Long) {
-        sharePref.saveBookDuration(bookId, duration)
-    }
-
-    fun saveBookCurrentChapter(bookId: Int, chapter: Int) {
-        sharePref.saveBookCurrentChapter(bookId, chapter)
-    }
-
-    fun saveBookReadComplete(bookId: Int, boolean: Boolean) {
-        sharePref.saveBookReadComplete(bookId, boolean)
-    }
-
     fun getBookChapterSize(bookId: Int): Int {
         return sharePref.getBookChapterSize(bookId)
-
     }
 
     fun getBookDuration(bookId: Int): Long {
         return sharePref.getBookDuration(bookId)
     }
 
-    fun getSaveBookCurrentChapter(bookId: Int): Int {
-        return sharePref.getSaveBookCurrentChapter(bookId)
-    }
-
-    fun getsaveBookReadComplete(bookId: Int): Boolean {
-        return sharePref.getsaveBookReadComplete(bookId)
-    }
-
-    fun getSleepTime(): Long {
-        return sharePref.getSleepTime()
-    }
-
     fun getSavePositionPlay(bookId: Int, chapter: Int): Long {
         return sharePref.getSavePositionPlay(bookId, chapter)
     }
 
-
-    fun playAudioBook(
-        chapterNumber: Int,
-        contentId: String,
-        licenseId: String,
-        partNumber: Int,
-        position: Long,
-        callback: (PlaybackEvent) -> Unit
-    ) = resulObservableData(
-        networkCall = audioEngineDataSource.playAudiobook(
-            contentId,
-            licenseId,
-            partNumber,
-            chapterNumber,
-            position
-        ),
-        onDownloading = { callback(it) },
-        onPartComplete = {},
-        onComplete = {},
-        onDataError = {}
-    )
-
-    fun pauseAudioBook() = audioEngineDataSource.pause()
-    fun resumeAudioBook() = audioEngineDataSource.resume()
-
-    fun getChapterBooks(contentId: String, callback: (List<Chapter>) -> Unit) =
-        resulObservableData(
-            networkCall = audioEngineDataSource.getChapterLists(contentId),
-            onDownloading = { callback(it) },
-            onPartComplete = {},
-            onComplete = {},
-            onDataError = {}
-        )
-
-    fun getPlayerState(callback: (PlayerState) -> Unit) =
-        resulObservableData(
-            networkCall = audioEngineDataSource.getPlayerState(),
-            onDownloading = { callback(it) },
-            onPartComplete = {},
-            onComplete = {},
-            onDataError = {}
-        )
-
-
-    fun nextChapterOfBook() = audioEngineDataSource.nextChapter()
-    fun previousChapterOfBook() = audioEngineDataSource.previousChapter()
-    fun setSpeed(speed: Float) = audioEngineDataSource.setSpeed(speed)
-    fun getPosition() = audioEngineDataSource.getPosition()
-    fun seekTo(position: Long) = audioEngineDataSource.seekTo(position)
-    fun getCurrentChapter() = audioEngineDataSource.getCurrentChapter()
-    fun getCurrentSpeed() = audioEngineDataSource.getCurrentSpeed()
+    fun getSaveBookCurrentChapter(bookId: Int): Int {
+        return sharePref.getSaveBookCurrentChapter(bookId)
+    }
 
     fun getContentStatus(callback: (DownloadStatus) -> Unit, contentId: String) =
         resulObservableData(
@@ -215,8 +123,5 @@ class MyLibraryRepository @Inject constructor(
             onDataError = {}
         )
 
-    fun postChapterPosition(bookID:Int, chapter:Int, position:Long, part:Int)=resultSimpleLiveData(
-        networkCall = { remoteSource.postChapterPosition(bookID,chapter,position,part) },
-        saveCallResult = {},
-        onCallSuccess = {})
+
 }

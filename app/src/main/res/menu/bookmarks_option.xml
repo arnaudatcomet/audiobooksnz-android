@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/addNote"
+        android:enabled="true"
+        android:title="@string/addNote" />
+    <item
+        android:id="@+id/delete"
+        android:enabled="true"
+        android:title="@string/delete" />
+</menu>

@@ -40,7 +40,7 @@ class DeviceLibraryFragment : Fragment() ,Injectable{
             when (result.status) {
                 Result.Status.SUCCESS ->{
                     binding.progressBar.hide()
-                    adapter?.submitList(result.data)
+                    adapter?.submitList(result.data?.sortedByDescending { it.id })
                     binding.DeviceRecyclerView.adapter = adapter
                 }
                 Result.Status.LOADING ->{binding.progressBar.show()}
