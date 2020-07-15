@@ -118,7 +118,7 @@
                     android:id="@+id/layout_player"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_margin="5dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -126,7 +126,7 @@
                         android:id="@+id/skipPreviousButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:layout_margin="5dp"
                         android:background="?android:selectableItemBackgroundBorderless"
                         android:src="@drawable/skip_previous_48dp"
                         android:onClick="@{skipPreviousClick}"/>
@@ -135,7 +135,7 @@
                         android:id="@+id/replay30sButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:layout_margin="5dp"
                         android:background="?android:selectableItemBackgroundBorderless"
                         android:src="@drawable/replay_30_48dp"
                         android:onClick="@{replay30sClick}"/>
@@ -144,7 +144,7 @@
                         android:id="@+id/playButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:layout_margin="5dp"
                         android:background="@drawable/circle_sharp_play"
                         android:src="@drawable/play_arrow96"
                         android:onClick="@{playClick}"/>
@@ -153,7 +153,7 @@
                         android:id="@+id/forward30sButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:layout_margin="5dp"
                         android:background="?android:selectableItemBackgroundBorderless"
                         android:src="@drawable/forward_30_48dp"
                         android:onClick="@{forward30sClick}"/>
@@ -162,7 +162,7 @@
                         android:id="@+id/skipNextButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:layout_margin="5dp"
                         android:background="?android:selectableItemBackgroundBorderless"
                         android:src="@drawable/skip_next_48dp"
                         android:onClick="@{skipNextClick}"/>

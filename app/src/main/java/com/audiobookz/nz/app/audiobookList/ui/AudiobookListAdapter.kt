@@ -23,7 +23,7 @@ class AudiobookListAdapter : ListAdapter<Audiobook, AudiobookListAdapter.ViewHol
     }
     private fun createOnOpenBookDetailListener(id: Int, title: String): View.OnClickListener {
         return View.OnClickListener {
-            val direction = AudiobookListFragmentDirections.actionAudiobookListFragmentToBookDetailFragment(id,title)
+            val direction = AudiobookListFragmentDirections.actionAudiobookListFragmentToBookDetailFragment(id,title,false)
             it.findNavController().navigate(direction)
         }
     }
@@ -40,7 +40,7 @@ class AudiobookListAdapter : ListAdapter<Audiobook, AudiobookListAdapter.ViewHol
         fun bind( item: Audiobook,openBookDetailListener: View.OnClickListener) {
             binding.apply {
                 audiobook = item
-                rateViewList.rating = item.avg_rating.toFloat()
+               // rateViewList.rating = item.avg_rating.toFloat()
                 openBookDetail = openBookDetailListener
                 executePendingBindings()
             }

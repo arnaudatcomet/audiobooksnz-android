@@ -26,17 +26,15 @@ class MyLibraryViewModel @Inject constructor(private val repository: MyLibraryRe
             if (value.data?.size != null) {
 
                 val map: MutableMap<String, List<Any>> = mutableMapOf()
-                var afterSearchCould = value.data.filter {
+                var resultFetch = fetchMoreCloudBook(oldCloudBook, value.data) as List<CloudBook>
+                oldCloudBook = resultFetch
+
+                map["cloudList"] = resultFetch.filter {
                     it.audiobook?.title!!.contains(
                         searchText,
                         ignoreCase = true
                     )
                 }
-                var resultFetch =
-                    fetchMoreCloudBook(oldCloudBook, afterSearchCould) as List<CloudBook>
-                oldCloudBook = resultFetch
-
-                map["cloudList"] = resultFetch
                 repository.getLocalBookList(
                     { downloadStatus -> map["localList"] = downloadStatus },
                     DownloadStatus.DOWNLOADED

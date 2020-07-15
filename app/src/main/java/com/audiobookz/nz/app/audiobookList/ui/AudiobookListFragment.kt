@@ -128,6 +128,9 @@ class AudiobookListFragment : Fragment(), Injectable {
                     subscribeUi(binding, adapter)
                 } else {
                     //change lang in show all
+                    defaultLang = spinnerLang.selectedItem.toString()
+                    var afterFilter = args.listItem?.filter { it.audiobook?.language == defaultLang}
+                    adapter.submitList(afterFilter?.map { featured -> featured.audiobook })
                 }
 
             }

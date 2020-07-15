@@ -137,7 +137,11 @@ class BookDownloadFragment : Fragment(), Injectable {
                 DownloadStatus.DOWNLOADING -> {
                     binding.bookStatus = "Cancel"
                     binding.downloadStatus = "Downloading"
-                    binding.percentTxt.text = ""
+
+                    if ( binding.percentTxt.text == "0%"){
+                        binding.percentTxt.text = ""
+                    }
+
                 }
                 DownloadStatus.PAUSED -> {
                 }

@@ -165,8 +165,9 @@
     <string name="narrationSpeed">Narration Speed</string>
 
     <!--bookmark-->
-    <string name="yourBookmarksSaved">Your Bookmarks are saved</string>
-    <string name="addNote">Add Note</string>
+    <string name="createBookmark">Create a bookmark</string>
+    <string name="addNote">Note</string>
+    <string name="withoutNote">Without Note</string>
     <string name="delete">Delete</string>
     <string name="yourNoteUpdate">Your note is updated Successfully</string>
     <string name="submit">Submit</string>

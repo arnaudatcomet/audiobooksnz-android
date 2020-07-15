@@ -27,6 +27,16 @@
         <variable
             name="narrate"
             type="String" />
+
+        <variable
+            name="playSimpleClick"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="wishListClick"
+            type="android.view.View.OnClickListener" />
+
+        <import type="android.view.View" />
     </data>
 
     <ScrollView
@@ -217,12 +227,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="@dimen/margin_big"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="@{bought? View.GONE:View.VISIBLE}">
                 <Button
+                    android:id="@+id/playSampleBtn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:backgroundTint="@android:color/background_dark"
-                    android:text="Play Sample" />
+                    android:text="Play Sample"
+                    android:onClick="@{playSimpleClick}"/>
 
                 <Button
                     android:layout_width="match_parent"
@@ -235,7 +248,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:backgroundTint="@android:color/background_dark"
-                    android:text="Add to Wishlist" />
+                    android:text="Add to Wishlist"
+                    android:onClick="@{wishListClick}"/>
             </LinearLayout>
 
             <com.google.android.material.tabs.TabLayout

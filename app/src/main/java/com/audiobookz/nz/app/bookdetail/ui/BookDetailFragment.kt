@@ -1,13 +1,9 @@
 package com.audiobookz.nz.app.bookdetail.ui
 
+import android.media.MediaPlayer
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.FrameLayout
-import android.widget.ImageButton
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
@@ -31,6 +27,7 @@ class BookDetailFragment : Fragment(), Injectable {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: BookDetailViewModel
     private val args: BookDetailFragmentArgs by navArgs()
+    private lateinit var mediaPlayer:MediaPlayer
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_share, menu)
@@ -69,9 +66,8 @@ class BookDetailFragment : Fragment(), Injectable {
         viewModel = injectViewModel(viewModelFactory)
         viewModel.bookId = args.id.toString()
         //   viewModel.fetchReview(1, REVIEW_PAGE_SIZE)
-
+        mediaPlayer = MediaPlayer()
         val binding = FragmentBookDetailBinding.inflate(inflater, container, false)
-
         context ?: return binding.root
 
         binding.viewModel = viewModel
@@ -116,24 +112,15 @@ class BookDetailFragment : Fragment(), Injectable {
             when (result.status) {
                 Result.Status.SUCCESS -> {
                     binding.progressBar.hide()
-                }
-                Result.Status.LOADING -> binding.progressBar.show()
-                Result.Status.ERROR -> {
-                    binding.progressBar.hide()
-                    Snackbar.make(binding.root, result.message!!, Snackbar.LENGTH_LONG).show()
-                }
-            }
-        })
-        viewModel.addCartResult.observe(viewLifecycleOwner, Observer { result ->
-            when (result.status) {
-                Result.Status.SUCCESS -> {
                     Snackbar.make(
                         binding.root,
                         "This Book is Successfully added to your Cart",
                         Snackbar.LENGTH_LONG
                     ).show()
                 }
+                Result.Status.LOADING -> binding.progressBar.show()
                 Result.Status.ERROR -> {
+                    binding.progressBar.hide()
                     Snackbar.make(
                         binding.root,
                         "This Book is already added to your Cart",
@@ -147,14 +134,38 @@ class BookDetailFragment : Fragment(), Injectable {
     private fun bindView(binding: FragmentBookDetailBinding, bookDetail: BookDetail?) {
         bookDetail.apply {
             binding.progressBar.hide()
+
+            mediaPlayer.setDataSource(bookDetail?.BookEngineData?.BookDetail?.sampleUrl)
+            mediaPlayer.prepare()
+
+            binding.playSimpleClick = playSample(binding)
+            binding.wishListClick = addWishList()
+            binding.bought = args.isBuy
             binding.book = bookDetail
             binding.rating = bookDetail?.avg_rating?.toFloat()
             binding.authors =
                 bookDetail?.BookEngineData?.BookDetail?.authors?.joinToString(separator = ",")
             binding.narrate =
                 bookDetail?.BookEngineData?.BookDetail?.narrators?.joinToString(separator = ",")
+        }
+    }
+
+    private fun playSample(binding: FragmentBookDetailBinding): View.OnClickListener {
+        return View.OnClickListener {
+
+            if (mediaPlayer.isPlaying){
+                binding.playSampleBtn.text = "Play Sample"
+                mediaPlayer.pause()
+            }else{
+                mediaPlayer.start()
+                binding.playSampleBtn.text = "Pause Sample"
+            }
 
         }
+    }
+
+    private fun addWishList(): View.OnClickListener {
+        return View.OnClickListener {}
     }
 
 }

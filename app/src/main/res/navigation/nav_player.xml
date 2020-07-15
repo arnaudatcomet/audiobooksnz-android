@@ -82,6 +82,9 @@
             android:defaultValue="@null"
             app:argType="string"
             app:nullable="true" />
+        <argument
+            android:name="isBuy"
+            app:argType="boolean"/>
     </fragment>
     <fragment
         android:id="@+id/rateAndReviewFragment"

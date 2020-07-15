@@ -3,7 +3,6 @@ package com.audiobookz.nz.app.browse.di
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.audiobookz.nz.app.MainActivityViewModel
-import com.audiobookz.nz.app.appbar.AppbarViewModel
 import com.audiobookz.nz.app.audiobookList.ui.AudiobookListViewModel
 import com.audiobookz.nz.app.basket.ui.BasketViewModel
 import com.audiobookz.nz.app.bookdetail.ui.BookDetailViewModel
@@ -62,10 +61,6 @@ abstract class ViewModelModule {
     @ViewModelKey(BookDetailViewModel::class)
     abstract fun bindBookDetailViewModel(viewModel: BookDetailViewModel): ViewModel
 
-    @Binds
-    @IntoMap
-    @ViewModelKey(AppbarViewModel::class)
-    abstract fun bindAppbarViewModel(viewModel: AppbarViewModel): ViewModel
 
     @Binds
     @IntoMap

@@ -196,9 +196,9 @@ class AudioPlayerFragment : Fragment(), Injectable {
             )
 
             MaterialAlertDialogBuilder(context)
-                .setTitle(resources.getString(R.string.yourBookmarksSaved))
+                .setTitle(resources.getString(R.string.createBookmark))
 
-                .setNegativeButton(resources.getString(R.string.AlertCancel)) { dialog, which ->
+                .setNegativeButton(resources.getString(R.string.withoutNote)) { dialog, which ->
                     // Respond to negative button press
                 }
                 .setPositiveButton(resources.getString(R.string.addNote)) { dialog, which ->

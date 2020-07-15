@@ -132,7 +132,8 @@ class CloudLibraryAdapter(
                         val direction =
                             MyLibraryFragmentDirections.actionMylibraryToBookDetailFragment(
                                 id,
-                                title
+                                title,
+                                true
                             )
                         it.findNavController().navigate(direction)
                     }
