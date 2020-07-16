@@ -134,7 +134,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_weight="1"
-            android:backgroundTint="@android:color/background_dark"
+            android:backgroundTint="@color/colorMain"
             android:onClick="@{clickSubmit}"
             android:text="@string/submit"
             android:textAllCaps="false" />

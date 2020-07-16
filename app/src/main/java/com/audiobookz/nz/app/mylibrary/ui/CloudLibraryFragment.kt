@@ -1,5 +1,6 @@
 package com.audiobookz.nz.app.mylibrary.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import androidx.fragment.app.Fragment
@@ -19,7 +20,7 @@ import com.audiobookz.nz.app.util.CLOUDBOOK_PAGE_SIZE
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
-class CloudLibraryFragment : Fragment(), Injectable {
+class CloudLibraryFragment(private var keyword: String) : Fragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: MyLibraryViewModel
@@ -32,19 +33,25 @@ class CloudLibraryFragment : Fragment(), Injectable {
         var rootView = FragmentCloudLibraryBinding.inflate(inflater, container, false)
         context ?: return rootView.root
 
-        rootView.CloudRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+        rootView.CloudRecyclerView.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                if (!recyclerView.canScrollVertically(1) && viewModel.isLatest == false){
-                    viewModel.pageCount?.plus(1)?.let { viewModel.getCloudBook(it, CLOUDBOOK_PAGE_SIZE,"") }
+                if (!recyclerView.canScrollVertically(1) && viewModel.isLatest == false) {
+                    viewModel.pageCount?.plus(1)
+                        ?.let { viewModel.getCloudBook(it, CLOUDBOOK_PAGE_SIZE, "") }
                     viewModel.pageCount = viewModel.pageCount?.plus(1)
                 }
             }
         })
 
-        viewModel.getCloudBook(1, CLOUDBOOK_PAGE_SIZE,"")
-        subscribeUi(rootView)
+        if (keyword != "") {
+            viewModel.getCloudBook(1, 50, keyword)
+        } else {
+            viewModel.getCloudBook(1, CLOUDBOOK_PAGE_SIZE, "")
+        }
 
+        subscribeUi(rootView)
         return rootView.root
     }
 
@@ -54,7 +61,15 @@ class CloudLibraryFragment : Fragment(), Injectable {
             when (result.status) {
                 Result.Status.SUCCESS -> {
                     binding.progressBar.hide()
-                    val adapter = activity?.let { result.data?.let { it1 -> CloudLibraryAdapter(it, it1, viewModel) } }
+                    val adapter = activity?.let {
+                        result.data?.let { it1 ->
+                            CloudLibraryAdapter(
+                                it,
+                                it1,
+                                viewModel
+                            )
+                        }
+                    }
 
                     //add delay to fix item render before data available
                     Handler().postDelayed({

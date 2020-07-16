@@ -40,7 +40,7 @@
                 android:gravity="left"
                 android:text="@{audioCategory.title}"
                 android:textAppearance="?attr/textAppearanceHeadline6"
-                android:textColor="@color/colorTea"
+                android:textColor="@color/colorMain"
                 android:layout_weight="1"
                 tools:text="Category" />
 

@@ -8,6 +8,6 @@
     <!-- TabLayout background color -->
     <solid android:color="@android:color/transparent"/>
 
-    <stroke android:width="2dp" android:color="@color/colorTea" />
+    <stroke android:width="2dp" android:color="@color/colorMain" />
 
 </shape>

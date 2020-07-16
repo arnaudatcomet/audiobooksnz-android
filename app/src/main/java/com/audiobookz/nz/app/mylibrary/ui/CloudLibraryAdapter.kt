@@ -133,7 +133,7 @@ class CloudLibraryAdapter(
                             MyLibraryFragmentDirections.actionMylibraryToBookDetailFragment(
                                 id,
                                 title,
-                                true
+                                false
                             )
                         it.findNavController().navigate(direction)
                     }

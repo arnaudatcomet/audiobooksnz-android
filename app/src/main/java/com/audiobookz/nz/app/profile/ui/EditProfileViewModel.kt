@@ -19,8 +19,8 @@ import javax.inject.Inject
 class EditProfileViewModel  @Inject constructor(private val repository: ProfileRepository, application: Application): AndroidViewModel(application){
     var editProfileResult = MediatorLiveData<Result<UserData>>()
     val queryProfile by lazy { repository.queryProfile() }
+    val getMultiValueCurretBook = repository.getMultiValueCurrentBook()
     val destroyProfile by lazy { repository.destroyProfile()
-
         AsyncTask.execute {
             getApplication<App>()?.let {
                 AppDatabase.getInstance(
@@ -58,4 +58,5 @@ class EditProfileViewModel  @Inject constructor(private val repository: ProfileR
             }
         }
     }
+
 }

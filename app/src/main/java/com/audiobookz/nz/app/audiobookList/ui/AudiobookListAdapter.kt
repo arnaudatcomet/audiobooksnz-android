@@ -23,7 +23,7 @@ class AudiobookListAdapter : ListAdapter<Audiobook, AudiobookListAdapter.ViewHol
     }
     private fun createOnOpenBookDetailListener(id: Int, title: String): View.OnClickListener {
         return View.OnClickListener {
-            val direction = AudiobookListFragmentDirections.actionAudiobookListFragmentToBookDetailFragment(id,title,false)
+            val direction = AudiobookListFragmentDirections.actionAudiobookListFragmentToBookDetailFragment(id,title,true)
             it.findNavController().navigate(direction)
         }
     }

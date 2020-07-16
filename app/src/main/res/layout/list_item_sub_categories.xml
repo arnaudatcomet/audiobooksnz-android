@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_normal"
-            android:textColor="@color/colorTea"
+            android:textColor="@color/colorMain"
             android:gravity="left"
             android:text="@{audioCategory.title}"
             android:textAppearance="?attr/textAppearanceHeadline6"

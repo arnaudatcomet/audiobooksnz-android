@@ -49,7 +49,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="right"
-            android:backgroundTint="@color/colorTea"
+            android:backgroundTint="@color/colorMain"
             app:cardCornerRadius="15dp">
 
             <RelativeLayout
@@ -166,7 +166,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:backgroundTint="@android:color/background_dark"
+        android:backgroundTint="@color/colorMain"
         android:textAllCaps="false"
         android:text="@string/SaveChanges" />
 

@@ -72,7 +72,7 @@ class PlayerActivity : AppCompatActivity(), HasSupportFragmentInjector {
                     AudioPlayerFragmentDirections.actionAudioPlayerFragmentToBookDetailFragment(
                         extraBookId.toInt(),
                         extraBookTitle,
-                        true
+                        false
                     )
                 this.findNavController(R.id.nav_player_fragment).navigate(direction)
                 true

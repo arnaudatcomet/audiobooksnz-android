@@ -147,7 +147,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:backgroundTint="@android:color/background_dark"
+        android:backgroundTint="@color/colorMain"
         android:text="@string/SignUp" />
 
 </LinearLayout>

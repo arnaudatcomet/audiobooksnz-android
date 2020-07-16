@@ -37,6 +37,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 
 class AudioPlayerFragment : Fragment(), Injectable {
@@ -49,6 +50,8 @@ class AudioPlayerFragment : Fragment(), Injectable {
     lateinit var extraImageUrl: String
     lateinit var extraBookTitle: String
     lateinit var extraBookId: String
+    lateinit var extraBookAuthor: String
+    lateinit var extraBookNarrator: String
     var statePlay = true
     var durationLeft = 0L
     private lateinit var fragmentStatus: String
@@ -78,6 +81,21 @@ class AudioPlayerFragment : Fragment(), Injectable {
         extraBookTitle = activity?.intent?.getStringExtra("titleBook").toString()
         extraImageUrl = activity?.intent?.getStringExtra("urlImage").toString()
         extraBookId = activity?.intent?.getStringExtra("bookId").toString()
+        extraBookAuthor = activity?.intent?.getStringExtra("authorBook").toString()
+        extraBookNarrator = activity?.intent?.getStringExtra("narratorBook").toString()
+
+        //save detail for call player from floating button play
+        var sharePrefBookDetail: ArrayList<String> = arrayListOf(
+            extraContentID,
+            extraLicenseId,
+            extraCloudBookId,
+            extraBookTitle,
+            extraImageUrl,
+            extraBookId,
+            extraBookAuthor,
+            extraBookNarrator
+        )
+        viewModel.saveMultiValueCurrentBook(sharePrefBookDetail)
 
         setTitle(extraBookTitle)
         binding.urlImage = extraImageUrl
@@ -90,6 +108,7 @@ class AudioPlayerFragment : Fragment(), Injectable {
         binding.forward30sClick = forward30sClick()
         binding.replay30sClick = replay30sClick()
         binding.playClick = playClick()
+
         viewModel.getChapters(extraContentID)
         subscribeUi(binding)
         viewModel.getPlayerState()
@@ -296,6 +315,7 @@ class AudioPlayerFragment : Fragment(), Injectable {
         if (fragmentStatus == "onAttach") {
             fragmentStatus = "onViewCreated"
             viewModel.listChapterResult.observe(viewLifecycleOwner, Observer { result ->
+
                 viewModel.playAudioBook(
                     result[0].chapter,
                     extraContentID,

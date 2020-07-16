@@ -19,7 +19,7 @@
 
     <!-- Create Theme Materialcomponents -->
     <style name="Theme.MyApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/colorTea</item>
+        <item name="colorPrimary">@color/colorMain</item>
         <item name="shapeAppearanceSmallComponent">@style/Shape.roundcorner</item>
     </style>
 

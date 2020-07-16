@@ -1,11 +1,15 @@
 package com.audiobookz.nz.app.binding
 
+import android.annotation.SuppressLint
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.viewpager.widget.PagerAdapter
 
+@SuppressLint("WrongConstant")
 class TabLayoutAdapter (fragmentManager: FragmentManager) :
-    FragmentPagerAdapter(
+    FragmentStatePagerAdapter(
         fragmentManager,
         FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
     ) {
@@ -21,6 +25,16 @@ class TabLayoutAdapter (fragmentManager: FragmentManager) :
     fun addFragment(fragment: Fragment, title: String) {
         fragments.add(fragment)
         titles.add(title)
+    }
+
+    fun deleteFragment(){
+        fragments.removeAll(fragments)
+        titles.removeAll(titles)
+        notifyDataSetChanged()
+    }
+
+    override fun getItemPosition(`object`: Any): Int {
+        return PagerAdapter.POSITION_NONE
     }
 
 }

@@ -229,4 +229,8 @@ class PlayerViewModel @Inject constructor(private val repository: PlayerReposito
             postBookReviewResult.value = value
         }
     }
+
+    fun saveMultiValueCurrentBook(bookDetail:ArrayList<String>){
+        repository.saveMultiValueCurrentBook(bookDetail)
+    }
 }

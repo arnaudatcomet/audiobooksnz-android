@@ -52,6 +52,10 @@ class PlayerRepository @Inject constructor(
         sharePref.saveBookDuration(contentId, duration)
     }
 
+    fun saveMultiValueCurrentBook(bookDetail:ArrayList<String>){
+        sharePref.saveMultiValueCurrentBook(bookDetail)
+    }
+
     fun getBookDuration(bookId: Int): Long {
         return sharePref.getBookDuration(bookId)
     }

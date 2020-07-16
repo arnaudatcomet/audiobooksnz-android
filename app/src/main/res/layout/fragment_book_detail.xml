@@ -228,26 +228,26 @@
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="@dimen/margin_big"
                 android:orientation="vertical"
-                android:visibility="@{bought? View.GONE:View.VISIBLE}">
+                android:visibility="@{bought? View.VISIBLE:View.GONE}">
                 <Button
                     android:id="@+id/playSampleBtn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:backgroundTint="@android:color/background_dark"
+                    android:backgroundTint="@color/colorMain"
                     android:text="Play Sample"
                     android:onClick="@{playSimpleClick}"/>
 
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:backgroundTint="@android:color/background_dark"
+                    android:backgroundTint="@color/colorMain"
                     android:onClick="@{()->viewModel.addCart()}"
                     android:text="@{@string/addCart+book.price}" />
 
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:backgroundTint="@android:color/background_dark"
+                    android:backgroundTint="@color/colorMain"
                     android:text="Add to Wishlist"
                     android:onClick="@{wishListClick}"/>
             </LinearLayout>
@@ -262,7 +262,7 @@
                 app:tabBackground="@drawable/tab_layout_selector"
                 app:tabIndicatorHeight="0dp"
                 app:tabSelectedTextColor="@android:color/white"
-                app:tabTextColor="@color/colorTea"
+                app:tabTextColor="@color/colorMain"
                 app:tabMode="scrollable">
 
                 <com.google.android.material.tabs.TabItem

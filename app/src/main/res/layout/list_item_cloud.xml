@@ -70,7 +70,7 @@
                     android:layout_height="30dp"
                     android:layout_gravity="bottom|right"
                     android:layout_margin="5dp"
-                    android:backgroundTint="@color/colorTea"
+                    android:backgroundTint="@color/colorMain"
                     app:cardCornerRadius="15dp"
                     android:visibility="@{isDownloaded? View.GONE:View.VISIBLE}">
 
@@ -97,7 +97,7 @@
                     android:layout_marginBottom="2dp"
                     android:text="@{cloudBook.audiobook.title}"
                     android:textAppearance="?attr/textAppearanceHeadline6"
-                    android:textColor="@color/colorTea"
+                    android:textColor="@color/colorMain"
                     android:textSize="@dimen/font_size_normal" />
 
                 <TextView

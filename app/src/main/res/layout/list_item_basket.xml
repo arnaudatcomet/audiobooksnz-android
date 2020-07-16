@@ -51,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="start"
                     android:text="@{book.title}"
-                    android:textColor="@color/colorTea"
+                    android:textColor="@color/colorMain"
                     tools:text="title" />
 
                 <LinearLayout
@@ -95,7 +95,7 @@
                     android:layout_gravity="start"
                     android:onClick="@{remove}"
                     android:layout_marginEnd="60dp"
-                    android:backgroundTint="@android:color/background_dark"
+                    android:backgroundTint="@color/colorMain"
                     android:text="@string/remove" />
             </LinearLayout>
         </LinearLayout>

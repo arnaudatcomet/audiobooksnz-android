@@ -2,6 +2,7 @@ package com.audiobookz.nz.app.api
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.google.gson.Gson
 
 class SharedPreferencesService(var context: Context) {
 
@@ -12,6 +13,7 @@ class SharedPreferencesService(var context: Context) {
     var share_preferen_book:String = "Book"
     var share_preferen_current_chapter_of_the_book:String = "TheBookCurrentChapter"
     var share_preferen_book_complete:String = "IsBookComplete"
+    var share_preferen_current_play:String = "BookDetail"
     private val shrPref: SharedPreferences = context.getSharedPreferences(share_preferen, Context.MODE_PRIVATE)
 
     fun saveToken(accessToken: String) { shrPref.edit().putString(share_preferen_token_key, accessToken).apply() }
@@ -32,6 +34,10 @@ class SharedPreferencesService(var context: Context) {
     fun saveBookReadComplete(contentId: Int, boolean: Boolean){
         shrPref.edit().putBoolean(share_preferen_book_complete+"$contentId", boolean).apply()
     }
+    fun saveMultiValueCurrentBook(bookDetail:ArrayList<String>){
+        val jsonString = Gson().toJson(bookDetail)
+        shrPref.edit().putString(share_preferen_current_play, jsonString).apply()
+    }
 
     fun deleteToken() { shrPref.edit().remove(share_preferen_token_key).apply() }
     fun deleteCountTime() { shrPref.edit().remove(share_preferen_currentSleepTime).apply() }
@@ -43,4 +49,9 @@ class SharedPreferencesService(var context: Context) {
     fun getSaveBookCurrentChapter(contentId:Int):Int = shrPref.getInt(share_preferen_current_chapter_of_the_book+"$contentId",0)
     fun getsaveBookReadComplete(contentId:Int):Boolean = shrPref.getBoolean(share_preferen_book_complete+"$contentId",false)
 
+    fun getMultiValueCurrentBook():ArrayList<String>? {
+        val jsonString = shrPref.getString(share_preferen_current_play,"")
+        val array = Gson().fromJson(jsonString, ArrayList<String>()::class.java)
+        return  array
+    }
 }

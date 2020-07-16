@@ -107,6 +107,20 @@ class ProfileFragment : Fragment(), Injectable {
 
         playBtn.setOnClickListener {
 
+            var bookDetail = viewModel?.getMultiValueCurretBook
+            if (bookDetail != null) {
+                val intent = Intent(activity, PlayerActivity::class.java).apply {
+                    putExtra("contentId", bookDetail[0])
+                    putExtra("licenseIDBook", bookDetail[1])
+                    putExtra("cloudBookId", bookDetail[2])
+                    putExtra("titleBook", bookDetail[3])
+                    putExtra("urlImage", bookDetail[4])
+                    putExtra("bookId", bookDetail[5])
+                    putExtra("authorBook", bookDetail[6])
+                    putExtra("narratorBook", bookDetail[7])
+                }
+                startActivity(intent)
+            }
         }
 
         profileCard.setOnClickListener {

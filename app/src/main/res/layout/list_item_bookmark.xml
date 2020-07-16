@@ -73,7 +73,7 @@
                     style="@style/Widget.App.Button"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:backgroundTint="@color/black"
+                    android:backgroundTint="@color/colorMain"
                     android:text="go to bookmark"
                     android:onClick="@{goToBookmarks}"/>
 
