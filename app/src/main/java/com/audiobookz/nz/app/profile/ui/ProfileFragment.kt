@@ -71,10 +71,12 @@ class ProfileFragment : Fragment(), Injectable {
         creditTxt = view.findViewById(R.id.txtBookCreditsValue)
 
         faceBtn.setOnClickListener { View ->
-            Toast.makeText(activity, "facebook", Toast.LENGTH_SHORT).show()
+            val navController = Navigation.findNavController(view!!)
+            navController.navigate(ProfileFragmentDirections.actionMeToWebViewProfileFragment("Facebook"))
         }
         twitterBtn.setOnClickListener { View ->
-            Toast.makeText(activity, "twitter", Toast.LENGTH_SHORT).show()
+            val navController = Navigation.findNavController(view!!)
+            navController.navigate(ProfileFragmentDirections.actionMeToWebViewProfileFragment("Twitter"))
         }
         bugTxt.setOnClickListener {
             val intent = Intent(Intent.ACTION_SENDTO)
@@ -89,7 +91,7 @@ class ProfileFragment : Fragment(), Injectable {
         }
         faqTxt.setOnClickListener {
             val navController = Navigation.findNavController(view!!)
-            navController.navigate(ProfileFragmentDirections.actionMeToFaqProfileFragment())
+            navController.navigate(ProfileFragmentDirections.actionMeToWebViewProfileFragment("FAQ"))
         }
 
         outBtn.setOnClickListener {

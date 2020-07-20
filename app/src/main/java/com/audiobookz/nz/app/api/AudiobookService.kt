@@ -79,7 +79,7 @@ interface AudiobookService {
     @FormUrlEncoded
     @POST("users/facebook-login")
     suspend fun postLoginFacebook(
-        @Field("id_token") id_token: String? = null,
+        @Field("access_token") id_token: String? = null,
         @Field("device_type") device_type: String? = null
     ): Response<UserData>
 

@@ -111,8 +111,8 @@
             android:id="@+id/action_me_to_editProfileFragment"
             app:destination="@id/editProfileFragment" />
         <action
-            android:id="@+id/action_me_to_faqProfileFragment"
-            app:destination="@id/faqProfileFragment" />
+            android:id="@+id/action_me_to_webViewProfileFragment"
+            app:destination="@id/webViewProfileFragment" />
 
     </fragment>
 
@@ -122,10 +122,14 @@
         android:label="Profile"
         tools:layout="@layout/fragment_edit_profile" />
     <fragment
-        android:id="@+id/faqProfileFragment"
-        android:name="com.audiobookz.nz.app.profile.ui.FaqProfileFragment"
-        android:label="FAQ"
-        tools:layout="@layout/fragment_faq_profile" />
+        android:id="@+id/webViewProfileFragment"
+        android:name="com.audiobookz.nz.app.profile.ui.WebViewProfileFragment"
+        android:label=""
+        tools:layout="@layout/fragment_webview_profile" >
+        <argument
+            android:name="linkName"
+            app:argType="string"/>
+    </fragment>
     <fragment
         android:id="@+id/mylibrary"
         android:name="com.audiobookz.nz.app.mylibrary.ui.MyLibraryFragment"

@@ -132,7 +132,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Injectable
                 R.id.editProfileFragment -> {
                     bottomNavigation.visibility = View.GONE
                 }
-                R.id.faqProfileFragment -> {
+                R.id.webViewProfileFragment -> {
                     bottomNavigation.visibility = View.GONE
                 }
                 R.id.rateAndReviewFragment -> {

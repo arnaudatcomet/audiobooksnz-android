@@ -133,8 +133,9 @@
     <string name="NewPass">New Password</string>
     <string name="ConfirmPass">Confirm Password</string>
     <string name="SaveChanges">Save Changes</string>
-    <string name="facebook_app_id">543431389937515</string>
-    <string name="fb_login_protocol_scheme">fb543431389937515</string>
+    <!--test id-->
+    <string name="facebook_app_id">336532167097984</string>
+    <string name="fb_login_protocol_scheme">fb336532167097984</string>
 
     <!--Featured_Browse-->
     <string name="Sale">Sale</string>
