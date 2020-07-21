@@ -4,6 +4,7 @@ import androidx.lifecycle.distinctUntilChanged
 import com.audiobookz.nz.app.audiobookList.data.AudiobookListRemoteDataSource
 import com.audiobookz.nz.app.data.resultFetchOnlyLiveData
 import com.audiobookz.nz.app.data.resultLocalSaveOnlyLiveData
+import okhttp3.RequestBody
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -20,5 +21,8 @@ class BookDetailRepository @Inject constructor(private val remoteSource: BookDet
         saveCallResult = { dao.insertCart(BookRoom(id,title,image,price,credit_price))}
     )
     fun countCart()= dao.getCount()
+
+    fun addWishList(bookId: RequestBody) = resultFetchOnlyLiveData(
+        networkCall = { remoteSource.addWishList(bookId) })
 
 }

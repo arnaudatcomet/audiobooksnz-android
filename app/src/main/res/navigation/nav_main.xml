@@ -98,9 +98,6 @@
             android:defaultValue="@null"
             app:argType="string"
             app:nullable="true" />
-        <argument
-            android:name="isBuy"
-            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/me"
@@ -202,5 +199,27 @@
             app:argType="string" />
 
     </fragment>
+    <fragment
+        android:id="@+id/more"
+        android:name="com.audiobookz.nz.app.more.ui.MoreFragment"
+        android:label="More"
+        tools:layout="@layout/fragment_more" >
+        <action
+            android:id="@+id/action_moreFragment_to_wishlistFragment"
+            app:destination="@id/wishlistFragment" />
+        <action
+            android:id="@+id/action_moreFragment_to_addCreditsFragment"
+            app:destination="@id/addCreditsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/wishlistFragment"
+        android:name="com.audiobookz.nz.app.more.ui.WishListFragment"
+        android:label="Wish List"
+        tools:layout="@layout/fragment_wishlist" />
+    <fragment
+        android:id="@+id/addCreditsFragment"
+        android:name="com.audiobookz.nz.app.more.ui.AddCreditsFragment"
+        android:label="Buy Credits"
+        tools:layout="@layout/fragment_add_credits" />
 
 </navigation>

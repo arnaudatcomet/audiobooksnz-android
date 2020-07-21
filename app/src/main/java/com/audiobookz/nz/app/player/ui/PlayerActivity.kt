@@ -71,8 +71,7 @@ class PlayerActivity : AppCompatActivity(), HasSupportFragmentInjector {
                 val direction =
                     AudioPlayerFragmentDirections.actionAudioPlayerFragmentToBookDetailFragment(
                         extraBookId.toInt(),
-                        extraBookTitle,
-                        false
+                        extraBookTitle
                     )
                 this.findNavController(R.id.nav_player_fragment).navigate(direction)
                 true

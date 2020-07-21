@@ -5,7 +5,11 @@
 
     <data>
         <variable
-            name="bought"
+            name="is_bought"
+            type="Boolean" />
+
+        <variable
+            name="in_wishlist"
             type="Boolean" />
         
         <variable
@@ -228,7 +232,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="@dimen/margin_big"
                 android:orientation="vertical"
-                android:visibility="@{bought? View.VISIBLE:View.GONE}">
+                android:visibility="@{is_bought? View.GONE:View.VISIBLE}">
                 <Button
                     android:id="@+id/playSampleBtn"
                     android:layout_width="match_parent"
@@ -245,10 +249,12 @@
                     android:text="@{@string/addCart+book.price}" />
 
                 <Button
+                    android:id="@+id/addToWishListBtn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:backgroundTint="@color/colorMain"
                     android:text="Add to Wishlist"
+                    android:visibility="@{in_wishlist? View.GONE:View.VISIBLE}"
                     android:onClick="@{wishListClick}"/>
             </LinearLayout>
 

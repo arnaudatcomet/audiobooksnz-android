@@ -7,6 +7,7 @@ import com.audiobookz.nz.app.browse.categories.data.Category
 import com.audiobookz.nz.app.browse.featured.data.Featured
 import com.audiobookz.nz.app.login.data.SuccessData
 import com.audiobookz.nz.app.login.data.UserData
+import com.audiobookz.nz.app.more.data.WishListData
 import com.audiobookz.nz.app.mylibrary.data.CloudBook
 import com.audiobookz.nz.app.mylibrary.data.LocalBookData
 import com.audiobookz.nz.app.mylibrary.data.SessionData
@@ -118,6 +119,7 @@ interface AudiobookService {
     ): Response<List<Featured>>
 
     @GET("audiobooks/{id}")
+    @Headers("No-Authentication: false")
     suspend fun getBookDetail(
         @Path("id") id: Int
     ): Response<BookDetail>
@@ -200,5 +202,19 @@ interface AudiobookService {
         @Field("story_rating") story_rating: Float? = null,
         @Field("narration_rating") narration_rating: Float? = null
     ): Response<BookReview>
+
+    @GET("wish-list")
+    @Headers("No-Authentication: false")
+    suspend fun getWishList(
+        @Query("page") page: Int? = null,
+        @Query("per-page") pageSize: Int? = null
+    ): Response<List<WishListData>>
+
+    @Multipart
+    @POST("wish-list")
+    @Headers("No-Authentication: false")
+    suspend fun addAndRemoveWishList(
+        @Part("audiobook_id") audiobook_id: RequestBody
+    ): Response<WishListData>
 
 }

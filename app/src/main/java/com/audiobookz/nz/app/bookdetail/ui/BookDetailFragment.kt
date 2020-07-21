@@ -57,11 +57,7 @@ class BookDetailFragment : Fragment(), Injectable {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         viewModel = injectViewModel(viewModelFactory)
         viewModel.bookId = args.id.toString()
@@ -81,10 +77,48 @@ class BookDetailFragment : Fragment(), Injectable {
         return binding.root
     }
 
-    private fun subscribeUi(
-        binding: FragmentBookDetailBinding,
-        adapter: TabLayoutAdapter
-    ) {
+    private fun bindView(binding: FragmentBookDetailBinding, bookDetail: BookDetail?) {
+        bookDetail.apply {
+            binding.progressBar.hide()
+
+            mediaPlayer.setDataSource(bookDetail?.BookEngineData?.BookDetail?.sampleUrl)
+            mediaPlayer.prepare()
+
+            binding.playSimpleClick = playSample(binding)
+            binding.wishListClick = addWishList(binding)
+            binding.isBought = bookDetail?.is_bought
+            binding.inWishlist = bookDetail?.in_wishlist
+            binding.book = bookDetail
+            binding.rating = bookDetail?.avg_rating?.toFloat()
+            binding.authors =
+                bookDetail?.BookEngineData?.BookDetail?.authors?.joinToString(separator = ",")
+            binding.narrate =
+                bookDetail?.BookEngineData?.BookDetail?.narrators?.joinToString(separator = ",")
+        }
+    }
+
+    private fun playSample(binding: FragmentBookDetailBinding): View.OnClickListener {
+        return View.OnClickListener {
+
+            if (mediaPlayer.isPlaying){
+                binding.playSampleBtn.text = "Play Sample"
+                mediaPlayer.pause()
+            }else{
+                mediaPlayer.start()
+                binding.playSampleBtn.text = "Pause Sample"
+            }
+
+        }
+    }
+
+    private fun addWishList(binding: FragmentBookDetailBinding): View.OnClickListener {
+        return View.OnClickListener {
+            binding.addToWishListBtn.visibility = View.GONE
+            viewModel.addWishList(args.id)
+        }
+    }
+
+    private fun subscribeUi(binding: FragmentBookDetailBinding, adapter: TabLayoutAdapter) {
 
         viewModel.bookData.observe(viewLifecycleOwner, Observer { result ->
             when (result.status) {
@@ -129,43 +163,14 @@ class BookDetailFragment : Fragment(), Injectable {
                 }
             }
         })
-    }
 
-    private fun bindView(binding: FragmentBookDetailBinding, bookDetail: BookDetail?) {
-        bookDetail.apply {
-            binding.progressBar.hide()
-
-            mediaPlayer.setDataSource(bookDetail?.BookEngineData?.BookDetail?.sampleUrl)
-            mediaPlayer.prepare()
-
-            binding.playSimpleClick = playSample(binding)
-            binding.wishListClick = addWishList()
-            binding.bought = args.isBuy
-            binding.book = bookDetail
-            binding.rating = bookDetail?.avg_rating?.toFloat()
-            binding.authors =
-                bookDetail?.BookEngineData?.BookDetail?.authors?.joinToString(separator = ",")
-            binding.narrate =
-                bookDetail?.BookEngineData?.BookDetail?.narrators?.joinToString(separator = ",")
-        }
-    }
-
-    private fun playSample(binding: FragmentBookDetailBinding): View.OnClickListener {
-        return View.OnClickListener {
-
-            if (mediaPlayer.isPlaying){
-                binding.playSampleBtn.text = "Play Sample"
-                mediaPlayer.pause()
-            }else{
-                mediaPlayer.start()
-                binding.playSampleBtn.text = "Pause Sample"
+        viewModel.resultAddWishList.observe(viewLifecycleOwner, Observer { result ->
+            when (result.status) {
+                Result.Status.SUCCESS -> {
+                    binding.addToWishListBtn.visibility = View.GONE
+                }
             }
-
-        }
-    }
-
-    private fun addWishList(): View.OnClickListener {
-        return View.OnClickListener {}
+        })
     }
 
 }

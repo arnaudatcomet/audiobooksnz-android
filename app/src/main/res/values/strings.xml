@@ -179,4 +179,9 @@
     <string name="story">Story</string>
     <string name="rateThis">Rate this audiobook</string>
 
+    <!--more-->
+    <string name="addCredits">Add Credits</string>
+    <string name="currentPlan">Current Plan</string>
+    <string name="wishList">Wish List</string>
+
 </resources>
