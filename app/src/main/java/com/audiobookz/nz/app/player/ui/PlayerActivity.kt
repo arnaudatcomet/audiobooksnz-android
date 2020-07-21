@@ -1,21 +1,13 @@
 package com.audiobookz.nz.app.player.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
-import android.view.View
-import android.widget.LinearLayout
-import android.widget.Toolbar
-import androidx.databinding.DataBindingUtil
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.audiobookz.nz.app.R
-import com.audiobookz.nz.app.databinding.ActivityPlayerBinding
 import com.audiobookz.nz.app.util.intentShareText
+import com.google.android.gms.cast.framework.CastButtonFactory
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.activity_player.*
@@ -24,8 +16,7 @@ import javax.inject.Inject
 class PlayerActivity : AppCompatActivity(), HasSupportFragmentInjector {
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
-
-
+    lateinit var mediaRouteMenuItem: MenuItem
     override fun supportFragmentInjector() = dispatchingAndroidInjector
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +47,7 @@ class PlayerActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_option_player,menu)
+        mediaRouteMenuItem = CastButtonFactory.setUpMediaRouteButton(applicationContext, menu,R.id.media_route_menu_item)
         return true
     }
 

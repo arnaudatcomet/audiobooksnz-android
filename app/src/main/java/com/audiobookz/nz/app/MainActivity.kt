@@ -103,6 +103,9 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector,Injectable 
         setSupportActionBar(binding.toolbar)
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.bottomNavigation.setupWithNavController(navController)
+        viewModel.sessionId.observe(this,Observer { result ->
+            result.data?.key?.let { AudioEngine.init(this, it, LogLevel.VERBOSE) };
+        })
 
         //hide bottomNav on some fragment
         navController.addOnDestinationChangedListener { _, destination, _ ->

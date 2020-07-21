@@ -22,7 +22,7 @@ class App : Application(), HasActivityInjector {
         if (BuildConfig.DEBUG) Stetho.initializeWithDefaults(this)
 
         AppInjector.init(this)
-        AudioEngine.init(this, "aa15eccc-d90a-488b-a19f-d4b2634c8fe0", LogLevel.VERBOSE);
+        AudioEngine.init(this, "aa15eccc-d90a-488b-a19f-d4b2634c8fe0", LogLevel.VERBOSE)
     }
 
     override fun activityInjector() = dispatchingAndroidInjector

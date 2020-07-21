@@ -19,7 +19,7 @@ class PlayerViewModel @Inject constructor(private val repository: MyLibraryRepos
     var currentPlay = repository.getCurrentChapter()
     var currentSleepTimer = repository.getSleepTime()
     var positionPostResult = MediatorLiveData<Result<PositionData>>()
-
+    val sessionData by lazy { repository.getSession() }
     fun playAudioBook(firstChapter: Int, contentId: String, licenseId: String, partNumber: Int) {
         //isFirstPlay??
         var chapterCurrent = repository.getSaveBookCurrentChapter(contentId.toInt())
@@ -49,9 +49,11 @@ class PlayerViewModel @Inject constructor(private val repository: MyLibraryRepos
         licenseId: String,
         partNumber: Int
     ) {
-        repository.playAudioBook(
-            targetChapter, contentId, licenseId, partNumber, getPosition()
-        ) { playBackEvent -> playBackResult.postValue(playBackEvent) }
+        getPosition()?.let {
+            repository.playAudioBook(
+                targetChapter, contentId, licenseId, partNumber, it
+            ) { playBackEvent -> playBackResult.postValue(playBackEvent) }
+        }
     }
 
     fun pauseAudioBook() {
@@ -94,11 +96,11 @@ class PlayerViewModel @Inject constructor(private val repository: MyLibraryRepos
         repository.seekTo(position)
     }
 
-    fun getPosition(): Long {
+    fun getPosition(): Long? {
         return repository.getPosition()
     }
 
-    fun getCurrentSpeed(): Float {
+    fun getCurrentSpeed(): Float? {
         return repository.getCurrentSpeed()
     }
 
