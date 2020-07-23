@@ -24,9 +24,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".player.ui.PlayerActivity"/>
+        <activity android:name=".player.ui.PlayerActivity"
+            android:configChanges="orientation|screenSize" />
         <activity android:name=".register.ui.SignUpActivity" />
-        <activity android:name=".basket.ui.ActivityBasket" />
+        <activity android:name=".basket.ui.ActivityBasket"
+            android:configChanges="orientation|screenSize" />
         <activity android:name=".login.ui.ForgotPasswordActivity" />
         <activity android:name=".login.ui.LoginActivity" />
         <activity android:name=".login.ui.LoginEmailActivity" />
@@ -40,7 +42,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity"
+            android:configChanges="orientation|screenSize" />
 
         <!--facebook-->
         <meta-data android:name="com.facebook.sdk.ApplicationId"

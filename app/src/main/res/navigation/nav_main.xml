@@ -220,6 +220,18 @@
         android:id="@+id/addCreditsFragment"
         android:name="com.audiobookz.nz.app.more.ui.AddCreditsFragment"
         android:label="Buy Credits"
-        tools:layout="@layout/fragment_add_credits" />
+        tools:layout="@layout/fragment_add_credits" >
+        <action
+            android:id="@+id/action_addCreditsFragment_to_payPalWebViewFragment"
+            app:destination="@id/payPalWebViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/payPalWebViewFragment"
+        android:name="com.audiobookz.nz.app.basket.ui.PayPalWebViewFragment"
+        android:label="PayPalWebViewFragment" >
+        <argument
+            android:name="linkUrl"
+            app:argType="string"/>
+    </fragment>
 
 </navigation>

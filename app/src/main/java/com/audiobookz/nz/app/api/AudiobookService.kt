@@ -1,8 +1,11 @@
 package com.audiobookz.nz.app.api
 
 import com.audiobookz.nz.app.audiobookList.data.Audiobook
+import com.audiobookz.nz.app.basket.data.OrderData
+import com.audiobookz.nz.app.basket.data.PaymentData
 import com.audiobookz.nz.app.bookdetail.data.BookDetail
 import com.audiobookz.nz.app.bookdetail.data.BookReview
+import com.audiobookz.nz.app.bookdetail.data.BookRoom
 import com.audiobookz.nz.app.browse.categories.data.Category
 import com.audiobookz.nz.app.browse.featured.data.Featured
 import com.audiobookz.nz.app.login.data.SuccessData
@@ -13,10 +16,8 @@ import com.audiobookz.nz.app.mylibrary.data.LocalBookData
 import com.audiobookz.nz.app.mylibrary.data.SessionData
 import com.audiobookz.nz.app.player.data.BookmarksData
 import com.audiobookz.nz.app.player.data.PositionData
-import okhttp3.Call
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -42,7 +43,7 @@ interface AudiobookService {
         @Query("filter[category_id]") filter: Int? = null,
         @Query("page") page: Int? = null,
         @Query("per-page") pageSize: Int? = null,
-        @Query("filter[language][]") pageLanguage: String?="English"
+        @Query("filter[language][]") pageLanguage: String? = "English"
     ): Response<List<Audiobook>>
 
     @GET("audiobooks")
@@ -132,7 +133,7 @@ interface AudiobookService {
     @GET("audiobooks/{id}/reviews")
     suspend fun getBookReview(
         @Path("id") id: Int,
-        @Query("expand") expand: String ="createdBy",
+        @Query("expand") expand: String = "createdBy",
         @Query("page") page: Int? = null,
         @Query("per-page") pageSize: Int? = null
     ): Response<List<BookReview>>
@@ -140,7 +141,7 @@ interface AudiobookService {
     @GET("users/audiobooks")
     @Headers("No-Authentication: false")
     suspend fun getCloudBook(
-        @Query("expand") expand: String ="audiobook",
+        @Query("expand") expand: String = "audiobook",
         @Query("page") page: Int? = null,
         @Query("per-page") pageSize: Int? = null,
         @Query("sort") sort: String? = null
@@ -216,5 +217,52 @@ interface AudiobookService {
     suspend fun addAndRemoveWishList(
         @Part("audiobook_id") audiobook_id: RequestBody
     ): Response<WishListData>
+
+    @Multipart
+    @POST("orders/calculate-total")
+    @Headers("No-Authentication: false")
+    suspend fun buyCredits(
+        @Part("OrderItem[3][quantity]") quantity: RequestBody,
+        @Part("OrderItem[3][product_id]") product_id: RequestBody, //0
+        @Part("OrderItem[3][type_id]") type_id: RequestBody, //3
+        @Part("country_code") country_code: RequestBody,
+        @Query("expand") expand: String? = "orderItems"
+    ): Response<OrderData>
+
+    @Multipart
+    @POST("/orders/checkout/{orderId}")
+    @Headers("No-Authentication: false")
+    suspend fun orderCheckout(
+        @Path("orderId") orderId: Int,
+        @Part("cancel_url") cancel_url: RequestBody, // /cart/paypal_fail
+        @Part("return_url") return_url: RequestBody, // /cart/paypal_success
+        @Part("use_credit") use_credit: RequestBody //0
+    ): Response<PaymentData>
+
+    //need test
+    @FormUrlEncoded
+    @POST("orders/calculate-total")
+    @Headers("No-Authentication: false")
+    suspend fun orderBookList(
+    @Field("OrderItems") orderItem: ArrayList<BookRoom>,
+    @Field("country_code") country_code: String,
+    @Field("coupon_code")  coupon_code: String?,
+    @Query("expand") expand: String? = "orderItems.product"
+    ): Response<OrderData>
+
+//    {
+//        @Field("OrderItem[][product_id]")
+//        @Field("OrderItem[][type_id]")
+//        @Field("country_code")
+//        @Field("coupon_code")
+//        @Query("expand")
+//    }
+
+//        var orderProduct:  MutableMap<String, Int> = mutableMapOf()
+//        var orderType:  MutableMap<String, String> = mutableMapOf()
+//        for(index in 0..orderItem.size) {
+//            orderProduct["OrderItem[$index][product_id]"] = orderItem[index].id!!
+//            orderType["OrderItem[$index][type_id]"] = "1"
+//        }
 
 }

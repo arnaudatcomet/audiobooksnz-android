@@ -8,6 +8,32 @@
     <fragment
         android:id="@+id/basketFragment"
         android:name="com.audiobookz.nz.app.basket.ui.BasketFragment"
-        android:label="Basket"
-        tools:layout="@layout/fragment_basket"/>
+        android:label="View Basket"
+        tools:layout="@layout/fragment_basket">
+        <action
+            android:id="@+id/action_basketFragment_to_confirmOrderFragment"
+            app:destination="@id/confirmOrderFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/confirmOrderFragment"
+        android:name="com.audiobookz.nz.app.basket.ui.ConfirmOrderFragment"
+        android:label="Confirm Order"
+        tools:layout="@layout/fragment_confirm_order">
+        <argument
+        android:name="coupon"
+        android:defaultValue="@null"
+        app:argType="string"
+        app:nullable="true" />
+        <action
+            android:id="@+id/action_confirmOrderFragment_to_payPalWebViewFragment2"
+            app:destination="@id/payPalWebViewFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/payPalWebViewFragment2"
+        android:name="com.audiobookz.nz.app.basket.ui.PayPalWebViewFragment"
+        android:label="PayPalWebViewFragment" >
+        <argument
+            android:name="linkUrl"
+            app:argType="string"/>
+    </fragment>
 </navigation>

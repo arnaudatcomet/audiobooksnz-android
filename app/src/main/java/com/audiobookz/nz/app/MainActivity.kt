@@ -57,6 +57,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Injectable
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
     private var isDiscover: Boolean = false
+    private var backFromBasket: Boolean = false
 
     override fun supportFragmentInjector() = dispatchingAndroidInjector
 
@@ -99,6 +100,8 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Injectable
         super.onCreate(savedInstanceState)
         viewModel = injectViewModel(viewModelFactory)
         isDiscover = intent.getBooleanExtra(EXTRA_MESSAGE, false)
+        backFromBasket = intent.getBooleanExtra("basket", false)
+
 
         val binding: ActivityMainBinding = DataBindingUtil.setContentView(
             this,
@@ -109,7 +112,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Injectable
         navController = findNavController(R.id.nav_fragment)
 
         //change default index bottomNavigation bar if not discover
-        if (!isDiscover) {
+        if (!isDiscover && !backFromBasket) {
             val navHostFragment = nav_fragment as NavHostFragment
             val inflater = navHostFragment.navController.navInflater
             val graph = inflater.inflate(R.navigation.nav_main)

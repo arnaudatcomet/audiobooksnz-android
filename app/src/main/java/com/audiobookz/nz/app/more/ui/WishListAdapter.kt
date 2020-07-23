@@ -9,6 +9,7 @@ import com.audiobookz.nz.app.bookdetail.ui.CustomViewHolder
 import com.audiobookz.nz.app.databinding.ListItemWishlistBinding
 import com.audiobookz.nz.app.more.data.WishListData
 
+
 class WishListAdapter(private var viewModel: MoreViewModel) :
     ListAdapter<WishListData, CustomViewHolder>(Companion) {
 
@@ -35,12 +36,19 @@ class WishListAdapter(private var viewModel: MoreViewModel) :
         var bookId = currentItem.audiobook_id
         itemBinding.book = currentItem.audiobook
         itemBinding.remove = removeList(bookId)
+        itemBinding.bookDetail = goToBookDetail()
 
     }
 
     private fun removeList(bookId: Int): View.OnClickListener {
         return View.OnClickListener {
             viewModel.removeWishList(bookId)
+        }
+    }
+
+    private fun goToBookDetail(): View.OnClickListener {
+        return View.OnClickListener {
+
         }
     }
 }

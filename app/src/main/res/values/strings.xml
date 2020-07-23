@@ -147,7 +147,7 @@
     <string name="remove">Remove</string>
     <string name="cart">Cart</string>
     <string name="Search">search</string>
-    <string name="basket">Basket</string>
+    <string name="basket">View Basket</string>
     <string name="share">Share</string>
     <string name="save">Save</string>
 
@@ -184,4 +184,21 @@
     <string name="currentPlan">Current Plan</string>
     <string name="wishList">Wish List</string>
 
+    <!--credit-->
+    <string name="buyNow">Buy Now</string>
+    <string name="noCredit">No. of Credits Required</string>
+    <string name="runOutCredit">Run out of book credits? Buy more for just NZ$20.00 a credit.</string>
+    <string name="creditNote">Note: Only User with an active subscription can buy book credits</string>
+
+    <!--coupon-->
+    <string name="enterCoupon">Enter Coupon Code</string>
+    <string name="subTotal">Subtotal</string>
+    <string name="shopping">Continue Shopping</string>
+    <string name="checkout">Proceed to Checkout</string>
+
+    <!--order-->
+    <string name="total">Total</string>
+    <string name="product">Product</string>
+    <string name="price">Price</string>
+    <string name="proceedToPay">Proceed to Pay</string>
 </resources>
