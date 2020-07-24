@@ -63,7 +63,7 @@
                 android:id="@+id/speed05xText"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:textColor="@{is05Click? @color/colorYellowBorder:@android:color/black}"
+                android:textColor="@{is05Click? @color/colorMain:@android:color/black}"
                 android:text="0.5x"
                 />
 
@@ -72,7 +72,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="right"
-                android:backgroundTint="@android:color/holo_orange_light"
+                android:backgroundTint="@color/colorMain"
                 app:cardCornerRadius="15dp"
                 android:visibility="@{is05Click? View.VISIBLE:View.GONE}">>
 
@@ -97,7 +97,7 @@
                 android:id="@+id/speed075xText"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:textColor="@{is075Click? @color/colorYellowBorder:@android:color/black}"
+                android:textColor="@{is075Click? @color/colorMain:@android:color/black}"
                 android:text="0.75x" />
 
             <com.google.android.material.card.MaterialCardView
@@ -105,7 +105,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="right"
-                android:backgroundTint="@android:color/holo_orange_light"
+                android:backgroundTint="@color/colorMain"
                 app:cardCornerRadius="15dp"
                 android:visibility="@{is075Click? View.VISIBLE:View.GONE}">>
 
@@ -129,7 +129,7 @@
                 android:id="@+id/speed1xText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@{is1Click? @color/colorYellowBorder:@android:color/black}"
+                android:textColor="@{is1Click? @color/colorMain:@android:color/black}"
                 android:text="1x" />
 
             <com.google.android.material.card.MaterialCardView
@@ -137,7 +137,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="right"
-                android:backgroundTint="@android:color/holo_orange_light"
+                android:backgroundTint="@color/colorMain"
                 app:cardCornerRadius="15dp"
                 android:visibility="@{is1Click? View.VISIBLE:View.GONE}">>
 
@@ -161,7 +161,7 @@
                 android:id="@+id/speed125xText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@{is125Click? @color/colorYellowBorder:@android:color/black}"
+                android:textColor="@{is125Click? @color/colorMain:@android:color/black}"
                 android:text="1.25x" />
 
             <com.google.android.material.card.MaterialCardView
@@ -169,7 +169,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="right"
-                android:backgroundTint="@android:color/holo_orange_light"
+                android:backgroundTint="@color/colorMain"
                 app:cardCornerRadius="15dp"
                 android:visibility="@{is125Click? View.VISIBLE:View.GONE}">>
 
@@ -193,7 +193,7 @@
                 android:id="@+id/speed15xText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@{is15Click? @color/colorYellowBorder:@android:color/black}"
+                android:textColor="@{is15Click? @color/colorMain:@android:color/black}"
                 android:text="1.5x" />
 
             <com.google.android.material.card.MaterialCardView
@@ -201,7 +201,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="right"
-                android:backgroundTint="@android:color/holo_orange_light"
+                android:backgroundTint="@color/colorMain"
                 app:cardCornerRadius="15dp"
                 android:visibility="@{is15Click? View.VISIBLE:View.GONE}">
 
@@ -225,7 +225,7 @@
                 android:id="@+id/speed175xText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@{is175Click? @color/colorYellowBorder:@android:color/black}"
+                android:textColor="@{is175Click? @color/colorMain:@android:color/black}"
                 android:text="1.75x" />
 
             <com.google.android.material.card.MaterialCardView
@@ -233,7 +233,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="right"
-                android:backgroundTint="@android:color/holo_orange_light"
+                android:backgroundTint="@color/colorMain"
                 app:cardCornerRadius="15dp"
                 android:visibility="@{is175Click? View.VISIBLE:View.GONE}">>
 

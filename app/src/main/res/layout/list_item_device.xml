@@ -85,7 +85,8 @@
                     android:layout_marginBottom="2dp"
                     android:text="@{localBook.title}"
                     android:textAppearance="?attr/textAppearanceHeadline6"
-                    android:textColor="@color/colorMain"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
                     android:textSize="@dimen/font_size_normal" />
 
                 <TextView

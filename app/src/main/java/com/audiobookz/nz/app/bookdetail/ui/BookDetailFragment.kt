@@ -1,11 +1,13 @@
 package com.audiobookz.nz.app.bookdetail.ui
 
+import android.graphics.Paint
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.audiobookz.nz.app.R
 import com.audiobookz.nz.app.binding.TabLayoutAdapter
@@ -18,6 +20,7 @@ import com.audiobookz.nz.app.ui.hide
 import com.audiobookz.nz.app.ui.setTitle
 import com.audiobookz.nz.app.ui.show
 import com.audiobookz.nz.app.util.intentShareText
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
@@ -27,7 +30,7 @@ class BookDetailFragment : Fragment(), Injectable {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: BookDetailViewModel
     private val args: BookDetailFragmentArgs by navArgs()
-    private lateinit var mediaPlayer:MediaPlayer
+    private lateinit var mediaPlayer: MediaPlayer
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_share, menu)
@@ -57,7 +60,11 @@ class BookDetailFragment : Fragment(), Injectable {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         viewModel = injectViewModel(viewModelFactory)
         viewModel.bookId = args.id.toString()
@@ -79,31 +86,41 @@ class BookDetailFragment : Fragment(), Injectable {
 
     private fun bindView(binding: FragmentBookDetailBinding, bookDetail: BookDetail?) {
         bookDetail.apply {
+            var listBookAuthor = bookDetail?.BookEngineData?.BookDetail?.authors
+            var listBookNarrator = bookDetail?.BookEngineData?.BookDetail?.narrators
+            var bookPubliser = bookDetail?.BookEngineData?.BookDetail?.publisher
+
             binding.progressBar.hide()
+            //underline text
+            binding.authorName.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+            binding.narratorName.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+            binding.publisherName.paintFlags = Paint.UNDERLINE_TEXT_FLAG
 
             mediaPlayer.setDataSource(bookDetail?.BookEngineData?.BookDetail?.sampleUrl)
             mediaPlayer.prepare()
 
             binding.playSimpleClick = playSample(binding)
             binding.wishListClick = addWishList(binding)
+            binding.authorsClick = authorSearch(listBookAuthor!!.toTypedArray())
+            binding.narratorClick = narratorSearch(listBookNarrator!!.toTypedArray())
+            binding.publisherClick = publisherSearch(bookPubliser)
             binding.isBought = bookDetail?.is_bought
             binding.inWishlist = bookDetail?.in_wishlist
             binding.book = bookDetail
             binding.rating = bookDetail?.avg_rating?.toFloat()
-            binding.authors =
-                bookDetail?.BookEngineData?.BookDetail?.authors?.joinToString(separator = ",")
-            binding.narrate =
-                bookDetail?.BookEngineData?.BookDetail?.narrators?.joinToString(separator = ",")
+            binding.authors = listBookAuthor?.joinToString(separator = ",")
+            binding.narrate = listBookNarrator?.joinToString(separator = ",")
+
         }
     }
 
     private fun playSample(binding: FragmentBookDetailBinding): View.OnClickListener {
         return View.OnClickListener {
 
-            if (mediaPlayer.isPlaying){
+            if (mediaPlayer.isPlaying) {
                 binding.playSampleBtn.text = "Play Sample"
                 mediaPlayer.pause()
-            }else{
+            } else {
                 mediaPlayer.start()
                 binding.playSampleBtn.text = "Pause Sample"
             }
@@ -115,6 +132,58 @@ class BookDetailFragment : Fragment(), Injectable {
         return View.OnClickListener {
             binding.addToWishListBtn.visibility = View.GONE
             viewModel.addWishList(args.id)
+        }
+    }
+
+    private fun authorSearch(bookAuthor: Array<String>): View.OnClickListener {
+        return View.OnClickListener {
+            MaterialAlertDialogBuilder(context)
+                .setTitle(resources.getString(R.string.searchByAuthor))
+                .setNeutralButton(resources.getString(R.string.AlertCancel)) { dialog, which ->
+                    // Respond to neutral button press
+                }
+                .setItems(bookAuthor) { dialog, which ->
+                    var author = bookAuthor[which]
+                    val navController = Navigation.findNavController(view!!)
+                    navController.navigate(
+                        BookDetailFragmentDirections.actionBookDetailFragmentToAudiobookListFragment(
+                            id = 0, keyword = author, titleList = "Author: \"$author\""
+                        )
+                    )
+                }
+                .show()
+
+        }
+    }
+
+    private fun narratorSearch(bookNarrator: Array<String>): View.OnClickListener {
+        return View.OnClickListener {
+            MaterialAlertDialogBuilder(context)
+                .setTitle(resources.getString(R.string.searchByNarrator))
+                .setNeutralButton(resources.getString(R.string.AlertCancel)) { dialog, which ->
+                    // Respond to neutral button press
+                }
+                .setItems(bookNarrator) { dialog, which ->
+                    var narrator = bookNarrator[which]
+                    val navController = Navigation.findNavController(view!!)
+                    navController.navigate(
+                        BookDetailFragmentDirections.actionBookDetailFragmentToAudiobookListFragment(
+                            id = 0, keyword = narrator, titleList = "Narrator: \"$narrator\""
+                        )
+                    )
+                }
+                .show()
+        }
+    }
+
+    private fun publisherSearch(bookPubliser: String?): View.OnClickListener {
+        return View.OnClickListener {
+            val navController = Navigation.findNavController(view!!)
+            navController.navigate(
+                BookDetailFragmentDirections.actionBookDetailFragmentToAudiobookListFragment(
+                    id = 0, keyword = bookPubliser, titleList = "\"$bookPubliser\""
+                )
+            )
         }
     }
 

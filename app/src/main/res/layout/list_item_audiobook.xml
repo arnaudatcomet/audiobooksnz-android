@@ -50,7 +50,8 @@
                 android:layout_marginRight="@dimen/margin_small"
                 android:layout_gravity="left"
                 android:text="@{audiobook.title}"
-                android:textColor="@color/colorMain"
+                android:textColor="@color/black"
+                android:textStyle="bold"
                 tools:text="audiobookCategory"
                 android:ellipsize="end"
                 android:maxLines="1"/>

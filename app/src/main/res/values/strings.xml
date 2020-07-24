@@ -170,7 +170,7 @@
     <string name="addNote">Note</string>
     <string name="withoutNote">Without Note</string>
     <string name="delete">Delete</string>
-    <string name="yourNoteUpdate">Your note is updated Successfully</string>
+    <string name="yourNoteUpdate">Your bookmark note has been added</string>
     <string name="submit">Submit</string>
 
     <!--Rating-->
@@ -201,4 +201,8 @@
     <string name="product">Product</string>
     <string name="price">Price</string>
     <string name="proceedToPay">Proceed to Pay</string>
+
+    <!--bookDetail-->
+    <string name="searchByAuthor">Search by Author</string>
+    <string name="searchByNarrator">Search by Narrator</string>
 </resources>

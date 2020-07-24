@@ -97,7 +97,8 @@
                     android:layout_marginBottom="2dp"
                     android:text="@{cloudBook.audiobook.title}"
                     android:textAppearance="?attr/textAppearanceHeadline6"
-                    android:textColor="@color/colorMain"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
                     android:textSize="@dimen/font_size_normal" />
 
                 <TextView
@@ -137,16 +138,13 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/txtMenuOption"
-            android:layout_width="wrap_content"
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:layout_width="20dp"
             android:layout_height="wrap_content"
             android:layout_gravity="right|top"
             android:onClick="@{clickOptionMenuListener}"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:text="&#8942;"
-            android:textAppearance="?android:textAppearanceLarge" />
-
+            android:src="@drawable/more_vert_black_36dp"
+            android:backgroundTint="@android:color/transparent"/>
     </androidx.cardview.widget.CardView>
 
 </layout>
