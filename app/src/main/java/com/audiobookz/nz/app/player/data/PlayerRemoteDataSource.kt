@@ -24,4 +24,6 @@ class PlayerRemoteDataSource @Inject constructor(private val service: AudiobookS
 
     suspend fun postBookReview(bookId: Int, comment: String, statification: Float, story: Float, narration: Float)
             = getResult { service.postBookReview(bookId,comment,statification,story,narration) }
+
+    suspend fun fetchSession() = getResult { service.getSession() }
 }

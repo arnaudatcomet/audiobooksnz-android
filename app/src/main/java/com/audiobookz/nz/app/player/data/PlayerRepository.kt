@@ -1,11 +1,9 @@
 package com.audiobookz.nz.app.player.data
 
 import com.audiobookz.nz.app.api.SharedPreferencesService
-import com.audiobookz.nz.app.data.cownDownTimerSleepTime
-import com.audiobookz.nz.app.data.resulObservableData
-import com.audiobookz.nz.app.data.resultFetchOnlyLiveData
-import com.audiobookz.nz.app.data.resultSimpleLiveData
+import com.audiobookz.nz.app.data.*
 import com.audiobookz.nz.app.mylibrary.data.AudioEngineDataSource
+import com.audiobookz.nz.app.mylibrary.data.SessionDataDao
 import io.audioengine.mobile.Chapter
 import io.audioengine.mobile.PlaybackEvent
 import io.audioengine.mobile.PlayerState
@@ -16,7 +14,8 @@ import javax.inject.Inject
 class PlayerRepository @Inject constructor(
     private val remoteSource: PlayerRemoteDataSource,
     private val audioEngineDataSource: AudioEngineDataSource,
-    private val sharePref: SharedPreferencesService
+    private val sharePref: SharedPreferencesService,
+    private val sessionDataDao: SessionDataDao
 ) {
 
     fun pauseAudioBook() = audioEngineDataSource.pause()
@@ -142,5 +141,11 @@ class PlayerRepository @Inject constructor(
 
     fun postBookReview(bookId: Int, comment: String, statification: Float, story: Float, narration: Float)  = resultFetchOnlyLiveData(
         networkCall = { remoteSource.postBookReview(bookId,comment,statification,story,narration)}
+    )
+
+    fun getSession() = resultLiveData(
+        networkCall = { remoteSource.fetchSession() },
+        saveCallResult = { sessionDataDao.insertSessionData(it) },
+        databaseQuery = { sessionDataDao.getSessionData() }
     )
 }

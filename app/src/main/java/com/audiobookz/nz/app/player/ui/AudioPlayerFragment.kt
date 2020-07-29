@@ -39,9 +39,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import io.audioengine.mobile.PlaybackEvent
 import org.json.JSONObject
 import com.google.android.material.snackbar.Snackbar
-import com.audiobookz.nz.app.data.Result
 import com.bumptech.glide.Glide
-import io.audioengine.mobile.PlaybackEvent
 import kotlinx.android.synthetic.main.fragment_book_detail.view.*
 import kotlinx.android.synthetic.main.fragment_rate_and_review.view.*
 import kotlinx.android.synthetic.main.rating_dialog_layout.view.*
@@ -61,17 +59,18 @@ class AudioPlayerFragment : Fragment(), Injectable {
     private val castContext by lazy { CastContext.getSharedInstance(activity!!.applicationContext) }
     private val nameSpace by lazy { activity!!.applicationContext.getString(R.string.namespace) }
     private var mediaSelector: MediaRouteSelector? = null
-   // var seekbarTime = view.findViewById<SeekBar>(R.id.progressPlayerTimePlay)
+
+    // var seekbarTime = view.findViewById<SeekBar>(R.id.progressPlayerTimePlay)
     var remoteMediaClient: RemoteMediaClient? = null
     private var currentPositonPlay: Long? = null
     private var currentPart: Int? = null
-    private var amanager :AudioManager? =null
-    private var  currentPlayChapter :Int? = null
+    private var amanager: AudioManager? = null
+    private var currentPlayChapter: Int? = 0
     lateinit var extraBookId: String
     lateinit var extraContentID: String
     lateinit var extraLicenseId: String
-    lateinit var sessionId:String
-    lateinit var engineAccount:String
+    lateinit var sessionId: String
+    lateinit var engineAccount: String
     lateinit var extraCloudBookId: String
     lateinit var extraImageUrl: String
     lateinit var extraBookTitle: String
@@ -79,7 +78,6 @@ class AudioPlayerFragment : Fragment(), Injectable {
     var durationLeft = 0L
     private lateinit var fragmentStatus: String
     private var currentPositionPlay: Long? = 0
-    private var currentPlayChapter = 0
     private var currentPlayPart = 0
     private var chapterBookTxt: TextView? = null
     private var bookmarkId = 0
@@ -88,6 +86,7 @@ class AudioPlayerFragment : Fragment(), Injectable {
         super.onAttach(context)
         fragmentStatus = "onAttach"
     }
+
     private val sessionManagerListener = object : SessionManagerListener<CastSession> {
         override fun onSessionStarted(p0: CastSession?, p1: String?) {
             onApplicationConnected(p0)
@@ -98,11 +97,19 @@ class AudioPlayerFragment : Fragment(), Injectable {
         }
 
         override fun onSessionSuspended(p0: CastSession?, p1: Int) {
-            amanager?.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_TOGGLE_MUTE,0);
+            amanager?.adjustStreamVolume(
+                AudioManager.STREAM_MUSIC,
+                AudioManager.ADJUST_TOGGLE_MUTE,
+                0
+            );
         }
 
         override fun onSessionEnded(p0: CastSession?, p1: Int) {
-            amanager?.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_TOGGLE_MUTE,0);
+            amanager?.adjustStreamVolume(
+                AudioManager.STREAM_MUSIC,
+                AudioManager.ADJUST_TOGGLE_MUTE,
+                0
+            );
         }
 
         override fun onSessionResumed(p0: CastSession?, p1: Boolean) {
@@ -123,49 +130,61 @@ class AudioPlayerFragment : Fragment(), Injectable {
         override fun onSessionStartFailed(p0: CastSession?, p1: Int) {
         }
     }
+
     override fun onResume() {
         super.onResume()
 
-        castContext.sessionManager.addSessionManagerListener(sessionManagerListener, CastSession::class.java)
+        castContext.sessionManager.addSessionManagerListener(
+            sessionManagerListener,
+            CastSession::class.java
+        )
         if (castBookSession == null) {
 
             castBookSession = castContext.sessionManager.currentCastSession
         }
     }
+
     override fun onPause() {
         Log.i("MainActivity", "onPause")
 
-        castContext.sessionManager.removeSessionManagerListener(sessionManagerListener, CastSession::class.java)
+        castContext.sessionManager.removeSessionManagerListener(
+            sessionManagerListener,
+            CastSession::class.java
+        )
         super.onPause()
     }
+
     fun onApplicationConnected(castSession: CastSession?) {
-        amanager?.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_MUTE,0);
+        amanager?.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_MUTE, 0);
         var seekbarTime = view?.findViewById<SeekBar>(R.id.progressPlayerTimePlay)
-        seekbarTime?.progress?.let { loadRemoteMedia(it,false,castSession) }
+        seekbarTime?.progress?.let { loadRemoteMedia(it, false, castSession) }
         return
     }
+
     private fun loadRemoteMedia(
         progress: Int,
         autoPlay: Boolean,
         castSession: CastSession?
-    )
-    {
+    ) {
         val remoteMediaClient: RemoteMediaClient = castSession?.remoteMediaClient ?: return
         castBookSession = castSession
-        remoteMediaClient.load(buildMediaInfo(),buildMediaLoadOption(progress,autoPlay))
+        remoteMediaClient.load(buildMediaInfo(), buildMediaLoadOption(progress, autoPlay))
     }
-    private fun buildMediaLoadOption(progress: Int, autoPlay: Boolean):MediaLoadOptions{
-       return MediaLoadOptions.Builder().setAutoplay(autoPlay).setPlayPosition(progress.toLong()).build()
+
+    private fun buildMediaLoadOption(progress: Int, autoPlay: Boolean): MediaLoadOptions {
+        return MediaLoadOptions.Builder().setAutoplay(autoPlay).setPlayPosition(progress.toLong())
+            .build()
     }
-    private fun buildMediaInfo():MediaInfo{
+
+    private fun buildMediaInfo(): MediaInfo {
         val movieMetadata = MediaMetadata(MediaMetadata.MEDIA_TYPE_MUSIC_TRACK)
-        val audiobookData= JSONObject()
-        audiobookData.put("session_key",sessionId)
-        audiobookData.put("account_id",engineAccount)
-        audiobookData.put("license_id",extraLicenseId)
-        audiobookData.put("part",currentPart)
-        audiobookData.put("chapter",currentPlayChapter)
-        audiobookData.put("offset",currentPositonPlay)
+        val audiobookData = JSONObject()
+        audiobookData.put("session_key", sessionId)
+        audiobookData.put("account_id", engineAccount)
+        audiobookData.put("license_id", extraLicenseId)
+        audiobookData.put("part", currentPart)
+        audiobookData.put("chapter", currentPlayChapter)
+        audiobookData.put("offset", currentPositonPlay)
         return MediaInfo.Builder(extraContentID)
             .setStreamType(MediaInfo.STREAM_TYPE_BUFFERED)
             .setContentType("audio/mpeg")
@@ -209,7 +228,10 @@ class AudioPlayerFragment : Fragment(), Injectable {
 
         subscribeUi(binding)
         viewModel.getPlayerState()
-        castContext.sessionManager.addSessionManagerListener(sessionManagerListener, CastSession::class.java)
+        castContext.sessionManager.addSessionManagerListener(
+            sessionManagerListener,
+            CastSession::class.java
+        )
         if (castBookSession == null) {
             castBookSession = castContext.sessionManager.currentCastSession
         }
@@ -242,7 +264,7 @@ class AudioPlayerFragment : Fragment(), Injectable {
 
     private fun skipPreviousClick(): View.OnClickListener {
         return View.OnClickListener {
-            var previousChapterChromecastCode:Long = 0;
+            var previousChapterChromecastCode: Long = 0;
             viewModel.previousChapter()
 
             remoteMediaClient?.seek(previousChapterChromecastCode)
@@ -251,7 +273,7 @@ class AudioPlayerFragment : Fragment(), Injectable {
 
     private fun skipNextClick(): View.OnClickListener {
         return View.OnClickListener {
-            var nextChapterChromeCastCode:Long = 1;
+            var nextChapterChromeCastCode: Long = 1;
             viewModel.nextChapter()
             remoteMediaClient?.seek(nextChapterChromeCastCode)
         }
@@ -274,19 +296,18 @@ class AudioPlayerFragment : Fragment(), Injectable {
 
     private fun forward30sClick(): View.OnClickListener {
         return View.OnClickListener {
-            currentPosition = viewModel.getPosition()!!
             if (durationLeft > THIRTY_MILI_SEC) {
-                viewModel.seekTo(currentPosition + THIRTY_MILI_SEC)
-                remoteMediaClient?.seek(currentPosition + THIRTY_MILI_SEC)
+                viewModel.seekTo(currentPositionPlay!! + THIRTY_MILI_SEC)
+                remoteMediaClient?.seek(currentPositionPlay!! + THIRTY_MILI_SEC)
+            }
         }
     }
 
     private fun replay30sClick(): View.OnClickListener {
         return View.OnClickListener {
-            currentPosition = viewModel.getPosition()!!
-            if (currentPosition > THIRTY_MILI_SEC) {
-                viewModel.seekTo(currentPosition - THIRTY_MILI_SEC)
-                remoteMediaClient?.seek(currentPosition - THIRTY_MILI_SEC)
+            if (currentPositionPlay!! > THIRTY_MILI_SEC) {
+                viewModel.seekTo(currentPositionPlay!! - THIRTY_MILI_SEC)
+                remoteMediaClient?.seek(currentPositionPlay!! - THIRTY_MILI_SEC)
             }
         }
     }
@@ -344,19 +365,26 @@ class AudioPlayerFragment : Fragment(), Injectable {
         }
     }
 
-    fun convertAndUpdateTime(position: Long, duration: Long, binding: FragmentAudioPlayerBinding) {
+    fun convertAndUpdateTime(
+        position: Long,
+        duration: Long,
+        binding: FragmentAudioPlayerBinding
+    ) {
 
         var totalDuration = duration
         var spentTime = position
 
         var hourSpent = TimeUnit.MILLISECONDS.toHours(spentTime)
         var minSpent = TimeUnit.MILLISECONDS.toMinutes(spentTime) % TimeUnit.HOURS.toMinutes(1)
-        var secSpent = TimeUnit.MILLISECONDS.toSeconds(spentTime) % TimeUnit.MINUTES.toSeconds(1)
+        var secSpent =
+            TimeUnit.MILLISECONDS.toSeconds(spentTime) % TimeUnit.MINUTES.toSeconds(1)
 
         durationLeft = (totalDuration - spentTime)
         var hourLeft = TimeUnit.MILLISECONDS.toHours(durationLeft)
-        var minLeft = TimeUnit.MILLISECONDS.toMinutes(durationLeft) % TimeUnit.HOURS.toMinutes(1)
-        var secLeft = TimeUnit.MILLISECONDS.toSeconds(durationLeft) % TimeUnit.MINUTES.toSeconds(1)
+        var minLeft =
+            TimeUnit.MILLISECONDS.toMinutes(durationLeft) % TimeUnit.HOURS.toMinutes(1)
+        var secLeft =
+            TimeUnit.MILLISECONDS.toSeconds(durationLeft) % TimeUnit.MINUTES.toSeconds(1)
 
         binding.progressPlayerTimePlay.progress = position.toInt()
         binding.progressPlayerTimePlay.max = duration.toInt()
@@ -448,9 +476,8 @@ class AudioPlayerFragment : Fragment(), Injectable {
 
             })
         }
-        viewModel.sessionData.observe(viewLifecycleOwner, Observer {
-            result->
-            if(result.data?.account_id !=null){
+        viewModel.sessionData.observe(viewLifecycleOwner, Observer { result ->
+            if (result.data?.account_id != null) {
                 sessionId = result.data.key
                 engineAccount = result.data.account_id
             }
@@ -562,3 +589,4 @@ class AudioPlayerFragment : Fragment(), Injectable {
         })
     }
 }
+

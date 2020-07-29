@@ -115,11 +115,7 @@ class PlayerViewModel @Inject constructor(private val repository: PlayerReposito
         repository.seekTo(position)
     }
 
-    fun getPosition(): Long? {
-        return repository.getPosition()
-    }
-
-    fun getCurrentSpeed(): Float {
+    fun getCurrentSpeed(): Float? {
         return repository.getCurrentSpeed()
     }
 
