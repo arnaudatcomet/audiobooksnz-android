@@ -39,7 +39,7 @@
         android:id="@+id/playerSpeedFragment"
         android:name="com.audiobookz.nz.app.player.ui.PlayerSpeedFragment"
         android:label="@string/narrationSpeed"
-        tools:layout="@layout/fragment_player_speed"></fragment>
+        tools:layout="@layout/fragment_player_speed"/>
     <fragment
         android:id="@+id/chapterFragment"
         android:name="com.audiobookz.nz.app.player.ui.PlayerChapterFragment"
@@ -82,10 +82,12 @@
             android:defaultValue="@null"
             app:argType="string"
             app:nullable="true" />
-        <argument
-            android:name="isBuy"
-            app:argType="boolean"/>
+        <action
+            android:id="@+id/action_bookDetailFragment_to_AudiobookListFragment"
+            app:destination="@id/audiobookListFragment" />
     </fragment>
+
+
     <fragment
         android:id="@+id/rateAndReviewFragment"
         android:name="com.audiobookz.nz.app.review.RateAndReviewFragment"
@@ -104,4 +106,40 @@
             android:name="title"
             app:argType="string" />
     </fragment>
+
+    <fragment
+        android:id="@+id/audiobookListFragment"
+        android:name="com.audiobookz.nz.app.audiobookList.ui.AudiobookListFragment"
+        android:label="List"
+        tools:layout="@layout/fragment_audiobook_list">
+        <argument
+            android:name="id"
+            app:argType="integer" />
+
+        <argument
+            android:name="titleList"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
+        <!--search title and author-->
+        <argument
+            android:name="keyword"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
+        <!--create arg listFeatured nullable to store data from FeaturedTypeAdapter-->
+        <argument
+            android:name="listItem"
+            android:defaultValue="@null"
+            app:argType="com.audiobookz.nz.app.browse.featured.data.Featured[]"
+            app:nullable="true" />
+
+        <action
+            android:id="@+id/action_AudiobookListFragment_to_bookDetailFragment"
+            app:destination="@id/bookDetailFragment" />
+
+    </fragment>
+
 </navigation>

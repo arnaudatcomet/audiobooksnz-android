@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:text="@{`Chapter `+ listChapterData.chapter() +` (Part `+ listChapterData.part() +` )`}"
-                android:textColor="@{isClick? @color/colorYellowBorder:@android:color/black}"/>
+                android:textColor="@{isClick? @color/colorMain:@android:color/black}"/>
 
             <TextView
                 android:id="@+id/timeStartChapter"
@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:text="@{duration.toString()}"
-                android:textColor="@{isClick? @color/colorYellowBorder:@android:color/black}"/>
+                android:textColor="@{isClick? @color/colorMain:@android:color/black}"/>
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>

@@ -5,7 +5,11 @@
 
     <data>
         <variable
-            name="bought"
+            name="is_bought"
+            type="Boolean" />
+
+        <variable
+            name="in_wishlist"
             type="Boolean" />
         
         <variable
@@ -34,6 +38,18 @@
 
         <variable
             name="wishListClick"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="authorsClick"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="narratorClick"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="publisherClick"
             type="android.view.View.OnClickListener" />
 
         <import type="android.view.View" />
@@ -188,22 +204,25 @@
                         android:layout_height="wrap_content"
                         android:text="@{authors}"
                         android:textColor="@color/gray"
-                        tools:text="MR.D" />
+                        tools:text="MR.D"
+                        android:onClick="@{authorsClick}"/>
                     <TextView
-                        android:id="@+id/narratedvalue"
+                        android:id="@+id/narratorName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@{narrate}"
                         android:textColor="@color/gray"
-                        tools:text="MR.D" />
+                        tools:text="MR.D"
+                        android:onClick="@{narratorClick}"/>
 
                     <TextView
-                        android:id="@+id/publishervalue"
+                        android:id="@+id/publisherName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@{book.bookEngineData.bookDetail.publisher}"
                         android:textColor="@color/gray"
-                        tools:text="MR.D" />
+                        tools:text="MR.D"
+                        android:onClick="@{publisherClick}"/>
 
                     <TextView
                         android:id="@+id/lengthvalue"
@@ -228,7 +247,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="@dimen/margin_big"
                 android:orientation="vertical"
-                android:visibility="@{bought? View.VISIBLE:View.GONE}">
+                android:visibility="@{is_bought? View.GONE:View.VISIBLE}">
                 <Button
                     android:id="@+id/playSampleBtn"
                     android:layout_width="match_parent"
@@ -245,10 +264,12 @@
                     android:text="@{@string/addCart+book.price}" />
 
                 <Button
+                    android:id="@+id/addToWishListBtn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:backgroundTint="@color/colorMain"
                     android:text="Add to Wishlist"
+                    android:visibility="@{in_wishlist? View.GONE:View.VISIBLE}"
                     android:onClick="@{wishListClick}"/>
             </LinearLayout>
 

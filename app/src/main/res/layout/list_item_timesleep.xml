@@ -27,14 +27,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="sample"
-            android:textColor="@{isClick? @color/colorYellowBorder:@android:color/black}"/>
+            android:textColor="@{isClick? @color/colorMain:@android:color/black}"/>
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/speed175xIcon"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="right"
-            android:backgroundTint="@android:color/holo_orange_light"
+            android:backgroundTint="@color/colorMain"
             app:cardCornerRadius="15dp"
             android:visibility="@{isClick? View.VISIBLE:View.GONE}">>
 

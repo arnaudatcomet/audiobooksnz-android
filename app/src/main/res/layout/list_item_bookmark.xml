@@ -26,7 +26,8 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_margin="10dp">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -38,17 +39,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
                         android:text="sample"
-                        android:textColor="@color/colorYellowBorder" />
+                        android:textSize="@dimen/font_size_big"
+                        android:textColor="@color/colorMain" />
 
-                    <TextView
-                        android:id="@+id/optionMenuInBookmark"
-                        android:layout_width="wrap_content"
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:layout_width="20dp"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="10dp"
-                        android:text="&#8942;"
-                        android:onClick="@{clickOptionMenuListener}"/>
+                        android:onClick="@{clickOptionMenuListener}"
+                        android:src="@drawable/more_vert_black_36dp"
+                        android:backgroundTint="@android:color/transparent"/>
                 </RelativeLayout>
 
                 <TextView

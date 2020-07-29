@@ -9,8 +9,11 @@ import com.audiobookz.nz.app.bookdetail.data.BookReview
 import com.audiobookz.nz.app.bookdetail.data.BookRoomDao
 import com.audiobookz.nz.app.browse.categories.data.Category
 import com.audiobookz.nz.app.data.Result
+import com.audiobookz.nz.app.more.data.WishListData
 import com.audiobookz.nz.app.util.CATEGORY_PAGE_SIZE
 import com.audiobookz.nz.app.util.REVIEW_PAGE_SIZE
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import javax.inject.Inject
 
 class BookDetailViewModel @Inject constructor(private val repository: BookDetailRepository) :
@@ -21,6 +24,7 @@ class BookDetailViewModel @Inject constructor(private val repository: BookDetail
     var reviewResult = MediatorLiveData<Result<List<BookReview>>>()
     var page: Int? = 1
     var isLatest: Boolean? = false
+    var resultAddWishList = MediatorLiveData<Result<WishListData>>()
 
     fun fetchReview(page: Int, pageSize: Int) {
         reviewResult.addSource(repository.bookReviewData(bookId.toInt(), page, pageSize)) { value ->
@@ -67,5 +71,12 @@ class BookDetailViewModel @Inject constructor(private val repository: BookDetail
         ) { value ->
             addCartResult.value = value
         }
+    }
+
+    fun addWishList(BookId: Int) {
+        var requestBookId = RequestBody.create(MediaType.parse("text/plain"), BookId.toString())
+        resultAddWishList.addSource(
+            repository.addWishList(requestBookId)
+        ) { value -> resultAddWishList.value = value }
     }
 }

@@ -9,6 +9,7 @@ import com.audiobookz.nz.app.bookdetail.ui.BookDetailViewModel
 import com.audiobookz.nz.app.browse.categories.ui.CategoryViewModel
 import com.audiobookz.nz.app.browse.featured.ui.FeaturedViewModel
 import com.audiobookz.nz.app.login.ui.LoginViewModel
+import com.audiobookz.nz.app.more.ui.MoreViewModel
 import com.audiobookz.nz.app.mylibrary.ui.BookDownloadViewModel
 import com.audiobookz.nz.app.mylibrary.ui.DeviceLibraryViewModel
 import com.audiobookz.nz.app.mylibrary.ui.MyLibraryViewModel
@@ -91,6 +92,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(DeviceLibraryViewModel::class)
     abstract fun bindDeviceLibraryViewModel(viewModel: DeviceLibraryViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MoreViewModel::class)
+    abstract fun bindMoreViewModel(viewModel: MoreViewModel): ViewModel
 
     @Binds
     @IntoMap

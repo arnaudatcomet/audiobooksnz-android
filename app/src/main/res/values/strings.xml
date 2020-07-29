@@ -133,11 +133,15 @@
     <string name="NewPass">New Password</string>
     <string name="ConfirmPass">Confirm Password</string>
     <string name="SaveChanges">Save Changes</string>
-    <string name="facebook_app_id">543431389937515</string>
-    <string name="fb_login_protocol_scheme">fb543431389937515</string>
+
     <!--chromecast-->
     <string name="receiver_id">13B2E2B1</string>
     <string name="namespace">urn:x-cast:com.audiobookz.nz.app</string>
+    
+    <!--test id-->
+    <string name="facebook_app_id">336532167097984</string>
+    <string name="fb_login_protocol_scheme">fb336532167097984</string>
+
     <!--Featured_Browse-->
     <string name="Sale">Sale</string>
     <string name="NewZealand">New Zealand</string>
@@ -148,7 +152,7 @@
     <string name="remove">Remove</string>
     <string name="cart">Cart</string>
     <string name="Search">search</string>
-    <string name="basket">Basket</string>
+    <string name="basket">View Basket</string>
     <string name="share">Share</string>
     <string name="save">Save</string>
 
@@ -171,7 +175,7 @@
     <string name="addNote">Note</string>
     <string name="withoutNote">Without Note</string>
     <string name="delete">Delete</string>
-    <string name="yourNoteUpdate">Your note is updated Successfully</string>
+    <string name="yourNoteUpdate">Your bookmark note has been added</string>
     <string name="submit">Submit</string>
 
     <!--Rating-->
@@ -180,4 +184,30 @@
     <string name="story">Story</string>
     <string name="rateThis">Rate this audiobook</string>
 
+    <!--more-->
+    <string name="addCredits">Add Credits</string>
+    <string name="currentPlan">Current Plan</string>
+    <string name="wishList">Wish List</string>
+
+    <!--credit-->
+    <string name="buyNow">Buy Now</string>
+    <string name="noCredit">No. of Credits Required</string>
+    <string name="runOutCredit">Run out of book credits? Buy more for just NZ$20.00 a credit.</string>
+    <string name="creditNote">Note: Only User with an active subscription can buy book credits</string>
+
+    <!--coupon-->
+    <string name="enterCoupon">Enter Coupon Code</string>
+    <string name="subTotal">Subtotal</string>
+    <string name="shopping">Continue Shopping</string>
+    <string name="checkout">Proceed to Checkout</string>
+
+    <!--order-->
+    <string name="total">Total</string>
+    <string name="product">Product</string>
+    <string name="price">Price</string>
+    <string name="proceedToPay">Proceed to Pay</string>
+
+    <!--bookDetail-->
+    <string name="searchByAuthor">Search by Author</string>
+    <string name="searchByNarrator">Search by Narrator</string>
 </resources>

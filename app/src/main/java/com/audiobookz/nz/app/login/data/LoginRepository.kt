@@ -22,4 +22,17 @@ class LoginRepository @Inject constructor(
         networkCall = { remoteSource.forgotPass(email) },
         saveCallResult = {},
         onCallSuccess = {})
+
+    fun loginGoogle(token:String, device:String)=
+        resultSimpleLiveData(
+            networkCall = { remoteSource.loginGoogle(token, device) },
+            saveCallResult = { it.access_token?.let { it1 -> sharePref.saveToken(it1) } },
+            onCallSuccess = {})
+
+    fun loginFacebook(token:String, device:String)=
+        resultSimpleLiveData(
+            networkCall = { remoteSource.loginFacebook(token, device) },
+            saveCallResult = { it.access_token?.let { it1 -> sharePref.saveToken(it1) } },
+            onCallSuccess = {})
+
 }

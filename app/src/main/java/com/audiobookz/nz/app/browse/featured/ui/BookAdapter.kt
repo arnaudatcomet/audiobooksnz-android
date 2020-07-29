@@ -51,7 +51,7 @@ class BookAdapter : ListAdapter<Featured, CustomViewHolder>(Companion) {
     private fun createOnOpenBookDetailListener(id: Int, title: String): View.OnClickListener {
         return View.OnClickListener {
             val direction =
-                BrowseFragmentDirections.actionBrowseFragmentToBookDetailFragment(id, title, true)
+                BrowseFragmentDirections.actionBrowseFragmentToBookDetailFragment(id, title)
             it.findNavController().navigate(direction)
         }
     }
