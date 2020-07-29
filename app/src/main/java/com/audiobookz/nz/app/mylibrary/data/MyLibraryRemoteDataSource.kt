@@ -9,11 +9,8 @@ import javax.inject.Inject
 
 class MyLibraryRemoteDataSource @Inject constructor(private val service: AudiobookService) : BaseDataSource() {
 
-    suspend fun getCloudBook(Page:Int,PageSize:Int) = getResult { service.getCloudBook("audiobook",Page,PageSize) }
+    suspend fun getCloudBook(Page:Int,PageSize:Int) = getResult { service.getCloudBook("audiobook",Page,PageSize,"-created_at") }
 
     suspend fun fetchSession() = getResult { service.getSession() }
-
-    suspend fun postChapterPosition(bookID:Int, chapter:Int, position:Long, part:Int) = getResult {service.postChapterPosition(bookID, chapter, position, part)}
-
 
 }

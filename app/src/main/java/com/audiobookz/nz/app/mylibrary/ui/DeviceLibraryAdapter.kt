@@ -19,7 +19,8 @@ import com.audiobookz.nz.app.player.ui.PlayerActivity
 
 class CustomViewHolder(val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root)
 
-class DeviceLibraryAdapter(private val activity: Context) : ListAdapter<LocalBookData, CustomViewHolder>(Companion) {
+class DeviceLibraryAdapter(private val activity: Context) :
+    ListAdapter<LocalBookData, CustomViewHolder>(Companion) {
 
     companion object : DiffUtil.ItemCallback<LocalBookData>() {
         override fun areItemsTheSame(oldItem: LocalBookData, newItem: LocalBookData): Boolean {
@@ -45,35 +46,74 @@ class DeviceLibraryAdapter(private val activity: Context) : ListAdapter<LocalBoo
         itemBinding.authors = currentBook.authors
 
 
-        itemBinding.clickDirectPlay = directPlay(currentBook.id, currentBook.contentId.toString(), currentBook.title!!, currentBook.image_url!!,currentBook.licenseId!!)
+        itemBinding.clickDirectPlay = directPlay(
+            currentBook.id,
+            currentBook.bookId!!,
+            currentBook.contentId.toString(),
+            currentBook.title!!,
+            currentBook.image_url!!,
+            currentBook.licenseId!!,
+            currentBook.authors!!,
+            currentBook.narrators!!
+        )
 
         itemBinding.clickDeleteListener = currentBook.narrators?.let {
-            openToDownload(currentBook.title!!, currentBook.image_url!!, currentBook.id, currentBook.contentId.toString(), currentBook.licenseId!!,
-                it, currentBook.authors!!)
+            openToDownload(
+                currentBook.title!!,
+                currentBook.image_url!!,
+                currentBook.id,
+                currentBook.bookId!!,
+                currentBook.contentId.toString(),
+                currentBook.licenseId!!,
+                it,
+                currentBook.authors!!
+            )
         }
 
         itemBinding.executePendingBindings()
     }
 
-    private fun directPlay(id:Int, contentId: String, title: String, url:String, licenseId: String): View.OnClickListener {
+    private fun directPlay(
+        id: Int,
+        bookId: String,
+        contentId: String,
+        title: String,
+        url: String,
+        licenseId: String,
+        authors: String,
+        narrators: String
+    ): View.OnClickListener {
         return View.OnClickListener {
             val intent = Intent(activity, PlayerActivity::class.java).apply {
                 putExtra("cloudBookId", id)
+                putExtra("bookId", bookId)
                 putExtra("contentId", contentId)
                 putExtra("urlImage", url)
                 putExtra("titleBook", title)
                 putExtra("licenseIDBook", licenseId)
+                putExtra("authorBook", authors)
+                putExtra("narratorBook", narrators)
             }
             activity.startActivity(intent)
         }
     }
 
-    private fun openToDownload(title: String, imageUrl: String, id: Int, contentId:String, licenseId:String, narrators:String, authors:String): View.OnClickListener {
+    private fun openToDownload(
+        title: String,
+        imageUrl: String,
+        id: Int,
+        bookId: String,
+        contentId: String,
+        licenseId: String,
+        narrators: String,
+        authors: String
+    ): View.OnClickListener {
         return View.OnClickListener {
             val direction = MyLibraryFragmentDirections.actionMylibraryToBookDownloadFragment(
                 title,
                 licenseId,
                 id.toString(),
+                bookId,
                 contentId,
                 authors,
                 narrators,

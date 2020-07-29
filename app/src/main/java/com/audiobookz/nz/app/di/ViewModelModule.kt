@@ -3,7 +3,6 @@ package com.audiobookz.nz.app.browse.di
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.audiobookz.nz.app.MainActivityViewModel
-import com.audiobookz.nz.app.appbar.AppbarViewModel
 import com.audiobookz.nz.app.audiobookList.ui.AudiobookListViewModel
 import com.audiobookz.nz.app.basket.ui.BasketViewModel
 import com.audiobookz.nz.app.bookdetail.ui.BookDetailViewModel
@@ -16,6 +15,7 @@ import com.audiobookz.nz.app.mylibrary.ui.MyLibraryViewModel
 import com.audiobookz.nz.app.player.ui.PlayerViewModel
 import com.audiobookz.nz.app.profile.ui.EditProfileViewModel
 import com.audiobookz.nz.app.register.ui.SignUpViewModel
+import com.audiobookz.nz.app.review.RateReviewViewModel
 //import com.audiobookz.nz.app.browse.categories.ui.viewmo
 
 import dagger.Binds
@@ -61,10 +61,6 @@ abstract class ViewModelModule {
     @ViewModelKey(BookDetailViewModel::class)
     abstract fun bindBookDetailViewModel(viewModel: BookDetailViewModel): ViewModel
 
-    @Binds
-    @IntoMap
-    @ViewModelKey(AppbarViewModel::class)
-    abstract fun bindAppbarViewModel(viewModel: AppbarViewModel): ViewModel
 
     @Binds
     @IntoMap
@@ -95,6 +91,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(DeviceLibraryViewModel::class)
     abstract fun bindDeviceLibraryViewModel(viewModel: DeviceLibraryViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(RateReviewViewModel::class)
+    abstract fun bindRateReviewViewModel(viewModel: RateReviewViewModel): ViewModel
 
 
     @Binds

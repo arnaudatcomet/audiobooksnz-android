@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.databinding.FragmentCloudLibraryBinding
 import com.audiobookz.nz.app.di.Injectable
@@ -31,7 +32,17 @@ class CloudLibraryFragment : Fragment(), Injectable {
         var rootView = FragmentCloudLibraryBinding.inflate(inflater, container, false)
         context ?: return rootView.root
 
-        viewModel.getCloudBook(1, CLOUDBOOK_PAGE_SIZE)
+        rootView.CloudRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!recyclerView.canScrollVertically(1) && viewModel.isLatest == false){
+                    viewModel.pageCount?.plus(1)?.let { viewModel.getCloudBook(it, CLOUDBOOK_PAGE_SIZE,"") }
+                    viewModel.pageCount = viewModel.pageCount?.plus(1)
+                }
+            }
+        })
+
+        viewModel.getCloudBook(1, CLOUDBOOK_PAGE_SIZE,"")
         subscribeUi(rootView)
 
         return rootView.root
@@ -58,6 +69,7 @@ class CloudLibraryFragment : Fragment(), Injectable {
                 }
             }
         })
+
     }
 
 }

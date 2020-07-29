@@ -28,7 +28,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="sample"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:layout_marginBottom="5dp"/>
         </com.google.android.material.appbar.AppBarLayout>
 
         <fragment

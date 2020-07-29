@@ -27,6 +27,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -41,22 +42,26 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import io.audioengine.mobile.AudioEngine
 import io.audioengine.mobile.LogLevel
+import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 
-class MainActivity : AppCompatActivity(), HasSupportFragmentInjector,Injectable {
+class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Injectable {
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: MainActivityViewModel
     private lateinit var bottomNavigation: BottomNavigationView
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
+    private var isDiscover: Boolean = false
 
     override fun supportFragmentInjector() = dispatchingAndroidInjector
-    private var isDiscover: Boolean = false
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_basket,menu)
+        menuInflater.inflate(R.menu.menu_basket, menu)
         val badgeLayout: FrameLayout =
             menu!!.findItem(R.id.action_basket).actionView as FrameLayout
         val tv = badgeLayout.findViewById(R.id.view_alert_count_textview) as TextView
@@ -72,7 +77,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector,Injectable 
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId) {
+        return when (item.itemId) {
             R.id.action_basket -> {
                 openBasket()
                 true
@@ -81,7 +86,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector,Injectable 
         }
     }
 
-    private fun openBasket(){
+    private fun openBasket() {
         val intent = Intent(this, ActivityBasket::class.java)
         startActivity(intent)
     }
@@ -94,12 +99,26 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector,Injectable 
         super.onCreate(savedInstanceState)
         viewModel = injectViewModel(viewModelFactory)
         isDiscover = intent.getBooleanExtra(EXTRA_MESSAGE, false)
-        val binding: ActivityMainBinding = DataBindingUtil.setContentView(this,
-            R.layout.activity_main)
+
+        val binding: ActivityMainBinding = DataBindingUtil.setContentView(
+            this,
+            R.layout.activity_main
+        )
         bottomNavigation = binding.bottomNavigation
         binding.isDiscover = isDiscover
         navController = findNavController(R.id.nav_fragment)
-        appBarConfiguration =  AppBarConfiguration.Builder(R.id.browse,R.id.mylibrary, R.id.more, R.id.me).build()
+
+        //change default index bottomNavigation bar if not discover
+        if (!isDiscover) {
+            val navHostFragment = nav_fragment as NavHostFragment
+            val inflater = navHostFragment.navController.navInflater
+            val graph = inflater.inflate(R.navigation.nav_main)
+            graph.startDestination = R.id.mylibrary
+            navHostFragment.navController.graph = graph
+        }
+
+        appBarConfiguration =
+            AppBarConfiguration.Builder(R.id.mylibrary, R.id.browse, R.id.more, R.id.me).build()
         setSupportActionBar(binding.toolbar)
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.bottomNavigation.setupWithNavController(navController)
@@ -119,9 +138,13 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector,Injectable 
                 R.id.faqProfileFragment -> {
                     bottomNavigation.visibility = View.GONE
                 }
+                R.id.rateAndReviewFragment -> {
+                    bottomNavigation.visibility = View.GONE
+                }
                 else -> {
-                    if(!isDiscover){
-                    bottomNavigation.visibility = View.VISIBLE}
+                    if (!isDiscover) {
+                        bottomNavigation.visibility = View.VISIBLE
+                    }
                 }
             }
         }

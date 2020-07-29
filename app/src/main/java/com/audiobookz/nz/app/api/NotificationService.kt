@@ -35,8 +35,8 @@ class NotificationService(var context: Context) {
             notificationManager.createNotificationChannel(notificationChannel)
             builder = Notification.Builder(context,channelId)
                 .setContent(contentView)
-                .setSmallIcon(R.drawable.facebook40)
-                .setLargeIcon(BitmapFactory.decodeResource(Resources.getSystem(),R.drawable.facebook40))
+                .setSmallIcon(R.drawable.icon40)
+                .setLargeIcon(BitmapFactory.decodeResource(Resources.getSystem(),R.drawable.icon40))
                 .setContentIntent(pendingIntent)
         }
         notificationManager.notify(Random.nextInt(0, 10000),builder.build())

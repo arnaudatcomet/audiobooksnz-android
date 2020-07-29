@@ -73,6 +73,9 @@ class BookDetail(
     val runtime: String? =null,
     @SerializedName("language")
     @Expose
-    val language: String? =null
+    val language: String? =null,
+    @SerializedName("sample_url")
+    @Expose
+    val sampleUrl: String? =null
 
     ) : Parcelable

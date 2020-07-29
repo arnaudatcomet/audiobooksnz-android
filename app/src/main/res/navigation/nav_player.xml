@@ -26,14 +26,20 @@
         <action
             android:id="@+id/action_audioPlayerFragment_to_bookmarkNoteFragment"
             app:destination="@id/bookmarkNoteFragment" />
+        <action
+            android:id="@+id/action_audioPlayerFragment_to_bookDetailFragment"
+            app:destination="@id/bookDetailFragment" />
+        <action
+            android:id="@+id/action_audioPlayerFragment_to_rateAndReviewFragment"
+            app:destination="@id/rateAndReviewFragment" />
+
     </fragment>
 
     <fragment
         android:id="@+id/playerSpeedFragment"
         android:name="com.audiobookz.nz.app.player.ui.PlayerSpeedFragment"
         android:label="@string/narrationSpeed"
-        tools:layout="@layout/fragment_player_speed" >
-    </fragment>
+        tools:layout="@layout/fragment_player_speed"></fragment>
     <fragment
         android:id="@+id/chapterFragment"
         android:name="com.audiobookz.nz.app.player.ui.PlayerChapterFragment"
@@ -43,7 +49,11 @@
         android:id="@+id/playerBookmarkFragment"
         android:name="com.audiobookz.nz.app.player.ui.PlayerBookmarkFragment"
         android:label="fragment_player_bookmark"
-        tools:layout="@layout/fragment_player_bookmark" />
+        tools:layout="@layout/fragment_player_bookmark">
+        <action
+            android:id="@+id/action_playerBookmarkFragment_to_bookmarkNoteFragment"
+            app:destination="@id/bookmarkNoteFragment" />
+    </fragment>
     <fragment
         android:id="@+id/playerSleepTimeFragment"
         android:name="com.audiobookz.nz.app.player.ui.PlayerSleepTimeFragment"
@@ -53,5 +63,45 @@
         android:id="@+id/bookmarkNoteFragment"
         android:name="com.audiobookz.nz.app.player.ui.BookmarkNoteFragment"
         android:label="fragment_bookmark_note"
-        tools:layout="@layout/fragment_bookmark_note" />
+        tools:layout="@layout/fragment_bookmark_note">
+        <argument
+            android:name="bookmarkId"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/bookDetailFragment"
+        android:name="com.audiobookz.nz.app.bookdetail.ui.BookDetailFragment"
+        android:label="BookDetailFragment"
+        tools:layout="@layout/fragment_book_detail">
+
+        <argument
+            android:name="id"
+            app:argType="integer" />
+        <argument
+            android:name="bookName"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="isBuy"
+            app:argType="boolean"/>
+    </fragment>
+    <fragment
+        android:id="@+id/rateAndReviewFragment"
+        android:name="com.audiobookz.nz.app.review.RateAndReviewFragment"
+        android:label="RateAndReviewFragment"
+        tools:layout="@layout/fragment_rate_and_review">
+        <argument
+            android:name="id"
+            app:argType="integer" />
+        <argument
+            android:name="author"
+            app:argType="string" />
+        <argument
+            android:name="narrator"
+            app:argType="string" />
+        <argument
+            android:name="title"
+            app:argType="string" />
+    </fragment>
 </navigation>

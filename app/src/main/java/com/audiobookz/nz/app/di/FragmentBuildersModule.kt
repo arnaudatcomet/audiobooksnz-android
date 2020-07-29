@@ -1,7 +1,6 @@
 package com.audiobookz.nz.app.di
 
 
-import com.audiobookz.nz.app.appbar.AppbarFragment
 import com.audiobookz.nz.app.audiobookList.ui.AudiobookListFragment
 import com.audiobookz.nz.app.basket.ui.BasketFragment
 import com.audiobookz.nz.app.bookdetail.ui.BookDetailFragment
@@ -22,6 +21,7 @@ import com.audiobookz.nz.app.player.ui.*
 import com.audiobookz.nz.app.profile.ui.EditProfileFragment
 import com.audiobookz.nz.app.profile.ui.ProfileFragment
 import com.audiobookz.nz.app.register.ui.SignUpFragment
+import com.audiobookz.nz.app.review.RateAndReviewFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -63,9 +63,6 @@ abstract class FragmentBuildersModule {
     abstract fun contributeBrowseFragment(): BrowseFragment
 
     @ContributesAndroidInjector
-    abstract fun contributeAppbarFragment(): AppbarFragment
-
-    @ContributesAndroidInjector
     abstract fun contributeBasketFragment(): BasketFragment
 
     @ContributesAndroidInjector
@@ -103,6 +100,12 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributePlayerBookmarkFragment(): PlayerBookmarkFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeBookmarkNoteFragment(): BookmarkNoteFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeRateAndReviewFragment(): RateAndReviewFragment
 
 //
 //    @ContributesAndroidInjector

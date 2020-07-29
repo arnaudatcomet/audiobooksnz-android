@@ -30,8 +30,6 @@ class PlayerSpeedFragment : Fragment(), Injectable {
     ): View? {
         viewModel = injectViewModel(viewModelFactory)
         var binding = FragmentPlayerSpeedBinding.inflate(inflater, container, false)
-        var titleBook = activity?.findViewById<TextView>(R.id.titleBook)
-        titleBook?.text = ""
         setTitle("Narration Speed")
         binding.select05Click = select05(binding)
         binding.select075Click = select075(binding)

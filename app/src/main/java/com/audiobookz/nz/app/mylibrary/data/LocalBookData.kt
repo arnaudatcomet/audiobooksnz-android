@@ -8,6 +8,7 @@ import com.google.gson.annotations.SerializedName
 @Entity(tableName = "localbook")
 data class LocalBookData(
     @PrimaryKey val id: Int,
+    @ColumnInfo(name = "bookId") val bookId: String?,
     @ColumnInfo(name = "contentId") val contentId: String?,
     @ColumnInfo(name = "title") val title: String?,
     @ColumnInfo(name = "image_url") val image_url: String?,
