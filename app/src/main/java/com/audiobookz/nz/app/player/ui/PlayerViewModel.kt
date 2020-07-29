@@ -26,6 +26,7 @@ class PlayerViewModel @Inject constructor(private val repository: PlayerReposito
     var currentPlay = repository.getCurrentChapter()
     var currentSleepTimer = repository.getSleepTime()
     var positionPostResult = MediatorLiveData<Result<PositionData>>()
+    val sessionData by lazy { repository.getSession() }
     var getBookmarksResult = MediatorLiveData<Result<List<BookmarksData>>>()
     var postBookmarksResult = MediatorLiveData<Result<BookmarksData>>()
     var updateBookmarksResult = MediatorLiveData<Result<BookmarksData>>()
@@ -114,7 +115,7 @@ class PlayerViewModel @Inject constructor(private val repository: PlayerReposito
         repository.seekTo(position)
     }
 
-    fun getCurrentSpeed(): Float {
+    fun getCurrentSpeed(): Float? {
         return repository.getCurrentSpeed()
     }
 

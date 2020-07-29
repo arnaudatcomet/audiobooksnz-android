@@ -48,6 +48,7 @@ class BookDownloadFragment : Fragment(), Injectable {
         binding.downloadStatus = "Status"
         binding.goToPlayerClick = goToPlayerClick(binding)
         viewModel.getContentStatus(args.contentId)
+        viewModel.saveChapterData(123,12412,"result.chapter!!.url!!","result.content!!.coverUrl!!")
         return binding.root
     }
 
@@ -100,7 +101,15 @@ class BookDownloadFragment : Fragment(), Injectable {
     }
 
     private fun subscribeUi(binding: FragmentBookDownloadBinding) {
-
+        viewModel.chapterDataStatus.observe(viewLifecycleOwner){
+            result ->
+            when(result.status)
+            {
+                Result.Status.SUCCESS->{
+                    Log.d("TAG", "subscribeUi: "+result.data)
+                }
+            }
+        }
         viewModel.downloadResult.observe(viewLifecycleOwner){ result ->
             when (result.code) {
                 DownloadEvent.DOWNLOAD_PROGRESS_UPDATE -> {
@@ -108,6 +117,12 @@ class BookDownloadFragment : Fragment(), Injectable {
                     if (result.contentPercentage != 0&&result.contentPercentage!=binding.contentProcess) {
                         downloadId = result.id ?:"null"
                         binding.contentProcess = result.contentPercentage
+                    }
+                    //need to save chapter's data when chapterPercentage is 100% because when use chapter download finished it change url in to local path
+                    if (result.chapterPercentage==100){
+                        //save link and image to local
+                         Log.d("TAG", "subscribeUi: "+result.message)
+                        viewModel.saveChapterData(result.chapter!!.chapter,result.content!!.id.toInt(),result.chapter!!.url!!,"result.content!!.coverUrl!!")
                     }
                 }
                 DownloadEvent.DOWNLOAD_STARTED -> {

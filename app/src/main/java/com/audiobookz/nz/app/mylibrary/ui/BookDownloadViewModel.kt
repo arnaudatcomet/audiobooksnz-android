@@ -15,7 +15,31 @@ class BookDownloadViewModel @Inject constructor(private val repository: MyLibrar
     val downloadResult = MutableLiveData<DownloadEvent>()
     var contentStatusResult = MutableLiveData<DownloadStatus>()
     var bookDetail = MediatorLiveData<Result<String>>()
+    var chapterDataStatus = MediatorLiveData<Result<String>>()
 
+    fun saveChapterData(chapterId:Int,contentId:Int,url:String,imageUrl: String){
+        chapterDataStatus.addSource( repository.saveChapterData(chapterId,contentId,url,imageUrl)){
+            value->
+            chapterDataStatus.value = value
+        }
+    }
+    //    lateinit var timer : CountDownTimer
+//    var timerData =  MutableLiveData<Long>()
+//
+//    fun startTimer(){
+//        timer = object : CountDownTimer(30000,1000){
+//            override fun onTick(millisUntilFinished: Long) {
+//                timerData.value = millisUntilFinished/1000
+//            }
+//
+//            override fun onFinish() {
+//                timerData.value = 1000
+//            }
+//        }
+//        if (timerData.value==null){
+//            timer.start()
+//        }
+//    }
     fun saveDetailBook(
         id: Int,
         bookId:String,

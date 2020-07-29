@@ -19,7 +19,7 @@ import com.audiobookz.nz.app.worker.SeedDatabaseWorker
 /**
  * The Room database for this app
  */
-@Database(entities = [UserData::class,BookRoom::class,SuccessData::class,SessionData::class,LocalBookData::class],
+@Database(entities = [UserData::class,BookRoom::class,SuccessData::class,SessionData::class,LocalBookData::class,ChapterData::class],
         version = 34, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -28,6 +28,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun bookRoomDao(): BookRoomDao
     abstract fun sessionDataDao():SessionDataDao
     abstract fun localBookDataDao():LocalBookDataDao
+    abstract fun chapterDataDao():ChapterDataDao
 
     companion object {
 

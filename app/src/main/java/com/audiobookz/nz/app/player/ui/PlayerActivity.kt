@@ -3,14 +3,15 @@ package com.audiobookz.nz.app.player.ui
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import android.view.View
+import android.widget.TextView
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.audiobookz.nz.app.R
 import com.audiobookz.nz.app.util.intentShareText
+import com.google.android.gms.cast.framework.CastButtonFactory
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.activity_player.*
@@ -20,6 +21,7 @@ import javax.inject.Inject
 class PlayerActivity : AppCompatActivity(), HasSupportFragmentInjector {
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
+    lateinit var mediaRouteMenuItem: MenuItem
     private lateinit var extraBookId: String
     private lateinit var extraBookTitle: String
     private lateinit var extraBookAuthor: String
@@ -100,7 +102,8 @@ class PlayerActivity : AppCompatActivity(), HasSupportFragmentInjector {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_option_player, menu)
+        menuInflater.inflate(R.menu.menu_option_player,menu)
+        mediaRouteMenuItem = CastButtonFactory.setUpMediaRouteButton(applicationContext, menu,R.id.media_route_menu_item)
         menuItemPlayer = menu!!.findItem(R.id.action_option_player)
         return true
     }

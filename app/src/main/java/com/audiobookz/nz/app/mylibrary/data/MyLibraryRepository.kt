@@ -11,10 +11,14 @@ class MyLibraryRepository @Inject constructor(
     private val sessionDataDao: SessionDataDao,
     private val audioEngineDataSource: AudioEngineDataSource,
     private val sharePref: SharedPreferencesService,
-    private val localBookDataDao: LocalBookDataDao
+    private val localBookDataDao: LocalBookDataDao,
+    private val chapterDataDao: ChapterDataDao
 ) {
     fun getCloudBook(Page: Int, PageSize: Int) = resultFetchOnlyLiveData(
         networkCall = { remoteSource.getCloudBook(Page, PageSize) }
+    )
+    fun saveChapterData(chapterId:Int,contentId:Int,url:String,imageUrl: String)= resultLocalSaveOnlyLiveData(
+        saveCallResult = {chapterDataDao.inserChapterData(ChapterData(chapterId,contentId,imageUrl,url))}
     )
 
     val getLocalbook =

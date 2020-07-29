@@ -129,7 +129,7 @@ fun <A> resultSimpleLiveData(
             emit(Result.success("good"))
         }
         catch (e: Exception) {
-//            emit(Result.error(e.message.toString()))
+           emit(Result.error(e.message.toString()))
         }
 
     }

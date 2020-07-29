@@ -37,7 +37,7 @@ class PlayerSpeedFragment : Fragment(), Injectable {
         binding.select125Click = select125(binding)
         binding.select15Click = select15(binding)
         binding.select175Click = select175(binding)
-        checkSpeed(binding,viewModel.getCurrentSpeed())
+        viewModel.getCurrentSpeed()?.let { checkSpeed(binding, it) }
         return binding.root
     }
 
