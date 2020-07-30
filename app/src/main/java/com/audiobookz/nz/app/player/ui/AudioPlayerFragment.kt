@@ -160,7 +160,7 @@ class AudioPlayerFragment : Fragment(), Injectable {
     fun onApplicationConnected(castSession: CastSession?) {
         amanager?.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_MUTE, 0);
         var seekbarTime = view?.findViewById<SeekBar>(R.id.progressPlayerTimePlay)
-        seekbarTime?.progress?.let { loadRemoteMedia(it, false, castSession) }
+        seekbarTime?.progress?.let { loadRemoteMedia(it, true, castSession) }
         return
     }
 
@@ -504,10 +504,13 @@ class AudioPlayerFragment : Fragment(), Injectable {
 
         })
         viewModel.playBackResult.observe(viewLifecycleOwner, Observer { result ->
-
+            if(currentPlayChapter!=result.chapter!!.chapter){
+                currentPlayChapter = result.chapter!!.chapter
+                Log.d("TAG", "subscribeUi: "+currentPlayChapter!!.toLong())
+                remoteMediaClient?.seek(currentPlayChapter!!.toLong())
+            }
             currentPart = result.chapter!!.part
             currentPlayPart = result.chapter!!.part
-            currentPlayChapter = result.chapter!!.chapter
             chapterBookTxt?.text = "Chapter $currentPlayChapter"
             viewModel.saveCurrentChapter(extraContentID.toInt(), currentPlayChapter!!)
             when (result.code) {
