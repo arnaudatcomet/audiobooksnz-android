@@ -3,6 +3,7 @@ package com.audiobookz.nz.app.more.ui
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.audiobookz.nz.app.bookdetail.ui.CustomViewHolder
@@ -34,9 +35,10 @@ class WishListAdapter(private var viewModel: MoreViewModel) :
         val currentItem = getItem(position)
         val itemBinding = holder.binding as ListItemWishlistBinding
         var bookId = currentItem.audiobook_id
+        var booktitle = currentItem.audiobook?.title
         itemBinding.book = currentItem.audiobook
         itemBinding.remove = removeList(bookId)
-        itemBinding.bookDetail = goToBookDetail()
+        itemBinding.bookDetail = goToBookDetail(bookId,booktitle)
 
     }
 
@@ -46,9 +48,14 @@ class WishListAdapter(private var viewModel: MoreViewModel) :
         }
     }
 
-    private fun goToBookDetail(): View.OnClickListener {
+    private fun goToBookDetail(bookId: Int, booktitle: String?): View.OnClickListener {
         return View.OnClickListener {
-
+            val direction =
+                WishListFragmentDirections.actionWishlistFragmentToBookDetailFragment(
+                    bookId,
+                    booktitle
+                )
+            it.findNavController().navigate(direction)
         }
     }
 }

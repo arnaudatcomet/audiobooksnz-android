@@ -51,7 +51,7 @@ class LoginActivity : AppCompatActivity(), HasSupportFragmentInjector {
         val btnDiscover = findViewById<Button>(R.id.btnDiscover)
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken("395719303570-d8bgers9haa3nu2ghqf7rp3p88mjt8tc.apps.googleusercontent.com")
+            .requestIdToken("718099209429-2mkutb5ivvjlh3h7rjf92se9q1o4mqsn.apps.googleusercontent.com")
             .requestEmail()
             .build()
 

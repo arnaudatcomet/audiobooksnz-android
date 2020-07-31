@@ -17,7 +17,6 @@ import com.audiobookz.nz.app.di.injectViewModel
 import javax.inject.Inject
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.ui.hide
-import com.audiobookz.nz.app.ui.setTitle
 import com.audiobookz.nz.app.ui.show
 import com.google.android.material.snackbar.Snackbar
 
@@ -27,7 +26,8 @@ class ConfirmOrderFragment : Fragment(), Injectable {
     private lateinit var viewModel: BasketViewModel
     private var totalPrice = 0F
     private val args: ConfirmOrderFragmentArgs by navArgs()
-    lateinit var bookListProduct: ArrayList<BookRoom>
+    private lateinit var bookListProduct: ArrayList<BookRoom>
+    private var orderId: Int? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,15 +36,19 @@ class ConfirmOrderFragment : Fragment(), Injectable {
         val binding = FragmentConfirmOrderBinding.inflate(inflater, container, false)
         val adapter = OrderAdapter()
         binding.orderRecycleView.adapter = adapter
-        binding.proceedPay = clickPay()
+        binding.proceedPay = clickPay(binding)
         subscribeUi(binding, adapter)
         return binding.root
     }
 
-    private fun clickPay(): View.OnClickListener {
+    private fun clickPay(binding: FragmentConfirmOrderBinding): View.OnClickListener {
         return View.OnClickListener {
-            val localCountryCode = context!!.resources.configuration.locale.country
-            viewModel.orderBookList(bookListProduct, localCountryCode, args.coupon)
+            if (orderId != null)
+                if (binding.useCreditBox.isChecked) {
+                    viewModel.orderCheckout(orderId!!, "1")
+                } else {
+                    viewModel.orderCheckout(orderId!!, "0")
+                }
         }
     }
 
@@ -54,8 +58,6 @@ class ConfirmOrderFragment : Fragment(), Injectable {
                 Result.Status.SUCCESS -> {
                     binding.progressBar.hide()
                     result.data?.let { adapter.submitList(it) }
-
-
                     if (result.data?.isNotEmpty()!!) {
                         bookListProduct = result.data as ArrayList<BookRoom>
                         binding.subTotalLinear.visibility = View.VISIBLE
@@ -64,6 +66,9 @@ class ConfirmOrderFragment : Fragment(), Injectable {
                                 totalPrice += book.price.toFloat()
                         }
                         binding.subTotalPriceOrderTxt.text = totalPrice.toString()
+                        val localCountryCode = context!!.resources.configuration.locale.country
+                        viewModel.orderBookList(bookListProduct, localCountryCode, args.coupon)
+
                     } else {
                         binding.subTotalLinear.visibility = View.GONE
                     }
@@ -80,12 +85,8 @@ class ConfirmOrderFragment : Fragment(), Injectable {
         viewModel.resultOrder.observe(viewLifecycleOwner, Observer { result ->
             when (result.status) {
                 Result.Status.SUCCESS -> {
-                    if (binding.useCreditBox.isChecked) {
-                        result.data?.id?.let { viewModel.orderCheckout(it, "1") }
-                    } else {
-                        result.data?.id?.let { viewModel.orderCheckout(it, "0") }
-                    }
-
+                    orderId = result.data?.id
+                    viewModel.getCredits()
                 }
                 Result.Status.LOADING -> {
                 }
@@ -99,12 +100,29 @@ class ConfirmOrderFragment : Fragment(), Injectable {
             when (result.status) {
                 Result.Status.SUCCESS -> {
                     if (result.data != null) {
-                        val navController = Navigation.findNavController(view!!)
-                        navController.navigate(
-                            ConfirmOrderFragmentDirections.actionConfirmOrderFragmentToPayPalWebViewFragment2(
-                                result.data.approval_url
-                            )
-                        )
+                        if (result.data.state == "Temporary (checkout pending)") {
+                            if (result.data.approval_url != "") {
+                                val navController = Navigation.findNavController(view!!)
+                                navController.navigate(
+                                    ConfirmOrderFragmentDirections.actionConfirmOrderFragmentToPayPalWebViewFragment2(
+                                        result.data.approval_url
+                                    )
+                                )
+                            }
+                        } else if (result.data.state == "completed") {
+                            Toast.makeText(
+                                activity,
+                                "completed",
+                                Toast.LENGTH_SHORT
+                            ).show();3
+                        } else {
+                            Toast.makeText(
+                                activity,
+                                "Payment Status " + result.data.msg,
+                                Toast.LENGTH_SHORT
+                            ).show();3
+                        }
+
                     }
                 }
                 Result.Status.LOADING -> {
@@ -115,6 +133,21 @@ class ConfirmOrderFragment : Fragment(), Injectable {
             }
         })
 
+        viewModel.resultCheckCredit.observe(viewLifecycleOwner, Observer { result ->
+            when (result.status) {
+                Result.Status.SUCCESS -> {
+                    if (result.data != null) {
+                        binding.orderCreditsTxt.text =
+                            "Use Box Credits Box(${result.data.credit_count} available)"
+                    }
+                }
+                Result.Status.LOADING -> {
+                }
+                Result.Status.ERROR -> {
+                    Toast.makeText(activity, result.message, Toast.LENGTH_SHORT).show();3
+                }
+            }
+        })
     }
 
 }

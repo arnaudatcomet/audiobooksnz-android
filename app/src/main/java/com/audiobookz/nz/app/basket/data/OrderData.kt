@@ -10,5 +10,21 @@ import kotlinx.android.parcel.Parcelize
 class OrderData(
     @SerializedName("id")
     @Expose
-    val id: Int
+    val id: Int,
+    @SerializedName("total")
+    @Expose
+    val total: Float,
+    @SerializedName("subtotal")
+    @Expose
+    val subtotal: Float,
+    @SerializedName("created_at")
+    @Expose
+    val created_at: String,
+    @SerializedName("status")
+    @Expose
+    val status: String,
+    @SerializedName("currency_code")
+    @Expose
+    val currency_code: String
+
 ) : Parcelable

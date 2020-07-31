@@ -271,8 +271,8 @@
                 app:tint="#FFFFFF"
                 app:backgroundTint="@color/colorMain"
                 app:elevation="0dp"
-                app:fabSize="mini"
-                app:maxImageSize="18dp" />
+                app:fabCustomSize="75dp"
+                app:maxImageSize="24dp" />
 
         </RelativeLayout>
 

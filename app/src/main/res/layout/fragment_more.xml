@@ -21,7 +21,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/addCreditsCard"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:clickable="true"
             android:onClick="@{addCreditClick}">
 
@@ -34,16 +34,17 @@
                 <TextView
                     android:id="@+id/addCreditsTxt"
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
+                    android:textSize="@dimen/font_size_super_big"
+                    android:textStyle="bold"
                     android:text="@string/addCredits" />
 
-                <TextView
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:background="@drawable/next_black_36dp"
-                    android:gravity="right"
                     android:textAppearance="?attr/textAppearanceHeadline6" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
@@ -51,7 +52,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/currentPlanCard"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:clickable="true">
 
             <RelativeLayout
@@ -63,16 +64,17 @@
                 <TextView
                     android:id="@+id/currentPlanTxt"
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
+                    android:textSize="@dimen/font_size_super_big"
+                    android:textStyle="bold"
                     android:text="@string/currentPlan" />
 
-                <TextView
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:background="@drawable/next_black_36dp"
-                    android:gravity="right"
                     android:textAppearance="?attr/textAppearanceHeadline6" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
@@ -80,7 +82,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/wishListCard"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:clickable="true"
             android:onClick="@{wishListClick}">
 
@@ -93,16 +95,17 @@
                 <TextView
                     android:id="@+id/wishListTxt"
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
+                    android:textSize="@dimen/font_size_super_big"
+                    android:textStyle="bold"
                     android:text="@string/wishList" />
 
-                <TextView
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:background="@drawable/next_black_36dp"
-                    android:gravity="right"
                     android:textAppearance="?attr/textAppearanceHeadline6" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>

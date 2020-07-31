@@ -53,7 +53,16 @@ class AddCreditsFragment : Fragment(), Injectable {
                 Result.Status.LOADING -> {
                 }
                 Result.Status.ERROR -> {
-                    Toast.makeText(activity, result.message, Toast.LENGTH_SHORT).show();3
+                    if (result.message == "Network :  400 Bad Request") {
+                        Toast.makeText(
+                            activity,
+                            "Visit our website and subscribe to our Pro Plan to buy more book credits",
+                            Toast.LENGTH_SHORT
+                        ).show();3
+                    } else {
+                        Toast.makeText(activity, result.message, Toast.LENGTH_SHORT).show();3
+                    }
+
                 }
             }
         })
@@ -62,12 +71,16 @@ class AddCreditsFragment : Fragment(), Injectable {
             when (result.status) {
                 Result.Status.SUCCESS -> {
                     if (result.data != null) {
-                        val navController = Navigation.findNavController(view!!)
-                        navController.navigate(
-                            AddCreditsFragmentDirections.actionAddCreditsFragmentToPayPalWebViewFragment(
-                                result.data.approval_url
+                        if (result.data.approval_url != "") {
+                            val navController = Navigation.findNavController(view!!)
+                            navController.navigate(
+                                AddCreditsFragmentDirections.actionAddCreditsFragmentToPayPalWebViewFragment(
+                                    result.data.approval_url
+                                )
                             )
-                        )
+                        } else {
+                            Toast.makeText(activity, result.message, Toast.LENGTH_SHORT).show();3
+                        }
                     }
                 }
                 Result.Status.LOADING -> {
