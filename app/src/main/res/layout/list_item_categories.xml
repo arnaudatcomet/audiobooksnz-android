@@ -28,7 +28,7 @@
         android:elevation="0dp"
         >
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -37,26 +37,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_normal"
-                android:gravity="left"
+                android:layout_alignParentLeft="true"
                 android:text="@{audioCategory.title}"
                 android:textAppearance="?attr/textAppearanceHeadline6"
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                android:layout_weight="1"
                 tools:text="Category" />
 
-            <TextView
-                android:layout_width="match_parent"
+            <ImageView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_normal"
                 android:background="@drawable/next_black_36dp"
-                android:gravity="right"
-                android:layout_weight="4"
+                android:layout_alignParentRight="true"
                 android:onClick="@{openSubCategory}"
                 android:textAppearance="?attr/textAppearanceHeadline6"
                 android:visibility='@{audioCategory.sub_category_count.equals("0")? View.GONE : View.VISIBLE, default = gone}' />
-
-        </LinearLayout>
+        </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
 

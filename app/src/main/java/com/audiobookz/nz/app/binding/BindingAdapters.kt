@@ -50,6 +50,8 @@ fun glideWithPlaceHolder(view: ImageView, imageUrl: String?, holder: ProgressBar
                 }
 
             })
+            .centerCrop()
+            .override(1300, 1300)
             .into(view)
     }
 }

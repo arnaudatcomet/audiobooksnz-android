@@ -155,6 +155,8 @@
     <string name="searchLibrary">Search your book in your library</string>
     <string name="optionDetail">Book Details</string>
     <string name="optionReview">Rate &amp; Reviews</string>
+    <string name="cloudLibrary">Cloud</string>
+    <string name="deviceLibrary">Device</string>
 
     <!--player-->
     <string name="speed">Speed</string>
@@ -205,4 +207,5 @@
     <!--bookDetail-->
     <string name="searchByAuthor">Search by Author</string>
     <string name="searchByNarrator">Search by Narrator</string>
+
 </resources>

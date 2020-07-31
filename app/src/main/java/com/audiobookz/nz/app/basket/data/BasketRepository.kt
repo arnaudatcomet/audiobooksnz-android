@@ -6,18 +6,22 @@ import com.audiobookz.nz.app.bookdetail.data.BookRoomDao
 import com.audiobookz.nz.app.data.resultFetchOnlyLiveData
 import com.audiobookz.nz.app.data.resultLocalGetOnlyLiveData
 import com.audiobookz.nz.app.more.data.MoreRemoteDataSource
+import okhttp3.MediaType
+import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import javax.inject.Inject
 import javax.inject.Singleton
 
 
 @Singleton
-class BasketRepository @Inject constructor(private val dao: BookRoomDao,private val remoteSource: MoreRemoteDataSource
+class BasketRepository @Inject constructor(
+    private val dao: BookRoomDao, private val remoteSource: MoreRemoteDataSource
 ) {
     fun loadBasket() = resultLocalGetOnlyLiveData(
-        databaseQuery = {dao.loadBasket()}
+        databaseQuery = { dao.loadBasket() }
     )
-    fun deleteBook(id:Int){
+
+    fun deleteBook(id: Int) {
         dao.deleteById(id)
     }
 
@@ -30,9 +34,23 @@ class BasketRepository @Inject constructor(private val dao: BookRoomDao,private 
         networkCall = { remoteSource.orderCheckout(orderId, cancel_url, return_url, use_credit) })
 
     fun orderBookList(
-        orderItem: ArrayList<BookRoom>,
-        country_code: String,
-        coupon_code: String?
+        body:RequestBody
     ) = resultFetchOnlyLiveData(
-        networkCall = { remoteSource.orderBookList(orderItem, country_code, coupon_code) })
+        networkCall = { remoteSource.orderBookList(
+          //  params
+        body
+//            RequestBody.create(MediaType.parse("text/plain"), "190393"),
+//            RequestBody.create(MediaType.parse("text/plain"), "1"),
+//            RequestBody.create(MediaType.parse("text/plain"), "191147"),
+//            RequestBody.create(MediaType.parse("text/plain"), "1"),
+//            RequestBody.create(MediaType.parse("text/plain"), "US"),
+//            RequestBody.create(MediaType.parse("text/plain"), "")
+        )})
+
+    fun buyCreditStatusNotification(title: String, body: String) =
+        remoteSource.buyCreditStatusNotification(title, body)
+
+    fun getCredits() = resultFetchOnlyLiveData(networkCall = {
+        remoteSource.getCredit()
+    })
 }

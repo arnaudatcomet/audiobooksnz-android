@@ -4,6 +4,7 @@ package com.audiobookz.nz.app.di
 import com.audiobookz.nz.app.audiobookList.ui.AudiobookListFragment
 import com.audiobookz.nz.app.basket.ui.BasketFragment
 import com.audiobookz.nz.app.basket.ui.ConfirmOrderFragment
+import com.audiobookz.nz.app.basket.ui.PayPalWebViewFragment
 import com.audiobookz.nz.app.bookdetail.ui.BookDetailFragment
 import com.audiobookz.nz.app.bookdetail.ui.ReviewsFragment
 import com.audiobookz.nz.app.bookdetail.ui.SummaryFragment
@@ -118,6 +119,9 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeConfirmOrderFragment(): ConfirmOrderFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributePayPalWebViewFragment(): PayPalWebViewFragment
 
 //
 //    @ContributesAndroidInjector

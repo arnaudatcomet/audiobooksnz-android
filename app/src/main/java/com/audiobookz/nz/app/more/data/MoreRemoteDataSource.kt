@@ -2,11 +2,17 @@ package com.audiobookz.nz.app.more.data
 
 import com.audiobookz.nz.app.api.AudiobookService
 import com.audiobookz.nz.app.api.BaseDataSource
+import com.audiobookz.nz.app.api.NotificationService
 import com.audiobookz.nz.app.bookdetail.data.BookRoom
+import okhttp3.MediaType
+import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import javax.inject.Inject
 
-class MoreRemoteDataSource @Inject constructor(private val service: AudiobookService) :
+class MoreRemoteDataSource @Inject constructor(
+    private val service: AudiobookService,
+    private val notificationService: NotificationService
+) :
     BaseDataSource() {
 
     suspend fun getWishList(page: Int, pageSize: Int) =
@@ -30,9 +36,23 @@ class MoreRemoteDataSource @Inject constructor(private val service: AudiobookSer
     ) = getResult { service.orderCheckout(orderId, cancel_url, return_url, use_credit) }
 
     suspend fun orderBookList(
-        orderItem: ArrayList<BookRoom>,
-        country_code: String,
-        coupon_code: String?
-    ) = getResult { service.orderBookList(orderItem, country_code, coupon_code) }
+   // params :HashMap<String, RequestBody>
+        body:RequestBody
+    //a:RequestBody, b:RequestBody,  c:RequestBody, d:RequestBody, e:RequestBody, f:RequestBody
+    ) = getResult { service.orderBookList(
+        //a,b,c,d,e,f
+//        RequestBody.create(MediaType.parse("text/plain"), "190393"),
+//        RequestBody.create(MediaType.parse("text/plain"), "1"),
+//        RequestBody.create(MediaType.parse("text/plain"), "191147"),
+//        RequestBody.create(MediaType.parse("text/plain"), "1"),
+//        RequestBody.create(MediaType.parse("text/plain"), "US"),
+//        RequestBody.create(MediaType.parse("text/plain"), "")
+        body
+    )
+    }
 
+    fun buyCreditStatusNotification(title: String, body: String) =
+        notificationService.simple(title, body)
+
+    suspend fun getCredit() = getResult { service.getCredit() }
 }

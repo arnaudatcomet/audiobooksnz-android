@@ -230,7 +230,7 @@ interface AudiobookService {
     ): Response<OrderData>
 
     @Multipart
-    @POST("/orders/checkout/{orderId}")
+    @POST("orders/checkout/{orderId}")
     @Headers("No-Authentication: false")
     suspend fun orderCheckout(
         @Path("orderId") orderId: Int,
@@ -239,30 +239,18 @@ interface AudiobookService {
         @Part("use_credit") use_credit: RequestBody //0
     ): Response<PaymentData>
 
-    //need test
-    @FormUrlEncoded
+    //@JvmSuppressWildcards
+   // @Multipart
     @POST("orders/calculate-total")
     @Headers("No-Authentication: false")
     suspend fun orderBookList(
-    @Field("OrderItems") orderItem: ArrayList<BookRoom>,
-    @Field("country_code") country_code: String,
-    @Field("coupon_code")  coupon_code: String?,
-    @Query("expand") expand: String? = "orderItems.product"
+        @Body body:RequestBody,
+//        @Part("OrderItem[0][product_id]") product_id: RequestBody ,
+//        @Part("OrderItem[0][type_id]") type_id: RequestBody ,
+//        @Part("OrderItem[1][product_id]") product_id2: RequestBody ,
+//        @Part("OrderItem[1][type_id]") type_id2: RequestBody ,
+//        @Part("country_code") country_code: RequestBody,
+//        @Part("coupon_code") coupon_code: RequestBody,
+        @Query("expand") expand: String? = "orderItems.product"
     ): Response<OrderData>
-
-//    {
-//        @Field("OrderItem[][product_id]")
-//        @Field("OrderItem[][type_id]")
-//        @Field("country_code")
-//        @Field("coupon_code")
-//        @Query("expand")
-//    }
-
-//        var orderProduct:  MutableMap<String, Int> = mutableMapOf()
-//        var orderType:  MutableMap<String, String> = mutableMapOf()
-//        for(index in 0..orderItem.size) {
-//            orderProduct["OrderItem[$index][product_id]"] = orderItem[index].id!!
-//            orderType["OrderItem[$index][type_id]"] = "1"
-//        }
-
 }

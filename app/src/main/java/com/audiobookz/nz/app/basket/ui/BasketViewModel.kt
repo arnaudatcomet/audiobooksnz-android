@@ -7,17 +7,21 @@ import com.audiobookz.nz.app.basket.data.OrderData
 import com.audiobookz.nz.app.basket.data.PaymentData
 import com.audiobookz.nz.app.bookdetail.data.BookRoom
 import com.audiobookz.nz.app.data.Result
+import com.audiobookz.nz.app.login.data.UserData
 import com.audiobookz.nz.app.util.WEB_URL
+import okhttp3.FormBody
 import okhttp3.MediaType
+import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import javax.inject.Inject
 
 
 class BasketViewModel @Inject constructor(private val repository: BasketRepository) : ViewModel() {
-    val basketResult by lazy {   repository.loadBasket()}
+    val basketResult by lazy { repository.loadBasket() }
     var resultPayment = MediatorLiveData<Result<PaymentData>>()
     var resultOrder = MediatorLiveData<Result<OrderData>>()
-    fun deleteCartById(id:Int) {
+    var resultCheckCredit = MediatorLiveData<Result<UserData>>()
+    fun deleteCartById(id: Int) {
         repository.deleteBook(id)
     }
 
@@ -39,8 +43,46 @@ class BasketViewModel @Inject constructor(private val repository: BasketReposito
     }
 
     fun orderBookList(orderItem: ArrayList<BookRoom>, code: String, coupon: String?) {
-        resultOrder.addSource(
-            repository.orderBookList(orderItem, code, coupon)
-        ) { value -> resultOrder.value = value }
+
+//        val requestBody = MultipartBody.Builder().setType(MultipartBody.FORM).apply {
+//            // addFormDataPart("coupon_code", coupon)
+//            addFormDataPart("country_code", code)
+//            for (i in orderItem.indices) {
+//                addFormDataPart("orderItem[$i][product_id]", orderItem[i].id!!.toString())
+//                addFormDataPart("orderItem[$i][type_id]", "1")
+//            }
+//        }.build()
+
+        val formBody: RequestBody = FormBody.Builder().apply {
+            add("country_code", code)
+            add("username", "")
+            add("password", "")
+
+            for (i in orderItem.indices) {
+                add("orderItem[$i][product_id]", orderItem[i].id!!.toString())
+                add("orderItem[$i][type_id]", "1")
+            }
+        }.build()
+
+
+//        val filePart = MultipartBody.Part.createFormData(
+//            "file",
+//            "",
+//            RequestBody.create(MediaType.parse("text/plain"), file)
+//        )
+
+
+//        resultOrder.addSource(
+//            repository.orderBookList(requestBody)
+//        ) { value -> resultOrder.value = value }
+    }
+
+    fun buyCreditStatusNotification(title: String, body: String) =
+        repository.buyCreditStatusNotification(title, body)
+
+    fun getCredits() {
+        resultCheckCredit.addSource(repository.getCredits()) { value ->
+            resultCheckCredit.value = value
+        }
     }
 }

@@ -10,5 +10,11 @@ import kotlinx.android.parcel.Parcelize
 class PaymentData(
     @SerializedName("approval_url")
     @Expose
-    val approval_url: String
+    val approval_url: String,
+    @SerializedName("state")
+    @Expose
+    val state: String,
+    @SerializedName("msg")
+    @Expose
+    val msg: String
 ) : Parcelable
