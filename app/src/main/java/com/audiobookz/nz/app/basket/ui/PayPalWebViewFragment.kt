@@ -1,5 +1,6 @@
 package com.audiobookz.nz.app.basket.ui
 
+import android.os.AsyncTask
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -57,6 +58,11 @@ class PayPalWebViewFragment : Fragment(), Injectable {
                         "Payment Status",
                         " Your Payment is succesful"
                     )
+                    if (args.NavigateFrom == "Order"){
+                        AsyncTask.execute {
+                            viewModel.deleteCartAll()
+                        }
+                    }
                 }
                 return true
             }

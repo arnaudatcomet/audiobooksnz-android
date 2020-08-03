@@ -25,6 +25,8 @@ class BasketRepository @Inject constructor(
         dao.deleteById(id)
     }
 
+    fun deleteBookAll(){dao.deleteAll()}
+
     fun orderCheckout(
         orderId: Int,
         cancel_url: RequestBody,
@@ -34,17 +36,12 @@ class BasketRepository @Inject constructor(
         networkCall = { remoteSource.orderCheckout(orderId, cancel_url, return_url, use_credit) })
 
     fun orderBookList(
-        body:RequestBody
+        body:List<MultipartBody.Part>, coupon:RequestBody, code:RequestBody
     ) = resultFetchOnlyLiveData(
         networkCall = { remoteSource.orderBookList(
-          //  params
-        body
-//            RequestBody.create(MediaType.parse("text/plain"), "190393"),
-//            RequestBody.create(MediaType.parse("text/plain"), "1"),
-//            RequestBody.create(MediaType.parse("text/plain"), "191147"),
-//            RequestBody.create(MediaType.parse("text/plain"), "1"),
-//            RequestBody.create(MediaType.parse("text/plain"), "US"),
-//            RequestBody.create(MediaType.parse("text/plain"), "")
+
+        body, coupon ,code
+
         )})
 
     fun buyCreditStatusNotification(title: String, body: String) =

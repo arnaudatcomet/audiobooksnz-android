@@ -19,4 +19,9 @@ interface BookRoomDao {
     @Query("DELETE FROM bookroom WHERE id = :id")
     fun deleteById(id:Int)
 
+    @Query("DELETE FROM bookroom")
+    fun deleteAll()
+
+
+
 }

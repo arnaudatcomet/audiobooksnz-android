@@ -25,15 +25,21 @@
         app:argType="string"
         app:nullable="true" />
         <action
-            android:id="@+id/action_confirmOrderFragment_to_payPalWebViewFragment2"
-            app:destination="@id/payPalWebViewFragment2" />
+            android:id="@+id/action_confirmOrderFragment_to_payPalWebViewFragment"
+            app:destination="@id/payPalWebViewFragment"
+            app:popUpTo="@id/basketFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
-        android:id="@+id/payPalWebViewFragment2"
+        android:id="@+id/payPalWebViewFragment"
         android:name="com.audiobookz.nz.app.basket.ui.PayPalWebViewFragment"
         android:label="PayPalWebViewFragment" >
         <argument
             android:name="linkUrl"
             app:argType="string"/>
+        <argument
+            android:name="NavigateFrom"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 </navigation>

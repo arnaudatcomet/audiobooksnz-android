@@ -240,17 +240,13 @@ interface AudiobookService {
     ): Response<PaymentData>
 
     //@JvmSuppressWildcards
-   // @Multipart
+    @Multipart
     @POST("orders/calculate-total")
     @Headers("No-Authentication: false")
     suspend fun orderBookList(
-        @Body body:RequestBody,
-//        @Part("OrderItem[0][product_id]") product_id: RequestBody ,
-//        @Part("OrderItem[0][type_id]") type_id: RequestBody ,
-//        @Part("OrderItem[1][product_id]") product_id2: RequestBody ,
-//        @Part("OrderItem[1][type_id]") type_id2: RequestBody ,
-//        @Part("country_code") country_code: RequestBody,
-//        @Part("coupon_code") coupon_code: RequestBody,
+        @Part Product: List<MultipartBody.Part>,
+        @Part("coupon_code") coupon_code: RequestBody,
+        @Part("country_code") country_code: RequestBody,
         @Query("expand") expand: String? = "orderItems.product"
     ): Response<OrderData>
 }

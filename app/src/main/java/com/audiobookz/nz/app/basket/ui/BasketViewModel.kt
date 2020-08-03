@@ -24,6 +24,8 @@ class BasketViewModel @Inject constructor(private val repository: BasketReposito
     fun deleteCartById(id: Int) {
         repository.deleteBook(id)
     }
+    //when pay finish
+    fun deleteCartAll(){repository.deleteBookAll()}
 
     fun orderCheckout(orderId: Int, creditUse: String) {
         var requestCancel = RequestBody.create(
@@ -43,38 +45,19 @@ class BasketViewModel @Inject constructor(private val repository: BasketReposito
     }
 
     fun orderBookList(orderItem: ArrayList<BookRoom>, code: String, coupon: String?) {
-
-//        val requestBody = MultipartBody.Builder().setType(MultipartBody.FORM).apply {
-//            // addFormDataPart("coupon_code", coupon)
-//            addFormDataPart("country_code", code)
-//            for (i in orderItem.indices) {
-//                addFormDataPart("orderItem[$i][product_id]", orderItem[i].id!!.toString())
-//                addFormDataPart("orderItem[$i][type_id]", "1")
-//            }
-//        }.build()
-
-        val formBody: RequestBody = FormBody.Builder().apply {
-            add("country_code", code)
-            add("username", "")
-            add("password", "")
+        var listProduct = ArrayList<MultipartBody.Part>()
 
             for (i in orderItem.indices) {
-                add("orderItem[$i][product_id]", orderItem[i].id!!.toString())
-                add("orderItem[$i][type_id]", "1")
+                listProduct.add(MultipartBody.Part.createFormData("OrderItem[$i][product_id]", orderItem[i].id.toString()))
+                listProduct.add(MultipartBody.Part.createFormData("OrderItem[$i][type_id]","1"))
             }
-        }.build()
 
+        var requestCode = RequestBody.create(MediaType.parse("text/plain"), code)
+        var requestCoupon = RequestBody.create(MediaType.parse("text/plain"), coupon)
 
-//        val filePart = MultipartBody.Part.createFormData(
-//            "file",
-//            "",
-//            RequestBody.create(MediaType.parse("text/plain"), file)
-//        )
-
-
-//        resultOrder.addSource(
-//            repository.orderBookList(requestBody)
-//        ) { value -> resultOrder.value = value }
+        resultOrder.addSource(
+            repository.orderBookList(listProduct, requestCoupon, requestCode)
+        ) { value -> resultOrder.value = value }
     }
 
     fun buyCreditStatusNotification(title: String, body: String) =

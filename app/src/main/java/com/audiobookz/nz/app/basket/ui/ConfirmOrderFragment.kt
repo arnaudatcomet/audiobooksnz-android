@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.audiobookz.nz.app.bookdetail.data.BookRoom
 import com.audiobookz.nz.app.databinding.FragmentConfirmOrderBinding
@@ -61,11 +62,6 @@ class ConfirmOrderFragment : Fragment(), Injectable {
                     if (result.data?.isNotEmpty()!!) {
                         bookListProduct = result.data as ArrayList<BookRoom>
                         binding.subTotalLinear.visibility = View.VISIBLE
-                        for (book in result.data) {
-                            if (book.price != null)
-                                totalPrice += book.price.toFloat()
-                        }
-                        binding.subTotalPriceOrderTxt.text = totalPrice.toString()
                         val localCountryCode = context!!.resources.configuration.locale.country
                         viewModel.orderBookList(bookListProduct, localCountryCode, args.coupon)
 
@@ -86,12 +82,15 @@ class ConfirmOrderFragment : Fragment(), Injectable {
             when (result.status) {
                 Result.Status.SUCCESS -> {
                     orderId = result.data?.id
+                    binding.subTotalPriceOrderTxt.text = result.data?.subtotal.toString()
+                    binding.totalPriceOrderTxt.text = result.data?.total.toString()
                     viewModel.getCredits()
                 }
                 Result.Status.LOADING -> {
                 }
                 Result.Status.ERROR -> {
-                    Toast.makeText(activity, result.message, Toast.LENGTH_SHORT).show();3
+                    Toast.makeText(activity, "Please Your Coupon is Correct", Toast.LENGTH_SHORT).show();3
+                    findNavController().popBackStack()
                 }
             }
         })
@@ -100,14 +99,15 @@ class ConfirmOrderFragment : Fragment(), Injectable {
             when (result.status) {
                 Result.Status.SUCCESS -> {
                     if (result.data != null) {
-                        if (result.data.state == "Temporary (checkout pending)") {
+                        if (result.data.state == "pending") {
                             if (result.data.approval_url != "") {
                                 val navController = Navigation.findNavController(view!!)
                                 navController.navigate(
-                                    ConfirmOrderFragmentDirections.actionConfirmOrderFragmentToPayPalWebViewFragment2(
-                                        result.data.approval_url
+                                    ConfirmOrderFragmentDirections.actionConfirmOrderFragmentToPayPalWebViewFragment(
+                                        result.data.approval_url, "Order"
                                     )
                                 )
+
                             }
                         } else if (result.data.state == "completed") {
                             Toast.makeText(

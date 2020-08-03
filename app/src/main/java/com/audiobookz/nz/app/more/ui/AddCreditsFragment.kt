@@ -75,7 +75,7 @@ class AddCreditsFragment : Fragment(), Injectable {
                             val navController = Navigation.findNavController(view!!)
                             navController.navigate(
                                 AddCreditsFragmentDirections.actionAddCreditsFragmentToPayPalWebViewFragment(
-                                    result.data.approval_url
+                                    result.data.approval_url, "Credits"
                                 )
                             )
                         } else {

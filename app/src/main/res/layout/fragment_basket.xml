@@ -102,6 +102,8 @@
                         android:backgroundTint="@color/colorMain"
                         android:text="@string/shopping"
                         android:textAllCaps="false"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/font_size_small"
                         android:onClick="@{goToBrowse}"/>
 
                     <Button
@@ -112,6 +114,8 @@
                         android:backgroundTint="@color/colorMain"
                         android:text="@string/checkout"
                         android:textAllCaps="false"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/font_size_small"
                         android:onClick="@{goToConfirm}"/>
                 </LinearLayout>
 

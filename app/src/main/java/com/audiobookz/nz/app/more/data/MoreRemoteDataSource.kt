@@ -36,19 +36,11 @@ class MoreRemoteDataSource @Inject constructor(
     ) = getResult { service.orderCheckout(orderId, cancel_url, return_url, use_credit) }
 
     suspend fun orderBookList(
-   // params :HashMap<String, RequestBody>
-        body:RequestBody
-    //a:RequestBody, b:RequestBody,  c:RequestBody, d:RequestBody, e:RequestBody, f:RequestBody
-    ) = getResult { service.orderBookList(
-        //a,b,c,d,e,f
-//        RequestBody.create(MediaType.parse("text/plain"), "190393"),
-//        RequestBody.create(MediaType.parse("text/plain"), "1"),
-//        RequestBody.create(MediaType.parse("text/plain"), "191147"),
-//        RequestBody.create(MediaType.parse("text/plain"), "1"),
-//        RequestBody.create(MediaType.parse("text/plain"), "US"),
-//        RequestBody.create(MediaType.parse("text/plain"), "")
-        body
-    )
+        body: List<MultipartBody.Part>, coupon: RequestBody, code: RequestBody
+    ) = getResult {
+        service.orderBookList(
+            body, coupon, code
+        )
     }
 
     fun buyCreditStatusNotification(title: String, body: String) =
