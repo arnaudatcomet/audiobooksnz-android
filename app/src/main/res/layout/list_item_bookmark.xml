@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
+
         <variable
             name="goToBookmarks"
             type="android.view.View.OnClickListener" />
@@ -9,7 +12,11 @@
             name="clickOptionMenuListener"
             type="android.view.View.OnClickListener" />
 
-        <import type="android.view.View"/>
+        <variable
+            name="swipeDelete"
+            type="android.view.View.OnClickListener" />
+
+        <import type="android.view.View" />
     </data>
 
     <LinearLayout
@@ -18,69 +25,114 @@
         android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:padding="0dp">
+            android:layout_margin="10dp">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_margin="10dp">
+            <com.chauthai.swipereveallayout.SwipeRevealLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:dragEdge="left"
+                app:mode="same_level">
 
-                <RelativeLayout
+                <!-- Your secondary layout here -->
+                <FrameLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:background="@android:color/holo_red_dark"
+                    android:onClick="@{swipeDelete}">
 
-                    <TextView
-                        android:id="@+id/chapterBookmarkTxt"
-                        android:layout_width="wrap_content"
+                    <ImageView
+                        android:layout_width="50dp"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_centerVertical="true"
-                        android:text="sample"
-                        android:textSize="@dimen/font_size_big"
-                        android:textColor="@color/colorMain" />
+                        android:layout_gravity="center"
+                        android:src="@drawable/delete_white_24dp" />
+                </FrameLayout>
 
-                    <androidx.appcompat.widget.AppCompatImageButton
-                        android:layout_width="20dp"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:onClick="@{clickOptionMenuListener}"
-                        android:src="@drawable/more_vert_black_36dp"
-                        android:backgroundTint="@android:color/transparent"/>
-                </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/titleBookmarkTxt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="sample" />
-
-                <TextView
-                    android:id="@+id/dateBookmarkTxt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="date sample" />
-
-                <TextView
-                    android:id="@+id/positionBookmarkTxt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="date time" />
-
-                <com.google.android.material.button.MaterialButton
-                    style="@style/Widget.App.Button"
+                <!-- Your main layout here -->
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:backgroundTint="@color/colorMain"
-                    android:text="go to bookmark"
-                    android:onClick="@{goToBookmarks}"/>
+                    android:orientation="vertical">
 
-            </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/chapterBookmarkTxt"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_centerVertical="true"
+                                    android:text="sample"
+                                    android:textColor="@color/colorMain"
+                                    android:textSize="@dimen/font_size_big" />
+
+                                <androidx.appcompat.widget.AppCompatImageButton
+                                    android:layout_width="20dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:backgroundTint="@android:color/transparent"
+                                    android:onClick="@{clickOptionMenuListener}"
+                                    android:src="@drawable/more_vert_black_36dp" />
+                            </RelativeLayout>
+
+                            <TextView
+                                android:id="@+id/titleBookmarkTxt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="10dp"
+                                android:text="sample" />
+
+                            <TextView
+                                android:id="@+id/dateBookmarkTxt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="10dp"
+                                android:drawableLeft="@drawable/date_range_black_18dp"
+                                android:drawablePadding="5dp"
+                                android:text="date sample" />
+
+                            <TextView
+                                android:id="@+id/positionBookmarkTxt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="10dp"
+                                android:drawableLeft="@drawable/schedule_black_18dp"
+                                android:drawablePadding="5dp"
+                                android:text="date time" />
+
+                        </LinearLayout>
+
+                        <com.google.android.material.button.MaterialButton
+                            style="@style/Widget.App.Button"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:backgroundTint="@color/colorMain"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:onClick="@{goToBookmarks}"
+                            android:text="@string/goTo" />
+
+                    </LinearLayout>
+                </FrameLayout>
+
+            </com.chauthai.swipereveallayout.SwipeRevealLayout>
         </androidx.cardview.widget.CardView>
-
     </LinearLayout>
+
 </layout>

@@ -15,6 +15,7 @@ import java.util.concurrent.TimeUnit
 
 class MyLibraryViewModel @Inject constructor(private val repository: MyLibraryRepository) :
     ViewModel() {
+    val getMultiValueCurretBook = repository.getMultiValueCurrentBook()
     var cloudBookResult = MediatorLiveData<Result<MutableMap<String, List<Any>>?>>()
     var oldCloudBook: List<CloudBook>? = null
     var isLatest: Boolean? = false
@@ -26,7 +27,7 @@ class MyLibraryViewModel @Inject constructor(private val repository: MyLibraryRe
             if (value.data?.size != null) {
 
                 val map: MutableMap<String, List<Any>> = mutableMapOf()
-                var resultFetch = fetchMoreCloudBook(oldCloudBook, value.data) as List<CloudBook>
+                var resultFetch = fetchMoreCloudBook(oldCloudBook, value.data!!) as List<CloudBook>
                 oldCloudBook = resultFetch
 
                 map["cloudList"] = resultFetch.filter {
@@ -47,7 +48,7 @@ class MyLibraryViewModel @Inject constructor(private val repository: MyLibraryRe
 
     fun fetchMoreCloudBook(oldData: List<CloudBook>?, newData: List<CloudBook>): List<CloudBook>? {
 
-        if (oldData != null) {
+        if (oldData != null && oldData.isNotEmpty()) {
             if (oldData.takeLast(10)[0].id == newData[0]?.id) {
                 isLatest = true
                 return oldData

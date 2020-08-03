@@ -179,6 +179,7 @@
     <string name="delete">Delete</string>
     <string name="yourNoteUpdate">Your bookmark note has been added</string>
     <string name="submit">Submit</string>
+    <string name="goTo">Go to bookmark</string>
 
     <!--Rating-->
     <string name="satisfaction">Satisfaction</string>

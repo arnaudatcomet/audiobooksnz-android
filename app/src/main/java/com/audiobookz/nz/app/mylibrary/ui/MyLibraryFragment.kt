@@ -1,33 +1,34 @@
 package com.audiobookz.nz.app.mylibrary.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import android.widget.Button
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.viewpager.widget.ViewPager
-
 import com.audiobookz.nz.app.R
 import com.audiobookz.nz.app.binding.TabLayoutAdapter
 import com.audiobookz.nz.app.di.Injectable
 import com.audiobookz.nz.app.di.injectViewModel
+import com.audiobookz.nz.app.player.ui.PlayerActivity
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.fragment_mylibrary.view.*
 import javax.inject.Inject
 
-class MyLibraryFragment : Fragment() {
+class MyLibraryFragment : Fragment() , Injectable {
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private lateinit var viewModel: MyLibraryViewModel
     lateinit var adapter : TabLayoutAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         var rootView = inflater.inflate(R.layout.fragment_mylibrary, container, false)
         setHasOptionsMenu(true)
-
+        viewModel = injectViewModel(viewModelFactory)
         return rootView
     }
 
@@ -37,12 +38,30 @@ class MyLibraryFragment : Fragment() {
         var searchCloud = view.findViewById<SearchView>(R.id.filterBookView)
         var libraryViewPager = view.findViewById<ViewPager>(R.id.tab_view_pager_library)
         var libraryTabLayout = view.findViewById<TabLayout>(R.id.tab_my_library)
+        var playBtn = view.findViewById<FloatingActionButton>(R.id.imgPlayLibrary)
 
         adapter = TabLayoutAdapter(childFragmentManager)
         adapter.addFragment(CloudLibraryFragment(""), "Cloud")
         adapter.addFragment(DeviceLibraryFragment(), "Device")
         libraryViewPager.adapter = adapter
         libraryTabLayout.setupWithViewPager(libraryViewPager)
+
+        playBtn.setOnClickListener {
+            var bookDetail = viewModel?.getMultiValueCurretBook
+            if (bookDetail != null) {
+                val intent = Intent(activity, PlayerActivity::class.java).apply {
+                    putExtra("contentId", bookDetail[0])
+                    putExtra("licenseIDBook", bookDetail[1])
+                    putExtra("cloudBookId", bookDetail[2])
+                    putExtra("titleBook", bookDetail[3])
+                    putExtra("urlImage", bookDetail[4])
+                    putExtra("bookId", bookDetail[5])
+                    putExtra("authorBook", bookDetail[6])
+                    putExtra("narratorBook", bookDetail[7])
+                }
+                startActivity(intent)
+            }
+        }
 
         searchCloud.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String): Boolean {

@@ -2,6 +2,7 @@ package com.audiobookz.nz.app.audiobookList.ui
 
 import android.app.Activity
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -46,16 +48,13 @@ class AudiobookListFragment : Fragment(), Injectable {
     private val adapter = AudiobookListAdapter()
     lateinit var binding: FragmentAudiobookListBinding
     private lateinit var fragmentStatus: String
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         fragmentStatus = "onAttach"
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (fragmentStatus == "onAttach") {
             fragmentStatus = "onViewCreated"
 
@@ -137,6 +136,21 @@ class AudiobookListFragment : Fragment(), Injectable {
         }
     }
 
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+
+        // Checks the orientation of the screen
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            binding.recyclerViewCatecoryDetail.layoutManager =
+                GridLayoutManager(context, 5, GridLayoutManager.VERTICAL, false)
+            binding.recyclerViewCatecoryDetail.adapter = adapter
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            binding.recyclerViewCatecoryDetail.layoutManager =
+                GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
+            binding.recyclerViewCatecoryDetail.adapter = adapter
+        }
+    }
+
     private fun subscribeUi(binding: FragmentAudiobookListBinding, adapter: AudiobookListAdapter) {
         viewModel.bookListResult.observe(viewLifecycleOwner, Observer { result ->
             when (result.status) {
@@ -165,11 +179,6 @@ class AudiobookListFragment : Fragment(), Injectable {
                 }
             }
         })
-    }
-
-    companion object {
-        fun newInstance(): AudiobookListFragment =
-            AudiobookListFragment()
     }
 
 }

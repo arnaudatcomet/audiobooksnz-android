@@ -19,7 +19,7 @@ class MoreViewModel @Inject constructor(private val repository: MoreRepository) 
     var resultBuyCredits = MediatorLiveData<Result<OrderData>>()
     var resultPayment = MediatorLiveData<Result<PaymentData>>()
     var page = 1
-    var pageSize = 20
+    var pageSize = 30
 
     fun getWishList() {
         resultGetWishList.addSource(

@@ -55,6 +55,7 @@ class PlayerBookmarkAdapter(
 
         itemBinding.goToBookmarks = goToBookmarkPosition(chapter.toString(), extraContentId, extraLicenseId, part!!, position)
         itemBinding.clickOptionMenuListener = openOptionMenu(currentItem.id, currentItem.user_audiobook_id)
+        itemBinding.swipeDelete = swipeDelete(currentItem.id, currentItem.user_audiobook_id)
 
     }
 
@@ -64,6 +65,11 @@ class PlayerBookmarkAdapter(
         }
     }
 
+    private fun swipeDelete(bookmarkId: Int, cloudId:Int):View.OnClickListener{
+        return View.OnClickListener {
+            viewModel.deleteBookmark(bookmarkId,cloudId)
+        }
+    }
     private fun openOptionMenu(bookmarkId: Int, cloudId:Int): View.OnClickListener {
         return View.OnClickListener {
             val pop = PopupMenu(it.context, it)

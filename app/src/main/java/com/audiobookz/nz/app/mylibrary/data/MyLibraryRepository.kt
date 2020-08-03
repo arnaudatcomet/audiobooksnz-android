@@ -127,5 +127,7 @@ class MyLibraryRepository @Inject constructor(
             onDataError = {}
         )
 
+    fun getMultiValueCurrentBook() = sharePref.getMultiValueCurrentBook()
+
 
 }
