@@ -1,8 +1,10 @@
 package com.audiobookz.nz.app.player.ui
 
+import android.app.UiModeManager
 import android.content.Context
 import android.media.AudioManager
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -40,6 +42,7 @@ import io.audioengine.mobile.PlaybackEvent
 import org.json.JSONObject
 import com.google.android.material.snackbar.Snackbar
 import com.bumptech.glide.Glide
+import com.google.android.gms.common.GoogleApiAvailability
 import kotlinx.android.synthetic.main.fragment_book_detail.view.*
 import kotlinx.android.synthetic.main.fragment_rate_and_review.view.*
 import kotlinx.android.synthetic.main.rating_dialog_layout.view.*
@@ -137,23 +140,26 @@ class AudioPlayerFragment : Fragment(), Injectable {
     override fun onResume() {
         super.onResume()
 
-        castContext.sessionManager.addSessionManagerListener(
-            sessionManagerListener,
-            CastSession::class.java
-        )
-        if (castBookSession == null) {
+        if (activity?.let { isCar(it) } == false) {
+            castContext.sessionManager.addSessionManagerListener(
+                sessionManagerListener,
+                CastSession::class.java
+            )
+            if (castBookSession == null) {
 
-            castBookSession = castContext.sessionManager.currentCastSession
+                castBookSession = castContext.sessionManager.currentCastSession
+            }
         }
     }
 
     override fun onPause() {
         Log.i("MainActivity", "onPause")
-
-        castContext.sessionManager.removeSessionManagerListener(
-            sessionManagerListener,
-            CastSession::class.java
-        )
+        if (activity?.let { isCar(it) } == false) {
+            castContext.sessionManager.removeSessionManagerListener(
+                sessionManagerListener,
+                CastSession::class.java
+            )
+        }
         super.onPause()
     }
 
@@ -164,11 +170,7 @@ class AudioPlayerFragment : Fragment(), Injectable {
         return
     }
 
-    private fun loadRemoteMedia(
-        progress: Int,
-        autoPlay: Boolean,
-        castSession: CastSession?
-    ) {
+    private fun loadRemoteMedia(progress: Int, autoPlay: Boolean, castSession: CastSession?) {
         val remoteMediaClient: RemoteMediaClient = castSession?.remoteMediaClient ?: return
         castBookSession = castSession
         remoteMediaClient.load(buildMediaInfo(), buildMediaLoadOption(progress, autoPlay))
@@ -180,7 +182,9 @@ class AudioPlayerFragment : Fragment(), Injectable {
     }
 
     private fun buildMediaInfo(): MediaInfo {
-        val movieMetadata = MediaMetadata(MediaMetadata.MEDIA_TYPE_MUSIC_TRACK)
+        val mediaMetadata = MediaMetadata(MediaMetadata.MEDIA_TYPE_MUSIC_TRACK)
+        mediaMetadata.putString(MediaMetadata.KEY_TITLE, extraBookTitle)
+        mediaMetadata.putString(MediaMetadata.KEY_ARTIST, extraBookAuthor)
         val audiobookData = JSONObject()
         audiobookData.put("session_key", sessionId)
         audiobookData.put("account_id", engineAccount)
@@ -191,7 +195,7 @@ class AudioPlayerFragment : Fragment(), Injectable {
         return MediaInfo.Builder(extraContentID)
             .setStreamType(MediaInfo.STREAM_TYPE_BUFFERED)
             .setContentType("audio/mpeg")
-            .setMetadata(movieMetadata)
+            .setMetadata(mediaMetadata)
             .setCustomData(audiobookData)
             .setStreamDuration(0)
             .build()
@@ -202,7 +206,6 @@ class AudioPlayerFragment : Fragment(), Injectable {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         viewModel = injectViewModelWithActivityLifeCycle(viewModelFactory)
         var binding = FragmentAudioPlayerBinding.inflate(inflater, container, false)
         chapterBookTxt = activity?.findViewById(R.id.titleBook)
@@ -247,13 +250,17 @@ class AudioPlayerFragment : Fragment(), Injectable {
 
         subscribeUi(binding)
         viewModel.getPlayerState()
-        castContext.sessionManager.addSessionManagerListener(
-            sessionManagerListener,
-            CastSession::class.java
-        )
-        if (castBookSession == null) {
-            castBookSession = castContext.sessionManager.currentCastSession
+
+        if (activity?.let { isCar(it) } == false) {
+            castContext.sessionManager.addSessionManagerListener(
+                sessionManagerListener,
+                CastSession::class.java
+            )
+            if (castBookSession == null) {
+                castBookSession = castContext.sessionManager.currentCastSession
+            }
         }
+
         return binding.root
     }
 
@@ -384,11 +391,7 @@ class AudioPlayerFragment : Fragment(), Injectable {
         }
     }
 
-    fun convertAndUpdateTime(
-        position: Long,
-        duration: Long,
-        binding: FragmentAudioPlayerBinding
-    ) {
+    private fun convertAndUpdateTime(position: Long, duration: Long, binding: FragmentAudioPlayerBinding) {
 
         var totalDuration = duration
         var spentTime = position
@@ -470,6 +473,12 @@ class AudioPlayerFragment : Fragment(), Injectable {
 
     }
 
+    private fun isCar(context: Context): Boolean {
+        var uiMode: UiModeManager =
+            context.getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
+        return uiMode.currentModeType == Configuration.UI_MODE_TYPE_CAR
+    }
+
     private fun subscribeUi(binding: FragmentAudioPlayerBinding) {
         var chapterBookTxt = activity?.findViewById<TextView>(R.id.titleBook)
         //check come from button option
@@ -504,9 +513,9 @@ class AudioPlayerFragment : Fragment(), Injectable {
 
         })
         viewModel.playBackResult.observe(viewLifecycleOwner, Observer { result ->
-            if(currentPlayChapter!=result.chapter!!.chapter){
+            if (currentPlayChapter != result.chapter!!.chapter) {
                 currentPlayChapter = result.chapter!!.chapter
-                Log.d("TAG", "subscribeUi: "+currentPlayChapter!!.toLong())
+                Log.d("TAG", "subscribeUi: " + currentPlayChapter!!.toLong())
                 remoteMediaClient?.seek(currentPlayChapter!!.toLong())
             }
             currentPart = result.chapter!!.part
@@ -611,5 +620,6 @@ class AudioPlayerFragment : Fragment(), Injectable {
             }
         })
     }
+
 }
 
