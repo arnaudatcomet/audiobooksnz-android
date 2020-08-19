@@ -84,6 +84,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textAutoComplete"
+            android:textColor="@color/black"
             android:maxLines="1"/>
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -102,6 +103,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textAutoComplete"
+            android:textColor="@color/black"
             android:maxLines="1"/>
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -121,6 +123,10 @@
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:inputType="textPassword"
+            android:textColorHint="@color/black"
+            android:textColor="@color/black"
+            android:textColorHighlight="@color/black"
+            android:hint="@string/CurrentPass"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -139,6 +145,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="1"
+            android:textColor="@color/black"
+            android:hint="@string/NewPass"
+            android:textColorHint="@color/black"
             android:inputType="textPassword"/>
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -157,6 +166,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="1"
+            android:textColor="@color/black"
+            android:hint="@string/ConfirmPass"
+            android:textColorHint="@color/black"
             android:inputType="textPassword"/>
 
     </com.google.android.material.textfield.TextInputLayout>

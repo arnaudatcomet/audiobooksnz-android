@@ -81,7 +81,6 @@
                 android:gravity="center"
                 android:text="@{book.title}"
                 android:textAppearance="?attr/textAppearanceHeadline6"
-                android:textColor="@color/black"
                 tools:text="title" />
 
             <ImageView
@@ -111,7 +110,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@{`NZ$`+book.price+@string/or+ '('+book.credit_price+@string/bc+')'}"
-                        android:textColor="@color/black"
                         tools:text="price" />
                 </LinearLayout>
 
@@ -160,35 +158,30 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Written By : "
-                        android:textColor="@color/black"
                         tools:text="Written By : " />
                     <TextView
                         android:id="@+id/narratedtext"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Narrated By : "
-                        android:textColor="@color/black"
                         tools:text="Narrated By : " />
                     <TextView
                         android:id="@+id/publishertext"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Publisher : "
-                        android:textColor="@color/black"
                         tools:text="Publisher : " />
                     <TextView
                         android:id="@+id/lengthtext"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Length : "
-                        android:textColor="@color/black"
                         tools:text="Length : " />
                     <TextView
                         android:id="@+id/langtext"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Language : "
-                        android:textColor="@color/black"
                         tools:text="Language : " />
 
                 </LinearLayout>
@@ -203,7 +196,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@{authors}"
-                        android:textColor="@color/gray"
                         tools:text="MR.D"
                         android:onClick="@{authorsClick}"/>
                     <TextView
@@ -211,7 +203,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@{narrate}"
-                        android:textColor="@color/gray"
                         tools:text="MR.D"
                         android:onClick="@{narratorClick}"/>
 
@@ -220,7 +211,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@{book.bookEngineData.bookDetail.publisher}"
-                        android:textColor="@color/gray"
                         tools:text="MR.D"
                         android:onClick="@{publisherClick}"/>
 
@@ -229,7 +219,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@{book.bookEngineData.bookDetail.runtime}"
-                        android:textColor="@color/gray"
                         tools:text="MR.D" />
 
                     <TextView
