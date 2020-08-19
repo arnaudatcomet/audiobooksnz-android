@@ -2,6 +2,7 @@
 <layout>
 
     <data>
+
         <variable
             name="urlImage"
             type="String" />
@@ -42,7 +43,11 @@
             name="skipNextClick"
             type="android.view.View.OnClickListener" />
 
-        <import type="android.view.View"/>
+        <variable
+            name="isCar"
+            type="Boolean" />
+
+        <import type="android.view.View" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -62,65 +67,73 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="@{isCar? 0:1}">
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="20dp"
-                    app:cardCornerRadius="15dp">
-
-                    <ImageView
-                        android:id="@+id/imgCardBookDownload"
-                        android:layout_width="250dp"
-                        android:layout_height="250dp"
-                        android:padding="10dp"
-                        android:scaleType="centerCrop"
-                        app:imageFromUrl="@{urlImage}" />
-
-                </androidx.cardview.widget.CardView>
-
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-                    android:orientation="horizontal">
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/timeSpentTxt"
+                    <androidx.cardview.widget.CardView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:text="00.00" />
+                        android:layout_gravity="center"
+                        android:layout_margin="20dp"
+                        app:cardCornerRadius="15dp">
 
-                    <androidx.appcompat.widget.AppCompatSeekBar
-                        android:id="@+id/progressPlayerTimePlay"
-                        android:layout_width="wrap_content"
+                        <ImageView
+                            android:id="@+id/imgCardBookDownload"
+                            android:layout_width="250dp"
+                            android:layout_height="250dp"
+                            android:padding="10dp"
+                            android:scaleType="centerCrop"
+                            app:imageFromUrl="@{urlImage}" />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_toLeftOf="@+id/timeLeftTxt"
-                        android:layout_toRightOf="@+id/timeSpentTxt"
-                        />
+                        android:layout_margin="20dp"
+                        android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/timeLeftTxt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:text="00.00" />
+                        <TextView
+                            android:id="@+id/timeSpentTxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:text="00.00" />
 
-                </RelativeLayout>
+                        <androidx.appcompat.widget.AppCompatSeekBar
+                            android:id="@+id/progressPlayerTimePlay"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_toLeftOf="@+id/timeLeftTxt"
+                            android:layout_toRightOf="@+id/timeSpentTxt" />
+
+                        <TextView
+                            android:id="@+id/timeLeftTxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text="00.00" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/layout_player"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="6"
                     android:layout_margin="5dp"
                     android:gravity="center"
-                    android:orientation="horizontal">
+                    android:orientation="@{isCar? 1:0}">
 
                     <ImageButton
                         android:id="@+id/skipPreviousButton"
@@ -128,8 +141,8 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:background="?android:selectableItemBackgroundBorderless"
-                        android:src="@drawable/skip_previous_48dp"
-                        android:onClick="@{skipPreviousClick}"/>
+                        android:onClick="@{skipPreviousClick}"
+                        android:src="@drawable/skip_previous_48dp" />
 
                     <ImageButton
                         android:id="@+id/replay30sButton"
@@ -137,8 +150,8 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:background="?android:selectableItemBackgroundBorderless"
-                        android:src="@drawable/replay_30_48dp"
-                        android:onClick="@{replay30sClick}"/>
+                        android:onClick="@{replay30sClick}"
+                        android:src="@drawable/replay_30_48dp" />
 
                     <ImageButton
                         android:id="@+id/playButton"
@@ -146,8 +159,8 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:background="@drawable/circle_sharp_play"
-                        android:src="@drawable/play_arrow96"
-                        android:onClick="@{playClick}"/>
+                        android:onClick="@{playClick}"
+                        android:src="@drawable/play_arrow96" />
 
                     <ImageButton
                         android:id="@+id/forward30sButton"
@@ -155,8 +168,8 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:background="?android:selectableItemBackgroundBorderless"
-                        android:src="@drawable/forward_30_48dp"
-                        android:onClick="@{forward30sClick}"/>
+                        android:onClick="@{forward30sClick}"
+                        android:src="@drawable/forward_30_48dp" />
 
                     <ImageButton
                         android:id="@+id/skipNextButton"
@@ -164,19 +177,21 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:background="?android:selectableItemBackgroundBorderless"
-                        android:src="@drawable/skip_next_48dp"
-                        android:onClick="@{skipNextClick}"/>
+                        android:onClick="@{skipNextClick}"
+                        android:src="@drawable/skip_next_48dp" />
 
                 </LinearLayout>
+
             </LinearLayout>
+
         </ScrollView>
 
         <RelativeLayout
             android:id="@+id/layout_bottom_option"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:layout_weight="10">
+            android:layout_weight="10"
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -194,9 +209,9 @@
                     android:layout_weight="1"
                     android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground"
+                    android:onClick="@{speedSelectClick}"
                     android:orientation="vertical"
-                    android:paddingBottom="5dp"
-                    android:onClick="@{speedSelectClick}">
+                    android:paddingBottom="5dp">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -221,9 +236,9 @@
                     android:layout_weight="1"
                     android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground"
+                    android:onClick="@{chapterSelectClick}"
                     android:orientation="vertical"
-                    android:paddingBottom="5dp"
-                    android:onClick="@{chapterSelectClick}">
+                    android:paddingBottom="5dp">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -247,9 +262,9 @@
                     android:layout_weight="1"
                     android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground"
+                    android:onClick="@{sleepTimeSelectClick}"
                     android:orientation="vertical"
-                    android:paddingBottom="5dp"
-                    android:onClick="@{sleepTimeSelectClick}">
+                    android:paddingBottom="5dp">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -273,9 +288,9 @@
                     android:layout_weight="1"
                     android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground"
+                    android:onClick="@{addToBookmarkClick}"
                     android:orientation="vertical"
-                    android:paddingBottom="5dp"
-                    android:onClick="@{addToBookmarkClick}">
+                    android:paddingBottom="5dp">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -296,4 +311,5 @@
         </RelativeLayout>
 
     </LinearLayout>
+
 </layout>

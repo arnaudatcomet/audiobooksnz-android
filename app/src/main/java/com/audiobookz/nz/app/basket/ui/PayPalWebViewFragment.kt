@@ -32,6 +32,7 @@ class PayPalWebViewFragment : Fragment(), Injectable {
         viewModel = injectViewModel(viewModelFactory)
         val binding = FragmentPayPalWebViewBinding.inflate(inflater, container, false)
 
+        binding.webViewPayPal.settings.javaScriptEnabled = true
         binding.webViewPayPal.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
                 view?.loadUrl(url)

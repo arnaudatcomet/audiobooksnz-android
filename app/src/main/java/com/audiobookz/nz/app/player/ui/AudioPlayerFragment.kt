@@ -63,6 +63,7 @@ class AudioPlayerFragment : Fragment(), Injectable {
     private val castContext by lazy { CastContext.getSharedInstance(activity!!.applicationContext) }
     private val nameSpace by lazy { activity!!.applicationContext.getString(R.string.namespace) }
     private var mediaSelector: MediaRouteSelector? = null
+    private var isCarCheck = true
 
     // var seekbarTime = view.findViewById<SeekBar>(R.id.progressPlayerTimePlay)
     var remoteMediaClient: RemoteMediaClient? = null
@@ -256,10 +257,13 @@ class AudioPlayerFragment : Fragment(), Injectable {
                 sessionManagerListener,
                 CastSession::class.java
             )
+            isCarCheck = false
             if (castBookSession == null) {
                 castBookSession = castContext.sessionManager.currentCastSession
             }
         }
+
+        binding.isCar = isCarCheck
 
         return binding.root
     }
