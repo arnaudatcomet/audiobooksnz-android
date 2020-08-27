@@ -1,13 +1,14 @@
 package com.audiobookz.nz.app.basket.ui
 
+import android.graphics.Bitmap
 import android.os.AsyncTask
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.webkit.*
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
@@ -33,10 +34,19 @@ class PayPalWebViewFragment : Fragment(), Injectable {
         val binding = FragmentPayPalWebViewBinding.inflate(inflater, container, false)
 
         binding.webViewPayPal.settings.javaScriptEnabled = true
-        binding.webViewPayPal.webViewClient = object : WebViewClient() {
-            override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-                view?.loadUrl(url)
-                return true
+
+        //hide progressbar when load url done
+        binding.webViewPayPal.webChromeClient = object : WebChromeClient() {
+            override fun onProgressChanged(view: WebView?, newProgress: Int) {
+                super.onProgressChanged(view, newProgress)
+                if (newProgress == 100){
+                    binding.webViewProgressBar.visibility = View.INVISIBLE
+                    binding.webViewPayPal.visibility = View.VISIBLE
+                }
+                else{
+                    binding.webViewProgressBar.visibility = View.VISIBLE
+                    binding.webViewPayPal.visibility = View.INVISIBLE
+                }
             }
         }
 
@@ -47,9 +57,10 @@ class PayPalWebViewFragment : Fragment(), Injectable {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //observe change url page
         webViewPayPal.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-                if (url == WEB_URL || url == "$WEB_URL/home") {
+                if (url == "$WEB_URL/" || url == "$WEB_URL/home") {
                     viewModel.buyCreditStatusNotification(
                         "Payment Status",
                         " Your Payment is Failed"
@@ -65,7 +76,8 @@ class PayPalWebViewFragment : Fragment(), Injectable {
                         }
                     }
                 }
-                return true
+
+                return false
             }
         }
     }

@@ -1,29 +1,20 @@
 package com.audiobookz.nz.app.audiobookList.ui
 
-import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.audiobookz.nz.app.App
 import com.audiobookz.nz.app.R
-import com.audiobookz.nz.app.browse.categories.ui.VerticalItemDecoration
-import com.audiobookz.nz.app.browse.featured.data.Featured
-import com.audiobookz.nz.app.browse.featured.ui.BookAdapter
-import com.audiobookz.nz.app.browse.featured.ui.FeaturedFragment
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.databinding.FragmentAudiobookListBinding
 import com.audiobookz.nz.app.di.Injectable
@@ -34,7 +25,6 @@ import com.audiobookz.nz.app.ui.show
 import com.audiobookz.nz.app.util.AUDIOBOOKLIST_PAGE_SIZE
 import com.audiobookz.nz.app.util.CATEGORY_PAGE_SIZE
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_audiobook_list.view.*
 import javax.inject.Inject
 
 
@@ -54,7 +44,11 @@ class AudiobookListFragment : Fragment(), Injectable {
         fragmentStatus = "onAttach"
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         if (fragmentStatus == "onAttach") {
             fragmentStatus = "onViewCreated"
 
@@ -76,9 +70,17 @@ class AudiobookListFragment : Fragment(), Injectable {
                 }
             }
 
-            binding.recyclerViewCatecoryDetail.layoutManager =
-                GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
-            binding.recyclerViewCatecoryDetail.adapter = adapter
+            //check orientation
+            val currentOrientation = resources.configuration.orientation
+            if (currentOrientation == Configuration.ORIENTATION_LANDSCAPE) {
+                binding.recyclerViewCatecoryDetail.layoutManager =
+                    GridLayoutManager(context, 5, GridLayoutManager.VERTICAL, false)
+                binding.recyclerViewCatecoryDetail.adapter = adapter
+            } else {
+                binding.recyclerViewCatecoryDetail.layoutManager =
+                    GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
+                binding.recyclerViewCatecoryDetail.adapter = adapter
+            }
 
             when {
                 //open by showAll
@@ -128,7 +130,8 @@ class AudiobookListFragment : Fragment(), Injectable {
                 } else {
                     //change lang in show all
                     defaultLang = spinnerLang.selectedItem.toString()
-                    var afterFilter = args.listItem?.filter { it.audiobook?.language == defaultLang}
+                    var afterFilter =
+                        args.listItem?.filter { it.audiobook?.language == defaultLang }
                     adapter.submitList(afterFilter?.map { featured -> featured.audiobook })
                 }
 
@@ -144,7 +147,7 @@ class AudiobookListFragment : Fragment(), Injectable {
             binding.recyclerViewCatecoryDetail.layoutManager =
                 GridLayoutManager(context, 5, GridLayoutManager.VERTICAL, false)
             binding.recyclerViewCatecoryDetail.adapter = adapter
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             binding.recyclerViewCatecoryDetail.layoutManager =
                 GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
             binding.recyclerViewCatecoryDetail.adapter = adapter
