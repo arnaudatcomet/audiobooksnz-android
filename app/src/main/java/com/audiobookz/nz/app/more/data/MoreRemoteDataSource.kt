@@ -47,4 +47,8 @@ class MoreRemoteDataSource @Inject constructor(
         notificationService.simple(title, body)
 
     suspend fun getCredit() = getResult { service.getCredit() }
+
+    suspend fun getCurrentPlan(Page:Int,PageSize:Int) = getResult { service.getCurrentPlan("plan",Page,PageSize,"-created_at") }
+
+    fun  deleteSubscriptions(subscriptionId:Int) = service.deleteSubscriptions(subscriptionId)
 }

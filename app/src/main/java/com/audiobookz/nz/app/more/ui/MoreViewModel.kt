@@ -9,8 +9,12 @@ import okhttp3.MediaType
 import okhttp3.RequestBody
 import javax.inject.Inject
 import com.audiobookz.nz.app.data.Result
+import com.audiobookz.nz.app.more.data.SubscriptionsData
 import com.audiobookz.nz.app.more.data.WishListData
 import com.audiobookz.nz.app.util.WEB_URL
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class MoreViewModel @Inject constructor(private val repository: MoreRepository) : ViewModel() {
@@ -18,6 +22,7 @@ class MoreViewModel @Inject constructor(private val repository: MoreRepository) 
     var resultGetWishList = MediatorLiveData<Result<List<WishListData>>>()
     var resultBuyCredits = MediatorLiveData<Result<OrderData>>()
     var resultPayment = MediatorLiveData<Result<PaymentData>>()
+    var getCurrentPlanResult = MediatorLiveData<Result<List<SubscriptionsData>>>()
     var page = 1
     var pageSize = 30
 
@@ -63,4 +68,29 @@ class MoreViewModel @Inject constructor(private val repository: MoreRepository) 
         ) { value -> resultPayment.value = value }
     }
 
+    fun getCurrentPlan() {
+        getCurrentPlanResult.addSource(
+            (repository.getCurrentPlan(
+                1,
+                10
+            ))
+        ) { value ->
+            getCurrentPlanResult.value = value
+        }
+    }
+
+    fun deleteSubscriptions(subscriptionId: Int) {
+        var requestCall = repository.deleteSubscriptions(subscriptionId)
+        requestCall.enqueue(object : Callback<Unit> {
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                //do nothing
+            }
+
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                if (response.isSuccessful) {
+                    getCurrentPlan()
+                }
+            }
+        })
+    }
 }
