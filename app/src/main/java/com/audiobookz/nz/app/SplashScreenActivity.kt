@@ -2,6 +2,7 @@ package com.audiobookz.nz.app
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.audiobookz.nz.app.api.SharedPreferencesService
 import com.audiobookz.nz.app.login.ui.LoginActivity
 
@@ -10,7 +11,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         val sharePref = SharedPreferencesService(this)
 
         val accessToken = sharePref.getToken()

@@ -2,6 +2,7 @@ package com.audiobookz.nz.app.basket.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.audiobookz.nz.app.R
@@ -19,6 +20,7 @@ class ActivityBasket : AppCompatActivity(), HasSupportFragmentInjector {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_basket)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
     }
 
 

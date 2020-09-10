@@ -6,6 +6,13 @@
         android:layout_height="match_parent"
         tools:context=".basket.ui.PayPalWebViewFragment">
 
+        <ProgressBar
+            android:id="@+id/webViewProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+
         <WebView
             android:id="@+id/webViewPayPal"
             android:layout_width="match_parent"

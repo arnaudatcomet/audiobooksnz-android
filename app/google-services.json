@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "718099209429",
+    "firebase_url": "https://audiobooknzfirebase.firebaseio.com",
+    "project_id": "audiobooknzfirebase",
+    "storage_bucket": "audiobooknzfirebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:718099209429:android:e17c73be2fabe2e20c165c",
+        "android_client_info": {
+          "package_name": "com.audiobookz.nz.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "718099209429-9ts7l40r0lp2m2m7bkraimdg6e0f2aul.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.audiobookz.nz.app",
+            "certificate_hash": "17fff95633490f8db690c8ddd4710bcadf1839f6"
+          }
+        },
+        {
+          "client_id": "718099209429-sc9khurr7q4164i9gcps89o83h6l5b36.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC79tFKXGs2UyMS9JxYmx7WKV90v8T8OCM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "718099209429-2mkutb5ivvjlh3h7rjf92se9q1o4mqsn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "718099209429-1871nvte9o67pn5iifbgol597h8oqvr4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.AudioBookNZ.firebase"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

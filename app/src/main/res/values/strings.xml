@@ -214,4 +214,13 @@
     <string name="searchByAuthor">Search by Author</string>
     <string name="searchByNarrator">Search by Narrator</string>
 
+    <!--Current Plan-->
+    <string name="cancelled">Cancelled</string>
+    <string name="cancel">Cancel</string>
+    <string name="planName">Plan Name</string>
+    <string name="dateStart">Date Start</string>
+    <string name="dateFinish">Date Finish</string>
+    <string name="paypalAgreement">Paypal Agreement ID</string>
+    <string name="status">Status</string>
+
 </resources>

@@ -33,7 +33,7 @@
     <fragment
         android:id="@+id/payPalWebViewFragment"
         android:name="com.audiobookz.nz.app.basket.ui.PayPalWebViewFragment"
-        android:label="PayPalWebViewFragment" >
+        android:label="Paypal Order Books" >
         <argument
             android:name="linkUrl"
             app:argType="string"/>

@@ -18,7 +18,8 @@ class MoreFragment : Fragment() {
     ): View? {
         val binding = FragmentMoreBinding.inflate(inflater, container, false)
         binding.addCreditClick = goToAddCredits()
-        binding.wishListClick = goToWiishList()
+        binding.wishListClick = goToWishList()
+        binding.currentPlanClick = goToCurrentPlan()
         return binding.root
     }
 
@@ -29,9 +30,16 @@ class MoreFragment : Fragment() {
         }
     }
 
-    private fun goToWiishList(): View.OnClickListener{
+    private fun goToWishList(): View.OnClickListener{
         return View.OnClickListener {
             val direction = MoreFragmentDirections.actionMoreFragmentToWishlistFragment()
+            it.findNavController().navigate(direction)
+        }
+    }
+
+    private fun goToCurrentPlan(): View.OnClickListener{
+        return View.OnClickListener {
+            val direction = MoreFragmentDirections.actionMoreToCurrentPlanFragment()
             it.findNavController().navigate(direction)
         }
     }

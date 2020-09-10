@@ -8,6 +8,9 @@
     <variable
         name="addCreditClick"
         type="android.view.View.OnClickListener" />
+    <variable
+        name="currentPlanClick"
+        type="android.view.View.OnClickListener" />
     <import type="android.view.View" />
 </data>
 
@@ -53,7 +56,8 @@
             android:id="@+id/currentPlanCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clickable="true">
+            android:clickable="true"
+            android:onClick="@{currentPlanClick}">
 
             <RelativeLayout
                 android:layout_width="wrap_content"

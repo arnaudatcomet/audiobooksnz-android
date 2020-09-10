@@ -5,11 +5,11 @@ import com.audiobookz.nz.app.basket.data.OrderData
 import com.audiobookz.nz.app.basket.data.PaymentData
 import com.audiobookz.nz.app.bookdetail.data.BookDetail
 import com.audiobookz.nz.app.bookdetail.data.BookReview
-import com.audiobookz.nz.app.bookdetail.data.BookRoom
 import com.audiobookz.nz.app.browse.categories.data.Category
 import com.audiobookz.nz.app.browse.featured.data.Featured
 import com.audiobookz.nz.app.login.data.SuccessData
 import com.audiobookz.nz.app.login.data.UserData
+import com.audiobookz.nz.app.more.data.SubscriptionsData
 import com.audiobookz.nz.app.more.data.WishListData
 import com.audiobookz.nz.app.mylibrary.data.CloudBook
 import com.audiobookz.nz.app.mylibrary.data.LocalBookData
@@ -249,4 +249,17 @@ interface AudiobookService {
         @Part("country_code") country_code: RequestBody,
         @Query("expand") expand: String? = "orderItems.product"
     ): Response<OrderData>
+
+    @GET("users/subscriptions")
+    @Headers("No-Authentication: false")
+    suspend fun getCurrentPlan(
+        @Query("expand") expand: String = "plan",
+        @Query("page") page: Int? = null,
+        @Query("per-page") pageSize: Int? = null,
+        @Query("sort") sort: String? = null
+    ): Response<List<SubscriptionsData>>
+
+    @DELETE("users/subscriptions/{subscriptionId}")
+    @Headers("No-Authentication: false")
+    fun deleteSubscriptions(@Path("subscriptionId") subscriptionId: Int): retrofit2.Call<Unit>
 }

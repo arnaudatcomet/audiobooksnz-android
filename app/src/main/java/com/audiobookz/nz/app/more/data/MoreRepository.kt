@@ -27,4 +27,10 @@ class MoreRepository @Inject constructor(private val remoteSource: MoreRemoteDat
         use_credit: RequestBody
     ) = resultFetchOnlyLiveData(
         networkCall = { remoteSource.orderCheckout(orderId, cancel_url, return_url, use_credit) })
+
+    fun getCurrentPlan(Page: Int, PageSize: Int) = resultFetchOnlyLiveData(
+        networkCall = { remoteSource.getCurrentPlan(Page, PageSize) }
+    )
+
+    fun deleteSubscriptions(subscriptionId:Int) = remoteSource.deleteSubscriptions(subscriptionId)
 }
