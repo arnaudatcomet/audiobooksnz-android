@@ -1,12 +1,24 @@
 package com.audiobookz.nz.app.player.ui
 
-import android.app.UiModeManager
+import android.app.*
 import android.content.Context
 import android.media.AudioManager
 import android.content.Intent
 import android.content.res.Configuration
+import android.media.MediaMetadata.METADATA_KEY_DISPLAY_SUBTITLE
+import android.media.MediaMetadata.METADATA_KEY_DISPLAY_TITLE
+import android.media.MediaPlayer
+import android.media.session.MediaSession
+import android.media.session.PlaybackState
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.provider.Settings.Global.putString
+import android.support.v4.media.MediaMetadataCompat
+import android.support.v4.media.session.MediaSessionCompat
+import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +27,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat.getSystemService
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.NotificationCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -53,6 +66,8 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.collections.ArrayList
+import kotlin.math.log
+import kotlin.random.Random
 
 
 class AudioPlayerFragment : Fragment(), Injectable {
@@ -80,7 +95,9 @@ class AudioPlayerFragment : Fragment(), Injectable {
     lateinit var extraImageUrl: String
     lateinit var extraBookTitle: String
     lateinit var extraBookAuthor: String
+    lateinit var notificationManager:NotificationManager
     lateinit var extraBookNarrator: String
+    private var mediaSession: MediaSessionCompat? = null
     var statePlay = true
     var durationLeft = 0L
     private lateinit var fragmentStatus: String
@@ -183,9 +200,9 @@ class AudioPlayerFragment : Fragment(), Injectable {
     }
 
     private fun buildMediaInfo(): MediaInfo {
-        val mediaMetadata = MediaMetadata(MediaMetadata.MEDIA_TYPE_MUSIC_TRACK)
-        mediaMetadata.putString(MediaMetadata.KEY_TITLE, extraBookTitle)
-        mediaMetadata.putString(MediaMetadata.KEY_ARTIST, extraBookAuthor)
+        val mediaMetadata = com.google.android.gms.cast.MediaMetadata(com.google.android.gms.cast.MediaMetadata.MEDIA_TYPE_MUSIC_TRACK)
+        mediaMetadata.putString(com.google.android.gms.cast.MediaMetadata.KEY_TITLE, extraBookTitle)
+        mediaMetadata.putString(com.google.android.gms.cast.MediaMetadata.KEY_ARTIST, extraBookAuthor)
         val audiobookData = JSONObject()
         audiobookData.put("session_key", sessionId)
         audiobookData.put("account_id", engineAccount)
@@ -201,13 +218,23 @@ class AudioPlayerFragment : Fragment(), Injectable {
             .setStreamDuration(0)
             .build()
     }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         viewModel = injectViewModelWithActivityLifeCycle(viewModelFactory)
+        notificationManager = context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        mediaSession = context?.let { MediaSessionCompat(it, "MusicService") }
+        mediaSession!!.setCallback(object : MediaSessionCompat.Callback() {
+            override fun onMediaButtonEvent(mediaButtonEvent: Intent): Boolean {
+                handleMediaButton(mediaButtonEvent)
+                return super.onMediaButtonEvent(mediaButtonEvent)
+            }
+        })
+        mediaSession?.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS or MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS)
+        mediaSession?.isActive = true
+
         var binding = FragmentAudioPlayerBinding.inflate(inflater, container, false)
         chapterBookTxt = activity?.findViewById(R.id.titleBook)
         extraContentID = activity?.intent?.getStringExtra("contentId").toString()
@@ -266,6 +293,36 @@ class AudioPlayerFragment : Fragment(), Injectable {
         binding.isCar = isCarCheck
 
         return binding.root
+    }
+
+    private fun handleMediaButton(mediaButtonEvent: Intent) {
+        if (mediaButtonEvent.action == Intent.ACTION_MEDIA_BUTTON) {
+            val event = mediaButtonEvent.getParcelableExtra<KeyEvent>(Intent.EXTRA_KEY_EVENT)
+            if (event.action == KeyEvent.ACTION_UP) {
+                Log.d("TAG", "message"+event.keyCode)
+                when (event.keyCode) {
+                    KeyEvent.KEYCODE_MEDIA_PLAY, KeyEvent.KEYCODE_MEDIA_PAUSE -> if (statePlay) viewModel.pauseAudioBook() else viewModel.resumeAudioBook()
+                    KeyEvent.KEYCODE_MEDIA_PREVIOUS -> viewModel.previousChapter()
+                    KeyEvent.KEYCODE_MEDIA_NEXT -> viewModel.nextChapter()
+                }
+            }
+        }
+    }
+
+    private fun updateMetadata(mediaData:PlaybackEvent) {
+        mediaSession!!.isActive = true
+        val metadataBuilder = MediaMetadataCompat.Builder().apply {
+            putString(android.media.MediaMetadata.METADATA_KEY_DISPLAY_TITLE, mediaData.chapter!!.friendlyName())
+            putString(android.media.MediaMetadata.METADATA_KEY_DISPLAY_SUBTITLE, mediaData.shortMessage)
+            putString(android.media.MediaMetadata.METADATA_KEY_TITLE, mediaData.content!!.title)
+            putString(android.media.MediaMetadata.METADATA_KEY_ARTIST, mediaData.content!!.narrators.toString())
+        }
+        mediaSession!!.setMetadata(metadataBuilder.build())
+        val stateBuilder = PlaybackStateCompat.Builder()
+            .setActions(PlaybackStateCompat.ACTION_PLAY).apply {
+                setState(PlaybackStateCompat.STATE_PLAYING, mediaData.duration!!, 1.0f)
+            }
+        mediaSession!!.setPlaybackState(stateBuilder.build())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -526,6 +583,7 @@ class AudioPlayerFragment : Fragment(), Injectable {
             currentPlayPart = result.chapter!!.part
             chapterBookTxt?.text = "Chapter $currentPlayChapter"
             viewModel.saveCurrentChapter(extraContentID.toInt(), currentPlayChapter!!)
+            updateMetadata(result)
             when (result.code) {
                 PlaybackEvent.PLAYBACK_PROGRESS_UPDATE -> {
                     currentPositionPlay = result.position
