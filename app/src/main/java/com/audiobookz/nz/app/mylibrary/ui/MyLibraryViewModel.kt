@@ -68,14 +68,14 @@ class MyLibraryViewModel @Inject constructor(private val repository: MyLibraryRe
         return repository.getSavePositionPlay(bookId, chapter)
     }
 
-    fun getBookDuration(bookId: Int): Long {
-        return repository.getBookDuration(bookId)
+    fun getBookTotalDuration(bookId: Int): Long {
+        return repository.getBookTotalDuration(bookId)
     }
 
     fun calculateRemainingTime(contentId: Int): Int {
         var bookSize = repository.getBookChapterSize(contentId)
         var chapterCurrent = repository.getSaveBookCurrentChapter(contentId)
-        var duration = repository.getBookDuration(contentId)
+        var durationTotal = repository.getBookTotalDuration(contentId)
         var remainingTime = 0
 
         for (i in 0..bookSize) {
@@ -85,7 +85,7 @@ class MyLibraryViewModel @Inject constructor(private val repository: MyLibraryRe
             }
         }
 
-        var timeLeft = (duration - remainingTime)
+        var timeLeft = (durationTotal - remainingTime)
         var hourLeft = (timeLeft / HOUR_MILI_SEC)
         var minLeft = (timeLeft / MINUTE_MILI_SEC)
         var minMinuteHour = minLeft - (hourLeft * 60)

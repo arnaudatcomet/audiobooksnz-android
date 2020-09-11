@@ -15,7 +15,7 @@ import com.audiobookz.nz.app.mylibrary.data.CloudBook
 import com.audiobookz.nz.app.mylibrary.data.LocalBookData
 import com.audiobookz.nz.app.mylibrary.data.SessionData
 import com.audiobookz.nz.app.player.data.BookmarksData
-import com.audiobookz.nz.app.player.data.PositionData
+import com.audiobookz.nz.app.player.data.SynPositionData
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -154,12 +154,18 @@ interface AudiobookService {
     @FormUrlEncoded
     @POST("users/audiobooks/{cloudBookID}/position")
     @Headers("No-Authentication: false")
-    suspend fun postChapterPosition(
+    fun postSyncPlayBackPosition(
         @Path("cloudBookID") bookId: Int,
         @Field("chapter") chapter: Int? = null,
         @Field("time") time: Long? = null,
         @Field("part_number") part_number: Int? = null
-    ): Response<PositionData>
+    ): retrofit2.Call<Unit>
+
+    @GET("users/audiobooks/{cloudBookID}")
+    @Headers("No-Authentication: false")
+    suspend fun getSyncPlayBackPosition(
+        @Path("cloudBookID") bookId: Int
+    ): Response<SynPositionData>
 
     @Multipart
     @POST("users/audiobooks/{cloudBookId}/bookmarks")

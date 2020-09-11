@@ -12,6 +12,7 @@ class SharedPreferencesService(var context: Context) {
     var share_preferen_position_play:String = "PositionBook"
     var share_preferen_book:String = "Book"
     var share_preferen_current_chapter_of_the_book:String = "TheBookCurrentChapter"
+    var share_preferen_current_part_of_the_book:String = "TheBookCurrentPart"
     var share_preferen_book_complete:String = "IsBookComplete"
     var share_preferen_current_play:String = "BookDetail"
     private val shrPref: SharedPreferences = context.getSharedPreferences(share_preferen, Context.MODE_PRIVATE)
@@ -25,12 +26,21 @@ class SharedPreferencesService(var context: Context) {
     fun saveBookChapterSize(contentId:Int, size:Int){
         shrPref.edit().putInt(share_preferen_book+"size$contentId", size).apply()}
 
+    fun saveBookTotalDuration(contentId:Int, duration:Long){
+        shrPref.edit().putLong(share_preferen_book+"durationTotal$contentId", duration).apply()
+    }
+
     fun saveBookDuration(contentId:Int, duration:Long){
         shrPref.edit().putLong(share_preferen_book+"duration$contentId", duration).apply()
     }
+
     fun saveBookCurrentChapter(contentId:Int, chapter:Int){
         shrPref.edit().putInt(share_preferen_current_chapter_of_the_book+"$contentId", chapter).apply()
     }
+    fun saveBookCurrentPart(contentId:Int, part:Int){
+        shrPref.edit().putInt(share_preferen_current_part_of_the_book+"$contentId", part).apply()
+    }
+
     fun saveBookReadComplete(contentId: Int, boolean: Boolean){
         shrPref.edit().putBoolean(share_preferen_book_complete+"$contentId", boolean).apply()
     }
@@ -45,9 +55,11 @@ class SharedPreferencesService(var context: Context) {
     fun getSleepTime(): Long = shrPref.getLong(share_preferen_currentSleepTime, 0)
     fun getSavePositionPlay(contentId: Int, chapter: Int):Long = shrPref.getLong(share_preferen_position_play+"$contentId$chapter", 0)
     fun getBookChapterSize(contentId:Int):Int = shrPref.getInt(share_preferen_book+"size$contentId", 0)
+    fun getBookTotalDuration(contentId:Int):Long = shrPref.getLong(share_preferen_book+"durationTotal$contentId", 0)
     fun getBookDuration(contentId:Int):Long = shrPref.getLong(share_preferen_book+"duration$contentId", 0)
     fun getSaveBookCurrentChapter(contentId:Int):Int = shrPref.getInt(share_preferen_current_chapter_of_the_book+"$contentId",0)
-    fun getsaveBookReadComplete(contentId:Int):Boolean = shrPref.getBoolean(share_preferen_book_complete+"$contentId",false)
+    fun getSaveBookReadComplete(contentId:Int):Boolean = shrPref.getBoolean(share_preferen_book_complete+"$contentId",false)
+    fun getSaveBookCurrentPart(contentId:Int)= shrPref.getInt(share_preferen_current_part_of_the_book+"$contentId",0)
 
     fun getMultiValueCurrentBook():ArrayList<String>? {
         val jsonString = shrPref.getString(share_preferen_current_play,"")

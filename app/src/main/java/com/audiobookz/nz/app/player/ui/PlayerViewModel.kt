@@ -1,5 +1,7 @@
 package com.audiobookz.nz.app.player.ui
 
+import android.os.Handler
+import android.os.Looper
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,7 +9,7 @@ import com.audiobookz.nz.app.bookdetail.data.BookReview
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.player.data.BookmarksData
 import com.audiobookz.nz.app.player.data.PlayerRepository
-import com.audiobookz.nz.app.player.data.PositionData
+import com.audiobookz.nz.app.player.data.SynPositionData
 import io.audioengine.mobile.Chapter
 import io.audioengine.mobile.PlaybackEvent
 import io.audioengine.mobile.PlayerState
@@ -25,52 +27,64 @@ class PlayerViewModel @Inject constructor(private val repository: PlayerReposito
     var playerStateResult = MutableLiveData<PlayerState>()
     var currentPlay = repository.getCurrentChapter()
     var currentSleepTimer = repository.getSleepTime()
-    var positionPostResult = MediatorLiveData<Result<PositionData>>()
+    var getPlayBackPositionResult = MediatorLiveData<Result<SynPositionData>>()
     val sessionData by lazy { repository.getSession() }
     var getBookmarksResult = MediatorLiveData<Result<List<BookmarksData>>>()
     var postBookmarksResult = MediatorLiveData<Result<BookmarksData>>()
     var updateBookmarksResult = MediatorLiveData<Result<BookmarksData>>()
     var postBookReviewResult = MediatorLiveData<Result<BookReview>>()
+    lateinit var mainHandler: Handler
+    lateinit var statusPlayer: String
 
-    fun playAudioBook(firstChapter: Int, contentId: String, licenseId: String, partNumber: Int) {
+    fun playAudioBook(
+        cloudBookId: Int,
+        firstChapter: Int, contentId: String, licenseId: String, partNumber: Int) {
         //isFirstPlay??
         var chapterCurrent = repository.getSaveBookCurrentChapter(contentId.toInt())
+        var partCurrent = repository.getSaveBookCurrentPart(contentId.toInt())
         var positionCurrent = repository.getSavePositionPlay(contentId.toInt(), chapterCurrent)
-        var isComplete = repository.getsaveBookReadComplete(contentId.toInt())
+        var isComplete = repository.getSaveBookReadComplete(contentId.toInt())
 
         when {
             isComplete -> {
                 repository.saveBookReadComplete(contentId.toInt(), false)
                 repository.playAudioBook(
+                    //cloudBookId,
                     firstChapter, contentId, licenseId, partNumber, 0
                 ) { playBackEvent -> playBackResult.postValue(playBackEvent) }
             }
             chapterCurrent == 0 -> {
                 repository.playAudioBook(
+                    //cloudBookId,
                     firstChapter, contentId, licenseId, partNumber, positionCurrent
                 ) { playBackEvent -> playBackResult.postValue(playBackEvent) }
             }
             else -> {
+
+                handlerTimer(cloudBookId,contentId.toInt())
                 repository.playAudioBook(
-                    chapterCurrent, contentId, licenseId, partNumber, positionCurrent
+                    //cloudBookId,
+                     chapterCurrent, contentId, licenseId, partCurrent, positionCurrent
                 ) { playBackEvent -> playBackResult.postValue(playBackEvent) }
             }
         }
-
     }
 
     fun chooseNewChapter(
+      //  cloudBookId: Int,
         targetChapter: Int,
         contentId: String,
         licenseId: String,
         partNumber: Int
     ) {
         repository.playAudioBook(
+           // cloudBookId,
             targetChapter, contentId, licenseId, partNumber, 0
         ) { playBackEvent -> playBackResult.postValue(playBackEvent) }
     }
 
     fun playFromBookmark(
+        //cloudBookId: Int,
         Chapter: Int,
         contentId: String,
         licenseId: String,
@@ -78,6 +92,7 @@ class PlayerViewModel @Inject constructor(private val repository: PlayerReposito
         position: Long
     ) {
         repository.playAudioBook(
+           // cloudBookId,
             Chapter, contentId, licenseId, partNumber, position
         ) { playBackEvent -> playBackResult.postValue(playBackEvent) }
     }
@@ -123,6 +138,14 @@ class PlayerViewModel @Inject constructor(private val repository: PlayerReposito
         repository.getPlayerState { state -> playerStateResult.postValue(state) }
     }
 
+    fun getPlayerStateForPost() {
+        repository.getPlayerState { state -> statusPlayer = state.name }
+    }
+
+    fun getBookTotalDuration(bookId: Int): Long {
+        return repository.getBookTotalDuration(bookId)
+    }
+
     fun getBookDuration(bookId: Int): Long {
         return repository.getBookDuration(bookId)
     }
@@ -135,33 +158,82 @@ class PlayerViewModel @Inject constructor(private val repository: PlayerReposito
         repository.savePositionPlay(position, contentId, chapter)
     }
 
-    fun saveBookSize(contentId: Int, size:Int){
+    fun saveBookSize(contentId: Int, size: Int) {
         repository.saveBookChapterSize(contentId, size)
     }
 
-    fun saveBookTotalDuration(contentId:Int, totalDuration:Long){
+    fun saveBookTotalDuration(contentId: Int, totalDuration: Long) {
+        repository.saveBookTotalDuration(contentId, totalDuration)
+    }
+
+    fun saveBookDuration(contentId: Int, totalDuration: Long) {
         repository.saveBookDuration(contentId, totalDuration)
     }
 
     fun saveCurrentChapter(contentId: Int, chapter: Int) {
         repository.saveBookCurrentChapter(contentId, chapter)
     }
+    fun saveCurrentPart(contentId: Int, part: Int) {
+        repository.saveBookCurrentPart(contentId, part)
+    }
 
     fun saveBookReadComplete(contentId: Int) {
         repository.saveBookReadComplete(contentId, true)
     }
 
-    fun postChapterPosition(cloudBookID: Int, chapter: Int, position: Long, part: Int) {
-        positionPostResult.addSource(
-            repository.postChapterPosition(
-                cloudBookID,
-                chapter,
-                position,
-                part
-            )
-        ) { value ->
-            positionPostResult.value = value
+    fun handlerTimer(cloudBookId: Int, contentId:Int){
+        mainHandler = Handler(Looper.getMainLooper())
+        repository.getPlayerState { state -> playerStateResult.postValue(state) }
+
+        var timerPlayerGetSynTask  = object : Runnable {
+            override fun run() {
+
+                getPlayerStateForPost()
+                if (statusPlayer.equals("PLAYING")){
+                    postSynPlayBackPosition(cloudBookId,contentId)
+                }
+                mainHandler.postDelayed(this, 10000)
+            }
         }
+        mainHandler.post(timerPlayerGetSynTask)
+
+    }
+
+    fun postSynPlayBackPosition(cloudBookId: Int, contentId: Int) {
+        var chapterCurrent = repository.getSaveBookCurrentChapter(contentId)
+        var partCurrent = repository.getSaveBookCurrentPart(contentId)
+        var positionCurrent = repository.getSavePositionPlay(contentId, chapterCurrent)
+
+        var requestCall = repository.postSyncPlayBackPosition(
+            cloudBookId,
+            chapterCurrent,
+            positionCurrent,
+            partCurrent
+        )
+        requestCall.enqueue(object : Callback<Unit> {
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                //do nothing
+            }
+
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                if (response.isSuccessful) {
+                    println("### post syn done ###")
+                }
+            }
+        })}
+
+    fun getSyncPlayBackPosition(cloudBookId: Int) {
+        getPlayBackPositionResult.addSource(
+            (repository.getSyncPlayBackPosition(cloudBookId))
+        ) { value -> getPlayBackPositionResult.value = value }
+    }
+
+    fun getSavePositionPlay(contentId: Int, chapter: Int): Long {
+        return repository.getSavePositionPlay(contentId,chapter)
+    }
+
+    fun getSaveBookCurrentChapter(contentId: Int): Int {
+        return repository.getSaveBookCurrentChapter(contentId)
     }
 
     fun getBookmarks(cloudBookId: Int) {
@@ -219,19 +291,33 @@ class PlayerViewModel @Inject constructor(private val repository: PlayerReposito
         })
     }
 
-    fun updateBookmark(bookmarkId:Int, title:String){
-        updateBookmarksResult.addSource(repository.updateBookmark(bookmarkId,title)){value ->
+    fun updateBookmark(bookmarkId: Int, title: String) {
+        updateBookmarksResult.addSource(repository.updateBookmark(bookmarkId, title)) { value ->
             updateBookmarksResult.value = value
         }
     }
 
-    fun postBookReview(bookId: Int, comment: String, statification: Float, story: Float, narration: Float){
-        postBookReviewResult.addSource(repository.postBookReview(bookId,comment,statification,story,narration)){value ->
+    fun postBookReview(
+        bookId: Int,
+        comment: String,
+        statification: Float,
+        story: Float,
+        narration: Float
+    ) {
+        postBookReviewResult.addSource(
+            repository.postBookReview(
+                bookId,
+                comment,
+                statification,
+                story,
+                narration
+            )
+        ) { value ->
             postBookReviewResult.value = value
         }
     }
 
-    fun saveMultiValueCurrentBook(bookDetail:ArrayList<String>){
+    fun saveMultiValueCurrentBook(bookDetail: ArrayList<String>) {
         repository.saveMultiValueCurrentBook(bookDetail)
     }
 }

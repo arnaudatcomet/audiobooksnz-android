@@ -90,8 +90,8 @@ class MyLibraryRepository @Inject constructor(
         return sharePref.getBookChapterSize(bookId)
     }
 
-    fun getBookDuration(bookId: Int): Long {
-        return sharePref.getBookDuration(bookId)
+    fun getBookTotalDuration(bookId: Int): Long {
+        return sharePref.getBookTotalDuration(bookId)
     }
 
     fun getSavePositionPlay(bookId: Int, chapter: Int): Long {

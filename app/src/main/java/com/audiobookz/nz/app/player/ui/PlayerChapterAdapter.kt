@@ -13,8 +13,8 @@ import io.audioengine.mobile.Chapter
 class CustomViewHolder(val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root)
 
 class PlayerChapterAdapter(
-
     private val viewModel: PlayerViewModel,
+   // private val cloudId: Int,
     private val id: String,
     private val licenseId: String,
     currentChapter: Int
@@ -67,7 +67,9 @@ class PlayerChapterAdapter(
         return View.OnClickListener {
             var chapter = currentItem.chapter
             var part = currentItem.part
-            viewModel.chooseNewChapter(chapter, id, licenseId, part)
+            viewModel.chooseNewChapter(
+               // cloudId,
+                chapter, id, licenseId, part)
             oldChapter = currentItem.chapter
             notifyDataSetChanged()
         }

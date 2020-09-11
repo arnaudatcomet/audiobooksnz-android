@@ -20,8 +20,9 @@ class PlayerChapterFragment : Fragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: PlayerViewModel
-    lateinit var extraContentID: String
+    lateinit var extraContentId: String
     lateinit var extraLicenseId: String
+    //lateinit var extraCloudId: String
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -29,10 +30,11 @@ class PlayerChapterFragment : Fragment(), Injectable {
         viewModel = injectViewModel(viewModelFactory)
 
         var binding = FragmentPlayerChapterBinding.inflate(inflater, container, false)
-        extraContentID = activity?.intent?.getStringExtra("contentId").toString()
+        extraContentId = activity?.intent?.getStringExtra("contentId").toString()
         extraLicenseId = activity?.intent?.getStringExtra("licenseIDBook").toString()
+        //extraCloudId = activity?.intent?.getStringExtra("cloudBookId").toString()
         setTitle("Chapter")
-        viewModel.getChapters(extraContentID)
+        viewModel.getChapters(extraContentId)
         subscribeUi(binding)
         return binding.root
     }
@@ -40,11 +42,13 @@ class PlayerChapterFragment : Fragment(), Injectable {
     private fun subscribeUi(binding: FragmentPlayerChapterBinding) {
         viewModel.listChapterResult.observe(viewLifecycleOwner, Observer { result ->
             var currentChapter = 0
-            if (viewModel.currentPlay?.contentId == extraContentID){
+            if (viewModel.currentPlay?.contentId == extraContentId){
                 currentChapter = viewModel.currentPlay!!.chapter
             }
 
-            val adapter = PlayerChapterAdapter(viewModel, extraContentID, extraLicenseId, currentChapter)
+            val adapter = PlayerChapterAdapter(viewModel,
+                //extraCloudId.toInt(),
+                extraContentId, extraLicenseId, currentChapter)
             adapter?.submitList(result)
             binding.chapterRecycleView.adapter = adapter
         })

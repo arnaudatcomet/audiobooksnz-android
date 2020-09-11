@@ -9,8 +9,11 @@ import javax.inject.Inject
 class PlayerRemoteDataSource @Inject constructor(private val service: AudiobookService) :
     BaseDataSource() {
 
-    suspend fun postChapterPosition(cloudBookID: Int, chapter: Int, position: Long, part: Int) =
-        getResult { service.postChapterPosition(cloudBookID, chapter, position, part) }
+    fun postSyncPlayBackPosition(cloudBookID: Int, chapter: Int, position: Long, part: Int) =
+         service.postSyncPlayBackPosition(cloudBookID, chapter, position, part)
+
+    suspend fun getSyncPlayBackPosition(cloudBookID: Int) =
+        getResult { service.getSyncPlayBackPosition(cloudBookID) }
 
     suspend fun postBookmarks(cloudBookId: Int, chapter: RequestBody, position: RequestBody, subtitle: RequestBody, part: RequestBody, title: RequestBody)=
         getResult { service.postBookmars(cloudBookId,chapter,position,subtitle,part,title) }

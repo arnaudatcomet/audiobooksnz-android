@@ -102,23 +102,23 @@ fun <A> resultFetchOnlyLiveData(networkCall: suspend () -> Result<A>): LiveData<
         })
     }
 
-fun <A> resultSimpleLiveData(
-    networkCall: suspend () -> Result<A>,
-    saveCallResult: suspend (A) -> Unit,
-    onCallSuccess:()->Unit
-): LiveData<Result<A>> = liveData(Dispatchers.IO)
+    fun <A> resultSimpleLiveData(
+        networkCall: suspend () -> Result<A>,
+        saveCallResult: suspend (A) -> Unit,
+        onCallSuccess:()->Unit
+    ): LiveData<Result<A>> = liveData(Dispatchers.IO)
 
-{
-    emit(Result.loading<A>())
-    val responseStatus = networkCall.invoke()
-    if (responseStatus.status == SUCCESS) {
-        saveCallResult(responseStatus.data!!)
-        emit(Result.success<A>(responseStatus.data))
-        onCallSuccess();
-    } else if (responseStatus.status == ERROR) {
-        emit(Result.error<A>(responseStatus.message!!))
+    {
+        emit(Result.loading<A>())
+        val responseStatus = networkCall.invoke()
+        if (responseStatus.status == SUCCESS) {
+            saveCallResult(responseStatus.data!!)
+            emit(Result.success<A>(responseStatus.data))
+            onCallSuccess();
+        } else if (responseStatus.status == ERROR) {
+            emit(Result.error<A>(responseStatus.message!!))
+        }
     }
-}
 
     fun  resultLocalSaveOnlyLiveData(
         saveCallResult: suspend () -> Unit
@@ -142,10 +142,10 @@ fun <A> resultSimpleLiveData(
         emitSource(source)
     }
 
-    fun cownDownTimerSleepTime(countTime:Long, onComplete: () -> Unit, saveCountTimeToShare: (Long) -> Unit){
+    fun countDownTimerSleepTime(countTime:Long, onComplete: () -> Unit, saveCountTimeToShare: (Long) -> Unit){
 
         saveCountTimeToShare(countTime)
-        var countdown_timer = object : CountDownTimer(countTime, 1000){
+        var countDownTimer = object : CountDownTimer(countTime, 1000){
             override fun onFinish() {
                 onComplete()
             }
@@ -155,8 +155,35 @@ fun <A> resultSimpleLiveData(
             }
 
         }
-        countdown_timer.start()
+        countDownTimer.start()
     }
+
+    fun <A> resultObservablePlayerEngine(networkCall: Observable<A>?, onPlaying: (A) -> Unit) {
+        networkCall?.subscribe(object: rx.Observer<A> {
+
+            override fun onNext(t: A?) {
+                if (t!=null){
+                    onPlaying(t)
+                }
+            }
+
+            override fun onError(e: Throwable?) {
+
+            }
+
+            override fun onCompleted() {
+
+            }
+
+        })
+    }
+
+
+
+
+
+
+
 
 
 

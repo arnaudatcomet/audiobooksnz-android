@@ -46,6 +46,7 @@ class PlayerBookmarkAdapter(
         var part = currentItem.playback_position?.part_number
         var position = currentItem.playback_position?.position_in_millisecond!!.toLong()
         var title = currentItem.title
+       // var cloudId = currentItem.user_audiobook_id
 
         itemBinding.chapterBookmarkTxt.text = "Chapter $chapter"
         itemBinding.titleBookmarkTxt.text = "\"$title \""
@@ -53,15 +54,21 @@ class PlayerBookmarkAdapter(
 
         convertDate(itemBinding, currentItem.created_at, currentItem.playback_position.position_in_millisecond.toLong())
 
-        itemBinding.goToBookmarks = goToBookmarkPosition(chapter.toString(), extraContentId, extraLicenseId, part!!, position)
+        itemBinding.goToBookmarks = goToBookmarkPosition(
+            //cloudId,
+            chapter.toString(), extraContentId, extraLicenseId, part!!, position)
         itemBinding.clickOptionMenuListener = openOptionMenu(currentItem.id, currentItem.user_audiobook_id)
         itemBinding.swipeDelete = swipeDelete(currentItem.id, currentItem.user_audiobook_id)
 
     }
 
-    private fun goToBookmarkPosition(chapter: String, extraContentId: String, extraLicenseId: String, part: Int, position: Long): View.OnClickListener{
+    private fun goToBookmarkPosition(
+       // cloudId: Int,
+        chapter: String, extraContentId: String, extraLicenseId: String, part: Int, position: Long): View.OnClickListener{
         return View.OnClickListener {
-            viewModel.playFromBookmark(chapter.toInt(), extraContentId, extraLicenseId, part, position)
+            viewModel.playFromBookmark(
+                //cloudId,
+                chapter.toInt(), extraContentId, extraLicenseId, part, position)
         }
     }
 

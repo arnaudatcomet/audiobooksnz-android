@@ -51,7 +51,7 @@ class CloudLibraryAdapter(
 
         if (resultCheckDownload) {
 
-            bookDuration = viewModel.getBookDuration(bookContentID!!.toInt()).toInt()
+            bookDuration = viewModel.getBookTotalDuration(bookContentID!!.toInt()).toInt()
             resultCalculate = viewModel.calculateRemainingTime(bookContentID!!.toInt())
             timeRemainingText = viewModel.timeRemaining
         }
