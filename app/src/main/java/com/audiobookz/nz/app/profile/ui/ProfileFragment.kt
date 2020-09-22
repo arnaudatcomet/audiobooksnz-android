@@ -18,6 +18,7 @@ import androidx.navigation.findNavController
 import com.audiobookz.nz.app.MainActivity
 import com.audiobookz.nz.app.R
 import com.audiobookz.nz.app.SplashScreenActivity
+import com.audiobookz.nz.app.api.AlertDialogsService
 import com.audiobookz.nz.app.browse.BrowseFragmentDirections
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.di.Injectable
@@ -35,7 +36,6 @@ class ProfileFragment : Fragment(), Injectable {
     var emailTxt: TextView? = null
     var profileImg: ImageView? = null
     var creditTxt: TextView? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
@@ -149,7 +149,7 @@ class ProfileFragment : Fragment(), Injectable {
                 }
                 Result.Status.LOADING -> Log.d("TAG", "loading")
                 Result.Status.ERROR -> {
-                    Toast.makeText(activity, result.message, Toast.LENGTH_SHORT).show();
+                    result.message?.let { AlertDialogsService(context!!).simple("Error", it) };
                 }
             }
         })
@@ -166,7 +166,7 @@ class ProfileFragment : Fragment(), Injectable {
                 }
                 Result.Status.LOADING -> Log.d("TAG", "loading")
                 Result.Status.ERROR -> {
-                    Toast.makeText(activity, result.message, Toast.LENGTH_SHORT).show();
+                    result.message?.let { AlertDialogsService(context!!).simple("Error", it) };
                 }
             }
         })

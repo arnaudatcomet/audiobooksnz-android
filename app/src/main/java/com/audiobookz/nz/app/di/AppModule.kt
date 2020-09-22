@@ -1,13 +1,9 @@
 package com.audiobookz.nz.app.browse.di
 
 import android.app.Application
-import com.audiobookz.nz.app.api.AudiobookService
-import com.audiobookz.nz.app.api.AuthInterceptor
-import com.audiobookz.nz.app.api.BookEngineService
-import com.audiobookz.nz.app.api.SharedPreferencesService
+import com.audiobookz.nz.app.api.*
 import com.audiobookz.nz.app.browse.categories.data.CategoryRemoteDataSource
 import com.audiobookz.nz.app.data.AppDatabase
-import com.audiobookz.nz.app.api.NotificationService
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineScope
@@ -40,9 +36,9 @@ class AppModule {
     ): OkHttpClient {
         return upstreamClient.newBuilder()
             //set time for test when long fetch data time out
-            .connectTimeout(60,TimeUnit.SECONDS)
-            .readTimeout(60,TimeUnit.SECONDS)
-            .writeTimeout(60,TimeUnit.SECONDS)
+            .connectTimeout(5,TimeUnit.SECONDS)
+            .readTimeout(5,TimeUnit.SECONDS)
+            .writeTimeout(5,TimeUnit.SECONDS)
             .addInterceptor(AuthInterceptor(sharePref)).build()
     }
 
@@ -83,6 +79,11 @@ class AppModule {
     @Provides
     fun provideNotificationService(app: Application) =
         NotificationService(app)
+
+    @Singleton
+    @Provides
+    fun provideAlertDialogsService(app: Application) =
+        AlertDialogsService(app)
 
 //    @Singleton
 //    @Provides

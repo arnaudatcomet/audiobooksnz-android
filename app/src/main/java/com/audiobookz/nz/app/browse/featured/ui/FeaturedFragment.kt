@@ -1,6 +1,10 @@
 package com.audiobookz.nz.app.browse.featured.ui
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.audiobookz.nz.app.App
+import com.audiobookz.nz.app.api.AlertDialogsService
 import com.audiobookz.nz.app.browse.BrowseFragmentDirections
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.databinding.FragmentFeaturedBinding
@@ -16,6 +21,7 @@ import com.audiobookz.nz.app.di.Injectable
 import com.audiobookz.nz.app.di.injectViewModel
 import com.audiobookz.nz.app.ui.hide
 import com.audiobookz.nz.app.ui.show
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_featured.*
 import javax.inject.Inject
@@ -38,9 +44,17 @@ class FeaturedFragment : Fragment(), Injectable {
         val binding = FragmentFeaturedBinding.inflate(inflater, container, false)
         context ?: return binding.root
 
+        val cm = context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
+        val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
+        Log.d("TAG", "network status: "+isConnected)
+        if(isConnected){
         viewModel.fetchCategory()
-
         subscribeUi(binding)
+        }else{
+            binding.progressBar.hide()
+            AlertDialogsService(context!!).simple("example","example");
+        }
         return binding.root
     }
 
