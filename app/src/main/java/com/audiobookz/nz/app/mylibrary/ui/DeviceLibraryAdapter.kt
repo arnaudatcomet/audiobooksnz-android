@@ -85,7 +85,7 @@ class DeviceLibraryAdapter(private val activity: Context) :
     ): View.OnClickListener {
         return View.OnClickListener {
             val intent = Intent(activity, PlayerActivity::class.java).apply {
-                putExtra("cloudBookId", id)
+                putExtra("cloudBookId", id.toString())
                 putExtra("bookId", bookId)
                 putExtra("contentId", contentId)
                 putExtra("urlImage", url)

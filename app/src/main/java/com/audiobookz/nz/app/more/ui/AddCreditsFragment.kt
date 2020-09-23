@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import com.audiobookz.nz.app.api.AlertDialogsService
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.databinding.FragmentAddCreditsBinding
 import com.audiobookz.nz.app.di.Injectable
@@ -60,7 +61,7 @@ class AddCreditsFragment : Fragment(), Injectable {
                             Toast.LENGTH_SHORT
                         ).show();3
                     } else {
-                        Toast.makeText(activity, result.message, Toast.LENGTH_SHORT).show();3
+                        result.message?.let { AlertDialogsService(context!!).simple("Error", it) }
                     }
 
                 }
@@ -86,7 +87,7 @@ class AddCreditsFragment : Fragment(), Injectable {
                 Result.Status.LOADING -> {
                 }
                 Result.Status.ERROR -> {
-                    Toast.makeText(activity, result.message, Toast.LENGTH_SHORT).show();3
+                    result.message?.let { AlertDialogsService(context!!).simple("Error", it) }
                 }
             }
         })

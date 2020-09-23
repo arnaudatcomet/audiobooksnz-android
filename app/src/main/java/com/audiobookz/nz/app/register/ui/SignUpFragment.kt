@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.audiobookz.nz.app.MainActivity
 import com.audiobookz.nz.app.R
 import com.audiobookz.nz.app.SplashScreenActivity
+import com.audiobookz.nz.app.api.AlertDialogsService
 import com.audiobookz.nz.app.di.Injectable
 import com.audiobookz.nz.app.di.injectViewModel
 import com.audiobookz.nz.app.data.Result
@@ -93,7 +94,7 @@ class SignUpFragment : Fragment(), Injectable {
                 }
                 Result.Status.LOADING -> Log.d("TAG", "loading")
                 Result.Status.ERROR -> {
-                    Toast.makeText(activity, result.message, Toast.LENGTH_SHORT).show();
+                    result.message?.let { AlertDialogsService(context!!).simple("Error", it) }
                 }
             }
         })

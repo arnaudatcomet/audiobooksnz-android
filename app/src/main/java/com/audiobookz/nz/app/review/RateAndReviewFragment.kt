@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import com.audiobookz.nz.app.api.AlertDialogsService
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.databinding.FragmentRateAndReviewBinding
 import com.audiobookz.nz.app.di.Injectable
@@ -63,7 +64,7 @@ class RateAndReviewFragment : Fragment(), Injectable {
 
                 }
                 Result.Status.ERROR -> {
-
+                    result.message?.let { AlertDialogsService(context!!).simple("Error", it) }
                 }
             }
         })

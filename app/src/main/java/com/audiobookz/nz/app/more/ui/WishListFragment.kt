@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.audiobookz.nz.app.api.AlertDialogsService
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.databinding.FragmentWishlistBinding
 import com.audiobookz.nz.app.di.Injectable
@@ -40,6 +41,7 @@ class WishListFragment : Fragment(), Injectable {
                 Result.Status.LOADING -> {
                 }
                 Result.Status.ERROR -> {
+                    result.message?.let { AlertDialogsService(context!!).simple("Error", it) }
                 }
             }
         })

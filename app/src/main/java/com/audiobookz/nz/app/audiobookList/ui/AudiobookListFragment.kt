@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.audiobookz.nz.app.R
+import com.audiobookz.nz.app.api.AlertDialogsService
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.databinding.FragmentAudiobookListBinding
 import com.audiobookz.nz.app.di.Injectable
@@ -164,7 +165,7 @@ class AudiobookListFragment : Fragment(), Injectable {
                 Result.Status.LOADING -> binding.progressBarDetail.show()
                 Result.Status.ERROR -> {
                     binding.progressBarDetail.hide()
-                    Snackbar.make(binding.root, result.message!!, Snackbar.LENGTH_LONG).show()
+                    result.message?.let { AlertDialogsService(context!!).simple("Error", it) }
                 }
             }
         })
@@ -178,7 +179,7 @@ class AudiobookListFragment : Fragment(), Injectable {
                 Result.Status.LOADING -> binding.progressBarDetail.show()
                 Result.Status.ERROR -> {
                     binding.progressBarDetail.hide()
-                    Snackbar.make(binding.root, result.message!!, Snackbar.LENGTH_LONG).show()
+                    result.message?.let { AlertDialogsService(context!!).simple("Error", it) }
                 }
             }
         })

@@ -28,6 +28,7 @@ import androidx.mediarouter.media.MediaRouteSelector
 import androidx.navigation.findNavController
 import com.audiobookz.nz.app.MainActivity
 import com.audiobookz.nz.app.R
+import com.audiobookz.nz.app.api.AlertDialogsService
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.databinding.FragmentAudioPlayerBinding
 import com.audiobookz.nz.app.di.Injectable
@@ -258,6 +259,7 @@ class AudioPlayerFragment : Fragment(), Injectable {
         binding.forward30sClick = forward30sClick()
         binding.replay30sClick = replay30sClick()
         binding.playClick = playClick()
+
 
         viewModel.getSyncPlayBackPosition(extraCloudBookId.toInt())
 
@@ -620,8 +622,6 @@ class AudioPlayerFragment : Fragment(), Injectable {
                     }
                 }
 
-                Result.Status.ERROR -> {
-                }
             }
         })
 
@@ -682,7 +682,7 @@ class AudioPlayerFragment : Fragment(), Injectable {
                     )
                 }
 
-                //need fix when play done
+
                 PlaybackEvent.PLAYBACK_ENDED -> {
 
                     viewModel.savePositionPlay(
@@ -729,6 +729,9 @@ class AudioPlayerFragment : Fragment(), Injectable {
                 Result.Status.SUCCESS -> {
                     bookmarkId = result.data!!.id
                 }
+                Result.Status.ERROR ->{
+                    result.message?.let { AlertDialogsService(context!!).simple("Error", it) }
+                }
             }
         })
 
@@ -738,6 +741,9 @@ class AudioPlayerFragment : Fragment(), Injectable {
                     val intent = Intent(activity, MainActivity::class.java)
                     startActivity(intent)
                     activity?.finish()
+                }
+                Result.Status.ERROR ->{
+                    result.message?.let { AlertDialogsService(context!!).simple("Error", it) }
                 }
             }
         })

@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.audiobookz.nz.app.api.AlertDialogsService
 import com.audiobookz.nz.app.bookdetail.data.BookRoom
 import com.audiobookz.nz.app.databinding.FragmentConfirmOrderBinding
 import com.audiobookz.nz.app.di.Injectable
@@ -73,7 +74,7 @@ class ConfirmOrderFragment : Fragment(), Injectable {
                 Result.Status.LOADING -> binding.progressBar.show()
                 Result.Status.ERROR -> {
                     binding.progressBar.hide()
-                    Snackbar.make(binding.root, result.message!!, Snackbar.LENGTH_LONG).show()
+                    result.message?.let { AlertDialogsService(context!!).simple("Error", it) }
                 }
             }
         })
@@ -128,7 +129,7 @@ class ConfirmOrderFragment : Fragment(), Injectable {
                 Result.Status.LOADING -> {
                 }
                 Result.Status.ERROR -> {
-                    Toast.makeText(activity, result.message, Toast.LENGTH_SHORT).show();3
+                    result.message?.let { AlertDialogsService(context!!).simple("Error", it) }
                 }
             }
         })
@@ -144,7 +145,7 @@ class ConfirmOrderFragment : Fragment(), Injectable {
                 Result.Status.LOADING -> {
                 }
                 Result.Status.ERROR -> {
-                    Toast.makeText(activity, result.message, Toast.LENGTH_SHORT).show();3
+                    result.message?.let { AlertDialogsService(context!!).simple("Error", it) }
                 }
             }
         })

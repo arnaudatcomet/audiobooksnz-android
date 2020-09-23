@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.audiobookz.nz.app.MainActivity
 import com.audiobookz.nz.app.R
+import com.audiobookz.nz.app.api.AlertDialogsService
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.di.injectViewModel
 import com.audiobookz.nz.app.register.ui.SignUpActivity
@@ -138,7 +139,8 @@ class LoginActivity : AppCompatActivity(), HasSupportFragmentInjector {
                 }
                 Result.Status.LOADING ->  {}
                 Result.Status.ERROR -> {
-                    Toast.makeText(this,Result.Status.ERROR.toString() ,Toast.LENGTH_SHORT).show();3
+                    result.message?.let { AlertDialogsService(this).simple("Error", it) }
+                    //Toast.makeText(this,Result.Status.ERROR.toString() ,Toast.LENGTH_SHORT).show();3
                 }
             }
         })
@@ -153,7 +155,8 @@ class LoginActivity : AppCompatActivity(), HasSupportFragmentInjector {
                 }
                 Result.Status.LOADING ->  {}
                 Result.Status.ERROR -> {
-                    Toast.makeText(this,Result.Status.ERROR.toString() ,Toast.LENGTH_SHORT).show();3
+                    result.message?.let { AlertDialogsService(this).simple("Error", it) }
+                    //Toast.makeText(this,Result.Status.ERROR.toString() ,Toast.LENGTH_SHORT).show();3
                 }
             }
         })

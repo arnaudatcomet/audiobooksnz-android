@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.audiobookz.nz.app.R
+import com.audiobookz.nz.app.api.AlertDialogsService
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.databinding.FragmentCategoriesBinding
 import com.audiobookz.nz.app.di.Injectable
@@ -70,7 +71,7 @@ class CategoryFragment: Fragment(), Injectable {
                 Result.Status.LOADING -> binding.progressBar.show()
                 Result.Status.ERROR -> {
                     binding.progressBar.hide()
-                    Snackbar.make(binding.root, result.message!!, Snackbar.LENGTH_LONG).show()
+                    result.message?.let { AlertDialogsService(context!!).simple("Error", it) }
                 }
             }
         })

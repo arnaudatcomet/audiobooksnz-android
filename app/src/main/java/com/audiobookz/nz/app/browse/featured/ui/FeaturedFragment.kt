@@ -16,6 +16,7 @@ import com.audiobookz.nz.app.App
 import com.audiobookz.nz.app.api.AlertDialogsService
 import com.audiobookz.nz.app.browse.BrowseFragmentDirections
 import com.audiobookz.nz.app.data.Result
+import com.audiobookz.nz.app.data.resulObservableData
 import com.audiobookz.nz.app.databinding.FragmentFeaturedBinding
 import com.audiobookz.nz.app.di.Injectable
 import com.audiobookz.nz.app.di.injectViewModel
@@ -48,17 +49,26 @@ class FeaturedFragment : Fragment(), Injectable {
         val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
         val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
         Log.d("TAG", "network status: "+isConnected)
+        viewModel.fetchCategory()
+        subscribeUi(binding)
         if(isConnected){
         viewModel.fetchCategory()
         subscribeUi(binding)
         }else{
             binding.progressBar.hide()
-            AlertDialogsService(context!!).simple("example","example");
+            AlertDialogsService(context!!).simple("Internet Problem","Please Check Your Internet");
         }
         return binding.root
     }
 
     private fun subscribeUi(binding: FragmentFeaturedBinding) {
+       viewModel.errorMessage.observe(viewLifecycleOwner, Observer {
+           if(it == true){
+//               binding.progressBar.hide()
+//               AlertDialogsService(context!!).simple("Internet Problem","Please Check Your Internet")
+           }
+       })
+
         viewModel.featuredListResult.observe(viewLifecycleOwner, Observer { result ->
             when (result.status) {
                 Result.Status.SUCCESS -> {
@@ -77,10 +87,4 @@ class FeaturedFragment : Fragment(), Injectable {
             }
         })
     }
-
-    companion object {
-        fun newInstance(): FeaturedFragment =
-            FeaturedFragment()
-    }
-
 }

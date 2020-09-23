@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.audiobookz.nz.app.R
 import androidx.lifecycle.Observer
+import com.audiobookz.nz.app.api.AlertDialogsService
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.databinding.FragmentCurrentPlanBinding
 import com.audiobookz.nz.app.di.Injectable
@@ -41,6 +42,7 @@ class CurrentPlanFragment : Fragment(), Injectable {
                 Result.Status.LOADING -> {
                 }
                 Result.Status.ERROR -> {
+                    result.message?.let { AlertDialogsService(context!!).simple("Error", it) }
                 }
             }
         })

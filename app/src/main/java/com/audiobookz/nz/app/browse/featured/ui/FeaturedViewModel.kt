@@ -17,23 +17,28 @@ class FeaturedViewModel @Inject constructor(private val repository: FeaturedRepo
    // val featuredList by lazy {   repository.getFeatured(CATEGORY_PAGE_SIZE)}
 
 
-   var featuredListResult = MediatorLiveData<Result<Map<String, List<Featured>>?>>()
+   var featuredListResult = MediatorLiveData<Result<Map<String, List<Featured>>?>>();
+   var errorMessage = MediatorLiveData<Boolean>()
 //    var page: Int? = 1
 //    var isLatest: Boolean? = false
 //
     fun fetchCategory() {
         featuredListResult.addSource(repository.getFeatured(FEATURED_PAGE_SIZE)) { value ->
             if (value.data?.size != null) {
-                featuredListResult.value = getBestResult(value)
+                if(value.status != Result.Status.ERROR){
+                    featuredListResult.value = getBestResult(value)
+                }else{
+                    errorMessage.value = true
+                }
+
             }
         }
     }
     fun getBestResult(newResult: Result<List<Featured>>): Result<Map<String, List<Featured>>?> {
-
-         var data= newResult.data.let {
-             it?.groupBy { it.type }
-        }
-        var bestResult = Result.success(data)
-        return bestResult;
+            var data= newResult.data.let {
+                it?.groupBy { it.type }
+            }
+            var bestResult = Result.success(data)
+            return bestResult;
     }
 }

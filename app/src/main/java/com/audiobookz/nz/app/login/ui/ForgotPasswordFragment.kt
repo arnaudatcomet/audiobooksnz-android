@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.R
+import com.audiobookz.nz.app.api.AlertDialogsService
 import com.audiobookz.nz.app.di.Injectable
 import com.audiobookz.nz.app.di.injectViewModel
 import javax.inject.Inject
@@ -68,12 +69,7 @@ class ForgotPasswordFragment : Fragment(), Injectable {
                     Toast.makeText(activity, "loading...", Toast.LENGTH_SHORT).show();3
                 }
                 Result.Status.ERROR -> {
-                    Toast.makeText(
-                        activity,
-                        result.message,
-                        Toast.LENGTH_SHORT
-                    )
-                        .show();3
+                    result.message?.let { AlertDialogsService(context!!).simple("Error", it) }
                 }
             }
         })

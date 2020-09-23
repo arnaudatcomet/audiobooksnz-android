@@ -26,6 +26,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.audiobookz.nz.app.MainActivity
 import com.audiobookz.nz.app.R
+import com.audiobookz.nz.app.api.AlertDialogsService
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.di.Injectable
 import com.audiobookz.nz.app.di.injectViewModel
@@ -204,7 +205,7 @@ class EditProfileFragment : Fragment(), Injectable {
                 Result.Status.LOADING -> SaveChangeBtn?.setText("Loading")
                 Result.Status.ERROR -> {
                     SaveChangeBtn?.setText("Login")
-                    Toast.makeText(getActivity(), result.message, Toast.LENGTH_SHORT).show();
+                    result.message?.let { AlertDialogsService(context!!).simple("Error", it) }
                 }
             }
         })
@@ -228,7 +229,7 @@ class EditProfileFragment : Fragment(), Injectable {
                 }
                 Result.Status.LOADING -> Log.d("TAG", "loading")
                 Result.Status.ERROR -> {
-                    Toast.makeText(activity, result.message, Toast.LENGTH_SHORT).show()
+                    result.message?.let { AlertDialogsService(context!!).simple("Error", it) }
                 }
             }
         })

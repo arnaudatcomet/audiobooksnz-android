@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import com.audiobookz.nz.app.api.AlertDialogsService
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.databinding.FragmentCloudLibraryBinding
 import com.audiobookz.nz.app.di.Injectable
@@ -80,7 +81,7 @@ class CloudLibraryFragment(private var keyword: String) : Fragment(), Injectable
                 Result.Status.LOADING -> binding.progressBar.show()
                 Result.Status.ERROR -> {
                     binding.progressBar.hide()
-                    Snackbar.make(binding.root, result.message!!, Snackbar.LENGTH_LONG).show()
+                    result.message?.let { AlertDialogsService(context!!).simple("Error", it) }
                 }
             }
         })

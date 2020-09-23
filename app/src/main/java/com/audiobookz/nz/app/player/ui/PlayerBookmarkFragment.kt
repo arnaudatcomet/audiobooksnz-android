@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.audiobookz.nz.app.api.AlertDialogsService
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.databinding.FragmentPlayerBookmarkBinding
 import com.audiobookz.nz.app.di.Injectable
@@ -52,6 +53,7 @@ class PlayerBookmarkFragment : Fragment(), Injectable {
                     //  Toast.makeText(activity, "loading...", Toast.LENGTH_SHORT).show();3
                 }
                 Result.Status.ERROR -> {
+                    result.message?.let { AlertDialogsService(context!!).simple("Error", it) }
                     // Toast.makeText(activity, result.message, Toast.LENGTH_SHORT).show();3
                 }
             }
