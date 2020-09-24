@@ -64,8 +64,8 @@ class FeaturedFragment : Fragment(), Injectable {
     private fun subscribeUi(binding: FragmentFeaturedBinding) {
        viewModel.errorMessage.observe(viewLifecycleOwner, Observer {
            if(it == true){
-//               binding.progressBar.hide()
-//               AlertDialogsService(context!!).simple("Internet Problem","Please Check Your Internet")
+               binding.progressBar.hide()
+               AlertDialogsService(context!!).simple("Internet Problem","Please Check Your Internet")
            }
        })
 

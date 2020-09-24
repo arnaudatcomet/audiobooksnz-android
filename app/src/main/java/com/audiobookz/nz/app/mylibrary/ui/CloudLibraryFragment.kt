@@ -1,8 +1,11 @@
 package com.audiobookz.nz.app.mylibrary.ui
 
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -34,6 +37,12 @@ class CloudLibraryFragment(private var keyword: String) : Fragment(), Injectable
         var rootView = FragmentCloudLibraryBinding.inflate(inflater, container, false)
         context ?: return rootView.root
 
+        //check connection
+        val cm = context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
+        val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
+        Log.d("TAG", "network status: "+isConnected)
+
         rootView.CloudRecyclerView.addOnScrollListener(object :
             RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -53,6 +62,20 @@ class CloudLibraryFragment(private var keyword: String) : Fragment(), Injectable
         }
 
         subscribeUi(rootView)
+
+        //disconnect alert
+        if(isConnected){
+            if (keyword != "") {
+                viewModel.getCloudBook(1, 50, keyword)
+            } else {
+                viewModel.getCloudBook(1, CLOUDBOOK_PAGE_SIZE, "")
+            }
+            subscribeUi(rootView)
+        }else{
+            rootView.progressBar.hide()
+            AlertDialogsService(context!!).simple("Internet Problem","Please Check Your Internet");
+        }
+
         return rootView.root
     }
 
