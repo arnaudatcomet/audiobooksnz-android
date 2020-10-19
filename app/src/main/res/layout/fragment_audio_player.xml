@@ -66,14 +66,13 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="@{isCar? 0:1}">
+                android:layout_height="wrap_content">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="@{isCar? 0:1}">
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="wrap_content"
@@ -109,7 +108,7 @@
                             android:id="@+id/progressPlayerTimePlay"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
+                            android:layout_centerVertical="false"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
                             android:layout_toLeftOf="@+id/timeLeftTxt"
@@ -121,66 +120,66 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:text="00.00" />
+                        <LinearLayout
+                            android:id="@+id/layout_player"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="6"
+                            android:layout_marginTop="35dp"
+                            android:gravity="center"
+                            android:orientation="horizontal">
 
+                            <ImageButton
+                                android:id="@+id/skipPreviousButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:background="?android:selectableItemBackgroundBorderless"
+                                android:onClick="@{skipPreviousClick}"
+                                android:src="@drawable/skip_previous_48dp" />
+
+                            <ImageButton
+                                android:id="@+id/replay30sButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:background="?android:selectableItemBackgroundBorderless"
+                                android:onClick="@{replay30sClick}"
+                                android:src="@drawable/replay_30_48dp" />
+
+                            <ImageButton
+                                android:id="@+id/playButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:background="@drawable/circle_sharp_play"
+                                android:onClick="@{playClick}"
+                                android:src="@drawable/play_arrow96" />
+
+                            <ImageButton
+                                android:id="@+id/forward30sButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:background="?android:selectableItemBackgroundBorderless"
+                                android:onClick="@{forward30sClick}"
+                                android:src="@drawable/forward_30_48dp" />
+
+                            <ImageButton
+                                android:id="@+id/skipNextButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
+                                android:background="?android:selectableItemBackgroundBorderless"
+                                android:onClick="@{skipNextClick}"
+                                android:src="@drawable/skip_next_48dp" />
+
+                        </LinearLayout>
                     </RelativeLayout>
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/layout_player"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="6"
-                    android:layout_margin="5dp"
-                    android:gravity="center"
-                    android:orientation="@{isCar? 1:0}">
 
-                    <ImageButton
-                        android:id="@+id/skipPreviousButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:background="?android:selectableItemBackgroundBorderless"
-                        android:onClick="@{skipPreviousClick}"
-                        android:src="@drawable/skip_previous_48dp" />
-
-                    <ImageButton
-                        android:id="@+id/replay30sButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:background="?android:selectableItemBackgroundBorderless"
-                        android:onClick="@{replay30sClick}"
-                        android:src="@drawable/replay_30_48dp" />
-
-                    <ImageButton
-                        android:id="@+id/playButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:background="@drawable/circle_sharp_play"
-                        android:onClick="@{playClick}"
-                        android:src="@drawable/play_arrow96" />
-
-                    <ImageButton
-                        android:id="@+id/forward30sButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:background="?android:selectableItemBackgroundBorderless"
-                        android:onClick="@{forward30sClick}"
-                        android:src="@drawable/forward_30_48dp" />
-
-                    <ImageButton
-                        android:id="@+id/skipNextButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:background="?android:selectableItemBackgroundBorderless"
-                        android:onClick="@{skipNextClick}"
-                        android:src="@drawable/skip_next_48dp" />
-
-                </LinearLayout>
 
             </LinearLayout>
 

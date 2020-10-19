@@ -7,6 +7,9 @@
 
     <dimen name="app_bar_height">400dp</dimen>
 
+    <dimen name="padding_normal">5dp</dimen>
+
+    <dimen name="padding_car">35dp</dimen>
     <dimen name="margin_normal">14dp</dimen>
     <dimen name="margin_big">30dp</dimen>
     <dimen name="margin_small">8dp</dimen>

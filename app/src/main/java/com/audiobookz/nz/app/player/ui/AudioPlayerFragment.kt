@@ -261,8 +261,12 @@ class AudioPlayerFragment : Fragment(), Injectable {
         binding.playClick = playClick()
 
 
-        viewModel.getSyncPlayBackPosition(extraCloudBookId.toInt())
-
+        viewModel.getPlayBackPosition(
+            extraCloudBookId.toInt(),
+            0,
+            extraContentID,
+            extraLicenseId,
+            0)
         //timer thread
         mainHandler = Handler(Looper.getMainLooper())
 
@@ -287,6 +291,12 @@ class AudioPlayerFragment : Fragment(), Injectable {
         return binding.root
     }
 
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig);
+        var orientation = newConfig.orientation;
+        binding.isCar = orientation == Configuration.ORIENTATION_LANDSCAPE
+    }
+
     private fun handleMediaButton(mediaButtonEvent: Intent) {
         if (mediaButtonEvent.action == Intent.ACTION_MEDIA_BUTTON) {
             val event = mediaButtonEvent.getParcelableExtra<KeyEvent>(Intent.EXTRA_KEY_EVENT)
@@ -305,23 +315,26 @@ class AudioPlayerFragment : Fragment(), Injectable {
         mediaSession!!.isActive = true
         val metadataBuilder = MediaMetadataCompat.Builder().apply {
             putString(
-                android.media.MediaMetadata.METADATA_KEY_DISPLAY_TITLE,
+                MediaMetadataCompat.METADATA_KEY_TITLE,
                 mediaData.chapter!!.friendlyName()
             )
             putString(
-                android.media.MediaMetadata.METADATA_KEY_DISPLAY_SUBTITLE,
-                mediaData.shortMessage
+                MediaMetadataCompat.METADATA_KEY_ARTIST,
+                extraBookAuthor
             )
-            putString(android.media.MediaMetadata.METADATA_KEY_TITLE, mediaData.content!!.title)
-            putString(
-                android.media.MediaMetadata.METADATA_KEY_ARTIST,
-                mediaData.content!!.narrators.toString()
-            )
+            mediaData.duration?.let { putLong(MediaMetadataCompat.METADATA_KEY_DURATION, it) };
+            putString(MediaMetadataCompat.METADATA_KEY_ALBUM_ARTIST, extraBookTitle)
         }
         mediaSession!!.setMetadata(metadataBuilder.build())
         val stateBuilder = PlaybackStateCompat.Builder()
             .setActions(PlaybackStateCompat.ACTION_PLAY).apply {
-                setState(PlaybackStateCompat.STATE_PLAYING, mediaData.duration!!, 1.0f)
+                if (statePlay){
+                    setState(PlaybackStateCompat.STATE_PLAYING, mediaData.position!!, 1.0f)
+                }
+                else{
+                    setState(PlaybackStateCompat.STATE_PAUSED, mediaData.position!!, 1.0f)
+                }
+
             }
         mediaSession!!.setPlaybackState(stateBuilder.build())
     }
@@ -572,15 +585,6 @@ class AudioPlayerFragment : Fragment(), Injectable {
             fragmentStatus = "onViewCreated"
 
             viewModel.listChapterResult.observe(viewLifecycleOwner, Observer { result ->
-
-                //send first chapter and part
-                viewModel.playAudioBook(
-                    extraCloudBookId.toInt(),
-                    result[0].chapter,
-                    extraContentID,
-                    extraLicenseId,
-                    result[0].part
-                )
 
                 //sum book duration if first time
                 if (viewModel.getBookTotalDuration(extraContentID.toInt()) == 0L) {

@@ -228,6 +228,21 @@ class PlayerViewModel @Inject constructor(private val repository: PlayerReposito
         ) { value -> getPlayBackPositionResult.value = value }
     }
 
+    fun getPlayBackPosition(cloudBookId: Int,firstChapter: Int, contentId: String, licenseId: String, partNumber: Int) {
+        getPlayBackPositionResult.addSource(
+            (repository.getSyncPlayBackPosition(cloudBookId))
+        ) {
+                value -> getPlayBackPositionResult.value = value
+            playAudioBook(
+                cloudBookId,
+                firstChapter,
+                contentId,
+                licenseId,
+                partNumber
+            )
+        }
+    }
+
     fun getSavePositionPlay(contentId: Int, chapter: Int): Long {
         return repository.getSavePositionPlay(contentId,chapter)
     }
