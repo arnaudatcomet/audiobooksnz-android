@@ -52,6 +52,7 @@ class LoginActivity : AppCompatActivity(), HasSupportFragmentInjector {
         val btnLoginEmail = findViewById<Button>(R.id.btnLoginEmail)
         val btnSignUp = findViewById<Button>(R.id.btnSignFree)
         val btnDiscover = findViewById<Button>(R.id.btnDiscover)
+        val btnSignUpPro = findViewById<Button>(R.id.btnSignPro)
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken("718099209429-2mkutb5ivvjlh3h7rjf92se9q1o4mqsn.apps.googleusercontent.com")
@@ -86,12 +87,21 @@ class LoginActivity : AppCompatActivity(), HasSupportFragmentInjector {
         }
 
         btnSignUp.setOnClickListener {
-            val intent = Intent(this, SignUpActivity::class.java)
+            val intent = Intent(this, SignUpActivity::class.java).apply {
+                putExtra(EXTRA_MESSAGE, false)
+            }
             startActivity(intent)
         }
 
         btnDiscover.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java).apply {
+                putExtra(EXTRA_MESSAGE, true)
+            }
+            startActivity(intent)
+        }
+
+        btnSignUpPro.setOnClickListener {
+            val intent = Intent(this, SignUpActivity::class.java).apply {
                 putExtra(EXTRA_MESSAGE, true)
             }
             startActivity(intent)

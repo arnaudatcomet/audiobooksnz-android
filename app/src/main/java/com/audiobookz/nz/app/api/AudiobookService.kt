@@ -16,6 +16,7 @@ import com.audiobookz.nz.app.mylibrary.data.LocalBookData
 import com.audiobookz.nz.app.mylibrary.data.SessionData
 import com.audiobookz.nz.app.player.data.BookmarksData
 import com.audiobookz.nz.app.player.data.SynPositionData
+import com.audiobookz.nz.app.register.data.SignUpProData
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -268,4 +269,12 @@ interface AudiobookService {
     @DELETE("users/subscriptions/{subscriptionId}")
     @Headers("No-Authentication: false")
     fun deleteSubscriptions(@Path("subscriptionId") subscriptionId: Int): retrofit2.Call<Unit>
+
+    @Multipart
+    @POST("subscriptions/initiate-agreement")
+    @Headers("No-Authentication: false")
+    suspend fun signUpPro(
+        @Part("cancel_url") cancel_url: RequestBody,
+        @Part("success_url") success_url: RequestBody
+    ): Response<SignUpProData>
 }

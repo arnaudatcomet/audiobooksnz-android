@@ -117,10 +117,19 @@
         android:textAllCaps="false" />
 
     <Button
+        android:id="@+id/btnSignPro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_weight="1"
+        android:backgroundTint="@color/colorMain"
+        android:text="@string/SignPro" />
+
+    <Button
         android:id="@+id/btnSignFree"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:layout_weight="1"
         android:backgroundTint="@color/colorMain"
         android:text="@string/SignFree" />
@@ -129,7 +138,7 @@
         android:id="@+id/btnDiscover"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:layout_weight="1"
         android:backgroundTint="@color/colorMain"
         android:text="@string/Discover" />

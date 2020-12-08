@@ -91,6 +91,7 @@
     <string name="DontHaveAcc">Don\'t have Account?</string>
     <string name="Or">OR</string>
     <string name="SignFree">Sign Up For Free!</string>
+    <string name="SignPro">Sign Up To Pro</string>
     <string name="Discover">Discover Audiobooks</string>
 
     <!--login_mail_activity-->
@@ -137,7 +138,7 @@
     <!--chromecast-->
     <string name="receiver_id">13B2E2B1</string>
     <string name="namespace">urn:x-cast:com.audiobookz.nz.app</string>
-    
+
     <!--test id-->
     <string name="facebook_app_id">336532167097984</string>
     <string name="fb_login_protocol_scheme">fb336532167097984</string>

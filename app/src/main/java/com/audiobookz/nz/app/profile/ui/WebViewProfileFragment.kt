@@ -30,7 +30,7 @@ class WebViewProfileFragment : Fragment() {
         when (args.linkName) {
             "FAQ" -> {
                 setTitle("FAQ")
-                binding.webView.loadUrl("https://audiobooksnz.co.nz/other/faq")
+                binding.webView.loadUrl("https://www.audiobooksnz.com/android-faq.html")
             }
             "Facebook" -> {
                 setTitle("Audiobooks NZ Facebook Page")

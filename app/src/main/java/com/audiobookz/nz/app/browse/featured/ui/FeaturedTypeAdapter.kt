@@ -41,7 +41,13 @@ class FeaturedTypeAdapter(val resultData: Map<String, List<Featured>>) :
         var currentFeaturedKey = resultData.keys.toTypedArray()[position]
         var currentFeaturedList = resultData[currentFeaturedKey]
 
-        holder.rvMain.typeName.text = resultData.keys.toTypedArray()[position]
+        if (resultData.keys.toTypedArray()[position] == "New Zealand"){
+            holder.rvMain.typeName.text = "Trending"
+        }
+        else{
+            holder.rvMain.typeName.text = resultData.keys.toTypedArray()[position]
+        }
+
         bookAdapter.submitList(currentFeaturedList?.take(FEATURED_BOOK_SHOW))
 
         holder.rvMain.openBookList =

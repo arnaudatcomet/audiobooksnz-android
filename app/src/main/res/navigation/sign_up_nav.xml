@@ -8,5 +8,21 @@
     <fragment
         android:id="@+id/SignUpEmailFragment"
         android:name="com.audiobookz.nz.app.register.ui.SignUpFragment"
-        android:label="Sign Up" />
+        android:label="Sign Up" >
+        <action
+            android:id="@+id/action_SignUpEmailFragment_to_payPalWebViewFragment"
+            app:destination="@id/payPalWebViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/payPalWebViewFragment"
+        android:name="com.audiobookz.nz.app.basket.ui.PayPalWebViewFragment"
+         android:label="Sign Up Pro" >
+    <argument
+        android:name="linkUrl"
+        app:argType="string"/>
+    <argument
+        android:name="NavigateFrom"
+        app:argType="string"
+        app:nullable="true" />
+    </fragment>
 </navigation>

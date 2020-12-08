@@ -1,11 +1,17 @@
 package com.audiobookz.nz.app.register.data
 
+import com.audiobookz.nz.app.api.SharedPreferencesService
+import com.audiobookz.nz.app.data.resultFetchOnlyLiveData
 import com.audiobookz.nz.app.data.resultSimpleLiveData
+import okhttp3.RequestBody
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SignUpRepository @Inject constructor(private val remoteSource: SignUpRemoteDataSource) {
+class SignUpRepository @Inject constructor(
+    private val remoteSource: SignUpRemoteDataSource,
+    private val sharePref: SharedPreferencesService
+) {
     fun emailSignUp(
         email: String,
         lastName: String,
@@ -26,4 +32,14 @@ class SignUpRepository @Inject constructor(private val remoteSource: SignUpRemot
         },
         saveCallResult = {},
         onCallSuccess = {})
+
+    fun signUpPro(
+        token: String,
+        cancel_url: RequestBody,
+        success_url: RequestBody
+    ) = resultFetchOnlyLiveData(
+        networkCall = {
+            sharePref.saveToken(token)
+            remoteSource.signUpPro(cancel_url, success_url)
+        })
 }
