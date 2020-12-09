@@ -68,4 +68,6 @@ class BasketViewModel @Inject constructor(private val repository: BasketReposito
             resultCheckCredit.value = value
         }
     }
+
+    fun saveIsSubscribed(IsSubscribed:Boolean) = repository.saveIsSubscribed(IsSubscribed)
 }

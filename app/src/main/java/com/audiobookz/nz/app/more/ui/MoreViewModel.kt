@@ -11,6 +11,7 @@ import javax.inject.Inject
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.more.data.SubscriptionsData
 import com.audiobookz.nz.app.more.data.WishListData
+import com.audiobookz.nz.app.register.data.SignUpProData
 import com.audiobookz.nz.app.util.WEB_URL
 import retrofit2.Call
 import retrofit2.Callback
@@ -23,6 +24,8 @@ class MoreViewModel @Inject constructor(private val repository: MoreRepository) 
     var resultBuyCredits = MediatorLiveData<Result<OrderData>>()
     var resultPayment = MediatorLiveData<Result<PaymentData>>()
     var getCurrentPlanResult = MediatorLiveData<Result<List<SubscriptionsData>>>()
+    var resultUpgrade = MediatorLiveData<Result<SignUpProData>>()
+    val getIsSubscribed = repository.getIsSubscribed()
     var page = 1
     var pageSize = 30
 
@@ -92,5 +95,20 @@ class MoreViewModel @Inject constructor(private val repository: MoreRepository) 
                 }
             }
         })
+    }
+
+    fun upgradePro() {
+        var requestCancel = RequestBody.create(
+            MediaType.parse("text/plain"),
+            "$WEB_URL/user/subscription_agreement_cancel"
+        )
+        var requestSuccess = RequestBody.create(
+            MediaType.parse("text/plain"),
+            "$WEB_URL/user/subscription_agreement_success"
+        )
+
+        resultUpgrade.addSource(
+            repository.upgradePro(requestCancel, requestSuccess)
+        ) { value -> resultUpgrade.value = value }
     }
 }

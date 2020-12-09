@@ -15,9 +15,7 @@ import com.audiobookz.nz.app.browse.categories.ui.SubCategoryFragment
 import com.audiobookz.nz.app.browse.featured.ui.FeaturedFragment
 import com.audiobookz.nz.app.login.ui.ForgotPasswordFragment
 import com.audiobookz.nz.app.login.ui.LoginEmailFragment
-import com.audiobookz.nz.app.more.ui.AddCreditsFragment
-import com.audiobookz.nz.app.more.ui.CurrentPlanFragment
-import com.audiobookz.nz.app.more.ui.WishListFragment
+import com.audiobookz.nz.app.more.ui.*
 import com.audiobookz.nz.app.mylibrary.ui.BookDownloadFragment
 import com.audiobookz.nz.app.mylibrary.ui.CloudLibraryFragment
 import com.audiobookz.nz.app.mylibrary.ui.DeviceLibraryFragment
@@ -126,6 +124,12 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeCurrentPlanFragment(): CurrentPlanFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeUpgradeProFragment(): UpgradeProFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeMoreFragment(): MoreFragment
 
 //
 //    @ContributesAndroidInjector

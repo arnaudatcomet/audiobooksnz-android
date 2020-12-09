@@ -34,11 +34,11 @@ class LoginEmailFragment : Fragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: LoginViewModel
-    var Username: EditText? =null
-    var Password: EditText? =null
-    var LoginBtn: Button? =null
-    var ForgotPasBtn: Button? =null
-    private var isUpgrade: Boolean = false
+    var Username: EditText? = null
+    var Password: EditText? = null
+    var LoginBtn: Button? = null
+    var ForgotPasBtn: Button? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,8 +46,6 @@ class LoginEmailFragment : Fragment(), Injectable {
         savedInstanceState: Bundle?
     ): View? {
         var binding = FragmentLoginEmailBinding.inflate(inflater, container, false)
-        isUpgrade = activity?.intent!!.getBooleanExtra(EXTRA_MESSAGE, false)
-        binding.isUpgrade = isUpgrade
         return binding.root
     }
 
@@ -60,11 +58,11 @@ class LoginEmailFragment : Fragment(), Injectable {
         ForgotPasBtn = view.findViewById(R.id.btn_forgetpass) as Button
         viewModel = injectViewModel(viewModelFactory)
         LoginBtn!!.setOnClickListener { view ->
-            if(Password!!.text.toString()=="" || Username!!.text.toString() == "")
-            {
-                Toast.makeText(getActivity(), "Username or password is empty", Toast.LENGTH_SHORT).show()
-            }else{
-                viewModel.loginEmail(Username?.text.toString(),Password?.text.toString())
+            if (Password!!.text.toString() == "" || Username!!.text.toString() == "") {
+                Toast.makeText(getActivity(), "Username or password is empty", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                viewModel.loginEmail(Username?.text.toString(), Password?.text.toString())
             }
         }
 
@@ -75,52 +73,30 @@ class LoginEmailFragment : Fragment(), Injectable {
 
         subscribeUi()
     }
+
     private fun subscribeUi() {
         viewModel.logInResult.observe(viewLifecycleOwner, Observer { result ->
             when (result.status) {
                 Result.Status.SUCCESS -> {
-                    if(isUpgrade){
-                        result.data?.access_token?.let { viewModel.upgradePro(it) }
-                    }else{
-                        LoginBtn?.setText("Login")
-                        val intent = Intent(activity, MainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                        startActivity(intent)
-                        //never go back if done
-                        activity?.finish()
-                    }
+
+                    LoginBtn?.setText("Login")
+                    val intent = Intent(
+                        activity,
+                        MainActivity::class.java
+                    ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    startActivity(intent)
+                    //never go back if done
+                    activity?.finish()
 
                 }
-                Result.Status.LOADING ->  LoginBtn?.setText("Loading")
+                Result.Status.LOADING -> LoginBtn?.setText("Loading")
                 Result.Status.ERROR -> {
                     LoginBtn?.setText("Login")
-                    Toast.makeText(getActivity(),"Username or Password is incorrect" ,Toast.LENGTH_SHORT).show();3
-                }
-            }
-        })
-
-        viewModel.resultPayment.observe(viewLifecycleOwner, Observer { result ->
-            when (result.status) {
-                Result.Status.SUCCESS -> {
-                    if (result.data != null) {
-                        val navController = Navigation.findNavController(view!!)
-                        navController.navigate(
-                            LoginEmailFragmentDirections.actionLoginEmailFragmentToPayPalWebViewFragment(
-                                result.data.approval_link,
-                                "UpgradePro"
-                            )
-                        )
-                    }
-                }
-                Result.Status.LOADING -> {
-                }
-                Result.Status.ERROR -> {
-                    LoginBtn?.text = "Login"
-                    if(result.message == "Network :  400 Bad Request"){
-                        AlertDialogsService(context!!).simple("Validate", "You already have an active subscription")
-                    }else{
-                        result.message?.let { AlertDialogsService(context!!).simple("Error", it) }
-                    }
-
+                    Toast.makeText(
+                        getActivity(),
+                        "Username or Password is incorrect",
+                        Toast.LENGTH_SHORT
+                    ).show();3
                 }
             }
         })

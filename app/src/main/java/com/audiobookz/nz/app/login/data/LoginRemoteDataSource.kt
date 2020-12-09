@@ -12,10 +12,4 @@ class LoginRemoteDataSource @Inject constructor(private val service: AudiobookSe
     suspend fun loginGoogle(token:String, device:String) = getResult{ service.postLoginGoogle(token, device)}
 
     suspend fun loginFacebook(token:String, device:String) = getResult{ service.postLoginFacebook(token, device)}
-
-    suspend fun upgradePro(
-        cancel_url: RequestBody,
-        success_url: RequestBody
-
-    ) = getResult { service.signUpPro(cancel_url, success_url) }
 }

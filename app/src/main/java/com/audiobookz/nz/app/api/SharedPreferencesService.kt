@@ -8,6 +8,7 @@ class SharedPreferencesService(var context: Context) {
 
     var share_preferen: String = "Share"
     var share_preferen_token_key: String = "Token"
+    var share_preferen_subscribed: String = "Subscribed"
     var share_preferen_currentSleepTime: String = "SleepTime"
     var share_preferen_position_play:String = "PositionBook"
     var share_preferen_book:String = "Book"
@@ -18,6 +19,7 @@ class SharedPreferencesService(var context: Context) {
     private val shrPref: SharedPreferences = context.getSharedPreferences(share_preferen, Context.MODE_PRIVATE)
 
     fun saveToken(accessToken: String) { shrPref.edit().putString(share_preferen_token_key, accessToken).apply() }
+    fun saveIsSubscribed(isSubscribed: Boolean) { shrPref.edit().putBoolean(share_preferen_subscribed, isSubscribed).apply() }
     fun saveSleepTime(countTime:Long){ shrPref.edit().putLong(share_preferen_currentSleepTime, countTime).apply() }
 
     fun savePositionPlay(position:Long, contentId:Int, chapter:Int){
@@ -52,6 +54,7 @@ class SharedPreferencesService(var context: Context) {
     fun deleteToken() { shrPref.edit().remove(share_preferen_token_key).apply() }
     fun deleteCountTime() { shrPref.edit().remove(share_preferen_currentSleepTime).apply() }
     fun getToken(): String? = shrPref.getString(share_preferen_token_key, null)
+    fun getIsSubscribed(): Boolean? = shrPref.getBoolean(share_preferen_subscribed, true)
     fun getSleepTime(): Long = shrPref.getLong(share_preferen_currentSleepTime, 0)
     fun getSavePositionPlay(contentId: Int, chapter: Int):Long = shrPref.getLong(share_preferen_position_play+"$contentId$chapter", 0)
     fun getBookChapterSize(contentId:Int):Int = shrPref.getInt(share_preferen_book+"size$contentId", 0)

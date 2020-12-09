@@ -1,10 +1,14 @@
 package com.audiobookz.nz.app.more.data
 
+import com.audiobookz.nz.app.api.SharedPreferencesService
 import com.audiobookz.nz.app.data.resultFetchOnlyLiveData
 import okhttp3.RequestBody
 import javax.inject.Inject
 
-class MoreRepository @Inject constructor(private val remoteSource: MoreRemoteDataSource) {
+class MoreRepository @Inject constructor(
+    private val remoteSource: MoreRemoteDataSource,
+    private val sharePref: SharedPreferencesService
+) {
 
     fun getWishList(page: Int, pageSize: Int) = resultFetchOnlyLiveData(
         networkCall = { remoteSource.getWishList(page, pageSize) })
@@ -32,5 +36,15 @@ class MoreRepository @Inject constructor(private val remoteSource: MoreRemoteDat
         networkCall = { remoteSource.getCurrentPlan(Page, PageSize) }
     )
 
-    fun deleteSubscriptions(subscriptionId:Int) = remoteSource.deleteSubscriptions(subscriptionId)
+    fun deleteSubscriptions(subscriptionId: Int) = remoteSource.deleteSubscriptions(subscriptionId)
+
+    fun upgradePro(
+        cancel_url: RequestBody,
+        success_url: RequestBody
+    ) = resultFetchOnlyLiveData(
+        networkCall = {
+            remoteSource.upgradePro(cancel_url, success_url)
+        })
+
+    fun getIsSubscribed() = sharePref.getIsSubscribed()
 }

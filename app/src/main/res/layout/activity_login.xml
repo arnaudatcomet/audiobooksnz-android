@@ -134,15 +134,6 @@
         android:text="@string/SignFree" />
 
     <Button
-        android:id="@+id/btnUpgradePro"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:layout_weight="1"
-        android:backgroundTint="@color/colorMain"
-        android:text="@string/UpgradePro" />
-
-    <Button
         android:id="@+id/btnDiscover"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

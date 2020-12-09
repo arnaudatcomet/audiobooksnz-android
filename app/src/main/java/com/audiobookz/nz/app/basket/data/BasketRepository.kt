@@ -1,5 +1,6 @@
 package com.audiobookz.nz.app.basket.data
 
+import com.audiobookz.nz.app.api.SharedPreferencesService
 import com.audiobookz.nz.app.bookdetail.data.BookDetailRemoteDataSource
 import com.audiobookz.nz.app.bookdetail.data.BookRoom
 import com.audiobookz.nz.app.bookdetail.data.BookRoomDao
@@ -15,7 +16,9 @@ import javax.inject.Singleton
 
 @Singleton
 class BasketRepository @Inject constructor(
-    private val dao: BookRoomDao, private val remoteSource: MoreRemoteDataSource
+    private val dao: BookRoomDao,
+    private val remoteSource: MoreRemoteDataSource,
+    private val sharePref: SharedPreferencesService
 ) {
     fun loadBasket() = resultLocalGetOnlyLiveData(
         databaseQuery = { dao.loadBasket() }
@@ -25,7 +28,9 @@ class BasketRepository @Inject constructor(
         dao.deleteById(id)
     }
 
-    fun deleteBookAll(){dao.deleteAll()}
+    fun deleteBookAll() {
+        dao.deleteAll()
+    }
 
     fun orderCheckout(
         orderId: Int,
@@ -36,13 +41,15 @@ class BasketRepository @Inject constructor(
         networkCall = { remoteSource.orderCheckout(orderId, cancel_url, return_url, use_credit) })
 
     fun orderBookList(
-        body:List<MultipartBody.Part>, coupon:RequestBody, code:RequestBody
+        body: List<MultipartBody.Part>, coupon: RequestBody, code: RequestBody
     ) = resultFetchOnlyLiveData(
-        networkCall = { remoteSource.orderBookList(
+        networkCall = {
+            remoteSource.orderBookList(
 
-        body, coupon ,code
+                body, coupon, code
 
-        )})
+            )
+        })
 
     fun statusNotification(title: String, body: String) =
         remoteSource.statusNotification(title, body)
@@ -50,4 +57,6 @@ class BasketRepository @Inject constructor(
     fun getCredits() = resultFetchOnlyLiveData(networkCall = {
         remoteSource.getCredit()
     })
+
+    fun saveIsSubscribed(IsSubscribed:Boolean) = sharePref.saveIsSubscribed(IsSubscribed)
 }

@@ -216,6 +216,9 @@
         <action
             android:id="@+id/action_more_to_currentPlanFragment"
             app:destination="@id/currentPlanFragment" />
+        <action
+            android:id="@+id/action_more_to_upgradeProFragment"
+            app:destination="@id/upgradeProFragment" />
     </fragment>
     <fragment
         android:id="@+id/wishlistFragment"
@@ -240,7 +243,8 @@
     <fragment
         android:id="@+id/payPalWebViewFragment"
         android:name="com.audiobookz.nz.app.basket.ui.PayPalWebViewFragment"
-        android:label="Paypal Buy Credits" >
+        android:label="Paypal Payment"
+        tools:layout="@layout/fragment_pay_pal_web_view">
         <argument
             android:name="linkUrl"
             app:argType="string"/>
@@ -254,5 +258,16 @@
         android:name="com.audiobookz.nz.app.more.ui.CurrentPlanFragment"
         android:label="Current Plan"
         tools:layout="@layout/fragment_current_plan" />
+    <fragment
+        android:id="@+id/upgradeProFragment"
+        android:name="com.audiobookz.nz.app.more.ui.UpgradeProFragment"
+        android:label="Paypal Payment"
+        tools:layout="@layout/fragment_upgrade_pro" >
+        <action
+            android:id="@+id/action_upgradeProFragment_to_payPalWebViewFragment"
+            app:destination="@id/payPalWebViewFragment"
+            app:popUpTo="@id/more"
+            />
+    </fragment>
 
 </navigation>
