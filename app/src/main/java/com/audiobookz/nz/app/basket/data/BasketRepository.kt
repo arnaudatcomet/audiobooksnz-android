@@ -44,8 +44,8 @@ class BasketRepository @Inject constructor(
 
         )})
 
-    fun buyCreditStatusNotification(title: String, body: String) =
-        remoteSource.buyCreditStatusNotification(title, body)
+    fun statusNotification(title: String, body: String) =
+        remoteSource.statusNotification(title, body)
 
     fun getCredits() = resultFetchOnlyLiveData(networkCall = {
         remoteSource.getCredit()

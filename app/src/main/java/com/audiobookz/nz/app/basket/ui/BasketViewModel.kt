@@ -60,8 +60,8 @@ class BasketViewModel @Inject constructor(private val repository: BasketReposito
         ) { value -> resultOrder.value = value }
     }
 
-    fun buyCreditStatusNotification(title: String, body: String) =
-        repository.buyCreditStatusNotification(title, body)
+    fun statusNotification(title: String, body: String) =
+        repository.statusNotification(title, body)
 
     fun getCredits() {
         resultCheckCredit.addSource(repository.getCredits()) { value ->

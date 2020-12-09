@@ -63,14 +63,14 @@ class PayPalWebViewFragment : Fragment(), Injectable {
         webViewPayPal.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
                 if (url == "$WEB_URL/" || url == "$WEB_URL/home") {
-                    viewModel.buyCreditStatusNotification(
+                    viewModel.statusNotification(
                         "Payment Status",
                         " Your Payment is Failed"
                     )
                 } else if (url == "$WEB_URL/user/myaudio" || url == "$WEB_URL/home/login") {
-                    viewModel.buyCreditStatusNotification(
+                    viewModel.statusNotification(
                         "Payment Status",
-                        " Your Payment is succesful"
+                        " Your Payment is successful"
                     )
                     if (args.NavigateFrom == "Order"){
                         AsyncTask.execute {
@@ -79,6 +79,20 @@ class PayPalWebViewFragment : Fragment(), Injectable {
                     }
                 }
                 else if (url == "$WEB_URL/book/productlist/new-releases?lang%5B%5D=English"){
+                    viewModel.statusNotification(
+                        "Payment Status",
+                        " Congratulations! Subscription Successful, You can now use your Trial Book Credit(s)."
+                    )
+                    val intent = Intent(activity, MainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    startActivity(intent)
+                    //never go back if done
+                    activity?.finish()
+                }
+                else if(url == "$WEB_URL/home/index"){
+                    viewModel.statusNotification(
+                        "Payment Status",
+                        " sorry,You cannot subscribe to a trial plan"
+                    )
                     val intent = Intent(activity, MainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     startActivity(intent)
                     //never go back if done

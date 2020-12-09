@@ -43,7 +43,7 @@ class MoreRemoteDataSource @Inject constructor(
         )
     }
 
-    fun buyCreditStatusNotification(title: String, body: String) =
+    fun statusNotification(title: String, body: String) =
         notificationService.simple(title, body)
 
     suspend fun getCredit() = getResult { service.getCredit() }
