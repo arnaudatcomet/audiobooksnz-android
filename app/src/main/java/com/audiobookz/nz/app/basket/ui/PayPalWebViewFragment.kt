@@ -1,5 +1,6 @@
 package com.audiobookz.nz.app.basket.ui
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.os.AsyncTask
 import android.os.Bundle
@@ -12,6 +13,7 @@ import android.webkit.*
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import com.audiobookz.nz.app.MainActivity
 
 import com.audiobookz.nz.app.R
 import com.audiobookz.nz.app.databinding.FragmentPayPalWebViewBinding
@@ -75,6 +77,12 @@ class PayPalWebViewFragment : Fragment(), Injectable {
                             viewModel.deleteCartAll()
                         }
                     }
+                }
+                else if (url == "$WEB_URL/book/productlist/new-releases?lang%5B%5D=English"){
+                    val intent = Intent(activity, MainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    startActivity(intent)
+                    //never go back if done
+                    activity?.finish()
                 }
 
                 return false

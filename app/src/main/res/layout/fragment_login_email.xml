@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="isUpgrade"
+            type="Boolean" />
+    </data>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -74,7 +81,8 @@
         android:layout_gravity="center"
         android:text="@string/ForgotPass"
         android:textColor="#000000"
-        android:textAllCaps="false" />
+        android:textAllCaps="false"
+        android:visibility="@{isUpgrade? View.GONE : View.VISIBLE}"/>
 
     <Button
         android:id="@+id/btnLogin"
@@ -83,8 +91,9 @@
         android:layout_margin="10dp"
         android:layout_weight="1"
         android:backgroundTint="@color/colorMain"
-        android:text="@string/Login"
+        android:text="@{isUpgrade? @string/Upgrade : @string/Login}"
         android:textAllCaps="false" />
 
 </LinearLayout>
 </ScrollView>
+</layout>

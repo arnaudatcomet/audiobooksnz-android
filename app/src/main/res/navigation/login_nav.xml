@@ -6,5 +6,21 @@
     <fragment
         android:id="@+id/loginEmailFragment"
         android:name="com.audiobookz.nz.app.login.ui.LoginEmailFragment"
-        android:label="Login" />
+        android:label="Login" >
+        <action
+            android:id="@+id/action_loginEmailFragment_to_payPalWebViewFragment"
+            app:destination="@id/payPalWebViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/payPalWebViewFragment"
+        android:name="com.audiobookz.nz.app.basket.ui.PayPalWebViewFragment"
+        android:label="Upgrade to Pro" >
+        <argument
+            android:name="linkUrl"
+            app:argType="string"/>
+        <argument
+            android:name="NavigateFrom"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
 </navigation>

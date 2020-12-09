@@ -3,6 +3,8 @@ package com.audiobookz.nz.app.login.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.provider.AlarmClock
+import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,11 +15,15 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import com.audiobookz.nz.app.MainActivity
 import com.audiobookz.nz.app.R
+import com.audiobookz.nz.app.api.AlertDialogsService
 import com.audiobookz.nz.app.di.Injectable
 import com.audiobookz.nz.app.di.injectViewModel
 import com.audiobookz.nz.app.data.Result
+import com.audiobookz.nz.app.databinding.FragmentAudioPlayerBinding
+import com.audiobookz.nz.app.databinding.FragmentLoginEmailBinding
 import kotlinx.android.synthetic.main.fragment_login_email.*
 import com.audiobookz.nz.app.ui.hide
 import com.audiobookz.nz.app.ui.show
@@ -32,13 +38,17 @@ class LoginEmailFragment : Fragment(), Injectable {
     var Password: EditText? =null
     var LoginBtn: Button? =null
     var ForgotPasBtn: Button? =null
+    private var isUpgrade: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_login_email, container, false)
+        var binding = FragmentLoginEmailBinding.inflate(inflater, container, false)
+        isUpgrade = activity?.intent!!.getBooleanExtra(EXTRA_MESSAGE, false)
+        binding.isUpgrade = isUpgrade
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -69,17 +79,48 @@ class LoginEmailFragment : Fragment(), Injectable {
         viewModel.logInResult.observe(viewLifecycleOwner, Observer { result ->
             when (result.status) {
                 Result.Status.SUCCESS -> {
-
-                    LoginBtn?.setText("Login")
+                    if(isUpgrade){
+                        result.data?.access_token?.let { viewModel.upgradePro(it) }
+                    }else{
+                        LoginBtn?.setText("Login")
                         val intent = Intent(activity, MainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                         startActivity(intent)
                         //never go back if done
                         activity?.finish()
+                    }
+
                 }
                 Result.Status.LOADING ->  LoginBtn?.setText("Loading")
                 Result.Status.ERROR -> {
                     LoginBtn?.setText("Login")
                     Toast.makeText(getActivity(),"Username or Password is incorrect" ,Toast.LENGTH_SHORT).show();3
+                }
+            }
+        })
+
+        viewModel.resultPayment.observe(viewLifecycleOwner, Observer { result ->
+            when (result.status) {
+                Result.Status.SUCCESS -> {
+                    if (result.data != null) {
+                        val navController = Navigation.findNavController(view!!)
+                        navController.navigate(
+                            LoginEmailFragmentDirections.actionLoginEmailFragmentToPayPalWebViewFragment(
+                                result.data.approval_link,
+                                "UpgradePro"
+                            )
+                        )
+                    }
+                }
+                Result.Status.LOADING -> {
+                }
+                Result.Status.ERROR -> {
+                    LoginBtn?.text = "Login"
+                    if(result.message == "Network :  400 Bad Request"){
+                        AlertDialogsService(context!!).simple("Validate", "You already have an active subscription")
+                    }else{
+                        result.message?.let { AlertDialogsService(context!!).simple("Error", it) }
+                    }
+
                 }
             }
         })

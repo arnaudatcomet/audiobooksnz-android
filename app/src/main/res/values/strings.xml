@@ -92,6 +92,8 @@
     <string name="Or">OR</string>
     <string name="SignFree">Sign Up For Free!</string>
     <string name="SignPro">Sign Up To Pro</string>
+    <string name="UpgradePro">Upgrade To Pro</string>
+    <string name="Upgrade">Upgrade</string>
     <string name="Discover">Discover Audiobooks</string>
 
     <!--login_mail_activity-->

@@ -22,6 +22,7 @@ import com.audiobookz.nz.app.api.AlertDialogsService
 import com.audiobookz.nz.app.di.Injectable
 import com.audiobookz.nz.app.di.injectViewModel
 import com.audiobookz.nz.app.data.Result
+import com.audiobookz.nz.app.databinding.FragmentSignUpBinding
 import com.audiobookz.nz.app.login.ui.LoginEmailActivity
 import javax.inject.Inject
 
@@ -35,14 +36,16 @@ class SignUpFragment : Fragment(), Injectable {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_sign_up, container, false)
+        var binding = FragmentSignUpBinding.inflate(inflater, container, false)
+        isSignUpPro = activity?.intent!!.getBooleanExtra(EXTRA_MESSAGE, false)
+        binding.isSignUpPro = isSignUpPro
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = injectViewModel(viewModelFactory)
-        isSignUpPro = activity?.intent!!.getBooleanExtra(EXTRA_MESSAGE, false)
 
         val edittxtFistname = view.findViewById<EditText>(R.id.editFirstName)
         val edittxtLastname = view.findViewById<EditText>(R.id.editLastName)

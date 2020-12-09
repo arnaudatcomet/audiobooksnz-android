@@ -1,8 +1,10 @@
 package com.audiobookz.nz.app.login.data
 
 import com.audiobookz.nz.app.api.SharedPreferencesService
+import com.audiobookz.nz.app.data.resultFetchOnlyLiveData
 import com.audiobookz.nz.app.data.resultLiveData
 import com.audiobookz.nz.app.data.resultSimpleLiveData
+import okhttp3.RequestBody
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -34,5 +36,15 @@ class LoginRepository @Inject constructor(
             networkCall = { remoteSource.loginFacebook(token, device) },
             saveCallResult = { it.access_token?.let { it1 -> sharePref.saveToken(it1) } },
             onCallSuccess = {})
+
+    fun upgradePro(
+        token: String,
+        cancel_url: RequestBody,
+        success_url: RequestBody
+    ) = resultFetchOnlyLiveData(
+        networkCall = {
+            sharePref.saveToken(token)
+            remoteSource.upgradePro(cancel_url, success_url)
+        })
 
 }
