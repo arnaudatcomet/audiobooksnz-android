@@ -57,18 +57,21 @@ class SignUpFragment : Fragment(), Injectable {
 
         btnSignup.setOnClickListener { view ->
             if (!chkbox.isChecked) {
-                Toast.makeText(activity, "please tick checkbox", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, "Please tick checkbox", Toast.LENGTH_SHORT).show()
             } else if (edittxtFistname.text.isEmpty()) {
-                Toast.makeText(activity, "firstname is blank", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, "First Name is blank", Toast.LENGTH_SHORT).show()
             } else if (edittxtLastname.text.isEmpty()) {
-                Toast.makeText(activity, "lastname is blank", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, "Last Name is blank", Toast.LENGTH_SHORT).show()
             } else if (edittxtEmail.text.isEmpty()) {
-                Toast.makeText(activity, "email is blank", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, "Email is blank", Toast.LENGTH_SHORT).show()
             } else if (edittxtPassword.text.isEmpty()) {
-                Toast.makeText(activity, "password is blank", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, "Password is blank", Toast.LENGTH_SHORT).show()
             } else if (edittxtPasswordConfirm.text.isEmpty()) {
-                Toast.makeText(activity, "confirm password is blank", Toast.LENGTH_SHORT).show()
-            } else {
+                Toast.makeText(activity, "Confirm password is blank", Toast.LENGTH_SHORT).show()
+            } else if (edittxtPasswordConfirm.text.toString() != edittxtPassword.text.toString()) {
+                Toast.makeText(activity, "Password and confirm password does not match", Toast.LENGTH_SHORT).show()
+            }
+            else {
                 viewModel.emailSignUp(
                     edittxtEmail.text.toString(),
                     edittxtLastname.text.toString(),
@@ -105,7 +108,13 @@ class SignUpFragment : Fragment(), Injectable {
                 }
                 Result.Status.LOADING -> Log.d("TAG", "loading")
                 Result.Status.ERROR -> {
-                    result.message?.let { AlertDialogsService(context!!).simple("Error", it) }
+
+                    if (result.message !="Network : 422 Data Validation Failed"){
+                       AlertDialogsService(context!!).simple("Error", "This email address has already been taken.")
+                    }
+                    else{
+                        result.message?.let { AlertDialogsService(context!!).simple("Error", it) }
+                    }
                 }
             }
         })

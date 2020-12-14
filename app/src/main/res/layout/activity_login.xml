@@ -131,7 +131,8 @@
         android:layout_margin="5dp"
         android:layout_weight="1"
         android:backgroundTint="@color/colorMain"
-        android:text="@string/SignFree" />
+        android:text="@string/SignFree"
+        android:visibility="gone"/>
 
     <Button
         android:id="@+id/btnDiscover"
