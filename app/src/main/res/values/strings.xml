@@ -198,7 +198,7 @@
     <!--credit-->
     <string name="buyNow">Buy Now</string>
     <string name="noCredit">No. of Credits Required</string>
-    <string name="runOutCredit">Run out of book credits? Buy more for just NZ$20.00 a credit.</string>
+    <string name="runOutCredit">Run out of credits buy more at any time.</string>
     <string name="creditNote">Note: Only User with an active subscription can buy book credits</string>
 
     <!--coupon-->
