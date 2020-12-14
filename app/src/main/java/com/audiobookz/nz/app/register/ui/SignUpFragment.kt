@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.util.Log
+import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -70,6 +71,11 @@ class SignUpFragment : Fragment(), Injectable {
                 Toast.makeText(activity, "Confirm password is blank", Toast.LENGTH_SHORT).show()
             } else if (edittxtPasswordConfirm.text.toString() != edittxtPassword.text.toString()) {
                 Toast.makeText(activity, "Password and confirm password does not match", Toast.LENGTH_SHORT).show()
+            } else if (edittxtPasswordConfirm.text.length < 6 || edittxtPassword.text.length < 6){
+                Toast.makeText(activity, "Password should contain at least 6 characters.", Toast.LENGTH_SHORT).show()
+            }
+            else if (!Patterns.EMAIL_ADDRESS.matcher(edittxtEmail.text).matches()){
+                Toast.makeText(activity, "Email is not a valid email address.", Toast.LENGTH_SHORT).show()
             }
             else {
                 viewModel.emailSignUp(
