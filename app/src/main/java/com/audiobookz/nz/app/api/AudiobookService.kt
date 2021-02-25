@@ -9,6 +9,7 @@ import com.audiobookz.nz.app.browse.categories.data.Category
 import com.audiobookz.nz.app.browse.featured.data.Featured
 import com.audiobookz.nz.app.login.data.SuccessData
 import com.audiobookz.nz.app.login.data.UserData
+import com.audiobookz.nz.app.more.data.CardData
 import com.audiobookz.nz.app.more.data.SubscriptionsData
 import com.audiobookz.nz.app.more.data.WishListData
 import com.audiobookz.nz.app.mylibrary.data.CloudBook
@@ -28,7 +29,8 @@ import retrofit2.http.*
 interface AudiobookService {
 
     companion object {
-        const val ENDPOINT = "https://audiobooksnz.co.nz/backend/v1/"
+        //const val ENDPOINT = "https://audiobooksnz.co.nz/backend/v1/"
+        const val ENDPOINT = "https://rajindersingh.in/audiobook/v1/"
     }
 
     @GET("categories")
@@ -277,4 +279,13 @@ interface AudiobookService {
         @Part("cancel_url") cancel_url: RequestBody,
         @Part("success_url") success_url: RequestBody
     ): Response<SignUpProData>
+
+    @Multipart
+    @POST("users/card")
+    @Headers("No-Authentication: false")
+    suspend fun addPaymentCard(
+        @Part("stripe_token") stripe_token: RequestBody
+    ): Response<CardData>
+
+
 }

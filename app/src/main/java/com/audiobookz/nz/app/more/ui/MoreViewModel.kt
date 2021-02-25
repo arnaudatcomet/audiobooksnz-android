@@ -4,18 +4,20 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import com.audiobookz.nz.app.basket.data.OrderData
 import com.audiobookz.nz.app.basket.data.PaymentData
-import com.audiobookz.nz.app.more.data.MoreRepository
-import okhttp3.MediaType
-import okhttp3.RequestBody
-import javax.inject.Inject
 import com.audiobookz.nz.app.data.Result
+import com.audiobookz.nz.app.more.data.CardData
+import com.audiobookz.nz.app.more.data.MoreRepository
 import com.audiobookz.nz.app.more.data.SubscriptionsData
 import com.audiobookz.nz.app.more.data.WishListData
 import com.audiobookz.nz.app.register.data.SignUpProData
 import com.audiobookz.nz.app.util.WEB_URL
+import com.stripe.android.Stripe
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
 
 class MoreViewModel @Inject constructor(private val repository: MoreRepository) : ViewModel() {
@@ -25,6 +27,7 @@ class MoreViewModel @Inject constructor(private val repository: MoreRepository) 
     var resultPayment = MediatorLiveData<Result<PaymentData>>()
     var getCurrentPlanResult = MediatorLiveData<Result<List<SubscriptionsData>>>()
     var resultUpgrade = MediatorLiveData<Result<SignUpProData>>()
+    var resultAddCard = MediatorLiveData<Result<CardData>>()
     val getIsSubscribed = repository.getIsSubscribed()
     var page = 1
     var pageSize = 30
@@ -110,5 +113,14 @@ class MoreViewModel @Inject constructor(private val repository: MoreRepository) 
         resultUpgrade.addSource(
             repository.upgradePro(requestCancel, requestSuccess)
         ) { value -> resultUpgrade.value = value }
+    }
+
+    fun addPaymentCard(cardToken: String) {
+        var stripeToken = RequestBody.create(
+            MediaType.parse("text/plain"), cardToken
+        )
+        resultAddCard.addSource(
+            repository.addPaymentCard(stripeToken)
+        ) { value -> resultAddCard.value = value }
     }
 }

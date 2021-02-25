@@ -17,6 +17,9 @@
     <variable
         name="upgradeProClick"
         type="android.view.View.OnClickListener" />
+    <variable
+        name="addPaymentMethodClick"
+        type="android.view.View.OnClickListener" />
     <import type="android.view.View" />
 </data>
 
@@ -142,6 +145,37 @@
                     android:textSize="@dimen/font_size_super_big"
                     android:textStyle="bold"
                     android:text="@string/UpgradePro" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/next_black_36dp"
+                    android:textAppearance="?attr/textAppearanceHeadline6" />
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/addPaymentMethodCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:onClick="@{addPaymentMethodClick}">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/addPaymentMethodTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:textSize="@dimen/font_size_super_big"
+                    android:textStyle="bold"
+                    android:text="@string/addPaymentMethod" />
 
                 <ImageView
                     android:layout_width="wrap_content"

@@ -46,5 +46,12 @@ class MoreRepository @Inject constructor(
             remoteSource.upgradePro(cancel_url, success_url)
         })
 
+    fun addPaymentCard(
+        stripe_token: RequestBody
+    ) = resultFetchOnlyLiveData(
+        networkCall = {
+            remoteSource.addPaymentCard(stripe_token)
+        })
+
     fun getIsSubscribed() = sharePref.getIsSubscribed()
 }

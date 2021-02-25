@@ -153,23 +153,24 @@ class ProfileFragment : Fragment(), Injectable {
                 }
             }
         })
-        viewModel.queryProfile?.observe(viewLifecycleOwner, Observer { result ->
-            when (result.status) {
-                Result.Status.SUCCESS -> {
-                    fullNameTxt?.text = result.data?.full_name
-                    emailTxt?.text = result.data?.email
-                    profileImg?.let {
-                        Glide.with(this)
-                            .load(result.data?.image_url)
-                            .into(it)
-                    }
-                }
-                Result.Status.LOADING -> Log.d("TAG", "loading")
-                Result.Status.ERROR -> {
-                    result.message?.let { AlertDialogsService(context!!).simple("Error", it) };
-                }
-            }
-        })
+        //duplicate code??
+//        viewModel.queryProfile?.observe(viewLifecycleOwner, Observer { result ->
+//            when (result.status) {
+//                Result.Status.SUCCESS -> {
+//                    fullNameTxt?.text = result.data?.full_name
+//                    emailTxt?.text = result.data?.email
+//                    profileImg?.let {
+//                        Glide.with(this)
+//                            .load(result.data?.image_url)
+//                            .into(it)
+//                    }
+//                }
+//                Result.Status.LOADING -> Log.d("TAG", "loading")
+//                Result.Status.ERROR -> {
+//                    result.message?.let { AlertDialogsService(context!!).simple("Error", it) };
+//                }
+//            }
+//        })
     }
 
     //binding fragment

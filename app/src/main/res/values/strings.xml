@@ -194,6 +194,8 @@
     <string name="addCredits">Add Credits</string>
     <string name="currentPlan">Current Plan</string>
     <string name="wishList">Wish List</string>
+    <string name="addPaymentMethod">Add Payment Method</string>
+    <string name="addCard">Add Card</string>
 
     <!--credit-->
     <string name="buyNow">Buy Now</string>
