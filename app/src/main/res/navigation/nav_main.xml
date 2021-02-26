@@ -261,7 +261,7 @@
     <fragment
         android:id="@+id/upgradeProFragment"
         android:name="com.audiobookz.nz.app.more.ui.UpgradeProFragment"
-        android:label="Paypal Payment"
+        android:label="@string/UpgradePro"
         tools:layout="@layout/fragment_upgrade_pro" >
         <action
             android:id="@+id/action_upgradeProFragment_to_payPalWebViewFragment"

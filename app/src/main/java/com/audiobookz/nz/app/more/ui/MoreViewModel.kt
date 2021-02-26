@@ -29,6 +29,7 @@ class MoreViewModel @Inject constructor(private val repository: MoreRepository) 
     var resultUpgrade = MediatorLiveData<Result<SignUpProData>>()
     var resultAddCard = MediatorLiveData<Result<CardData>>()
     val getIsSubscribed = repository.getIsSubscribed()
+    val getHasCard = repository.getHasCard()
     var page = 1
     var pageSize = 30
 
@@ -103,11 +104,11 @@ class MoreViewModel @Inject constructor(private val repository: MoreRepository) 
     fun upgradePro() {
         var requestCancel = RequestBody.create(
             MediaType.parse("text/plain"),
-            "$WEB_URL/user/subscription_agreement_cancel"
+            "$WEB_URL/new-site/user/subscription_agreement_cancel"
         )
         var requestSuccess = RequestBody.create(
             MediaType.parse("text/plain"),
-            "$WEB_URL/user/subscription_agreement_success"
+            "$WEB_URL/new-site/user/subscription_agreement_success"
         )
 
         resultUpgrade.addSource(

@@ -2,6 +2,7 @@ package com.audiobookz.nz.app.more.data
 
 import com.audiobookz.nz.app.api.SharedPreferencesService
 import com.audiobookz.nz.app.data.resultFetchOnlyLiveData
+import com.audiobookz.nz.app.data.resultSimpleLiveData
 import okhttp3.RequestBody
 import javax.inject.Inject
 
@@ -48,10 +49,19 @@ class MoreRepository @Inject constructor(
 
     fun addPaymentCard(
         stripe_token: RequestBody
-    ) = resultFetchOnlyLiveData(
+    ) = resultSimpleLiveData(
         networkCall = {
             remoteSource.addPaymentCard(stripe_token)
-        })
+        }, saveCallResult = {
+            if (it.stripe_fingerprint.isNullOrEmpty()){
+                sharePref.saveCardPayment(false)
+            }else{
+                sharePref.saveCardPayment(true)
+            }
+        },
+        onCallSuccess = {})
 
     fun getIsSubscribed() = sharePref.getIsSubscribed()
+
+    fun getHasCard() = sharePref.getHasCard()
 }

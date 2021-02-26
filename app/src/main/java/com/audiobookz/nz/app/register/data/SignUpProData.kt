@@ -9,5 +9,8 @@ import kotlinx.android.parcel.Parcelize
 class SignUpProData(
     @SerializedName("approval_link")
     @Expose
-    val approval_link: String
+    val approval_link: String,
+    @SerializedName("subcription")
+    @Expose
+    val subcription: String
 ) : Parcelable

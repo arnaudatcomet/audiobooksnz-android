@@ -27,6 +27,10 @@ data class UserData(
     val email: String?,
     @field: SerializedName("status_id")
     val status_id: Int?,
+    @field: SerializedName("stripe_fingerprint")
+    val stripe_fingerprint: String?,
+    @field: SerializedName("stripe_customer_id")
+    val stripe_customer_id: String?,
     @field: SerializedName("image_url")
     val image_url: String?,
     @field: SerializedName("isSubscribed")

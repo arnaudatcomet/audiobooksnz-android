@@ -10,63 +10,103 @@ class SharedPreferencesService(var context: Context) {
     var share_preferen_token_key: String = "Token"
     var share_preferen_subscribed: String = "Subscribed"
     var share_preferen_currentSleepTime: String = "SleepTime"
-    var share_preferen_position_play:String = "PositionBook"
-    var share_preferen_book:String = "Book"
-    var share_preferen_current_chapter_of_the_book:String = "TheBookCurrentChapter"
-    var share_preferen_current_part_of_the_book:String = "TheBookCurrentPart"
-    var share_preferen_book_complete:String = "IsBookComplete"
-    var share_preferen_current_play:String = "BookDetail"
-    private val shrPref: SharedPreferences = context.getSharedPreferences(share_preferen, Context.MODE_PRIVATE)
+    var share_preferen_position_play: String = "PositionBook"
+    var share_preferen_book: String = "Book"
+    var share_preferen_current_chapter_of_the_book: String = "TheBookCurrentChapter"
+    var share_preferen_current_part_of_the_book: String = "TheBookCurrentPart"
+    var share_preferen_book_complete: String = "IsBookComplete"
+    var share_preferen_current_play: String = "BookDetail"
+    var sharePreferenHasCard: String = "hasCard"
+    private val shrPref: SharedPreferences =
+        context.getSharedPreferences(share_preferen, Context.MODE_PRIVATE)
 
-    fun saveToken(accessToken: String) { shrPref.edit().putString(share_preferen_token_key, accessToken).apply() }
-    fun saveIsSubscribed(isSubscribed: Boolean) { shrPref.edit().putBoolean(share_preferen_subscribed, isSubscribed).apply() }
-    fun saveSleepTime(countTime:Long){ shrPref.edit().putLong(share_preferen_currentSleepTime, countTime).apply() }
-
-    fun savePositionPlay(position:Long, contentId:Int, chapter:Int){
-        shrPref.edit().putLong(share_preferen_position_play+"$contentId$chapter", position).apply()
-    }
-    fun saveBookChapterSize(contentId:Int, size:Int){
-        shrPref.edit().putInt(share_preferen_book+"size$contentId", size).apply()}
-
-    fun saveBookTotalDuration(contentId:Int, duration:Long){
-        shrPref.edit().putLong(share_preferen_book+"durationTotal$contentId", duration).apply()
+    fun saveToken(accessToken: String) {
+        shrPref.edit().putString(share_preferen_token_key, accessToken).apply()
     }
 
-    fun saveBookDuration(contentId:Int, duration:Long){
-        shrPref.edit().putLong(share_preferen_book+"duration$contentId", duration).apply()
+    fun saveIsSubscribed(isSubscribed: Boolean) {
+        shrPref.edit().putBoolean(share_preferen_subscribed, isSubscribed).apply()
     }
 
-    fun saveBookCurrentChapter(contentId:Int, chapter:Int){
-        shrPref.edit().putInt(share_preferen_current_chapter_of_the_book+"$contentId", chapter).apply()
-    }
-    fun saveBookCurrentPart(contentId:Int, part:Int){
-        shrPref.edit().putInt(share_preferen_current_part_of_the_book+"$contentId", part).apply()
+    fun saveCardPayment(hasCard: Boolean) {
+        shrPref.edit().putBoolean(sharePreferenHasCard, hasCard).apply()
     }
 
-    fun saveBookReadComplete(contentId: Int, boolean: Boolean){
-        shrPref.edit().putBoolean(share_preferen_book_complete+"$contentId", boolean).apply()
+    fun saveSleepTime(countTime: Long) {
+        shrPref.edit().putLong(share_preferen_currentSleepTime, countTime).apply()
     }
-    fun saveMultiValueCurrentBook(bookDetail:ArrayList<String>){
+
+    fun savePositionPlay(position: Long, contentId: Int, chapter: Int) {
+        shrPref.edit().putLong(share_preferen_position_play + "$contentId$chapter", position)
+            .apply()
+    }
+
+    fun saveBookChapterSize(contentId: Int, size: Int) {
+        shrPref.edit().putInt(share_preferen_book + "size$contentId", size).apply()
+    }
+
+    fun saveBookTotalDuration(contentId: Int, duration: Long) {
+        shrPref.edit().putLong(share_preferen_book + "durationTotal$contentId", duration).apply()
+    }
+
+    fun saveBookDuration(contentId: Int, duration: Long) {
+        shrPref.edit().putLong(share_preferen_book + "duration$contentId", duration).apply()
+    }
+
+    fun saveBookCurrentChapter(contentId: Int, chapter: Int) {
+        shrPref.edit().putInt(share_preferen_current_chapter_of_the_book + "$contentId", chapter)
+            .apply()
+    }
+
+    fun saveBookCurrentPart(contentId: Int, part: Int) {
+        shrPref.edit().putInt(share_preferen_current_part_of_the_book + "$contentId", part).apply()
+    }
+
+    fun saveBookReadComplete(contentId: Int, boolean: Boolean) {
+        shrPref.edit().putBoolean(share_preferen_book_complete + "$contentId", boolean).apply()
+    }
+
+    fun saveMultiValueCurrentBook(bookDetail: ArrayList<String>) {
         val jsonString = Gson().toJson(bookDetail)
         shrPref.edit().putString(share_preferen_current_play, jsonString).apply()
     }
 
-    fun deleteToken() { shrPref.edit().remove(share_preferen_token_key).apply() }
-    fun deleteCountTime() { shrPref.edit().remove(share_preferen_currentSleepTime).apply() }
+    fun deleteToken() {
+        shrPref.edit().remove(share_preferen_token_key).apply()
+    }
+
+    fun deleteCountTime() {
+        shrPref.edit().remove(share_preferen_currentSleepTime).apply()
+    }
+
     fun getToken(): String? = shrPref.getString(share_preferen_token_key, null)
     fun getIsSubscribed(): Boolean? = shrPref.getBoolean(share_preferen_subscribed, true)
+    fun getHasCard(): Boolean? = shrPref.getBoolean(sharePreferenHasCard, false)
     fun getSleepTime(): Long = shrPref.getLong(share_preferen_currentSleepTime, 0)
-    fun getSavePositionPlay(contentId: Int, chapter: Int):Long = shrPref.getLong(share_preferen_position_play+"$contentId$chapter", 0)
-    fun getBookChapterSize(contentId:Int):Int = shrPref.getInt(share_preferen_book+"size$contentId", 0)
-    fun getBookTotalDuration(contentId:Int):Long = shrPref.getLong(share_preferen_book+"durationTotal$contentId", 0)
-    fun getBookDuration(contentId:Int):Long = shrPref.getLong(share_preferen_book+"duration$contentId", 0)
-    fun getSaveBookCurrentChapter(contentId:Int):Int = shrPref.getInt(share_preferen_current_chapter_of_the_book+"$contentId",0)
-    fun getSaveBookReadComplete(contentId:Int):Boolean = shrPref.getBoolean(share_preferen_book_complete+"$contentId",false)
-    fun getSaveBookCurrentPart(contentId:Int)= shrPref.getInt(share_preferen_current_part_of_the_book+"$contentId",0)
+    fun getSavePositionPlay(contentId: Int, chapter: Int): Long =
+        shrPref.getLong(share_preferen_position_play + "$contentId$chapter", 0)
 
-    fun getMultiValueCurrentBook():ArrayList<String>? {
-        val jsonString = shrPref.getString(share_preferen_current_play,"")
+    fun getBookChapterSize(contentId: Int): Int =
+        shrPref.getInt(share_preferen_book + "size$contentId", 0)
+
+    fun getBookTotalDuration(contentId: Int): Long =
+        shrPref.getLong(share_preferen_book + "durationTotal$contentId", 0)
+
+    fun getBookDuration(contentId: Int): Long =
+        shrPref.getLong(share_preferen_book + "duration$contentId", 0)
+
+    fun getSaveBookCurrentChapter(contentId: Int): Int =
+        shrPref.getInt(share_preferen_current_chapter_of_the_book + "$contentId", 0)
+
+    fun getSaveBookReadComplete(contentId: Int): Boolean =
+        shrPref.getBoolean(share_preferen_book_complete + "$contentId", false)
+
+    fun getSaveBookCurrentPart(contentId: Int) =
+        shrPref.getInt(share_preferen_current_part_of_the_book + "$contentId", 0)
+
+    fun getMultiValueCurrentBook(): ArrayList<String>? {
+        val jsonString = shrPref.getString(share_preferen_current_play, "")
         val array = Gson().fromJson(jsonString, ArrayList<String>()::class.java)
-        return  array
+        return array
     }
 }

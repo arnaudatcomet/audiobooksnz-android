@@ -122,7 +122,7 @@
         android:layout_margin="5dp"
         android:layout_weight="1"
         android:backgroundTint="@color/colorMain"
-        android:text="@string/SignPro" />
+        android:text="@string/SignFree" />
 
     <Button
         android:id="@+id/btnSignFree"

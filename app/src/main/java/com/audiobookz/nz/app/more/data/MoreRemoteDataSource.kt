@@ -56,7 +56,6 @@ class MoreRemoteDataSource @Inject constructor(
     suspend fun upgradePro(
         cancel_url: RequestBody,
         success_url: RequestBody
-
     ) = getResult { service.signUpPro(cancel_url, success_url) }
 
     suspend fun addPaymentCard(

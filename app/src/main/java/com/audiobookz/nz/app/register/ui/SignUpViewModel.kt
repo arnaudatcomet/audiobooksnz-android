@@ -41,11 +41,11 @@ class SignUpViewModel @Inject constructor(private val repository: SignUpReposito
     fun signUpPro(token: String) {
         var requestCancel = RequestBody.create(
             MediaType.parse("text/plain"),
-            "$WEB_URL/user/subscription_agreement_cancel"
+            "$WEB_URL/new-site/user/subscription_agreement_cancel"
         )
         var requestSuccess = RequestBody.create(
             MediaType.parse("text/plain"),
-            "$WEB_URL/user/subscription_agreement_success"
+            "$WEB_URL/new-site/user/subscription_agreement_success"
         )
 
         resultPayment.addSource(

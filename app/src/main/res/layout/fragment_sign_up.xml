@@ -156,7 +156,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:backgroundTint="@color/colorMain"
-        android:text="@{isSignUpPro? @string/SignPro : @string/SignUp}" />
+        android:text="@string/SignUp" />
 
 </LinearLayout>
 </ScrollView>

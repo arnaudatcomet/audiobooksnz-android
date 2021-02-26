@@ -41,12 +41,13 @@ class MoreFragment : Fragment(), Injectable {
         stripe = Stripe(context!!, "pk_test_ng7GDPEq172S4zUNrBGxUAQQ")
         val binding = FragmentMoreBinding.inflate(inflater, container, false)
         binding.isSubscribed = viewModel?.getIsSubscribed
+        binding.hasCard = viewModel.getHasCard
         binding.addCreditClick = goToAddCredits()
         binding.wishListClick = goToWishList()
         binding.currentPlanClick = goToCurrentPlan()
         binding.upgradeProClick = goToUpgrade()
-        binding.addPaymentMethodClick = stripeAddCard()
-        subscribeUi()
+        //binding.addPaymentMethodClick = stripeAddCard()
+        subscribeUi(binding)
         return binding.root
     }
 
@@ -73,13 +74,9 @@ class MoreFragment : Fragment(), Injectable {
 
     private fun goToUpgrade(): View.OnClickListener {
         return View.OnClickListener {
-            val direction = MoreFragmentDirections.actionMoreToUpgradeProFragment()
-            it.findNavController().navigate(direction)
-        }
-    }
 
-    private fun stripeAddCard(): View.OnClickListener {
-        return View.OnClickListener {
+            // val direction = MoreFragmentDirections.actionMoreToUpgradeProFragment()
+            // it.findNavController().navigate(direction)
 
             var dialog = activity?.let { it1 -> Dialog(it1) }
             dialog?.setContentView(R.layout.card_form_layout)
@@ -153,15 +150,47 @@ class MoreFragment : Fragment(), Injectable {
         })
     }
 
-    private fun subscribeUi() {
+    private fun subscribeUi(binding: FragmentMoreBinding) {
         viewModel.resultAddCard.observe(viewLifecycleOwner, Observer { result ->
             when (result.status) {
                 Result.Status.SUCCESS -> {
+                    if (result.data?.stripe_fingerprint != null) {
+                        viewModel.upgradePro()
+                    }
                 }
                 Result.Status.LOADING -> {
+                    binding.moreProgressBar.visibility = View.VISIBLE
                 }
                 Result.Status.ERROR -> {
-                    result.message?.let { AlertDialogsService(context!!).simple("Error", it) }
+                    binding.moreProgressBar.visibility = View.GONE
+                    result.message?.let {
+                        AlertDialogsService(context!!).simple(
+                            "Error Add Card",
+                            it
+                        )
+                    }
+                }
+            }
+        })
+        viewModel.resultUpgrade.observe(viewLifecycleOwner, Observer { result ->
+            when (result.status) {
+                Result.Status.SUCCESS -> {
+                    binding.moreProgressBar.visibility = View.GONE
+                    binding.hasCard = viewModel?.getHasCard
+                }
+                Result.Status.LOADING -> {
+                    binding.moreProgressBar.visibility = View.VISIBLE
+                }
+                Result.Status.ERROR -> {
+                    binding.moreProgressBar.visibility = View.GONE
+                    if (result.message == "Network :  400 Bad Request") {
+                        AlertDialogsService(context!!).simple(
+                            "Validate",
+                            "You already have an active subscription"
+                        )
+                    } else {
+                        result.message?.let { AlertDialogsService(context!!).simple("Error", it) }
+                    }
                 }
             }
         })

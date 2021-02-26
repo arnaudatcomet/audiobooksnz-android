@@ -99,16 +99,16 @@ class SignUpFragment : Fragment(), Injectable {
                     if (result.data == null) {
                         Toast.makeText(activity, result.message, Toast.LENGTH_SHORT).show();
                     } else {
-                        if (isSignUpPro) {
-                            result.data.access_token?.let { viewModel.signUpPro(it) }
-                        } else {
+//                        if (isSignUpPro) {
+//                            result.data.access_token?.let { viewModel.signUpPro(it) }
+//                        } else {
                             Toast.makeText(activity, "Sign Up Success", Toast.LENGTH_SHORT).show();
                             val intent = Intent(
                                 activity,
                                 SplashScreenActivity::class.java
                             ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                             startActivity(intent)
-                        }
+                        //}
 
                     }
                 }
@@ -128,15 +128,15 @@ class SignUpFragment : Fragment(), Injectable {
         viewModel.resultPayment.observe(viewLifecycleOwner, Observer { result ->
             when (result.status) {
                 Result.Status.SUCCESS -> {
-                    if (result.data != null) {
-                        val navController = Navigation.findNavController(view!!)
-                        navController.navigate(
-                            SignUpFragmentDirections.actionSignUpEmailFragmentToPayPalWebViewFragment(
-                                result.data.approval_link,
-                                "SignUpPro"
-                            )
-                        )
-                    }
+//                    if (result.data != null) {
+//                        val navController = Navigation.findNavController(view!!)
+//                        navController.navigate(
+//                            SignUpFragmentDirections.actionSignUpEmailFragmentToPayPalWebViewFragment(
+//                                result.data.approval_link,
+//                                "SignUpPro"
+//                            )
+//                        )
+//                    }
                 }
                 Result.Status.LOADING -> {
                 }
