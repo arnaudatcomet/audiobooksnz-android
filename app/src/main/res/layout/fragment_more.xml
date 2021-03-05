@@ -134,7 +134,7 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:onClick="@{upgradeProClick}"
-            android:visibility="@{hasCard? View.INVISIBLE : View.VISIBLE}">
+            android:visibility="@{isSubscribed? View.INVISIBLE : View.VISIBLE}">
 
             <RelativeLayout
                 android:layout_width="wrap_content"

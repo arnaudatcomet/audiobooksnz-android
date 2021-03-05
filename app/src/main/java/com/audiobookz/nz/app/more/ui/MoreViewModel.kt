@@ -10,6 +10,7 @@ import com.audiobookz.nz.app.more.data.MoreRepository
 import com.audiobookz.nz.app.more.data.SubscriptionsData
 import com.audiobookz.nz.app.more.data.WishListData
 import com.audiobookz.nz.app.register.data.SignUpProData
+import com.audiobookz.nz.app.util.TEST_URL
 import com.audiobookz.nz.app.util.WEB_URL
 import com.stripe.android.Stripe
 import okhttp3.MediaType
@@ -61,17 +62,21 @@ class MoreViewModel @Inject constructor(private val repository: MoreRepository) 
     fun orderCheckout(orderId: Int, creditUse: String) {
         var requestCancel = RequestBody.create(
             MediaType.parse("text/plain"),
-            "$WEB_URL/cart/paypal_fail"
+            "$TEST_URL/cart/paypal_fail"
         )
         var requestReturn = RequestBody.create(
             MediaType.parse("text/plain"),
-            "$WEB_URL/cart/paypal_success"
+            "$TEST_URL/cart/paypal_success"
         )
         //if in confirm order checkbox use credit is true useCredit = 1, default 0
         var requestUseCredit = RequestBody.create(MediaType.parse("text/plain"), creditUse)
 
+        var requestCard = RequestBody.create(MediaType.parse("text/plain"), "0")
+        var requestSaveCard = RequestBody.create(MediaType.parse("text/plain"), "0")
+        var requestStripeToken = RequestBody.create(MediaType.parse("text/plain"), "")
+
         resultPayment.addSource(
-            repository.orderCheckout(orderId, requestCancel, requestReturn, requestUseCredit)
+            repository.orderCheckout(orderId, requestCancel, requestReturn, requestUseCredit,requestCard,requestSaveCard,requestStripeToken)
         ) { value -> resultPayment.value = value }
     }
 
@@ -121,7 +126,7 @@ class MoreViewModel @Inject constructor(private val repository: MoreRepository) 
             MediaType.parse("text/plain"), cardToken
         )
         resultAddCard.addSource(
-            repository.addPaymentCard(stripeToken)
+            repository.addPaymentCard(cardToken,stripeToken)
         ) { value -> resultAddCard.value = value }
     }
 }

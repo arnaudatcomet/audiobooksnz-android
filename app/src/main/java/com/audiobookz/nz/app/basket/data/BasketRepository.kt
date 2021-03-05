@@ -36,18 +36,19 @@ class BasketRepository @Inject constructor(
         orderId: Int,
         cancel_url: RequestBody,
         return_url: RequestBody,
-        use_credit: RequestBody
+        use_credit: RequestBody,
+        card: RequestBody,
+        save_card: RequestBody,
+        stripe_token: RequestBody
     ) = resultFetchOnlyLiveData(
-        networkCall = { remoteSource.orderCheckout(orderId, cancel_url, return_url, use_credit) })
+        networkCall = { remoteSource.orderCheckout(orderId, cancel_url, return_url, use_credit,card,save_card,stripe_token) })
 
     fun orderBookList(
         body: List<MultipartBody.Part>, coupon: RequestBody, code: RequestBody
     ) = resultFetchOnlyLiveData(
         networkCall = {
             remoteSource.orderBookList(
-
                 body, coupon, code
-
             )
         })
 

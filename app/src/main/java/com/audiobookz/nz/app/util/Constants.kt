@@ -19,3 +19,4 @@ const val THIRTY_MILI_SEC = 30000
 const val HOUR_MILI_SEC = 3600000
 const val MINUTE_MILI_SEC = 60000
 const val WEB_URL = "https://audiobooksnz.co.nz"
+const val TEST_URL = "http://localhost/audiobook-frontend"

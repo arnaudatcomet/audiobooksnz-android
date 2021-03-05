@@ -29,9 +29,12 @@ class MoreRepository @Inject constructor(
         orderId: Int,
         cancel_url: RequestBody,
         return_url: RequestBody,
-        use_credit: RequestBody
+        use_credit: RequestBody,
+        card: RequestBody,
+        save_card: RequestBody,
+        stripe_token: RequestBody
     ) = resultFetchOnlyLiveData(
-        networkCall = { remoteSource.orderCheckout(orderId, cancel_url, return_url, use_credit) })
+        networkCall = { remoteSource.orderCheckout(orderId, cancel_url, return_url, use_credit,card,save_card,stripe_token) })
 
     fun getCurrentPlan(Page: Int, PageSize: Int) = resultFetchOnlyLiveData(
         networkCall = { remoteSource.getCurrentPlan(Page, PageSize) }
@@ -47,12 +50,13 @@ class MoreRepository @Inject constructor(
             remoteSource.upgradePro(cancel_url, success_url)
         })
 
-    fun addPaymentCard(
+    fun addPaymentCard(rawToken:String,
         stripe_token: RequestBody
     ) = resultSimpleLiveData(
         networkCall = {
             remoteSource.addPaymentCard(stripe_token)
         }, saveCallResult = {
+            sharePref.saveIsSubscribed(it.isSubscribed)
             if (it.stripe_fingerprint.isNullOrEmpty()){
                 sharePref.saveCardPayment(false)
             }else{
@@ -64,4 +68,5 @@ class MoreRepository @Inject constructor(
     fun getIsSubscribed() = sharePref.getIsSubscribed()
 
     fun getHasCard() = sharePref.getHasCard()
+
 }

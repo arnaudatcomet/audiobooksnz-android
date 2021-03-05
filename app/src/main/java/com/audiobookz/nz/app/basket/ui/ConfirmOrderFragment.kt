@@ -1,5 +1,6 @@
 package com.audiobookz.nz.app.basket.ui
 
+import android.os.AsyncTask
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -101,16 +102,19 @@ class ConfirmOrderFragment : Fragment(), Injectable {
                 Result.Status.SUCCESS -> {
                     if (result.data != null) {
                         if (result.data.state == "pending") {
-                            if (result.data.approval_url != "") {
-                                val navController = Navigation.findNavController(view!!)
-                                navController.navigate(
-                                    ConfirmOrderFragmentDirections.actionConfirmOrderFragmentToPayPalWebViewFragment(
-                                        result.data.approval_url, "Order"
-                                    )
-                                )
-
-                            }
+//                            if (result.data.approval_url != "") {
+//                                val navController = Navigation.findNavController(view!!)
+//                                navController.navigate(
+//                                    ConfirmOrderFragmentDirections.actionConfirmOrderFragmentToPayPalWebViewFragment(
+//                                        result.data.approval_url, "Order"
+//                                    )
+//                                )
+//
+//                            }
                         } else if (result.data.state == "completed") {
+                            AsyncTask.execute {
+                                viewModel.deleteCartAll()
+                            }
                             Toast.makeText(
                                 activity,
                                 "completed",

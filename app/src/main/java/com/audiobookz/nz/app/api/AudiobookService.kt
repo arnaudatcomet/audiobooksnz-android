@@ -10,6 +10,7 @@ import com.audiobookz.nz.app.browse.featured.data.Featured
 import com.audiobookz.nz.app.login.data.SuccessData
 import com.audiobookz.nz.app.login.data.UserData
 import com.audiobookz.nz.app.more.data.CardData
+import com.audiobookz.nz.app.more.data.CardListData
 import com.audiobookz.nz.app.more.data.SubscriptionsData
 import com.audiobookz.nz.app.more.data.WishListData
 import com.audiobookz.nz.app.mylibrary.data.CloudBook
@@ -245,7 +246,10 @@ interface AudiobookService {
         @Path("orderId") orderId: Int,
         @Part("cancel_url") cancel_url: RequestBody, // /cart/paypal_fail
         @Part("return_url") return_url: RequestBody, // /cart/paypal_success
-        @Part("use_credit") use_credit: RequestBody //0
+        @Part("use_credit") use_credit: RequestBody, //0
+        @Part("card") card: RequestBody,
+        @Part("save_card") save_card: RequestBody,
+        @Part("stripe_token") stripe_token: RequestBody
     ): Response<PaymentData>
 
     //@JvmSuppressWildcards
@@ -287,5 +291,15 @@ interface AudiobookService {
         @Part("stripe_token") stripe_token: RequestBody
     ): Response<CardData>
 
+    @GET("users/card")
+    @Headers("No-Authentication: false")
+    suspend fun getListCard(): Response<CardListData>
 
+    @DELETE("users/card")
+    @Headers("No-Authentication: false")
+    fun deleteCard(@Path("cardId") cardId: String): retrofit2.Call<Unit>
+
+    @PATCH("users/card")
+    @Headers("No-Authentication: false")
+    fun setCardDefault(@Path("cardId") cardId: String): retrofit2.Call<Unit>
 }

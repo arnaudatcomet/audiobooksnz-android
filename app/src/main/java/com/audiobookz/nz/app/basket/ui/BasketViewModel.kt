@@ -8,6 +8,7 @@ import com.audiobookz.nz.app.basket.data.PaymentData
 import com.audiobookz.nz.app.bookdetail.data.BookRoom
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.login.data.UserData
+import com.audiobookz.nz.app.util.TEST_URL
 import com.audiobookz.nz.app.util.WEB_URL
 import okhttp3.FormBody
 import okhttp3.MediaType
@@ -30,17 +31,22 @@ class BasketViewModel @Inject constructor(private val repository: BasketReposito
     fun orderCheckout(orderId: Int, creditUse: String) {
         var requestCancel = RequestBody.create(
             MediaType.parse("text/plain"),
-            "$WEB_URL/cart/paypal_fail"
+            "$TEST_URL/cart/paypal_fail"
         )
         var requestReturn = RequestBody.create(
             MediaType.parse("text/plain"),
-            "$WEB_URL/cart/paypal_success"
+            "$TEST_URL/cart/paypal_success"
         )
         //if in confirm order checkbox use credit is true useCredit = 1, default 0
         var requestUseCredit = RequestBody.create(MediaType.parse("text/plain"), creditUse)
 
+        var requestCard = RequestBody.create(MediaType.parse("text/plain"), "0")
+        var requestSaveCard = RequestBody.create(MediaType.parse("text/plain"), "0")
+        var requestStripeToken = RequestBody.create(MediaType.parse("text/plain"), "tok_1IRbJQLVREjvGBEatZi7KE74")
+
+
         resultPayment.addSource(
-            repository.orderCheckout(orderId, requestCancel, requestReturn, requestUseCredit)
+            repository.orderCheckout(orderId, requestCancel, requestReturn, requestUseCredit,requestCard,requestSaveCard,requestStripeToken)
         ) { value -> resultPayment.value = value }
     }
 

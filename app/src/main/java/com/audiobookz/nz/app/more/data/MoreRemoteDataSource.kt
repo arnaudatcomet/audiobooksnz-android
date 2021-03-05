@@ -32,8 +32,12 @@ class MoreRemoteDataSource @Inject constructor(
         orderId: Int,
         cancel_url: RequestBody,
         return_url: RequestBody,
-        use_credit: RequestBody
-    ) = getResult { service.orderCheckout(orderId, cancel_url, return_url, use_credit) }
+        use_credit: RequestBody,
+        card: RequestBody,
+        save_card: RequestBody,
+        stripe_token: RequestBody
+
+    ) = getResult { service.orderCheckout(orderId, cancel_url, return_url, use_credit,card,save_card,stripe_token) }
 
     suspend fun orderBookList(
         body: List<MultipartBody.Part>, coupon: RequestBody, code: RequestBody

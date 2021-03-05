@@ -40,8 +40,8 @@ class MoreFragment : Fragment(), Injectable {
         viewModel = injectViewModel(viewModelFactory)
         stripe = Stripe(context!!, "pk_test_ng7GDPEq172S4zUNrBGxUAQQ")
         val binding = FragmentMoreBinding.inflate(inflater, container, false)
-        binding.isSubscribed = viewModel?.getIsSubscribed
-        binding.hasCard = viewModel.getHasCard
+        binding.isSubscribed = viewModel.getIsSubscribed
+        // binding.hasCard = viewModel.getHasCard
         binding.addCreditClick = goToAddCredits()
         binding.wishListClick = goToWishList()
         binding.currentPlanClick = goToCurrentPlan()
@@ -154,9 +154,7 @@ class MoreFragment : Fragment(), Injectable {
         viewModel.resultAddCard.observe(viewLifecycleOwner, Observer { result ->
             when (result.status) {
                 Result.Status.SUCCESS -> {
-                    if (result.data?.stripe_fingerprint != null) {
-                        viewModel.upgradePro()
-                    }
+                    viewModel.upgradePro()
                 }
                 Result.Status.LOADING -> {
                     binding.moreProgressBar.visibility = View.VISIBLE
@@ -176,20 +174,38 @@ class MoreFragment : Fragment(), Injectable {
             when (result.status) {
                 Result.Status.SUCCESS -> {
                     binding.moreProgressBar.visibility = View.GONE
-                    binding.hasCard = viewModel?.getHasCard
+                    binding.isSubscribed = true
+                    AlertDialogsService(context!!).simple(
+                        "Success",
+                        "Payment Method Added"
+                    )
                 }
                 Result.Status.LOADING -> {
                     binding.moreProgressBar.visibility = View.VISIBLE
                 }
                 Result.Status.ERROR -> {
                     binding.moreProgressBar.visibility = View.GONE
-                    if (result.message == "Network :  400 Bad Request") {
-                        AlertDialogsService(context!!).simple(
-                            "Validate",
-                            "You already have an active subscription"
-                        )
-                    } else {
-                        result.message?.let { AlertDialogsService(context!!).simple("Error", it) }
+                    when (result.message) {
+                        "Network :  400 Bad Request" -> {
+                            AlertDialogsService(context!!).simple(
+                                "Validate",
+                                "You already have an active subscription"
+                            )
+                        }
+                        "Network :  403 Forbidden" -> {
+                            AlertDialogsService(context!!).simple(
+                                "Validate",
+                                "Sorry, This card is used for a trial plan already."
+                            )
+                        }
+                        else -> {
+                            result.message?.let {
+                                AlertDialogsService(context!!).simple(
+                                    "Error",
+                                    it
+                                )
+                            }
+                        }
                     }
                 }
             }
