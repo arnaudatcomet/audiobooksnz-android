@@ -196,6 +196,7 @@
     <string name="wishList">Wish List</string>
     <string name="addPaymentMethod">Add Payment Method</string>
     <string name="addCard">Add Card</string>
+    <string name="listCard">Payment Methods</string>
 
     <!--credit-->
     <string name="buyNow">Buy Now</string>

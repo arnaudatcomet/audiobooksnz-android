@@ -65,4 +65,11 @@ class MoreRemoteDataSource @Inject constructor(
     suspend fun addPaymentCard(
         stripe_token: RequestBody
     ) = getResult { service.addPaymentCard(stripe_token) }
+
+    suspend fun getCardList() =
+        getResult { service.getListCard() }
+
+    fun removeCardList(cardId: String) = service.deleteCard(cardId)
+
+    fun setDefaultCard(cardId: String) = service.setCardDefault(cardId)
 }

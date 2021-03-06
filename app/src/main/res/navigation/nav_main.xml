@@ -219,6 +219,9 @@
         <action
             android:id="@+id/action_more_to_upgradeProFragment"
             app:destination="@id/upgradeProFragment" />
+        <action
+            android:id="@+id/action_more_to_listCreditCardFragment"
+            app:destination="@id/listCreditCardFragment" />
     </fragment>
     <fragment
         android:id="@+id/wishlistFragment"
@@ -269,5 +272,10 @@
             app:popUpTo="@id/more"
             />
     </fragment>
+    <fragment
+        android:id="@+id/listCreditCardFragment"
+        android:name="com.audiobookz.nz.app.more.ui.ListCreditCardFragment"
+        android:label="@string/listCard"
+        tools:layout="@layout/fragment_list_credit_card"/>
 
 </navigation>

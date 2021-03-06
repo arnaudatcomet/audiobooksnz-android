@@ -69,4 +69,10 @@ class MoreRepository @Inject constructor(
 
     fun getHasCard() = sharePref.getHasCard()
 
+    fun getCardList() = resultFetchOnlyLiveData(
+        networkCall = { remoteSource.getCardList() })
+
+    fun removeCardList(cardId: String) = remoteSource.removeCardList(cardId)
+
+    fun setDefaltCard(cardId: String) = remoteSource.setDefaultCard(cardId)
 }

@@ -2,6 +2,7 @@ package com.audiobookz.nz.app.more.ui
 
 import android.app.Dialog
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,13 +10,12 @@ import android.view.WindowManager
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import com.audiobookz.nz.app.R
 import com.audiobookz.nz.app.api.AlertDialogsService
-import com.audiobookz.nz.app.databinding.FragmentMoreBinding
+import com.audiobookz.nz.app.data.Result
+import com.audiobookz.nz.app.databinding.FragmentListCreditCardBinding
 import com.audiobookz.nz.app.di.Injectable
 import com.audiobookz.nz.app.di.injectViewModel
 import com.stripe.android.ApiResultCallback
@@ -23,11 +23,8 @@ import com.stripe.android.Stripe
 import com.stripe.android.model.Card
 import com.stripe.android.model.Token
 import javax.inject.Inject
-import com.audiobookz.nz.app.data.Result
 
-
-class MoreFragment : Fragment(), Injectable {
-
+class ListCreditCardFragment : Fragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: MoreViewModel
@@ -39,44 +36,15 @@ class MoreFragment : Fragment(), Injectable {
     ): View? {
         viewModel = injectViewModel(viewModelFactory)
         stripe = Stripe(context!!, "pk_test_ng7GDPEq172S4zUNrBGxUAQQ")
-        val binding = FragmentMoreBinding.inflate(inflater, container, false)
-        binding.isSubscribed = viewModel.getIsSubscribed
-        // binding.hasCard = viewModel.getHasCard
-        binding.addCreditClick = goToAddCredits()
-        binding.wishListClick = goToWishList()
-        binding.currentPlanClick = goToCurrentPlan()
-        binding.upgradeProClick = goToUpgrade()
-        binding.listPaymentMethodClick = goToListPaymentMethods()
+        val binding = FragmentListCreditCardBinding.inflate(inflater, container, false)
+        binding.addCard = addCard()
+        viewModel.getCardList()
         subscribeUi(binding)
         return binding.root
     }
 
-    private fun goToAddCredits(): View.OnClickListener {
+    private fun addCard(): View.OnClickListener {
         return View.OnClickListener {
-            val direction = MoreFragmentDirections.actionMoreFragmentToAddCreditsFragment()
-            it.findNavController().navigate(direction)
-        }
-    }
-
-    private fun goToWishList(): View.OnClickListener {
-        return View.OnClickListener {
-            val direction = MoreFragmentDirections.actionMoreFragmentToWishlistFragment()
-            it.findNavController().navigate(direction)
-        }
-    }
-
-    private fun goToCurrentPlan(): View.OnClickListener {
-        return View.OnClickListener {
-            val direction = MoreFragmentDirections.actionMoreToCurrentPlanFragment()
-            it.findNavController().navigate(direction)
-        }
-    }
-
-    private fun goToUpgrade(): View.OnClickListener {
-        return View.OnClickListener {
-
-            // val direction = MoreFragmentDirections.actionMoreToUpgradeProFragment()
-            // it.findNavController().navigate(direction)
 
             var dialog = activity?.let { it1 -> Dialog(it1) }
             dialog?.setContentView(R.layout.card_form_layout)
@@ -120,13 +88,6 @@ class MoreFragment : Fragment(), Injectable {
         }
     }
 
-    private fun goToListPaymentMethods(): View.OnClickListener{
-        return View.OnClickListener {
-            val direction = MoreFragmentDirections.actionMoreToListCreditCardFragment()
-            it.findNavController().navigate(direction)
-        }
-    }
-
     private fun validateCard(
         card: String,
         month: String,
@@ -157,62 +118,36 @@ class MoreFragment : Fragment(), Injectable {
         })
     }
 
-    private fun subscribeUi(binding: FragmentMoreBinding) {
+    private fun subscribeUi(binding: FragmentListCreditCardBinding) {
+        viewModel.resultGetCardList.observe(viewLifecycleOwner, Observer { result ->
+            when (result.status) {
+                Result.Status.SUCCESS -> {
+                    val adapter = result.data?.default?.let { CardListAdapter(viewModel, it) }
+                    adapter?.submitList(result.data?.card)
+                    binding.creditCardRecycleView.adapter = adapter
+                }
+                Result.Status.LOADING -> {
+                }
+                Result.Status.ERROR -> {
+                    result.message?.let { AlertDialogsService(context!!).simple("Error", it) }
+                }
+            }
+        })
+
         viewModel.resultAddCard.observe(viewLifecycleOwner, Observer { result ->
             when (result.status) {
                 Result.Status.SUCCESS -> {
-                    viewModel.upgradePro()
+                    viewModel.getCardList()
                 }
                 Result.Status.LOADING -> {
-                    binding.moreProgressBar.visibility = View.VISIBLE
                 }
                 Result.Status.ERROR -> {
-                    binding.moreProgressBar.visibility = View.GONE
+
                     result.message?.let {
                         AlertDialogsService(context!!).simple(
                             "Error Add Card",
                             it
                         )
-                    }
-                }
-            }
-        })
-        viewModel.resultUpgrade.observe(viewLifecycleOwner, Observer { result ->
-            when (result.status) {
-                Result.Status.SUCCESS -> {
-                    binding.moreProgressBar.visibility = View.GONE
-                    binding.isSubscribed = true
-//                    AlertDialogsService(context!!).simple(
-//                        "Success",
-//                        "Payment Method Added"
-//                    )
-                }
-                Result.Status.LOADING -> {
-                    binding.moreProgressBar.visibility = View.VISIBLE
-                }
-                Result.Status.ERROR -> {
-                    binding.moreProgressBar.visibility = View.GONE
-                    when (result.message) {
-                        "Network :  400 Bad Request" -> {
-                            AlertDialogsService(context!!).simple(
-                                "Validate",
-                                "You already have an active subscription"
-                            )
-                        }
-                        "Network :  403 Forbidden" -> {
-                            AlertDialogsService(context!!).simple(
-                                "Validate",
-                                "Sorry, This card is used for a trial plan already."
-                            )
-                        }
-                        else -> {
-                            result.message?.let {
-                                AlertDialogsService(context!!).simple(
-                                    "Error",
-                                    it
-                                )
-                            }
-                        }
                     }
                 }
             }

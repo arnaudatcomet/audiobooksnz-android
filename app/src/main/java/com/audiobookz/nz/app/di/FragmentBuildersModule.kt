@@ -131,6 +131,9 @@ abstract class FragmentBuildersModule {
     @ContributesAndroidInjector
     abstract fun contributeMoreFragment(): MoreFragment
 
+    @ContributesAndroidInjector
+    abstract fun contributeListCreditCardFragment(): ListCreditCardFragment
+
 //
 //    @ContributesAndroidInjector
 //    abstract fun contributeLegoSetsFragment(): LegoSetsFragment

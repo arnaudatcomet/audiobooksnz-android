@@ -9,8 +9,8 @@ import kotlinx.android.parcel.Parcelize
 class CardListData(
     @SerializedName("card")
     @Expose
-    val card: List<CardDetailData>,
+    val card: List<CardDetailData>?,
     @SerializedName("default")
     @Expose
-    val default: String
+    val default: String?
 ) : Parcelable

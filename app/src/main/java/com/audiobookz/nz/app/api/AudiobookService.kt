@@ -295,11 +295,11 @@ interface AudiobookService {
     @Headers("No-Authentication: false")
     suspend fun getListCard(): Response<CardListData>
 
-    @DELETE("users/card")
+    @DELETE("users/card/{cardId}")
     @Headers("No-Authentication: false")
     fun deleteCard(@Path("cardId") cardId: String): retrofit2.Call<Unit>
 
-    @PATCH("users/card")
+    @PATCH("users/card/{cardId}")
     @Headers("No-Authentication: false")
     fun setCardDefault(@Path("cardId") cardId: String): retrofit2.Call<Unit>
 }

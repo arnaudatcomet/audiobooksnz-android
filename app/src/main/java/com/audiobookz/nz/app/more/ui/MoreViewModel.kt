@@ -5,10 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.audiobookz.nz.app.basket.data.OrderData
 import com.audiobookz.nz.app.basket.data.PaymentData
 import com.audiobookz.nz.app.data.Result
-import com.audiobookz.nz.app.more.data.CardData
-import com.audiobookz.nz.app.more.data.MoreRepository
-import com.audiobookz.nz.app.more.data.SubscriptionsData
-import com.audiobookz.nz.app.more.data.WishListData
+import com.audiobookz.nz.app.more.data.*
 import com.audiobookz.nz.app.register.data.SignUpProData
 import com.audiobookz.nz.app.util.TEST_URL
 import com.audiobookz.nz.app.util.WEB_URL
@@ -24,6 +21,7 @@ import javax.inject.Inject
 class MoreViewModel @Inject constructor(private val repository: MoreRepository) : ViewModel() {
     var resultRemoveWishList = MediatorLiveData<Result<WishListData>>()
     var resultGetWishList = MediatorLiveData<Result<List<WishListData>>>()
+    var resultGetCardList = MediatorLiveData<Result<CardListData>>()
     var resultBuyCredits = MediatorLiveData<Result<OrderData>>()
     var resultPayment = MediatorLiveData<Result<PaymentData>>()
     var getCurrentPlanResult = MediatorLiveData<Result<List<SubscriptionsData>>>()
@@ -136,5 +134,41 @@ class MoreViewModel @Inject constructor(private val repository: MoreRepository) 
         resultAddCard.addSource(
             repository.addPaymentCard(cardToken, stripeToken)
         ) { value -> resultAddCard.value = value }
+    }
+
+    fun getCardList() {
+        resultGetCardList.addSource(
+            repository.getCardList()
+        ) { value -> resultGetCardList.value = value }
+    }
+
+    fun removeCardList(cardId: String) {
+        var requestCall = repository.removeCardList(cardId)
+        requestCall.enqueue(object : Callback<Unit> {
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                //do nothing
+            }
+
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                if (response.isSuccessful) {
+                    getCardList()
+                }
+            }
+        })
+    }
+
+    fun setDefaltCard(cardId: String) {
+        var requestCall = repository.setDefaltCard(cardId)
+        requestCall.enqueue(object : Callback<Unit> {
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                //do nothing
+            }
+
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                if (response.isSuccessful) {
+                    getCardList()
+                }
+            }
+        })
     }
 }

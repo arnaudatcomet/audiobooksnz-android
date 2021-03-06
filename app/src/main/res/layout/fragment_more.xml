@@ -1,32 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-<data>
-    <variable
-        name="isSubscribed"
-        type="Boolean" />
-    <variable
-        name="hasCard"
-        type="Boolean" />
-    <variable
-        name="wishListClick"
-        type="android.view.View.OnClickListener" />
-    <variable
-        name="addCreditClick"
-        type="android.view.View.OnClickListener" />
-    <variable
-        name="currentPlanClick"
-        type="android.view.View.OnClickListener" />
-    <variable
-        name="upgradeProClick"
-        type="android.view.View.OnClickListener" />
-    <variable
-        name="addPaymentMethodClick"
-        type="android.view.View.OnClickListener" />
-    <import type="android.view.View" />
-</data>
 
-
+    <data>
+        <variable
+            name="isSubscribed"
+            type="Boolean" />
+        <variable
+            name="hasCard"
+            type="Boolean" />
+        <variable
+            name="wishListClick"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="addCreditClick"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="currentPlanClick"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="upgradeProClick"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="listPaymentMethodClick"
+            type="android.view.View.OnClickListener" />
+        <import type="android.view.View" />
+    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -129,6 +128,37 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/listPaymentCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:onClick="@{listPaymentMethodClick}">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/cardListTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:textSize="@dimen/font_size_super_big"
+                    android:textStyle="bold"
+                    android:text="@string/listCard" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/next_black_36dp"
+                    android:textAppearance="?attr/textAppearanceHeadline6" />
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
             android:id="@+id/upgradeProCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -167,36 +197,5 @@
             android:padding="100px"
             android:visibility="gone"/>
 
-<!--        <androidx.cardview.widget.CardView-->
-<!--            android:id="@+id/addPaymentMethodCard"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:clickable="true"-->
-<!--            android:onClick="@{addPaymentMethodClick}"-->
-<!--            android:visibility="@{hasCard? View.INVISIBLE : View.VISIBLE}">-->
-
-<!--            <RelativeLayout-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_margin="10dp"-->
-<!--                android:orientation="horizontal">-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/addPaymentMethodTxt"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_alignParentLeft="true"-->
-<!--                    android:textSize="@dimen/font_size_super_big"-->
-<!--                    android:textStyle="bold"-->
-<!--                    android:text="@string/addPaymentMethod" />-->
-
-<!--                <ImageView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_alignParentRight="true"-->
-<!--                    android:background="@drawable/next_black_36dp"-->
-<!--                    android:textAppearance="?attr/textAppearanceHeadline6" />-->
-<!--            </RelativeLayout>-->
-<!--        </androidx.cardview.widget.CardView>-->
     </LinearLayout>
 </layout>
