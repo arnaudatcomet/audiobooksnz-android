@@ -25,10 +25,13 @@ class BasketViewModel @Inject constructor(private val repository: BasketReposito
     fun deleteCartById(id: Int) {
         repository.deleteBook(id)
     }
-    //when pay finish
-    fun deleteCartAll(){repository.deleteBookAll()}
 
-    fun orderCheckout(orderId: Int, creditUse: String) {
+    //when pay finish
+    fun deleteCartAll() {
+        repository.deleteBookAll()
+    }
+
+    fun orderCheckout(orderId: Int, creditUse: String, stripeToken: String) {
         var requestCancel = RequestBody.create(
             MediaType.parse("text/plain"),
             "$TEST_URL/cart/paypal_fail"
@@ -42,21 +45,34 @@ class BasketViewModel @Inject constructor(private val repository: BasketReposito
 
         var requestCard = RequestBody.create(MediaType.parse("text/plain"), "0")
         var requestSaveCard = RequestBody.create(MediaType.parse("text/plain"), "0")
-        var requestStripeToken = RequestBody.create(MediaType.parse("text/plain"), "tok_1IRbJQLVREjvGBEatZi7KE74")
+        var requestStripeToken = RequestBody.create(MediaType.parse("text/plain"), stripeToken)
 
 
         resultPayment.addSource(
-            repository.orderCheckout(orderId, requestCancel, requestReturn, requestUseCredit,requestCard,requestSaveCard,requestStripeToken)
+            repository.orderCheckout(
+                orderId,
+                requestCancel,
+                requestReturn,
+                requestUseCredit,
+                requestCard,
+                requestSaveCard,
+                requestStripeToken
+            )
         ) { value -> resultPayment.value = value }
     }
 
     fun orderBookList(orderItem: ArrayList<BookRoom>, code: String, coupon: String?) {
         var listProduct = ArrayList<MultipartBody.Part>()
 
-            for (i in orderItem.indices) {
-                listProduct.add(MultipartBody.Part.createFormData("OrderItem[$i][product_id]", orderItem[i].id.toString()))
-                listProduct.add(MultipartBody.Part.createFormData("OrderItem[$i][type_id]","1"))
-            }
+        for (i in orderItem.indices) {
+            listProduct.add(
+                MultipartBody.Part.createFormData(
+                    "OrderItem[$i][product_id]",
+                    orderItem[i].id.toString()
+                )
+            )
+            listProduct.add(MultipartBody.Part.createFormData("OrderItem[$i][type_id]", "1"))
+        }
 
         var requestCode = RequestBody.create(MediaType.parse("text/plain"), code)
         var requestCoupon = RequestBody.create(MediaType.parse("text/plain"), coupon)
@@ -75,5 +91,5 @@ class BasketViewModel @Inject constructor(private val repository: BasketReposito
         }
     }
 
-    fun saveIsSubscribed(IsSubscribed:Boolean) = repository.saveIsSubscribed(IsSubscribed)
+    fun saveIsSubscribed(IsSubscribed: Boolean) = repository.saveIsSubscribed(IsSubscribed)
 }

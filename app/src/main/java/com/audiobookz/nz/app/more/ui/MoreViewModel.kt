@@ -59,7 +59,7 @@ class MoreViewModel @Inject constructor(private val repository: MoreRepository) 
         ) { value -> resultBuyCredits.value = value }
     }
 
-    fun orderCheckout(orderId: Int, creditUse: String) {
+    fun orderCheckout(orderId: Int, creditUse: String, stripeToken: String) {
         var requestCancel = RequestBody.create(
             MediaType.parse("text/plain"),
             "$TEST_URL/cart/paypal_fail"
@@ -73,10 +73,18 @@ class MoreViewModel @Inject constructor(private val repository: MoreRepository) 
 
         var requestCard = RequestBody.create(MediaType.parse("text/plain"), "0")
         var requestSaveCard = RequestBody.create(MediaType.parse("text/plain"), "0")
-        var requestStripeToken = RequestBody.create(MediaType.parse("text/plain"), "")
+        var requestStripeToken = RequestBody.create(MediaType.parse("text/plain"), stripeToken)
 
         resultPayment.addSource(
-            repository.orderCheckout(orderId, requestCancel, requestReturn, requestUseCredit,requestCard,requestSaveCard,requestStripeToken)
+            repository.orderCheckout(
+                orderId,
+                requestCancel,
+                requestReturn,
+                requestUseCredit,
+                requestCard,
+                requestSaveCard,
+                requestStripeToken
+            )
         ) { value -> resultPayment.value = value }
     }
 
@@ -126,7 +134,7 @@ class MoreViewModel @Inject constructor(private val repository: MoreRepository) 
             MediaType.parse("text/plain"), cardToken
         )
         resultAddCard.addSource(
-            repository.addPaymentCard(cardToken,stripeToken)
+            repository.addPaymentCard(cardToken, stripeToken)
         ) { value -> resultAddCard.value = value }
     }
 }
