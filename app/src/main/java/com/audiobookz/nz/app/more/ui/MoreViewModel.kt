@@ -220,4 +220,7 @@ class MoreViewModel @Inject constructor(private val repository: MoreRepository) 
         }
     }
 
+    fun statusNotification(title: String, body: String) =
+        repository.statusNotification(title, body)
+
 }

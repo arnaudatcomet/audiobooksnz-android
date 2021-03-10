@@ -1,6 +1,7 @@
 package com.audiobookz.nz.app.basket.ui
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -16,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.audiobookz.nz.app.MainActivity
 import com.audiobookz.nz.app.R
 import com.audiobookz.nz.app.api.AlertDialogsService
 import com.audiobookz.nz.app.bookdetail.data.BookRoom
@@ -24,6 +26,8 @@ import com.audiobookz.nz.app.di.Injectable
 import com.audiobookz.nz.app.di.injectViewModel
 import javax.inject.Inject
 import com.audiobookz.nz.app.data.Result
+import com.audiobookz.nz.app.more.data.CardData
+import com.audiobookz.nz.app.more.data.CardListData
 import com.audiobookz.nz.app.ui.hide
 import com.audiobookz.nz.app.ui.show
 import com.google.android.material.snackbar.Snackbar
@@ -36,7 +40,6 @@ class ConfirmOrderFragment : Fragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: BasketViewModel
-    private var totalPrice = 0F
     private val args: ConfirmOrderFragmentArgs by navArgs()
     private lateinit var bookListProduct: ArrayList<BookRoom>
     private var orderId: Int? = null
@@ -51,71 +54,15 @@ class ConfirmOrderFragment : Fragment(), Injectable {
         val binding = FragmentConfirmOrderBinding.inflate(inflater, container, false)
         val adapter = OrderAdapter()
         binding.orderRecycleView.adapter = adapter
-        binding.proceedPay = clickPay(binding)
+        binding.proceedPay = clickPay()
         subscribeUi(binding, adapter)
         return binding.root
     }
 
-    private fun clickPay(binding: FragmentConfirmOrderBinding): View.OnClickListener {
+    private fun clickPay(): View.OnClickListener {
         return View.OnClickListener {
-//            if (orderId != null)
-//                if (binding.useCreditBox.isChecked) {
-//                    viewModel.orderCheckout(orderId!!, "1")
-//                } else {
-//                    viewModel.orderCheckout(orderId!!, "0")
-//                }
-
-            var dialog = activity?.let { it1 -> Dialog(it1) }
-            dialog?.setContentView(R.layout.card_form_layout)
-            var lp: WindowManager.LayoutParams = WindowManager.LayoutParams().apply {
-                copyFrom(dialog?.window?.attributes)
-                width = WindowManager.LayoutParams.MATCH_PARENT
-                height = WindowManager.LayoutParams.WRAP_CONTENT
-            }
-
-            val submit = dialog?.findViewById<View>(R.id.submit) as TextView
-            val cardNo = dialog.findViewById<View>(R.id.cardNo) as EditText
-            val month = dialog.findViewById<View>(R.id.month) as EditText
-            val year = dialog.findViewById<View>(R.id.year) as EditText
-            val cvv = dialog.findViewById<View>(R.id.cvv) as EditText
-
-            submit.setOnClickListener {
-                when {
-                    cardNo.length() == 0 || month.length() == 0 || year.length() == 0 || cvv.length() == 0 ->
-                        Toast.makeText(
-                            activity, "Please fill all the fields", Toast.LENGTH_SHORT
-                        ).show()
-                    cardNo.length() < 16 -> Toast.makeText(
-                        activity, "Please enter" +
-                                " valid Card No.", Toast.LENGTH_SHORT
-                    ).show()
-                    else -> {
-
-                        if (orderId != null)
-                            if (binding.useCreditBox.isChecked) {
-                                validateCard(
-                                    cardNo.text.toString(),
-                                    month.text.toString(),
-                                    year.text.toString(),
-                                    cvv.text.toString(),
-                                    "1"
-                                )
-                            } else {
-                                validateCard(
-                                    cardNo.text.toString(),
-                                    month.text.toString(),
-                                    year.text.toString(),
-                                    cvv.text.toString(),
-                                    "0"
-                                )
-                            }
-
-                        dialog.dismiss()
-                    }
-                }
-            }
-            dialog.show()
-            dialog.window?.attributes = lp
+            if (orderId != null)
+                viewModel.getLocalCard()
         }
     }
 
@@ -136,14 +83,12 @@ class ConfirmOrderFragment : Fragment(), Injectable {
 
         stripe.createCardToken(card, callback = object : ApiResultCallback<Token> {
             override fun onError(e: Exception) {
-                println("create token Exception $e")
                 Toast.makeText(
                     activity, "${e.message}", Toast.LENGTH_SHORT
                 ).show()
             }
 
             override fun onSuccess(result: Token) {
-                println("create token result $result")
                 viewModel.orderCheckout(orderId!!, credit, result.id)
             }
         })
@@ -164,7 +109,6 @@ class ConfirmOrderFragment : Fragment(), Injectable {
                     } else {
                         binding.subTotalLinear.visibility = View.GONE
                     }
-
                 }
                 Result.Status.LOADING -> binding.progressBar.show()
                 Result.Status.ERROR -> {
@@ -183,7 +127,8 @@ class ConfirmOrderFragment : Fragment(), Injectable {
                     binding.totalPriceOrderTxt.text = result.data?.total.toString()
                     viewModel.getCredits()
                 }
-                Result.Status.LOADING -> { binding.progressBar.show()
+                Result.Status.LOADING -> {
+                    binding.progressBar.show()
                 }
                 Result.Status.ERROR -> {
                     binding.progressBar.hide()
@@ -201,25 +146,22 @@ class ConfirmOrderFragment : Fragment(), Injectable {
                     if (result.data != null) {
                         when (result.data.state) {
                             "pending" -> {
-                    //                            if (result.data.approval_url != "") {
-                    //                                val navController = Navigation.findNavController(view!!)
-                    //                                navController.navigate(
-                    //                                    ConfirmOrderFragmentDirections.actionConfirmOrderFragmentToPayPalWebViewFragment(
-                    //                                        result.data.approval_url, "Order"
-                    //                                    )
-                    //                                )
-                    //
-                    //                            }
+
                             }
                             "completed" -> {
+                                viewModel.statusNotification(
+                                    "Payment Status",
+                                    " Your Payment is successful"
+                                )
                                 AsyncTask.execute {
                                     viewModel.deleteCartAll()
                                 }
-                                Toast.makeText(
-                                    activity,
-                                    "completed",
-                                    Toast.LENGTH_SHORT
-                                ).show();3
+                                val intent = Intent(activity, MainActivity::class.java).setFlags(
+                                    Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                )
+                                startActivity(intent)
+                                //never go back if done
+                                activity?.finish()
                             }
                             else -> {
                                 Toast.makeText(
@@ -232,7 +174,8 @@ class ConfirmOrderFragment : Fragment(), Injectable {
 
                     }
                 }
-                Result.Status.LOADING -> { binding.progressBar.show()
+                Result.Status.LOADING -> {
+                    binding.progressBar.show()
                 }
                 Result.Status.ERROR -> {
                     binding.progressBar.hide()
@@ -250,7 +193,8 @@ class ConfirmOrderFragment : Fragment(), Injectable {
                             "Use Box Credits Box(${result.data.credit_count} available)"
                     }
                 }
-                Result.Status.LOADING -> { binding.progressBar.show()
+                Result.Status.LOADING -> {
+                    binding.progressBar.show()
                 }
                 Result.Status.ERROR -> {
                     binding.progressBar.hide()
@@ -258,6 +202,65 @@ class ConfirmOrderFragment : Fragment(), Injectable {
                 }
             }
         })
+
+        viewModel.resultLocalCardList.observe(viewLifecycleOwner, Observer { result ->
+            when (result.status) {
+                Result.Status.SUCCESS -> {
+                    viewModel.getCardList(result.data)
+                }
+                Result.Status.LOADING -> {
+                    binding.progressBar.show()
+                }
+                Result.Status.ERROR -> {
+                    binding.progressBar.hide()
+                    Snackbar.make(binding.root, result.message!!, Snackbar.LENGTH_LONG).show()
+                }
+            }
+        })
+
+        viewModel.resultGetCardList.observe(viewLifecycleOwner, Observer { result ->
+            when (result.status) {
+                Result.Status.SUCCESS -> {
+                    var cloudCard = result.data?.get("cloud") as CardListData
+                    var localCard = result.data?.get("local") as List<CardData>
+
+                    if (cloudCard.card?.size != 0) {
+                        if (localCard != null) {
+                            var defaultCard = localCard.filter { it.card_id == cloudCard.default!! }
+                            if (binding.useCreditBox.isChecked) {
+                                validateCard(
+                                    defaultCard.first().number,
+                                    defaultCard.first().exp_month,
+                                    defaultCard.first().exp_year,
+                                    defaultCard.first().cvc,
+                                    "1"
+                                )
+                            } else {
+                                validateCard(
+                                    defaultCard.first().number,
+                                    defaultCard.first().exp_month,
+                                    defaultCard.first().exp_year,
+                                    defaultCard.first().cvc,
+                                    "0"
+                                )
+                            }
+                        }
+
+                    } else {
+                        binding.progressBar.hide()
+                        AlertDialogsService(context!!).simple("Warning", "Payments Method is Empty")
+                    }
+                }
+                Result.Status.LOADING -> {
+                    binding.progressBar.show()
+                }
+                Result.Status.ERROR -> {
+                    binding.progressBar.hide()
+                    result.message?.let { AlertDialogsService(context!!).simple("Error", it) }
+                }
+            }
+        })
+
     }
 
 }

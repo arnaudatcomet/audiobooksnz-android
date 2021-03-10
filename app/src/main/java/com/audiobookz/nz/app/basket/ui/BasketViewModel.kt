@@ -8,6 +8,7 @@ import com.audiobookz.nz.app.basket.data.PaymentData
 import com.audiobookz.nz.app.bookdetail.data.BookRoom
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.login.data.UserData
+import com.audiobookz.nz.app.more.data.CardData
 import com.audiobookz.nz.app.util.WEB_URL
 import okhttp3.FormBody
 import okhttp3.MediaType
@@ -21,6 +22,8 @@ class BasketViewModel @Inject constructor(private val repository: BasketReposito
     var resultPayment = MediatorLiveData<Result<PaymentData>>()
     var resultOrder = MediatorLiveData<Result<OrderData>>()
     var resultCheckCredit = MediatorLiveData<Result<UserData>>()
+    var resultLocalCardList = MediatorLiveData<Result<List<CardData>>>()
+    var resultGetCardList = MediatorLiveData<Result<MutableMap<String, Any?>>>()
     fun deleteCartById(id: Int) {
         repository.deleteBook(id)
     }
@@ -87,6 +90,26 @@ class BasketViewModel @Inject constructor(private val repository: BasketReposito
     fun getCredits() {
         resultCheckCredit.addSource(repository.getCredits()) { value ->
             resultCheckCredit.value = value
+        }
+    }
+
+    fun getLocalCard() {
+        resultLocalCardList.addSource(repository.getLocalCardList()) { value ->
+            resultLocalCardList.value = value
+        }
+    }
+
+    fun getCardList(localCard: List<CardData>?) {
+        resultGetCardList.addSource(
+            repository.getCardList()
+        ) { value ->
+            if (value.data != null) {
+                val map: MutableMap<String, Any?> = mutableMapOf()
+                map["cloud"] = value.data
+                map["local"] = localCard
+
+                resultGetCardList.value = Result.success(map)
+            }
         }
     }
 

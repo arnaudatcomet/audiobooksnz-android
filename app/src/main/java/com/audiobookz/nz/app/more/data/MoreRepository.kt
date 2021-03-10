@@ -109,4 +109,7 @@ class MoreRepository @Inject constructor(
     fun getProfile() =
         resultFetchOnlyLiveData(
             networkCall = { remoteSource.getProfile() })
+
+    fun statusNotification(title: String, body: String) =
+        remoteSource.statusNotification(title, body)
 }

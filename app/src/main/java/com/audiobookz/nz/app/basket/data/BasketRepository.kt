@@ -6,6 +6,7 @@ import com.audiobookz.nz.app.bookdetail.data.BookRoom
 import com.audiobookz.nz.app.bookdetail.data.BookRoomDao
 import com.audiobookz.nz.app.data.resultFetchOnlyLiveData
 import com.audiobookz.nz.app.data.resultLocalGetOnlyLiveData
+import com.audiobookz.nz.app.more.data.CardDataDao
 import com.audiobookz.nz.app.more.data.MoreRemoteDataSource
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -18,7 +19,7 @@ import javax.inject.Singleton
 class BasketRepository @Inject constructor(
     private val dao: BookRoomDao,
     private val remoteSource: MoreRemoteDataSource,
-    private val sharePref: SharedPreferencesService
+    private val cardDataDao: CardDataDao
 ) {
     fun loadBasket() = resultLocalGetOnlyLiveData(
         databaseQuery = { dao.loadBasket() }
@@ -58,4 +59,10 @@ class BasketRepository @Inject constructor(
     fun getCredits() = resultFetchOnlyLiveData(networkCall = {
         remoteSource.getCredit()
     })
+
+    fun getLocalCardList() =
+        resultLocalGetOnlyLiveData(databaseQuery = { cardDataDao.getCardData() })
+
+    fun getCardList() = resultFetchOnlyLiveData(
+        networkCall = { remoteSource.getCardList() })
 }
