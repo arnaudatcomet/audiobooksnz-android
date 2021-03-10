@@ -32,12 +32,6 @@ class SignUpRepository @Inject constructor(
         },
         saveCallResult = {
             it.access_token?.let { it1 -> sharePref.saveToken(it1) }
-            it.isSubscribed?.let { it1 -> sharePref.saveIsSubscribed(it1) }
-            if (it.stripe_fingerprint.isNullOrEmpty()){
-                sharePref.saveCardPayment(false)
-            }else{
-                sharePref.saveCardPayment(true)
-            }
         },
         onCallSuccess = {})
 

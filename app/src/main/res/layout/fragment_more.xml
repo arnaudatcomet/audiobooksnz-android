@@ -4,12 +4,6 @@
 
     <data>
         <variable
-            name="isSubscribed"
-            type="Boolean" />
-        <variable
-            name="hasCard"
-            type="Boolean" />
-        <variable
             name="wishListClick"
             type="android.view.View.OnClickListener" />
         <variable
@@ -164,7 +158,7 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:onClick="@{upgradeProClick}"
-            android:visibility="@{isSubscribed? View.INVISIBLE : View.VISIBLE}">
+            android:visibility="invisible">
 
             <RelativeLayout
                 android:layout_width="wrap_content"

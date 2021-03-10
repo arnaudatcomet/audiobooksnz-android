@@ -138,7 +138,7 @@ class AddCreditsFragment : Fragment(), Injectable {
             when (result.status) {
                 Result.Status.SUCCESS -> {
                     binding.progressBar.hide()
-                    //result.data?.id?.let { viewModel.orderCheckout(it, "0") }
+                    // result.data?.id?.let { viewModel.orderCheckout(it, "0") }
                     result.data?.let { dialogCard(it.id) }
                 }
                 Result.Status.LOADING -> { binding.progressBar.show()

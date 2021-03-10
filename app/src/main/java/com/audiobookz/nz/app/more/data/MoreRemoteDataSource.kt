@@ -72,4 +72,6 @@ class MoreRemoteDataSource @Inject constructor(
     fun removeCardList(cardId: String) = service.deleteCard(cardId)
 
     fun setDefaultCard(cardId: String) = service.setCardDefault(cardId)
+
+    suspend fun getProfile() = getResult { service.getProfile() }
 }

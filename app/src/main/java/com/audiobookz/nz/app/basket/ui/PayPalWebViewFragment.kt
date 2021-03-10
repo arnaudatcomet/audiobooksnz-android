@@ -83,7 +83,7 @@ class PayPalWebViewFragment : Fragment(), Injectable {
                         "Payment Status",
                         " Congratulations! Subscription Successful, You can now use your Trial Book Credit(s)."
                     )
-                    viewModel.saveIsSubscribed(true)
+
                     val intent = Intent(activity, MainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     startActivity(intent)
                     //never go back if done

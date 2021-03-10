@@ -90,5 +90,4 @@ class BasketViewModel @Inject constructor(private val repository: BasketReposito
         }
     }
 
-    fun saveIsSubscribed(IsSubscribed: Boolean) = repository.saveIsSubscribed(IsSubscribed)
 }

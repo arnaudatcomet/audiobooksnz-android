@@ -58,6 +58,4 @@ class BasketRepository @Inject constructor(
     fun getCredits() = resultFetchOnlyLiveData(networkCall = {
         remoteSource.getCredit()
     })
-
-    fun saveIsSubscribed(IsSubscribed:Boolean) = sharePref.saveIsSubscribed(IsSubscribed)
 }

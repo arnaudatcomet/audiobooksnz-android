@@ -1,17 +1,14 @@
 package com.audiobookz.nz.app.more.data
 
 import com.audiobookz.nz.app.api.SharedPreferencesService
-import com.audiobookz.nz.app.data.resultFetchOnlyLiveData
-import com.audiobookz.nz.app.data.resultLocalGetOnlyLiveData
-import com.audiobookz.nz.app.data.resultLocalSaveOnlyLiveData
-import com.audiobookz.nz.app.data.resultSimpleLiveData
+import com.audiobookz.nz.app.data.*
+import com.audiobookz.nz.app.login.data.UserData
 import com.audiobookz.nz.app.mylibrary.data.LocalBookData
 import okhttp3.RequestBody
 import javax.inject.Inject
 
 class MoreRepository @Inject constructor(
     private val remoteSource: MoreRemoteDataSource,
-    private val sharePref: SharedPreferencesService,
     private val cardDataDao: CardDataDao
 ) {
 
@@ -79,18 +76,9 @@ class MoreRepository @Inject constructor(
                     year
                 )
             )
-            it.isSubscribed?.let { it1 -> sharePref.saveIsSubscribed(it1) }
-            if (it.stripe_fingerprint.isNullOrEmpty()) {
-                sharePref.saveCardPayment(false)
-            } else {
-                sharePref.saveCardPayment(true)
-            }
         },
         onCallSuccess = {})
 
-    fun getIsSubscribed() = sharePref.getIsSubscribed()
-
-    fun getHasCard() = sharePref.getHasCard()
 
     fun getCardList() = resultFetchOnlyLiveData(
         networkCall = { remoteSource.getCardList() })
@@ -117,4 +105,8 @@ class MoreRepository @Inject constructor(
             )
         }
     )
+
+    fun getProfile() =
+        resultFetchOnlyLiveData(
+            networkCall = { remoteSource.getProfile() })
 }

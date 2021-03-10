@@ -19,12 +19,6 @@ class LoginRepository @Inject constructor(
             networkCall = { remoteSource.emailLogin(Username, Password) },
             saveCallResult = {
                 it.access_token?.let { it1 -> sharePref.saveToken(it1) }
-                it.isSubscribed?.let { it1 -> sharePref.saveIsSubscribed(it1) }
-                if (it.stripe_fingerprint.isNullOrEmpty()){
-                    sharePref.saveCardPayment(false)
-                }else{
-                    sharePref.saveCardPayment(true)
-                }
             },
             onCallSuccess = {})
 
@@ -38,12 +32,6 @@ class LoginRepository @Inject constructor(
             networkCall = { remoteSource.loginGoogle(token, device) },
             saveCallResult = {
                 it.access_token?.let { it1 -> sharePref.saveToken(it1) }
-                it.isSubscribed?.let { it1 -> sharePref.saveIsSubscribed(it1) }
-                if (it.stripe_fingerprint.isNullOrEmpty()){
-                    sharePref.saveCardPayment(false)
-                }else{
-                    sharePref.saveCardPayment(true)
-                }
             },
             onCallSuccess = {})
 
@@ -52,12 +40,6 @@ class LoginRepository @Inject constructor(
             networkCall = { remoteSource.loginFacebook(token, device) },
             saveCallResult = {
                 it.access_token?.let { it1 -> sharePref.saveToken(it1) }
-                it.isSubscribed?.let { it1 -> sharePref.saveIsSubscribed(it1) }
-                if (it.stripe_fingerprint.isNullOrEmpty()){
-                    sharePref.saveCardPayment(false)
-                }else{
-                    sharePref.saveCardPayment(true)
-                }
             },
             onCallSuccess = {})
 

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.audiobookz.nz.app.basket.data.OrderData
 import com.audiobookz.nz.app.basket.data.PaymentData
 import com.audiobookz.nz.app.data.Result
+import com.audiobookz.nz.app.login.data.UserData
 import com.audiobookz.nz.app.more.data.*
 import com.audiobookz.nz.app.register.data.SignUpProData
 import com.audiobookz.nz.app.util.WEB_URL
@@ -27,9 +28,8 @@ class MoreViewModel @Inject constructor(private val repository: MoreRepository) 
     var resultUpgrade = MediatorLiveData<Result<SignUpProData>>()
     var resultAddCard = MediatorLiveData<Result<CardData>>()
     var resultAddCardLocal = MediatorLiveData<Result<String>>()
-    val getIsSubscribed = repository.getIsSubscribed()
-    val getHasCard = repository.getHasCard()
     val resultLocalCardList = MediatorLiveData<Result<List<CardData>>>()
+    var resultCheckSubscript = MediatorLiveData<Result<UserData>>()
     var page = 1
     var pageSize = 30
 
@@ -211,6 +211,12 @@ class MoreViewModel @Inject constructor(private val repository: MoreRepository) 
             )
         ) { value ->
             resultAddCardLocal.value = value
+        }
+    }
+
+    fun checkSubscript() {
+        resultCheckSubscript.addSource(repository.getProfile()) { value ->
+            resultCheckSubscript.value = value
         }
     }
 
