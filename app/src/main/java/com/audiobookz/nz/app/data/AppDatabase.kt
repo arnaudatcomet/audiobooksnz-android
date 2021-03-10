@@ -13,13 +13,15 @@ import com.audiobookz.nz.app.bookdetail.data.BookRoomDao
 import com.audiobookz.nz.app.login.data.SuccessData
 import com.audiobookz.nz.app.login.data.UserData
 import com.audiobookz.nz.app.login.data.UserDataDao
+import com.audiobookz.nz.app.more.data.CardData
+import com.audiobookz.nz.app.more.data.CardDataDao
 import com.audiobookz.nz.app.mylibrary.data.*
 import com.audiobookz.nz.app.worker.SeedDatabaseWorker
 
 /**
  * The Room database for this app
  */
-@Database(entities = [UserData::class,BookRoom::class,SuccessData::class,SessionData::class,LocalBookData::class,ChapterData::class],
+@Database(entities = [UserData::class,BookRoom::class,SuccessData::class,SessionData::class,LocalBookData::class,ChapterData::class,CardData::class],
         version = 34, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -29,6 +31,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun sessionDataDao():SessionDataDao
     abstract fun localBookDataDao():LocalBookDataDao
     abstract fun chapterDataDao():ChapterDataDao
+    abstract fun cardDataDao(): CardDataDao
 
     companion object {
 

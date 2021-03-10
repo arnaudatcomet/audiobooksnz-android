@@ -69,6 +69,10 @@ class AppModule {
 
     @Singleton
     @Provides
+    fun provideCardDataDao(db: AppDatabase) = db.cardDataDao()
+
+    @Singleton
+    @Provides
     fun provideSharedPreferences(app: Application) = SharedPreferencesService(app)
 
     @Singleton

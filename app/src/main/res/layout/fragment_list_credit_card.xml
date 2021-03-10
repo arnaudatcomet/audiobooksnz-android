@@ -8,6 +8,7 @@
             type="android.view.View.OnClickListener"/>
         <import type="android.view.View"/>
     </data>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -36,8 +37,13 @@
                 android:textAllCaps="false"
                 android:layout_gravity="center"
                 android:onClick="@{addCard}"/>
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="100px"
+                android:visibility="gone"/>
         </LinearLayout>
-
-
     </ScrollView>
 </layout>

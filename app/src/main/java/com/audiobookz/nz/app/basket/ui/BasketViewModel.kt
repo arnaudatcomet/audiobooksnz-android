@@ -8,7 +8,6 @@ import com.audiobookz.nz.app.basket.data.PaymentData
 import com.audiobookz.nz.app.bookdetail.data.BookRoom
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.login.data.UserData
-import com.audiobookz.nz.app.util.TEST_URL
 import com.audiobookz.nz.app.util.WEB_URL
 import okhttp3.FormBody
 import okhttp3.MediaType
@@ -34,11 +33,11 @@ class BasketViewModel @Inject constructor(private val repository: BasketReposito
     fun orderCheckout(orderId: Int, creditUse: String, stripeToken: String) {
         var requestCancel = RequestBody.create(
             MediaType.parse("text/plain"),
-            "$TEST_URL/cart/paypal_fail"
+            "$WEB_URL/cart/paypal_fail"
         )
         var requestReturn = RequestBody.create(
             MediaType.parse("text/plain"),
-            "$TEST_URL/cart/paypal_success"
+            "$WEB_URL/cart/paypal_success"
         )
         //if in confirm order checkbox use credit is true useCredit = 1, default 0
         var requestUseCredit = RequestBody.create(MediaType.parse("text/plain"), creditUse)

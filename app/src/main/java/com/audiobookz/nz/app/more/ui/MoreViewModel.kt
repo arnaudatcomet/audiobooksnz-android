@@ -7,7 +7,6 @@ import com.audiobookz.nz.app.basket.data.PaymentData
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.more.data.*
 import com.audiobookz.nz.app.register.data.SignUpProData
-import com.audiobookz.nz.app.util.TEST_URL
 import com.audiobookz.nz.app.util.WEB_URL
 import com.stripe.android.Stripe
 import okhttp3.MediaType
@@ -21,14 +20,16 @@ import javax.inject.Inject
 class MoreViewModel @Inject constructor(private val repository: MoreRepository) : ViewModel() {
     var resultRemoveWishList = MediatorLiveData<Result<WishListData>>()
     var resultGetWishList = MediatorLiveData<Result<List<WishListData>>>()
-    var resultGetCardList = MediatorLiveData<Result<CardListData>>()
+    var resultGetCardList = MediatorLiveData<Result<MutableMap<String, Any?>>>()
     var resultBuyCredits = MediatorLiveData<Result<OrderData>>()
     var resultPayment = MediatorLiveData<Result<PaymentData>>()
     var getCurrentPlanResult = MediatorLiveData<Result<List<SubscriptionsData>>>()
     var resultUpgrade = MediatorLiveData<Result<SignUpProData>>()
     var resultAddCard = MediatorLiveData<Result<CardData>>()
+    var resultAddCardLocal = MediatorLiveData<Result<String>>()
     val getIsSubscribed = repository.getIsSubscribed()
     val getHasCard = repository.getHasCard()
+    val resultLocalCardList = MediatorLiveData<Result<List<CardData>>>()
     var page = 1
     var pageSize = 30
 
@@ -60,11 +61,11 @@ class MoreViewModel @Inject constructor(private val repository: MoreRepository) 
     fun orderCheckout(orderId: Int, creditUse: String, stripeToken: String) {
         var requestCancel = RequestBody.create(
             MediaType.parse("text/plain"),
-            "$TEST_URL/cart/paypal_fail"
+            "$WEB_URL/cart/paypal_fail"
         )
         var requestReturn = RequestBody.create(
             MediaType.parse("text/plain"),
-            "$TEST_URL/cart/paypal_success"
+            "$WEB_URL/cart/paypal_success"
         )
         //if in confirm order checkbox use credit is true useCredit = 1, default 0
         var requestUseCredit = RequestBody.create(MediaType.parse("text/plain"), creditUse)
@@ -127,19 +128,33 @@ class MoreViewModel @Inject constructor(private val repository: MoreRepository) 
         ) { value -> resultUpgrade.value = value }
     }
 
-    fun addPaymentCard(cardToken: String) {
+    fun addPaymentCard(
+        cardToken: String,
+        number: String,
+        cvc: String,
+        month: String,
+        year: String
+    ) {
         var stripeToken = RequestBody.create(
             MediaType.parse("text/plain"), cardToken
         )
         resultAddCard.addSource(
-            repository.addPaymentCard(cardToken, stripeToken)
+            repository.addPaymentCard(stripeToken, number, cvc, month, year)
         ) { value -> resultAddCard.value = value }
     }
 
-    fun getCardList() {
+    fun getCardList(localCard: List<CardData>?) {
         resultGetCardList.addSource(
             repository.getCardList()
-        ) { value -> resultGetCardList.value = value }
+        ) { value ->
+            if (value.data != null) {
+                val map: MutableMap<String, Any?> = mutableMapOf()
+                map["cloud"] = value.data
+                map["local"] = localCard
+
+                resultGetCardList.value = Result.success(map)
+            }
+        }
     }
 
     fun removeCardList(cardId: String) {
@@ -151,13 +166,14 @@ class MoreViewModel @Inject constructor(private val repository: MoreRepository) 
 
             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                 if (response.isSuccessful) {
-                    getCardList()
+                    //To Do: delete card in local
+                    getLocalCard()
                 }
             }
         })
     }
 
-    fun setDefaltCard(cardId: String) {
+    fun setDefaultCard(cardId: String) {
         var requestCall = repository.setDefaltCard(cardId)
         requestCall.enqueue(object : Callback<Unit> {
             override fun onFailure(call: Call<Unit>, t: Throwable) {
@@ -166,9 +182,36 @@ class MoreViewModel @Inject constructor(private val repository: MoreRepository) 
 
             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                 if (response.isSuccessful) {
-                    getCardList()
+                    getLocalCard()
                 }
             }
         })
     }
+
+    fun getLocalCard() {
+        resultLocalCardList.addSource(repository.getLocalCardList()) { value ->
+            resultLocalCardList.value = value
+        }
+    }
+
+    fun addCardLocal(
+        cardId: String,
+        number: String,
+        cvc: String,
+        month: String,
+        year: String
+    ) {
+        resultAddCardLocal.addSource(
+            repository.saveCardDetailLocal(
+                cardId,
+                number,
+                cvc,
+                month,
+                year
+            )
+        ) { value ->
+            resultAddCardLocal.value = value
+        }
+    }
+
 }

@@ -10,6 +10,7 @@ import android.view.WindowManager
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.audiobookz.nz.app.R
@@ -18,6 +19,7 @@ import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.databinding.FragmentListCreditCardBinding
 import com.audiobookz.nz.app.di.Injectable
 import com.audiobookz.nz.app.di.injectViewModel
+import com.google.android.material.snackbar.Snackbar
 import com.stripe.android.ApiResultCallback
 import com.stripe.android.Stripe
 import com.stripe.android.model.Card
@@ -38,8 +40,8 @@ class ListCreditCardFragment : Fragment(), Injectable {
         stripe = Stripe(context!!, "pk_test_ng7GDPEq172S4zUNrBGxUAQQ")
         val binding = FragmentListCreditCardBinding.inflate(inflater, container, false)
         binding.addCard = addCard()
-        viewModel.getCardList()
-        subscribeUi(binding)
+        viewModel.getLocalCard()
+        subscribeUi(binding, stripe, activity)
         return binding.root
     }
 
@@ -64,8 +66,7 @@ class ListCreditCardFragment : Fragment(), Injectable {
                 when {
                     cardNo.length() == 0 || month.length() == 0 || year.length() == 0 || cvv.length() == 0 ->
                         Toast.makeText(
-                            activity, "Please fill all the fields"
-                            , Toast.LENGTH_SHORT
+                            activity, "Please fill all the fields", Toast.LENGTH_SHORT
                         ).show()
                     cardNo.length() < 16 -> Toast.makeText(
                         activity, "Please enter" +
@@ -89,15 +90,15 @@ class ListCreditCardFragment : Fragment(), Injectable {
     }
 
     private fun validateCard(
-        card: String,
+        number: String,
         month: String,
         year: String,
-        cvv: String
+        cvc: String
     ) {
         val card =
             Card.create(
-                number = card,
-                cvc = cvv,
+                number = number,
+                cvc = cvc,
                 expMonth = Integer.valueOf(month),
                 expYear = Integer.valueOf(year)
             )
@@ -106,29 +107,68 @@ class ListCreditCardFragment : Fragment(), Injectable {
             override fun onError(e: Exception) {
                 println("create token Exception $e")
                 Toast.makeText(
-                    activity, "${e.message}"
-                    , Toast.LENGTH_SHORT
+                    activity, "${e.message}", Toast.LENGTH_SHORT
                 ).show()
             }
 
             override fun onSuccess(result: Token) {
                 println("create token result $result")
-                viewModel.addPaymentCard(result.id)
+                viewModel.addPaymentCard(result.id, number, cvc, month, year)
             }
         })
     }
 
-    private fun subscribeUi(binding: FragmentListCreditCardBinding) {
+    private fun subscribeUi(
+        binding: FragmentListCreditCardBinding,
+        stripe: Stripe,
+        activity: FragmentActivity?
+    ) {
+
+        viewModel.resultLocalCardList.observe(viewLifecycleOwner, Observer { result ->
+            when (result.status) {
+                Result.Status.SUCCESS -> {
+                    binding.progressBar.visibility = View.GONE
+                    viewModel.getCardList(result.data)
+                }
+                Result.Status.LOADING -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+                Result.Status.ERROR -> {
+                    binding.progressBar.visibility = View.GONE
+                    Snackbar.make(binding.root, result.message!!, Snackbar.LENGTH_LONG).show()
+                }
+            }
+        })
+
+        viewModel.resultAddCardLocal.observe(viewLifecycleOwner, Observer { result ->
+            when (result.status) {
+                Result.Status.SUCCESS -> {
+                    binding.progressBar.visibility = View.GONE
+                    viewModel.getLocalCard()
+                }
+                Result.Status.LOADING -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+                Result.Status.ERROR -> {
+                    binding.progressBar.visibility = View.GONE
+                    Snackbar.make(binding.root, result.message!!, Snackbar.LENGTH_LONG).show()
+                }
+            }
+        })
+
         viewModel.resultGetCardList.observe(viewLifecycleOwner, Observer { result ->
             when (result.status) {
                 Result.Status.SUCCESS -> {
-                    val adapter = result.data?.default?.let { CardListAdapter(viewModel, it) }
-                    adapter?.submitList(result.data?.card)
+                    binding.progressBar.visibility = View.GONE
+                    val adapter =
+                        result.data?.let { CardListAdapter(viewModel, it, stripe, activity) }
                     binding.creditCardRecycleView.adapter = adapter
                 }
                 Result.Status.LOADING -> {
+                    binding.progressBar.visibility = View.VISIBLE
                 }
                 Result.Status.ERROR -> {
+                    binding.progressBar.visibility = View.GONE
                     result.message?.let { AlertDialogsService(context!!).simple("Error", it) }
                 }
             }
@@ -137,12 +177,14 @@ class ListCreditCardFragment : Fragment(), Injectable {
         viewModel.resultAddCard.observe(viewLifecycleOwner, Observer { result ->
             when (result.status) {
                 Result.Status.SUCCESS -> {
-                    viewModel.getCardList()
+                    binding.progressBar.visibility = View.GONE
+                    viewModel.getLocalCard()
                 }
                 Result.Status.LOADING -> {
+                    binding.progressBar.visibility = View.VISIBLE
                 }
                 Result.Status.ERROR -> {
-
+                    binding.progressBar.visibility = View.GONE
                     result.message?.let {
                         AlertDialogsService(context!!).simple(
                             "Error Add Card",

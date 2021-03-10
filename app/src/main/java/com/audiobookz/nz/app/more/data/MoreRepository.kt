@@ -2,13 +2,17 @@ package com.audiobookz.nz.app.more.data
 
 import com.audiobookz.nz.app.api.SharedPreferencesService
 import com.audiobookz.nz.app.data.resultFetchOnlyLiveData
+import com.audiobookz.nz.app.data.resultLocalGetOnlyLiveData
+import com.audiobookz.nz.app.data.resultLocalSaveOnlyLiveData
 import com.audiobookz.nz.app.data.resultSimpleLiveData
+import com.audiobookz.nz.app.mylibrary.data.LocalBookData
 import okhttp3.RequestBody
 import javax.inject.Inject
 
 class MoreRepository @Inject constructor(
     private val remoteSource: MoreRemoteDataSource,
-    private val sharePref: SharedPreferencesService
+    private val sharePref: SharedPreferencesService,
+    private val cardDataDao: CardDataDao
 ) {
 
     fun getWishList(page: Int, pageSize: Int) = resultFetchOnlyLiveData(
@@ -34,7 +38,17 @@ class MoreRepository @Inject constructor(
         save_card: RequestBody,
         stripe_token: RequestBody
     ) = resultFetchOnlyLiveData(
-        networkCall = { remoteSource.orderCheckout(orderId, cancel_url, return_url, use_credit,card,save_card,stripe_token) })
+        networkCall = {
+            remoteSource.orderCheckout(
+                orderId,
+                cancel_url,
+                return_url,
+                use_credit,
+                card,
+                save_card,
+                stripe_token
+            )
+        })
 
     fun getCurrentPlan(Page: Int, PageSize: Int) = resultFetchOnlyLiveData(
         networkCall = { remoteSource.getCurrentPlan(Page, PageSize) }
@@ -50,16 +64,25 @@ class MoreRepository @Inject constructor(
             remoteSource.upgradePro(cancel_url, success_url)
         })
 
-    fun addPaymentCard(rawToken:String,
-        stripe_token: RequestBody
+    fun addPaymentCard(
+        stripe_token: RequestBody, number: String, cvc: String, month: String, year: String
     ) = resultSimpleLiveData(
         networkCall = {
             remoteSource.addPaymentCard(stripe_token)
         }, saveCallResult = {
-            sharePref.saveIsSubscribed(it.isSubscribed)
-            if (it.stripe_fingerprint.isNullOrEmpty()){
+            cardDataDao.insertCardData(
+                CardData(
+                    it.card_id,
+                    number,
+                    cvc,
+                    month,
+                    year
+                )
+            )
+            it.isSubscribed?.let { it1 -> sharePref.saveIsSubscribed(it1) }
+            if (it.stripe_fingerprint.isNullOrEmpty()) {
                 sharePref.saveCardPayment(false)
-            }else{
+            } else {
                 sharePref.saveCardPayment(true)
             }
         },
@@ -72,7 +95,26 @@ class MoreRepository @Inject constructor(
     fun getCardList() = resultFetchOnlyLiveData(
         networkCall = { remoteSource.getCardList() })
 
+    fun getLocalCardList() =
+        resultLocalGetOnlyLiveData(databaseQuery = { cardDataDao.getCardData() })
+
     fun removeCardList(cardId: String) = remoteSource.removeCardList(cardId)
 
     fun setDefaltCard(cardId: String) = remoteSource.setDefaultCard(cardId)
+
+    fun saveCardDetailLocal(
+        cardId: String, number: String, cvc: String, month: String, year: String
+    ) = resultLocalSaveOnlyLiveData(
+        saveCallResult = {
+            cardDataDao.insertCardData(
+                CardData(
+                    cardId,
+                    number,
+                    cvc,
+                    month,
+                    year
+                )
+            )
+        }
+    )
 }

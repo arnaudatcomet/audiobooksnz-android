@@ -158,6 +158,7 @@
     <string name="basket">View Basket</string>
     <string name="share">Share</string>
     <string name="save">Save</string>
+    <string name="inputDetail">Input Information</string>
 
     <!--mylibrary-->
     <string name="searchLibrary">Search your book in your library</string>

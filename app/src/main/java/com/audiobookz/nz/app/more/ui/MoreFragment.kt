@@ -128,15 +128,15 @@ class MoreFragment : Fragment(), Injectable {
     }
 
     private fun validateCard(
-        card: String,
+        number: String,
         month: String,
         year: String,
-        cvv: String
+        cvc: String
     ) {
         val card =
             Card.create(
-                number = card,
-                cvc = cvv,
+                number = number,
+                cvc = cvc,
                 expMonth = Integer.valueOf(month),
                 expYear = Integer.valueOf(year)
             )
@@ -152,7 +152,7 @@ class MoreFragment : Fragment(), Injectable {
 
             override fun onSuccess(result: Token) {
                 println("create token result $result")
-                viewModel.addPaymentCard(result.id)
+                viewModel.addPaymentCard(result.id,number,cvc,month,year)
             }
         })
     }
