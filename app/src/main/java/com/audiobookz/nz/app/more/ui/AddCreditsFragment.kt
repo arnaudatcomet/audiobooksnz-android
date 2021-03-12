@@ -117,7 +117,7 @@ class AddCreditsFragment : Fragment(), Injectable {
                     if (result.message == "Network :  400 Bad Request") {
                         Toast.makeText(
                             activity,
-                            "Visit our website and subscribe to our Pro Plan to buy more book credits",
+                            "Subscribe to our Pro Plan to buy more book credits",
                             Toast.LENGTH_SHORT
                         ).show();3
                     } else {

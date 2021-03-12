@@ -199,12 +199,11 @@
     <string name="addCard">Add Card</string>
     <string name="listCard">Payment Methods</string>
     <string name="subscription">subscription</string>
-    <string name="blurb">- Enjoy 14 days free, then pay only NZ$17.95 a month.\n
-       - Your first audiobook is free (Receive 1 Book Credit).\n
-       - Purchases made with books credits save you money!\n
-       - Buy additional book credits at any time.\n
-       - Cancel at any time.
-    </string>
+    <string name="blurb1">- Enjoy 14 days free, then pay only NZ$17.95 a month.</string>
+    <string name="blurb2">- Your first audiobook is free (Receive 1 Book Credit).</string>
+    <string name="blurb3">- Purchases made with books credits save you money!</string>
+    <string name="blurb4">- Buy additional book credits at any time.</string>
+    <string name="blurb5">- Cancel at any time.</string>
 
     <!--credit-->
     <string name="buyNow">Buy Now</string>

@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <data>
+
         <variable
             name="subscriptionClick"
-            type="android.view.View.OnClickListener"/>
+            type="android.view.View.OnClickListener" />
     </data>
 
 
@@ -21,25 +23,64 @@
             android:layout_centerVertical="true"
             android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/blurbTxt"
+        <LinearLayout
+            android:layout_marginTop="40dp"
+            android:id="@+id/linearText"
+            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="20dp"
-            android:layout_marginTop="50dp"
-            android:text="@string/blurb" />
+            android:layout_centerHorizontal="true">
+
+            <TextView
+                android:id="@+id/blurb1Txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="@string/blurb1" />
+
+            <TextView
+                android:id="@+id/blurb2Txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/blurb1Txt"
+                android:layout_margin="5dp"
+                android:text="@string/blurb2" />
+
+            <TextView
+                android:id="@+id/blurb3Txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/blurb2Txt"
+                android:layout_margin="5dp"
+                android:text="@string/blurb3" />
+
+            <TextView
+                android:id="@+id/blurb4Txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/blurb3Txt"
+                android:layout_margin="5dp"
+                android:text="@string/blurb4" />
+
+            <TextView
+                android:id="@+id/blurb5Txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/blurb4Txt"
+                android:layout_margin="5dp"
+                android:text="@string/blurb5" />
+        </LinearLayout>
 
         <Button
+            android:layout_marginTop="50dp"
             android:id="@+id/subscriptionBtn"
             android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:layout_below="@+id/blurbTxt"
+            android:layout_height="40dp"
+            android:layout_below="@+id/linearText"
             android:layout_centerHorizontal="true"
             android:backgroundTint="@color/colorMain"
-            android:text="@string/subscription"
             android:onClick="@{subscriptionClick}"
-            />
+            android:text="@string/subscription" />
 
     </RelativeLayout>
 </layout>

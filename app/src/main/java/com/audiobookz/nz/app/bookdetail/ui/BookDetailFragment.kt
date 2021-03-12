@@ -111,6 +111,11 @@ class BookDetailFragment : Fragment(), Injectable {
             binding.rating = bookDetail?.avg_rating?.toFloat()
             binding.authors = listBookAuthor?.joinToString(separator = ",")
             binding.narrate = listBookNarrator?.joinToString(separator = ",")
+            if (bookDetail?.BookEngineData?.BookDetail?.series?.size != 0) {
+                binding.series = bookDetail?.BookEngineData?.BookDetail?.series?.get(0)
+            } else {
+                binding.series = ""
+            }
 
         }
     }

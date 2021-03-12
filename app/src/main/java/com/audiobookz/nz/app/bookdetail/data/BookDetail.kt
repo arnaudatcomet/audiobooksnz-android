@@ -76,6 +76,17 @@ class BookDetail(
     val language: String? =null,
     @SerializedName("sample_url")
     @Expose
-    val sampleUrl: String? =null
+    val sampleUrl: String? =null,
+    @SerializedName("sub_title")
+    @Expose
+    val sub_title: String? =null,
+    @SerializedName("street_date")
+    @Expose
+    val street_date: String? =null,
+    @SerializedName("series")
+    @Expose
+    val series: List<String>? =null
+
+
 
     ) : Parcelable

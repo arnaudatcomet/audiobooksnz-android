@@ -68,16 +68,36 @@
                 android:gravity="start"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/cardBandTxt"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:gravity="start"
-                    android:text="@{card.brand}"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    tools:text="brand" />
+                    android:layout_marginBottom="2dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/cardBandTxt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="8dp"
+                        android:gravity="start"
+                        android:text="@{card.brand}"
+                        android:textColor="@color/black"
+                        tools:text="brand" />
+
+                    <TextView
+                        android:id="@+id/defaultTxt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:gravity="start"
+                        android:text="(Default)"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:visibility="@{isDefault? View.VISIBLE : View.INVISIBLE}"
+                        tools:text="(Default)" />
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -86,10 +106,20 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/cardLast4Txt"
+                        android:id="@+id/hideMark"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
+                        android:gravity="start"
+                        android:text="**** **** ****"
+                        android:textColor="@color/black"
+                        tools:text="**** **** ****" />
+
+                    <TextView
+                        android:id="@+id/cardLast4Txt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
                         android:gravity="start"
                         android:text="@{card.last4}"
                         android:textColor="@color/black"
@@ -141,30 +171,17 @@
                         android:visibility="@{hasCardInfo? View.VISIBLE : View.GONE}" />
 
                     <Button
-                        android:textSize="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="32dp"
                         android:layout_gravity="start"
-                        android:onClick="@{inputCardInfo}"
                         android:backgroundTint="@color/colorMain"
-                        android:visibility="@{hasCardInfo? View.GONE : View.VISIBLE}"
-                        android:text="@string/inputDetail" />
+                        android:onClick="@{inputCardInfo}"
+                        android:text="@string/inputDetail"
+                        android:textSize="10dp"
+                        android:visibility="@{hasCardInfo? View.GONE : View.VISIBLE}" />
                 </LinearLayout>
-
             </LinearLayout>
-
-            <ImageView
-                android:id="@+id/imageDefault"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:contentDescription="@string/first_fragment_label"
-                android:scaleType="centerCrop"
-                android:src="@drawable/check"
-                android:visibility="@{isDefault? View.VISIBLE : View.INVISIBLE}" />
         </RelativeLayout>
-
 
     </androidx.cardview.widget.CardView>
 

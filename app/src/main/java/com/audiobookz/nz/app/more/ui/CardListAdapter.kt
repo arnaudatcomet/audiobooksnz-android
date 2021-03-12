@@ -1,6 +1,7 @@
 package com.audiobookz.nz.app.more.ui
 
 import android.app.Dialog
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -183,6 +184,9 @@ class CardListAdapter(
                 card = item
                 hasCardInfo = hasDetail
                 isDefault = default
+                if (default){
+                    cardBandTxt.setTypeface(null, Typeface.BOLD)
+                }
                 remove = removeClick
                 setCardDefault = setDefaultClick
                 inputCardInfo = enteringDetail
