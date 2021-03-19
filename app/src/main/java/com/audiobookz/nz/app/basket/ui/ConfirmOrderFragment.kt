@@ -66,33 +66,33 @@ class ConfirmOrderFragment : Fragment(), Injectable {
         }
     }
 
-    private fun validateCard(
-        card: String,
-        month: String,
-        year: String,
-        cvv: String,
-        credit: String
-    ) {
-        val card =
-            Card.create(
-                number = card,
-                cvc = cvv,
-                expMonth = Integer.valueOf(month),
-                expYear = Integer.valueOf(year)
-            )
-
-        stripe.createCardToken(card, callback = object : ApiResultCallback<Token> {
-            override fun onError(e: Exception) {
-                Toast.makeText(
-                    activity, "${e.message}", Toast.LENGTH_SHORT
-                ).show()
-            }
-
-            override fun onSuccess(result: Token) {
-                viewModel.orderCheckout(orderId!!, credit, result.id)
-            }
-        })
-    }
+//    private fun validateCard(
+//        card: String,
+//        month: String,
+//        year: String,
+//        cvv: String,
+//        credit: String
+//    ) {
+//        val card =
+//            Card.create(
+//                number = card,
+//                cvc = cvv,
+//                expMonth = Integer.valueOf(month),
+//                expYear = Integer.valueOf(year)
+//            )
+//
+//        stripe.createCardToken(card, callback = object : ApiResultCallback<Token> {
+//            override fun onError(e: Exception) {
+//                Toast.makeText(
+//                    activity, "${e.message}", Toast.LENGTH_SHORT
+//                ).show()
+//            }
+//
+//            override fun onSuccess(result: Token) {
+//                viewModel.orderCheckout(orderId!!, credit, result.id)
+//            }
+//        })
+//    }
 
     private fun subscribeUi(binding: FragmentConfirmOrderBinding, adapter: OrderAdapter) {
         viewModel.basketResult.observe(viewLifecycleOwner, Observer { result ->
@@ -225,26 +225,33 @@ class ConfirmOrderFragment : Fragment(), Injectable {
                     var localCard = result.data?.get("local") as List<CardData>
 
                     if (cloudCard.card?.size != 0) {
-                        if (localCard != null) {
-                            var defaultCard = localCard.filter { it.card_id == cloudCard.default!! }
-                            if (binding.useCreditBox.isChecked) {
-                                validateCard(
-                                    defaultCard.first().number,
-                                    defaultCard.first().exp_month,
-                                    defaultCard.first().exp_year,
-                                    defaultCard.first().cvc,
-                                    "1"
-                                )
+
+                        if (binding.useCreditBox.isChecked) {
+                            viewModel.orderCheckout(orderId!!, "1", cloudCard.default!!)
                             } else {
-                                validateCard(
-                                    defaultCard.first().number,
-                                    defaultCard.first().exp_month,
-                                    defaultCard.first().exp_year,
-                                    defaultCard.first().cvc,
-                                    "0"
-                                )
+                            viewModel.orderCheckout(orderId!!, "0", cloudCard.default!!)
                             }
-                        }
+
+//                        if (localCard != null) {
+//                            var defaultCard = localCard.filter { it.card_id == cloudCard.default!! }
+//                            if (binding.useCreditBox.isChecked) {
+//                                validateCard(
+//                                    defaultCard.first().number,
+//                                    defaultCard.first().exp_month,
+//                                    defaultCard.first().exp_year,
+//                                    defaultCard.first().cvc,
+//                                    "1"
+//                                )
+//                            } else {
+//                                validateCard(
+//                                    defaultCard.first().number,
+//                                    defaultCard.first().exp_month,
+//                                    defaultCard.first().exp_year,
+//                                    defaultCard.first().cvc,
+//                                    "0"
+//                                )
+//                            }
+//                        }
 
                     } else {
                         binding.progressBar.hide()

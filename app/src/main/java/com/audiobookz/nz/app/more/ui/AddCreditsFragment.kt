@@ -64,42 +64,42 @@ class AddCreditsFragment : Fragment(), Injectable {
         }
     }
 
-    private fun validateCard(
-        number: String,
-        month: String,
-        year: String,
-        cvv: String,
-        credit: String
-    ) {
-        val card =
-            Card.create(
-                number = number,
-                cvc = cvv,
-                expMonth = Integer.valueOf(month),
-                expYear = Integer.valueOf(year)
-            )
-
-        stripe.createCardToken(card, callback = object : ApiResultCallback<Token> {
-            override fun onError(e: Exception) {
-                Toast.makeText(
-                    activity, "${e.message}", Toast.LENGTH_SHORT
-                ).show()
-            }
-
-            override fun onSuccess(result: Token) {
-                if (tempOrderId != null){
-                    viewModel.orderCheckout(tempOrderId!!, credit, result.id)
-                }
-                else{
-                    Toast.makeText(
-                        activity,
-                        "Something Wrong with your orderId",
-                        Toast.LENGTH_SHORT
-                    ).show();3
-                }
-            }
-        })
-    }
+//    private fun validateCard(
+//        number: String,
+//        month: String,
+//        year: String,
+//        cvv: String,
+//        credit: String
+//    ) {
+//        val card =
+//            Card.create(
+//                number = number,
+//                cvc = cvv,
+//                expMonth = Integer.valueOf(month),
+//                expYear = Integer.valueOf(year)
+//            )
+//
+//        stripe.createCardToken(card, callback = object : ApiResultCallback<Token> {
+//            override fun onError(e: Exception) {
+//                Toast.makeText(
+//                    activity, "${e.message}", Toast.LENGTH_SHORT
+//                ).show()
+//            }
+//
+//            override fun onSuccess(result: Token) {
+//                if (tempOrderId != null){
+//                    viewModel.orderCheckout(tempOrderId!!, credit, result.id)
+//                }
+//                else{
+//                    Toast.makeText(
+//                        activity,
+//                        "Something Wrong with your orderId",
+//                        Toast.LENGTH_SHORT
+//                    ).show();3
+//                }
+//            }
+//        })
+//    }
 
     private fun subscribeUi(binding: FragmentAddCreditsBinding) {
         viewModel.resultBuyCredits.observe(viewLifecycleOwner, Observer { result ->
@@ -117,7 +117,7 @@ class AddCreditsFragment : Fragment(), Injectable {
                     if (result.message == "Network :  400 Bad Request") {
                         Toast.makeText(
                             activity,
-                            "Subscribe to our Pro Plan to buy more book credits",
+                            "Subscribe to buy more book credits (BC)",
                             Toast.LENGTH_SHORT
                         ).show();3
                     } else {
@@ -177,16 +177,17 @@ class AddCreditsFragment : Fragment(), Injectable {
                     var localCard = result.data?.get("local") as List<CardData>
 
                     if (cloudCard.card?.size != 0) {
-                        if (localCard != null) {
-                            var defaultCard = localCard.filter { it.card_id == cloudCard.default!! }
-                            validateCard(
-                                defaultCard.first().number,
-                                defaultCard.first().exp_month,
-                                defaultCard.first().exp_year,
-                                defaultCard.first().cvc,
-                                "0"
-                            )
-                        }
+                        viewModel.orderCheckout(tempOrderId!!, "0", cloudCard.default!!)
+//                        if (localCard != null) {
+//                            var defaultCard = localCard.filter { it.card_id == cloudCard.default!! }
+//                            validateCard(
+//                                defaultCard.first().number,
+//                                defaultCard.first().exp_month,
+//                                defaultCard.first().exp_year,
+//                                defaultCard.first().cvc,
+//                                "0"
+//                            )
+//                        }
 
                     } else {
                         binding.progressBar.hide()

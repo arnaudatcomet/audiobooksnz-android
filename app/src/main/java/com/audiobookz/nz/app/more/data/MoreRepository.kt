@@ -69,11 +69,7 @@ class MoreRepository @Inject constructor(
         }, saveCallResult = {
             cardDataDao.insertCardData(
                 CardData(
-                    it.card_id,
-                    number,
-                    cvc,
-                    month,
-                    year
+                    it.card_id
                 )
             )
         },
@@ -96,11 +92,12 @@ class MoreRepository @Inject constructor(
         saveCallResult = {
             cardDataDao.insertCardData(
                 CardData(
-                    cardId,
-                    number,
-                    cvc,
-                    month,
-                    year
+                    cardId
+                    //,
+//                    number,
+//                    cvc,
+//                    month,
+//                    year
                 )
             )
         }

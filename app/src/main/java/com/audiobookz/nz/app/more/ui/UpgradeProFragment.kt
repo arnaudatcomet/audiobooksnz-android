@@ -51,7 +51,7 @@ class UpgradeProFragment : Fragment(), Injectable {
                     if (result.data != null) {
                         viewModel.statusNotification(
                             "Payment Status",
-                            " Congratulations! Subscription Successful, You can now use your Trial Book Credit(s)."
+                            " Congratulations! Subscription Successful"
                         )
 
                         val intent = Intent(

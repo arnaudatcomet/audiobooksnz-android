@@ -33,7 +33,7 @@ class BasketViewModel @Inject constructor(private val repository: BasketReposito
         repository.deleteBookAll()
     }
 
-    fun orderCheckout(orderId: Int, creditUse: String, stripeToken: String) {
+    fun orderCheckout(orderId: Int, creditUse: String, cardId: String) {
         var requestCancel = RequestBody.create(
             MediaType.parse("text/plain"),
             "$WEB_URL/cart/paypal_fail"
@@ -45,9 +45,9 @@ class BasketViewModel @Inject constructor(private val repository: BasketReposito
         //if in confirm order checkbox use credit is true useCredit = 1, default 0
         var requestUseCredit = RequestBody.create(MediaType.parse("text/plain"), creditUse)
 
-        var requestCard = RequestBody.create(MediaType.parse("text/plain"), "0")
+        var requestCard = RequestBody.create(MediaType.parse("text/plain"), cardId)
         var requestSaveCard = RequestBody.create(MediaType.parse("text/plain"), "0")
-        var requestStripeToken = RequestBody.create(MediaType.parse("text/plain"), stripeToken)
+        var requestStripeToken = RequestBody.create(MediaType.parse("text/plain"), "")
 
 
         resultPayment.addSource(

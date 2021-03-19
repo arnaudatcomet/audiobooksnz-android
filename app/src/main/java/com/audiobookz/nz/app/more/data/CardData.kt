@@ -13,13 +13,13 @@ data class CardData(
     @field: SerializedName("card_id")
     val card_id: String,
     @field: SerializedName("number")
-    var number: String,
+    var number: String = "",
     @field: SerializedName("cvc")
-    var cvc: String,
+    var cvc: String = "",
     @field: SerializedName("exp_month")
-    var exp_month: String,
+    var exp_month: String = "",
     @field: SerializedName("exp_year")
-    var exp_year: String,
+    var exp_year: String = "",
     @field:SerializedName("stripe_fingerprint")
     val stripe_fingerprint: String = "",
     @field:SerializedName("isSubscribed")

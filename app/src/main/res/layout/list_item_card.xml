@@ -50,12 +50,21 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp">
 
+<!--            <ImageView-->
+<!--                android:id="@+id/image"-->
+<!--                android:layout_width="80dp"-->
+<!--                android:layout_height="80dp"-->
+<!--                android:layout_alignParentLeft="true"-->
+<!--                android:alpha="@{hasCardInfo? 1f:0.4f}"-->
+<!--                android:contentDescription="@string/first_fragment_label"-->
+<!--                android:scaleType="centerCrop"-->
+<!--                android:src="@drawable/create_card" />-->
+
             <ImageView
                 android:id="@+id/image"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_alignParentLeft="true"
-                android:alpha="@{hasCardInfo? 1f:0.4f}"
                 android:contentDescription="@string/first_fragment_label"
                 android:scaleType="centerCrop"
                 android:src="@drawable/create_card" />
@@ -170,15 +179,15 @@
                         android:textSize="10dp"
                         android:visibility="@{hasCardInfo? View.VISIBLE : View.GONE}" />
 
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="32dp"
-                        android:layout_gravity="start"
-                        android:backgroundTint="@color/colorMain"
-                        android:onClick="@{inputCardInfo}"
-                        android:text="@string/inputDetail"
-                        android:textSize="10dp"
-                        android:visibility="@{hasCardInfo? View.GONE : View.VISIBLE}" />
+<!--                    <Button-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="32dp"-->
+<!--                        android:layout_gravity="start"-->
+<!--                        android:backgroundTint="@color/colorMain"-->
+<!--                        android:onClick="@{inputCardInfo}"-->
+<!--                        android:text="@string/inputDetail"-->
+<!--                        android:textSize="10dp"-->
+<!--                        android:visibility="@{hasCardInfo? View.GONE : View.VISIBLE}" />-->
                 </LinearLayout>
             </LinearLayout>
         </RelativeLayout>
