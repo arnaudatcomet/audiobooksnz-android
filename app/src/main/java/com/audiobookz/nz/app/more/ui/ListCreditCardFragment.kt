@@ -37,7 +37,7 @@ class ListCreditCardFragment : Fragment(), Injectable {
         savedInstanceState: Bundle?
     ): View? {
         viewModel = injectViewModel(viewModelFactory)
-        stripe = Stripe(context!!, "pk_test_ng7GDPEq172S4zUNrBGxUAQQ")
+        stripe = Stripe(context!!, "pk_live_N0CdLj2KJ3pon5nCACKVUlb2")
         val binding = FragmentListCreditCardBinding.inflate(inflater, container, false)
         binding.addCard = addCard()
         viewModel.getLocalCard()
@@ -113,7 +113,7 @@ class ListCreditCardFragment : Fragment(), Injectable {
 
             override fun onSuccess(result: Token) {
                 println("create token result $result")
-                viewModel.addPaymentCard(result.id, number, cvc, month, year)
+               // viewModel.addPaymentCard(result.id, number, cvc, month, year)
             }
         })
     }

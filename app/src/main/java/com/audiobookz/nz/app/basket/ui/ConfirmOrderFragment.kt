@@ -1,40 +1,30 @@
 package com.audiobookz.nz.app.basket.ui
 
-import android.app.Dialog
 import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.audiobookz.nz.app.MainActivity
-import com.audiobookz.nz.app.R
 import com.audiobookz.nz.app.api.AlertDialogsService
 import com.audiobookz.nz.app.bookdetail.data.BookRoom
+import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.databinding.FragmentConfirmOrderBinding
 import com.audiobookz.nz.app.di.Injectable
 import com.audiobookz.nz.app.di.injectViewModel
-import javax.inject.Inject
-import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.more.data.CardData
 import com.audiobookz.nz.app.more.data.CardListData
 import com.audiobookz.nz.app.ui.hide
 import com.audiobookz.nz.app.ui.show
 import com.google.android.material.snackbar.Snackbar
-import com.stripe.android.ApiResultCallback
-import com.stripe.android.Stripe
-import com.stripe.android.model.Card
-import com.stripe.android.model.Token
+import javax.inject.Inject
 
 class ConfirmOrderFragment : Fragment(), Injectable {
     @Inject
@@ -43,14 +33,13 @@ class ConfirmOrderFragment : Fragment(), Injectable {
     private val args: ConfirmOrderFragmentArgs by navArgs()
     private lateinit var bookListProduct: ArrayList<BookRoom>
     private var orderId: Int? = null
-    private lateinit var stripe: Stripe
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         viewModel = injectViewModel(viewModelFactory)
-        stripe = Stripe(context!!, "pk_test_ng7GDPEq172S4zUNrBGxUAQQ")
         val binding = FragmentConfirmOrderBinding.inflate(inflater, container, false)
         val adapter = OrderAdapter()
         binding.orderRecycleView.adapter = adapter
@@ -65,34 +54,6 @@ class ConfirmOrderFragment : Fragment(), Injectable {
                 viewModel.getLocalCard()
         }
     }
-
-//    private fun validateCard(
-//        card: String,
-//        month: String,
-//        year: String,
-//        cvv: String,
-//        credit: String
-//    ) {
-//        val card =
-//            Card.create(
-//                number = card,
-//                cvc = cvv,
-//                expMonth = Integer.valueOf(month),
-//                expYear = Integer.valueOf(year)
-//            )
-//
-//        stripe.createCardToken(card, callback = object : ApiResultCallback<Token> {
-//            override fun onError(e: Exception) {
-//                Toast.makeText(
-//                    activity, "${e.message}", Toast.LENGTH_SHORT
-//                ).show()
-//            }
-//
-//            override fun onSuccess(result: Token) {
-//                viewModel.orderCheckout(orderId!!, credit, result.id)
-//            }
-//        })
-//    }
 
     private fun subscribeUi(binding: FragmentConfirmOrderBinding, adapter: OrderAdapter) {
         viewModel.basketResult.observe(viewLifecycleOwner, Observer { result ->
@@ -231,27 +192,6 @@ class ConfirmOrderFragment : Fragment(), Injectable {
                             } else {
                             viewModel.orderCheckout(orderId!!, "0", cloudCard.default!!)
                             }
-
-//                        if (localCard != null) {
-//                            var defaultCard = localCard.filter { it.card_id == cloudCard.default!! }
-//                            if (binding.useCreditBox.isChecked) {
-//                                validateCard(
-//                                    defaultCard.first().number,
-//                                    defaultCard.first().exp_month,
-//                                    defaultCard.first().exp_year,
-//                                    defaultCard.first().cvc,
-//                                    "1"
-//                                )
-//                            } else {
-//                                validateCard(
-//                                    defaultCard.first().number,
-//                                    defaultCard.first().exp_month,
-//                                    defaultCard.first().exp_year,
-//                                    defaultCard.first().cvc,
-//                                    "0"
-//                                )
-//                            }
-//                        }
 
                     } else {
                         binding.progressBar.hide()

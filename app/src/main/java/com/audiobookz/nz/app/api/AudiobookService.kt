@@ -30,8 +30,8 @@ import retrofit2.http.*
 interface AudiobookService {
 
     companion object {
-        //const val ENDPOINT = "https://audiobooksnz.co.nz/backend/v1/"
-        const val ENDPOINT = "https://rajindersingh.in/audiobook/v1/"
+        const val ENDPOINT = "https://audiobooksnz.co.nz/backend/v1/"
+//        const val ENDPOINT = "https://rajindersingh.in/audiobook/v1/"
     }
 
     @GET("categories")

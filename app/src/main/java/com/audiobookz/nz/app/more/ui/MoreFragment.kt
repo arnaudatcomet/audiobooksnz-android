@@ -1,31 +1,20 @@
 package com.audiobookz.nz.app.more.ui
 
-import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import com.audiobookz.nz.app.R
 import com.audiobookz.nz.app.api.AlertDialogsService
+import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.databinding.FragmentMoreBinding
 import com.audiobookz.nz.app.di.Injectable
 import com.audiobookz.nz.app.di.injectViewModel
-import com.stripe.android.ApiResultCallback
-import com.stripe.android.Stripe
-import com.stripe.android.model.Card
-import com.stripe.android.model.Token
 import javax.inject.Inject
-import com.audiobookz.nz.app.data.Result
-import com.bumptech.glide.Glide
 
 
 class MoreFragment : Fragment(), Injectable {
@@ -33,14 +22,12 @@ class MoreFragment : Fragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: MoreViewModel
-    private lateinit var stripe: Stripe
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         viewModel = injectViewModel(viewModelFactory)
-        stripe = Stripe(context!!, "pk_test_ng7GDPEq172S4zUNrBGxUAQQ")
         val binding = FragmentMoreBinding.inflate(inflater, container, false)
         binding.addCreditClick = goToAddCredits()
         binding.wishListClick = goToWishList()
