@@ -51,15 +51,10 @@ class CloudLibraryFragment(private var keyword: String) : Fragment(), Injectable
                     viewModel.pageCount?.plus(1)
                         ?.let { viewModel.getCloudBook(it, CLOUDBOOK_PAGE_SIZE, "") }
                     viewModel.pageCount = viewModel.pageCount?.plus(1)
+                    print("track page count ${viewModel.pageCount}")
                 }
             }
         })
-
-        if (keyword != "") {
-            viewModel.getCloudBook(1, 50, keyword)
-        } else {
-            viewModel.getCloudBook(1, CLOUDBOOK_PAGE_SIZE, "")
-        }
 
         subscribeUi(rootView)
 

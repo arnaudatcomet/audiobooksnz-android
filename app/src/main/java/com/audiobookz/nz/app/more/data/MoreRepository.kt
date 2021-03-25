@@ -67,11 +67,11 @@ class MoreRepository @Inject constructor(
         networkCall = {
             remoteSource.addPaymentCard(stripe_token)
         }, saveCallResult = {
-            cardDataDao.insertCardData(
-                CardData(
-                    it.card_id
-                )
-            )
+//            cardDataDao.insertCardData(
+//                CardData(
+//                    it.card_id
+//                )
+//            )
         },
         onCallSuccess = {})
 
@@ -90,16 +90,16 @@ class MoreRepository @Inject constructor(
         cardId: String, number: String, cvc: String, month: String, year: String
     ) = resultLocalSaveOnlyLiveData(
         saveCallResult = {
-            cardDataDao.insertCardData(
-                CardData(
-                    cardId
-                    //,
+//            cardDataDao.insertCardData(
+//                CardData(
+//                    cardId
+//                    ,
 //                    number,
 //                    cvc,
 //                    month,
 //                    year
-                )
-            )
+//                )
+//            )
         }
     )
 

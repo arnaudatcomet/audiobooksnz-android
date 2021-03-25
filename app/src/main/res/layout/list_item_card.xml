@@ -177,7 +177,7 @@
                         android:onClick="@{remove}"
                         android:text="@string/remove"
                         android:textSize="10dp"
-                        android:visibility="@{hasCardInfo? View.VISIBLE : View.GONE}" />
+                      />
 
 <!--                    <Button-->
 <!--                        android:layout_width="wrap_content"-->

@@ -38,10 +38,12 @@ class ListCreditCardFragment : Fragment(), Injectable {
     ): View? {
         viewModel = injectViewModel(viewModelFactory)
         stripe = Stripe(context!!, "pk_live_N0CdLj2KJ3pon5nCACKVUlb2")
+//        stripe = Stripe(context!!, "pk_test_ng7GDPEq172S4zUNrBGxUAQQ")
+
         val binding = FragmentListCreditCardBinding.inflate(inflater, container, false)
         binding.addCard = addCard()
         viewModel.getLocalCard()
-        subscribeUi(binding, stripe, activity)
+        subscribeUi(binding)
         return binding.root
     }
 
@@ -113,16 +115,12 @@ class ListCreditCardFragment : Fragment(), Injectable {
 
             override fun onSuccess(result: Token) {
                 println("create token result $result")
-               // viewModel.addPaymentCard(result.id, number, cvc, month, year)
+                viewModel.addPaymentCard(result.id, number, cvc, month, year)
             }
         })
     }
 
-    private fun subscribeUi(
-        binding: FragmentListCreditCardBinding,
-        stripe: Stripe,
-        activity: FragmentActivity?
-    ) {
+    private fun subscribeUi(binding: FragmentListCreditCardBinding) {
 
         viewModel.resultLocalCardList.observe(viewLifecycleOwner, Observer { result ->
             when (result.status) {
@@ -161,7 +159,9 @@ class ListCreditCardFragment : Fragment(), Injectable {
                 Result.Status.SUCCESS -> {
                     binding.progressBar.visibility = View.GONE
                     val adapter =
-                        result.data?.let { CardListAdapter(viewModel, it, stripe, activity) }
+                        result.data?.let {
+                            CardListAdapter(viewModel, it)
+                        }
                     binding.creditCardRecycleView.adapter = adapter
                 }
                 Result.Status.LOADING -> {
@@ -185,11 +185,16 @@ class ListCreditCardFragment : Fragment(), Injectable {
                 }
                 Result.Status.ERROR -> {
                     binding.progressBar.visibility = View.GONE
-                    result.message?.let {
-                        AlertDialogsService(context!!).simple(
-                            "Error Add Card",
-                            it
-                        )
+                    if (result.message == "Network :  500 Internal Server Error") {
+                        AlertDialogsService(context!!).simple("Warning", "Can't add this card")
+                    }
+                    else{
+                        result.message?.let {
+                            AlertDialogsService(context!!).simple(
+                                "Error Add Card",
+                                it
+                            )
+                        }
                     }
                 }
             }

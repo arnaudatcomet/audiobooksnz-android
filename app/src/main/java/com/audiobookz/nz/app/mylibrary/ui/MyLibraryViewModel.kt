@@ -49,7 +49,8 @@ class MyLibraryViewModel @Inject constructor(private val repository: MyLibraryRe
     fun fetchMoreCloudBook(oldData: List<CloudBook>?, newData: List<CloudBook>): List<CloudBook>? {
 
         if (oldData != null && oldData.isNotEmpty()) {
-            if (oldData.takeLast(10)[0].id == newData[0]?.id) {
+
+            if (oldData.takeLast(10).last().id == newData.last()?.id) {
                 isLatest = true
                 return oldData
             }

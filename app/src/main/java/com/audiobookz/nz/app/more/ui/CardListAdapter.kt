@@ -24,13 +24,13 @@ import com.stripe.android.model.Token
 
 class CardListAdapter(
     private var viewModel: MoreViewModel,
-    CardList: Map<String, Any?>,
-    private var stripe: Stripe,
-    private var activity: FragmentActivity?
+    CardList: Map<String, Any?>
+    //, private var stripe: Stripe,
+    // private var activity: FragmentActivity?
 ) :
     RecyclerView.Adapter<CardListAdapter.ViewHolder>() {
     var listCloud = CardList?.get("cloud") as CardListData
-    var listLocal = CardList?.get("local") as List<CardData>
+    //var listLocal = CardList?.get("local") as List<CardData>
 
     override fun getItemCount(): Int {
         return listCloud.card?.size ?: 1
@@ -185,7 +185,7 @@ class CardListAdapter(
                 card = item
                 //hasCardInfo = hasDetail
                 isDefault = default
-                if (default){
+                if (default) {
                     cardBandTxt.setTypeface(null, Typeface.BOLD)
                 }
                 remove = removeClick

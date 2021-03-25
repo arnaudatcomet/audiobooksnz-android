@@ -1,38 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:elevation="@dimen/margin_normal"
-    >
+    xmlns:tools="http://schemas.android.com/tools"
+    android:elevation="@dimen/margin_normal">
 
     <data>
+
         <variable
             name="book"
-            type="com.audiobookz.nz.app.bookdetail.data.BookRoom"/>
+            type="com.audiobookz.nz.app.bookdetail.data.BookRoom" />
+
         <variable
             name="remove"
-            type="android.view.View.OnClickListener"/>
+            type="android.view.View.OnClickListener" />
     </data>
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_normal"
         android:layout_marginRight="@dimen/margin_normal"
-        app:contentPadding="5dp"
-        app:cardUseCompatPadding="true"
         app:cardElevation="5dp"
-        >
+        app:cardUseCompatPadding="true"
+        app:contentPadding="5dp">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="wrap_content">
+
             <ImageView
                 android:id="@+id/image"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:scaleType="fitXY"
                 android:contentDescription="@string/first_fragment_label"
+                android:scaleType="fitXY"
                 app:imageFromUrl="@{book.image_url}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -40,9 +42,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="start"
-                android:layout_marginLeft="@dimen/margin_small"
                 android:layout_gravity="start"
+                android:layout_marginLeft="@dimen/margin_small"
+                android:gravity="start"
                 android:orientation="vertical">
 
                 <TextView
@@ -66,7 +68,7 @@
                         android:gravity="start"
                         android:text="NZ$"
                         android:textColor="@color/black"
-                        tools:text="price" />
+                        tools:text="NZ$" />
 
                     <TextView
                         android:id="@+id/price"
@@ -79,24 +81,48 @@
 
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/credit_price"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:text="Credits Price: 1BC"
-                    android:textColor="@color/black"
-                    tools:text="credit_price" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/credit_title_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="Credits Price: "
+                        android:textColor="@color/black"
+                        tools:text="Credits Price: " />
+
+                    <TextView
+                        android:id="@+id/credit_value_txt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="@{book.credit_price.toString()}"
+                        android:textColor="@color/black"
+                        tools:text="1" />
+
+                    <TextView
+                        android:id="@+id/credit_bc_txt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="BC"
+                        android:textColor="@color/black"
+                        tools:text="BC" />
+                </LinearLayout>
 
                 <Button
-                    android:textSize="10dp"
                     android:layout_width="80dp"
                     android:layout_height="35dp"
                     android:layout_gravity="start"
-                    android:onClick="@{remove}"
                     android:layout_marginEnd="60dp"
                     android:backgroundTint="@color/colorMain"
-                    android:text="@string/remove" />
+                    android:onClick="@{remove}"
+                    android:text="@string/remove"
+                    android:textSize="10dp" />
             </LinearLayout>
         </LinearLayout>
 

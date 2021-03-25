@@ -183,7 +183,7 @@ class ConfirmOrderFragment : Fragment(), Injectable {
             when (result.status) {
                 Result.Status.SUCCESS -> {
                     var cloudCard = result.data?.get("cloud") as CardListData
-                    var localCard = result.data?.get("local") as List<CardData>
+//                    var localCard = result.data?.get("local") as List<CardData>
 
                     if (cloudCard.card?.size != 0) {
 
