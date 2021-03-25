@@ -8,9 +8,10 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.BROADCAST_STICKY"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
@@ -24,7 +25,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".player.ui.PlayerActivity"
+        <activity
+            android:name=".player.ui.PlayerActivity"
             android:configChanges="orientation|screenSize" />
         <activity android:name=".register.ui.SignUpActivity" />
 
@@ -35,7 +37,8 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
-        <activity android:name=".basket.ui.ActivityBasket"
+        <activity
+            android:name=".basket.ui.ActivityBasket"
             android:configChanges="orientation|screenSize" />
         <activity android:name=".login.ui.ForgotPasswordActivity" />
         <activity android:name=".login.ui.LoginActivity" />
@@ -46,31 +49,38 @@
             android:theme="@style/SplashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <category android:name="android.intent.category.LAUNCHER" />
-                <data android:scheme="@string/fb_login_protocol_scheme" />
-                <data android:scheme="@string/audiobooksnz_deep_link_scheme"/>
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="@string/audiobooksnz_deep_link_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:configChanges="orientation|screenSize" />
 
         <!--facebook-->
-        <meta-data android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"/>
-        <activity android:name="com.facebook.FacebookActivity"
-            android:configChanges=
-                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
@@ -83,7 +93,7 @@
             android:name=".api.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
