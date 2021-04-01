@@ -3,7 +3,9 @@ package com.audiobookz.nz.app.mylibrary.ui
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import android.widget.AutoCompleteTextView
 import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -18,13 +20,17 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import javax.inject.Inject
 
-class MyLibraryFragment : Fragment() , Injectable {
+class MyLibraryFragment : Fragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: MyLibraryViewModel
-    lateinit var adapter : TabLayoutAdapter
+    lateinit var adapter: TabLayoutAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         var rootView = inflater.inflate(R.layout.fragment_mylibrary, container, false)
         setHasOptionsMenu(true)
@@ -87,6 +93,15 @@ class MyLibraryFragment : Fragment() , Injectable {
 
         inflater.inflate(R.menu.menu_search, menu)
         val searchView: SearchView = menu.findItem(R.id.action_search).actionView as SearchView
+        val searchTextView =
+            searchView.findViewById<View>(androidx.appcompat.R.id.search_src_text) as AutoCompleteTextView
+        try {
+            val mCursorDrawableRes =
+                TextView::class.java.getDeclaredField("mCursorDrawableRes")
+            mCursorDrawableRes.isAccessible = true
+            mCursorDrawableRes.set(searchTextView, R.drawable.app_bar_search_cursor)
+        } catch (e: Exception) {
+        }
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String): Boolean {
                 //do noting
