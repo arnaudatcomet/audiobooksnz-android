@@ -1,14 +1,21 @@
 package com.audiobookz.nz.app.audiobookList.ui
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.location.Geocoder
+import android.location.LocationManager
 import android.os.Bundle
+import android.telephony.TelephonyManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -26,6 +33,7 @@ import com.audiobookz.nz.app.ui.show
 import com.audiobookz.nz.app.util.AUDIOBOOKLIST_PAGE_SIZE
 import com.audiobookz.nz.app.util.CATEGORY_PAGE_SIZE
 import com.google.android.material.snackbar.Snackbar
+import java.util.*
 import javax.inject.Inject
 
 
@@ -39,6 +47,7 @@ class AudiobookListFragment : Fragment(), Injectable {
     private val adapter = AudiobookListAdapter()
     lateinit var binding: FragmentAudiobookListBinding
     private lateinit var fragmentStatus: String
+    private var countryCode: String = ""
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -83,6 +92,7 @@ class AudiobookListFragment : Fragment(), Injectable {
                 binding.recyclerViewCatecoryDetail.adapter = adapter
             }
 
+            getCountryCode()
             when {
                 //open by showAll
                 args.listItem != null -> {
@@ -93,12 +103,12 @@ class AudiobookListFragment : Fragment(), Injectable {
                 //open by category
                 args.id != 0 -> {
                     binding.selectLangDialog.show()
-                    viewModel.fetchCategory(args.id, 1, AUDIOBOOKLIST_PAGE_SIZE, defaultLang)
+                    viewModel.fetchCategory(args.id, 1, AUDIOBOOKLIST_PAGE_SIZE, defaultLang, countryCode)
                     subscribeUi(binding, adapter)
                 }
                 //open by search
                 else -> {
-                    args.keyword?.let { viewModel.fetchSearch(it, 1, AUDIOBOOKLIST_PAGE_SIZE) }
+                    args.keyword?.let { viewModel.fetchSearch(it, 1, AUDIOBOOKLIST_PAGE_SIZE, countryCode) }
                     subscribeUi(binding, adapter)
                 }
             }
@@ -126,7 +136,7 @@ class AudiobookListFragment : Fragment(), Injectable {
 
                 if (args.id != 0 && defaultLang != spinnerLang.selectedItem.toString()) {
                     defaultLang = spinnerLang.selectedItem.toString()
-                    viewModel.fetchCategory(args.id, 1, CATEGORY_PAGE_SIZE, defaultLang)
+                    viewModel.fetchCategory(args.id, 1, CATEGORY_PAGE_SIZE, defaultLang, countryCode)
                     subscribeUi(binding, adapter)
                 } else {
                     //change lang in show all
@@ -152,6 +162,66 @@ class AudiobookListFragment : Fragment(), Injectable {
             binding.recyclerViewCatecoryDetail.layoutManager =
                 GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
             binding.recyclerViewCatecoryDetail.adapter = adapter
+        }
+    }
+
+    private fun getCountryCode() {
+        val tm =
+            context!!.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+        countryCode = tm.simCountryIso.toUpperCase()
+
+        //get code from wifi
+        if (countryCode == "") {
+            //countryCode = tm.networkCountryIso.toUpperCase()
+
+            //get code from location
+            if (countryCode == "") {
+                val locationManager =
+                    context!!.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+                if (locationManager != null) {
+
+                    //request permission if not granted
+                    if (ActivityCompat.checkSelfPermission(
+                            context!!,
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                            context!!,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
+                        //Permission was not enabled
+                        val permission = arrayOf(
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        )
+                        //show popup to request permission
+                        requestPermissions(permission, 1500)
+                    } else {
+                        var location =
+                            locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                        if (location == null) {
+                            location =
+                                locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+                        }
+                        if (location != null) {
+                            var gcd = Geocoder(context, Locale.getDefault())
+                            var addresses = gcd.getFromLocation(
+                                location.latitude,
+                                location.longitude, 1
+                            )
+
+                            if (addresses != null && addresses.isNotEmpty()) {
+                                countryCode = addresses[0].countryCode.toUpperCase()
+                            }
+                        }
+                        //if location not turn on
+                        else {
+                            Toast.makeText(activity, "not found your location", Toast.LENGTH_SHORT)
+                                .show();3
+                        }
+                    }
+                }
+            }
         }
     }
 

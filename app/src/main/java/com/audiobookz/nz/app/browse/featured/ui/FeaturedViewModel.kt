@@ -14,31 +14,46 @@ import javax.inject.Inject
 class FeaturedViewModel @Inject constructor(private val repository: FeaturedRepository) :
     ViewModel() {
 
-   // val featuredList by lazy {   repository.getFeatured(CATEGORY_PAGE_SIZE)}
+    // val featuredList by lazy {   repository.getFeatured(CATEGORY_PAGE_SIZE)}
 
 
-   var featuredListResult = MediatorLiveData<Result<Map<String, List<Featured>>?>>();
-   var errorMessage = MediatorLiveData<Boolean>()
-//    var page: Int? = 1
+    var featuredListResult = MediatorLiveData<Result<Map<String, List<Featured>>?>>();
+    var errorMessage = MediatorLiveData<Boolean>()
+
+    //    var page: Int? = 1
 //    var isLatest: Boolean? = false
 //
-    fun fetchCategory() {
+    fun fetchCategory(code: String) {
         featuredListResult.addSource(repository.getFeatured(FEATURED_PAGE_SIZE)) { value ->
             if (value.data?.size != null) {
-                if(value.status != Result.Status.ERROR){
-                    featuredListResult.value = getBestResult(value)
-                }else{
+                if (value.status != Result.Status.ERROR) {
+                    var resultFilter = filterCountry(code, value)
+                    featuredListResult.value = getBestResult(resultFilter)
+                } else {
                     errorMessage.value = true
                 }
 
             }
         }
     }
-    fun getBestResult(newResult: Result<List<Featured>>): Result<Map<String, List<Featured>>?> {
-            var data= newResult.data.let {
-                it?.groupBy { it.type }
+
+    fun getBestResult(newResult: Result<List<Featured>?>): Result<Map<String, List<Featured>>?> {
+        var data = newResult.data.let {
+            it?.groupBy { it.type }
+        }
+        var bestResult = Result.success(data)
+        return bestResult;
+    }
+
+    fun filterCountry(code: String, rawResult: Result<List<Featured>>): Result<List<Featured>?> {
+        var result = rawResult.data?.filter { item ->
+            item.audiobook?.audioengine_data?.active_products?.retail!!.any {
+                it.territories!!.any {
+                    it == code
+                }
             }
-            var bestResult = Result.success(data)
-            return bestResult;
+        }
+
+        return Result.success(result)
     }
 }
