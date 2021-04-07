@@ -21,8 +21,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.audiobookz.nz.app.R
 import com.audiobookz.nz.app.api.AlertDialogsService
+import com.audiobookz.nz.app.audiobookList.data.Audiobook
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.databinding.FragmentAudiobookListBinding
 import com.audiobookz.nz.app.di.Injectable
@@ -32,6 +34,7 @@ import com.audiobookz.nz.app.ui.setTitle
 import com.audiobookz.nz.app.ui.show
 import com.audiobookz.nz.app.util.AUDIOBOOKLIST_PAGE_SIZE
 import com.audiobookz.nz.app.util.CATEGORY_PAGE_SIZE
+import com.audiobookz.nz.app.util.CLOUDBOOK_PAGE_SIZE
 import com.google.android.material.snackbar.Snackbar
 import java.util.*
 import javax.inject.Inject
@@ -93,6 +96,7 @@ class AudiobookListFragment : Fragment(), Injectable {
             }
 
             getCountryCode()
+            //first page fetch
             when {
                 //open by showAll
                 args.listItem != null -> {
@@ -103,16 +107,68 @@ class AudiobookListFragment : Fragment(), Injectable {
                 //open by category
                 args.id != 0 -> {
                     binding.selectLangDialog.show()
-                    viewModel.fetchCategory(args.id, 1, AUDIOBOOKLIST_PAGE_SIZE, defaultLang, countryCode)
-                    subscribeUi(binding, adapter)
+                    viewModel.fetchCategory(
+                        args.id,
+                        1,
+                        AUDIOBOOKLIST_PAGE_SIZE,
+                        defaultLang,
+                        countryCode
+                    )
                 }
                 //open by search
                 else -> {
-                    args.keyword?.let { viewModel.fetchSearch(it, 1, AUDIOBOOKLIST_PAGE_SIZE, countryCode) }
-                    subscribeUi(binding, adapter)
+                    args.keyword?.let {
+                        viewModel.fetchSearch(
+                            it,
+                            1,
+                            AUDIOBOOKLIST_PAGE_SIZE,
+                            countryCode
+                        )
+                    }
                 }
             }
 
+            //paging
+            binding.recyclerViewCatecoryDetail.addOnScrollListener(object :
+                RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    if (!recyclerView.canScrollVertically(1) && viewModel.isLatest == false) {
+
+                        when {
+                            //open by showAll
+//                            args.listItem != null -> {
+//                                binding.progressBarDetail.hide()
+//                                binding.selectLangDialog.show()
+//                                adapter.submitList(args.listItem!!.map { featured -> featured.audiobook })
+//                            }
+                            //open by category
+                            args.id != 0 -> {
+                                binding.selectLangDialog.show()
+                                viewModel.pageCount?.plus(1)?.let {
+                                    viewModel.fetchCategory(
+                                        args.id,
+                                        it, AUDIOBOOKLIST_PAGE_SIZE, defaultLang, countryCode
+                                    )
+                                }
+                            }
+                            //open by search
+                            else -> {
+                                args.keyword?.let {
+                                    viewModel.pageCount?.plus(1)?.let { it1 ->
+                                        viewModel.fetchSearch(
+                                            it,
+                                            it1, AUDIOBOOKLIST_PAGE_SIZE, countryCode
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                        viewModel.pageCount = viewModel.pageCount?.plus(1)
+                    }
+                }
+            })
+            subscribeUi(binding, adapter)
             return binding.root
         }
         return binding.root
@@ -134,10 +190,12 @@ class AudiobookListFragment : Fragment(), Injectable {
                 id: Long
             ) {
 
+                //select language from category
                 if (args.id != 0 && defaultLang != spinnerLang.selectedItem.toString()) {
                     defaultLang = spinnerLang.selectedItem.toString()
-                    viewModel.fetchCategory(args.id, 1, CATEGORY_PAGE_SIZE, defaultLang, countryCode)
-                    subscribeUi(binding, adapter)
+                    if (viewModel.stackBook != null)
+                        adapter.submitList(viewModel.stackBook?.filter { item -> item.language == defaultLang })
+
                 } else {
                     //change lang in show all
                     defaultLang = spinnerLang.selectedItem.toString()
