@@ -37,7 +37,7 @@ class LoginViewModel @Inject constructor(private val repository: LoginRepository
                 ApiException::class.java
             )
             if (account != null){
-                loginGoogleResult.addSource(repository.loginGoogle(account.idToken!!,"2")){ value ->
+                loginGoogleResult.addSource(repository.loginGoogle(account.idToken!!,"1")){ value ->
                     loginGoogleResult.value = value
                 }
             }
@@ -51,7 +51,7 @@ class LoginViewModel @Inject constructor(private val repository: LoginRepository
     }
 
     fun facebookToken(token:String){
-        loginFacebookResult.addSource(repository.loginFacebook(token,"2")){ value ->
+        loginFacebookResult.addSource(repository.loginFacebook(token,"1")){ value ->
             loginFacebookResult.value = value
         }
     }

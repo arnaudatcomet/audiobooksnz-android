@@ -72,7 +72,8 @@ interface AudiobookService {
         @Field("password") password: String? = null,
         @Field("terms") terms: String? = null,
         @Field("cPassword") cPassword: String? = null,
-        @Field("firstName") firstName: String? = null
+        @Field("firstName") firstName: String? = null,
+        @Field("device_type") device_type: Int = 1
     ): Response<UserData>
 
     @FormUrlEncoded
