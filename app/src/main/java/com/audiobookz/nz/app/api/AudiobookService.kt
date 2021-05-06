@@ -61,7 +61,8 @@ interface AudiobookService {
     @POST("users/login")
     suspend fun postEmailLogin(
         @Field("username") Username: String? = null,
-        @Field("password") Password: String? = null
+        @Field("password") Password: String? = null,
+        @Field("device_type") device_type: Int = 1
     ): Response<UserData>
 
     @FormUrlEncoded
