@@ -86,6 +86,11 @@ class AppModule {
 
     @Singleton
     @Provides
+    fun provideFirebaseAnalyticsService() =
+        FirebaseAnalyticsService()
+
+    @Singleton
+    @Provides
     fun provideAlertDialogsService(app: Application) =
         AlertDialogsService(app)
 

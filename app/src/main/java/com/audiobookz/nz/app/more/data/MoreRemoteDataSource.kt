@@ -2,8 +2,10 @@ package com.audiobookz.nz.app.more.data
 
 import com.audiobookz.nz.app.api.AudiobookService
 import com.audiobookz.nz.app.api.BaseDataSource
+import com.audiobookz.nz.app.api.FirebaseAnalyticsService
 import com.audiobookz.nz.app.api.NotificationService
 import com.audiobookz.nz.app.bookdetail.data.BookRoom
+import com.audiobookz.nz.app.util.ConversionEvent
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -11,7 +13,8 @@ import javax.inject.Inject
 
 class MoreRemoteDataSource @Inject constructor(
     private val service: AudiobookService,
-    private val notificationService: NotificationService
+    private val notificationService: NotificationService,
+    private val customAnalytic: FirebaseAnalyticsService
 ) :
     BaseDataSource() {
 
@@ -74,4 +77,6 @@ class MoreRemoteDataSource @Inject constructor(
     fun setDefaultCard(cardId: String) = service.setCardDefault(cardId)
 
     suspend fun getProfile() = getResult { service.getProfile() }
+
+    fun addAnalytic(eventName: ConversionEvent, text: String) = customAnalytic.logEvent(event = eventName, value = text)
 }

@@ -101,6 +101,10 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector, Injectable
         super.onCreate(savedInstanceState)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         viewModel = injectViewModel(viewModelFactory)
+
+        // firebase analytic
+        viewModel.initAnalytic()
+
         isDiscover = intent.getBooleanExtra(EXTRA_MESSAGE, false)
         backFromBasket = intent.getBooleanExtra("basket", false)
 

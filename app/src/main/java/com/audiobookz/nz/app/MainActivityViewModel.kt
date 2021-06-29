@@ -8,4 +8,6 @@ import javax.inject.Inject
 class MainActivityViewModel @Inject constructor(private val repository: BookDetailRepository,private val myLibraryRepository: MyLibraryRepository) : ViewModel() {
     val count by lazy {   repository.countCart()}
     val sessionId by lazy { myLibraryRepository.getSession() }
+
+    fun initAnalytic() = repository.initAnalytic()
 }

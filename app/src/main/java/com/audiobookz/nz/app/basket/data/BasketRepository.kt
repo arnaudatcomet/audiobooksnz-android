@@ -8,6 +8,7 @@ import com.audiobookz.nz.app.data.resultFetchOnlyLiveData
 import com.audiobookz.nz.app.data.resultLocalGetOnlyLiveData
 import com.audiobookz.nz.app.more.data.CardDataDao
 import com.audiobookz.nz.app.more.data.MoreRemoteDataSource
+import com.audiobookz.nz.app.util.ConversionEvent
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -42,7 +43,17 @@ class BasketRepository @Inject constructor(
         save_card: RequestBody,
         stripe_token: RequestBody
     ) = resultFetchOnlyLiveData(
-        networkCall = { remoteSource.orderCheckout(orderId, cancel_url, return_url, use_credit,card,save_card,stripe_token) })
+        networkCall = {
+            remoteSource.orderCheckout(
+                orderId,
+                cancel_url,
+                return_url,
+                use_credit,
+                card,
+                save_card,
+                stripe_token
+            )
+        })
 
     fun orderBookList(
         body: List<MultipartBody.Part>, coupon: RequestBody, code: RequestBody
@@ -65,4 +76,7 @@ class BasketRepository @Inject constructor(
 
     fun getCardList() = resultFetchOnlyLiveData(
         networkCall = { remoteSource.getCardList() })
+
+    fun addAnalytic(eventName: ConversionEvent, text: String) =
+        remoteSource.addAnalytic(eventName, text)
 }

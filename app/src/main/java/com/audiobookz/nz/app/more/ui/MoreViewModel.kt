@@ -8,6 +8,7 @@ import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.login.data.UserData
 import com.audiobookz.nz.app.more.data.*
 import com.audiobookz.nz.app.register.data.SignUpProData
+import com.audiobookz.nz.app.util.ConversionEvent
 import com.audiobookz.nz.app.util.WEB_URL
 import com.stripe.android.Stripe
 import okhttp3.MediaType
@@ -73,6 +74,9 @@ class MoreViewModel @Inject constructor(private val repository: MoreRepository) 
         var requestCard = RequestBody.create(MediaType.parse("text/plain"), cardId)
         var requestSaveCard = RequestBody.create(MediaType.parse("text/plain"), "0")
         var requestStripeToken = RequestBody.create(MediaType.parse("text/plain"), "")
+
+        // firebase analytic
+        repository.addAnalytic(ConversionEvent.begin_checkout, "Order ID $orderId")
 
         resultPayment.addSource(
             repository.orderCheckout(

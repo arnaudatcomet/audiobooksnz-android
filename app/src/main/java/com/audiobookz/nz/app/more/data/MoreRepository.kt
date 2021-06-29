@@ -4,6 +4,7 @@ import com.audiobookz.nz.app.api.SharedPreferencesService
 import com.audiobookz.nz.app.data.*
 import com.audiobookz.nz.app.login.data.UserData
 import com.audiobookz.nz.app.mylibrary.data.LocalBookData
+import com.audiobookz.nz.app.util.ConversionEvent
 import okhttp3.RequestBody
 import javax.inject.Inject
 
@@ -109,4 +110,7 @@ class MoreRepository @Inject constructor(
 
     fun statusNotification(title: String, body: String) =
         remoteSource.statusNotification(title, body)
+
+    fun addAnalytic(eventName: ConversionEvent, text: String) =
+        remoteSource.addAnalytic(eventName, text)
 }

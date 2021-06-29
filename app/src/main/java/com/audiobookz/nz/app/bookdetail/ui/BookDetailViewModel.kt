@@ -11,6 +11,7 @@ import com.audiobookz.nz.app.browse.categories.data.Category
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.more.data.WishListData
 import com.audiobookz.nz.app.util.CATEGORY_PAGE_SIZE
+import com.audiobookz.nz.app.util.ConversionEvent
 import com.audiobookz.nz.app.util.REVIEW_PAGE_SIZE
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -75,6 +76,10 @@ class BookDetailViewModel @Inject constructor(private val repository: BookDetail
 
     fun addWishList(BookId: Int) {
         var requestBookId = RequestBody.create(MediaType.parse("text/plain"), BookId.toString())
+
+        // firebase analytic
+        repository.addAnalytic(ConversionEvent.add_to_wishlist,"Book ID $BookId")
+
         resultAddWishList.addSource(
             repository.addWishList(requestBookId)
         ) { value -> resultAddWishList.value = value }

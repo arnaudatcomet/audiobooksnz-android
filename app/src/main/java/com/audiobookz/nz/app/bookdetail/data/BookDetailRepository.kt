@@ -4,6 +4,7 @@ import androidx.lifecycle.distinctUntilChanged
 import com.audiobookz.nz.app.audiobookList.data.AudiobookListRemoteDataSource
 import com.audiobookz.nz.app.data.resultFetchOnlyLiveData
 import com.audiobookz.nz.app.data.resultLocalSaveOnlyLiveData
+import com.audiobookz.nz.app.util.ConversionEvent
 import okhttp3.RequestBody
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -25,4 +26,8 @@ class BookDetailRepository @Inject constructor(private val remoteSource: BookDet
     fun addWishList(bookId: RequestBody) = resultFetchOnlyLiveData(
         networkCall = { remoteSource.addWishList(bookId) })
 
+    fun addAnalytic(eventName: ConversionEvent, text: String) =
+        remoteSource.addAnalytic(eventName, text)
+
+    fun initAnalytic() = remoteSource.initAnalytic()
 }
