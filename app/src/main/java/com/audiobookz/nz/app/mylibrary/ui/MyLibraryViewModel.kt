@@ -7,6 +7,7 @@ import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.mylibrary.data.CloudBook
 import com.audiobookz.nz.app.mylibrary.data.MyLibraryRepository
 import com.audiobookz.nz.app.util.CLOUDBOOK_PAGE_SIZE
+import com.audiobookz.nz.app.util.ConversionEvent
 import com.audiobookz.nz.app.util.HOUR_MILI_SEC
 import com.audiobookz.nz.app.util.MINUTE_MILI_SEC
 import io.audioengine.mobile.DownloadRequest
@@ -108,6 +109,10 @@ class MyLibraryViewModel @Inject constructor(private val repository: MyLibraryRe
         }
 
         return remainingTime
+    }
+
+    fun showSearchAnalytic(filter: String){
+        repository.addAnalytic(ConversionEvent.view_search_results, "View Search Results $filter")
     }
 
 }

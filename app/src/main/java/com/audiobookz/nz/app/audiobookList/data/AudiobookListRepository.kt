@@ -4,6 +4,7 @@ package com.audiobookz.nz.app.audiobookList.data
 import androidx.lifecycle.distinctUntilChanged
 import com.audiobookz.nz.app.data.resultFetchOnlyLiveData
 import com.audiobookz.nz.app.data.resultLiveData
+import com.audiobookz.nz.app.util.ConversionEvent
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -19,4 +20,8 @@ class AudiobookListRepository @Inject constructor(private val remoteSource: Audi
     fun searchList(filter:String,Page:Int,PageSize:Int) = resultFetchOnlyLiveData(
         networkCall = { remoteSource.searchData(filter,Page,PageSize) }
         )
+
+    fun addAnalytic(eventName: ConversionEvent, text: String) =
+            remoteSource.addAnalytic(eventName, text)
+
 }

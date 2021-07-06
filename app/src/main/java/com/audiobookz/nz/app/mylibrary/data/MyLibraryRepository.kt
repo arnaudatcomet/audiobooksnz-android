@@ -2,6 +2,7 @@ package com.audiobookz.nz.app.mylibrary.data
 
 import com.audiobookz.nz.app.api.SharedPreferencesService
 import com.audiobookz.nz.app.data.*
+import com.audiobookz.nz.app.util.ConversionEvent
 import com.audiobookz.nz.app.util.DOWNLOAD_COMPLETE
 import io.audioengine.mobile.*
 import javax.inject.Inject
@@ -129,5 +130,7 @@ class MyLibraryRepository @Inject constructor(
 
     fun getMultiValueCurrentBook() = sharePref.getMultiValueCurrentBook()
 
+    fun addAnalytic(eventName: ConversionEvent, text: String) =
+            remoteSource.addAnalytic(eventName, text)
 
 }

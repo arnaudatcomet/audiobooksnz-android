@@ -59,6 +59,14 @@ class MoreViewModel @Inject constructor(private val repository: MoreRepository) 
         ) { value -> resultBuyCredits.value = value }
     }
 
+    fun showPurchaseCreditAnalytic(orderId: Int?){
+        repository.addAnalytic(ConversionEvent.purchase, "Purchase Credit OrderId $orderId")
+    }
+
+    fun showRenewSubscriptionAnalytic(){
+        repository.addAnalytic(ConversionEvent.app_store_subscription_renew, "Renew Subscription")
+    }
+
     fun orderCheckout(orderId: Int, creditUse: String, cardId: String) {
         var requestCancel = RequestBody.create(
             MediaType.parse("text/plain"),
@@ -126,6 +134,7 @@ class MoreViewModel @Inject constructor(private val repository: MoreRepository) 
             MediaType.parse("text/plain"),
             "$WEB_URL/new-site/user/subscription_agreement_success"
         )
+
 
         resultUpgrade.addSource(
             repository.upgradePro(requestCancel, requestSuccess)

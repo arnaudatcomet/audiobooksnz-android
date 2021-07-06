@@ -168,6 +168,8 @@ class AddCreditsFragment : Fragment(), Injectable {
                             "Payment Status",
                             " Your Payment is successful"
                         )
+                        ///Buy credit
+                        viewModel.showPurchaseCreditAnalytic(tempOrderId)
                         val intent = Intent(
                             activity,
                             MainActivity::class.java

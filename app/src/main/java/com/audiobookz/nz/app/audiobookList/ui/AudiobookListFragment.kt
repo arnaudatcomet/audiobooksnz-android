@@ -103,6 +103,7 @@ class AudiobookListFragment : Fragment(), Injectable {
                     binding.progressBarDetail.hide()
                     binding.selectLangDialog.show()
                     adapter.submitList(args.listItem!!.map { featured -> featured.audiobook })
+                    viewModel.showListAnalytic(args.id)
                 }
                 //open by category
                 args.id != 0 -> {
@@ -114,6 +115,7 @@ class AudiobookListFragment : Fragment(), Injectable {
                         defaultLang,
                         countryCode
                     )
+
                 }
                 //open by search
                 else -> {
@@ -124,6 +126,7 @@ class AudiobookListFragment : Fragment(), Injectable {
                             AUDIOBOOKLIST_PAGE_SIZE,
                             countryCode
                         )
+                        viewModel.showSearchAnalytic(it)
                     }
                 }
             }
@@ -160,6 +163,7 @@ class AudiobookListFragment : Fragment(), Injectable {
                                             it,
                                             it1, AUDIOBOOKLIST_PAGE_SIZE, countryCode
                                         )
+                                        viewModel.showSearchAnalytic(it)
                                     }
                                 }
                             }

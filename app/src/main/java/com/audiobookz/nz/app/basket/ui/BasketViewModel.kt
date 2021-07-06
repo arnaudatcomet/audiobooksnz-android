@@ -34,6 +34,11 @@ class BasketViewModel @Inject constructor(private val repository: BasketReposito
         repository.deleteBookAll()
     }
 
+    fun showPurchaseBook(orderId: Int){
+        repository.addAnalytic(ConversionEvent.purchase, "Purchase Book OrderID $orderId")
+    }
+
+
     fun orderCheckout(orderId: Int, creditUse: String, cardId: String) {
         var requestCancel = RequestBody.create(
             MediaType.parse("text/plain"),
@@ -52,6 +57,7 @@ class BasketViewModel @Inject constructor(private val repository: BasketReposito
 
         // firebase analytic
         repository.addAnalytic(ConversionEvent.begin_checkout, "Order ID $orderId")
+
 
         resultPayment.addSource(
             repository.orderCheckout(

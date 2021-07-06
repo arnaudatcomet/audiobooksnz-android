@@ -1,7 +1,5 @@
 package com.audiobookz.nz.app.bookdetail.data
 
-import androidx.lifecycle.distinctUntilChanged
-import com.audiobookz.nz.app.audiobookList.data.AudiobookListRemoteDataSource
 import com.audiobookz.nz.app.data.resultFetchOnlyLiveData
 import com.audiobookz.nz.app.data.resultLocalSaveOnlyLiveData
 import com.audiobookz.nz.app.util.ConversionEvent
@@ -18,7 +16,7 @@ class BookDetailRepository @Inject constructor(private val remoteSource: BookDet
     fun bookReviewData(bookId:Int,page:Int,pageSize:Int) = resultFetchOnlyLiveData(
         networkCall = { remoteSource.fetchReviewData(bookId,page,pageSize) }
     )
-    fun addCard(id:Int?,title:String?,image:String?,price:String?,credit_price:Int?)  = resultLocalSaveOnlyLiveData(
+    fun addCard(id: Int?, title:String?, image:String?, price:String?, credit_price:Int?)  = resultLocalSaveOnlyLiveData(
         saveCallResult = { dao.insertCart(BookRoom(id,title,image,price,credit_price))}
     )
     fun countCart()= dao.getCount()

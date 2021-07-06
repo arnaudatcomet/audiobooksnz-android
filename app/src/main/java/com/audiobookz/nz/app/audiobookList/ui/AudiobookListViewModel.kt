@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.audiobookz.nz.app.audiobookList.data.Audiobook
 import com.audiobookz.nz.app.audiobookList.data.AudiobookListRepository
 import com.audiobookz.nz.app.data.Result
+import com.audiobookz.nz.app.util.ConversionEvent
 import javax.inject.Inject
 
 class AudiobookListViewModel @Inject constructor(private val repository: AudiobookListRepository) :
@@ -16,6 +17,14 @@ class AudiobookListViewModel @Inject constructor(private val repository: Audiobo
     var pageCount: Int? = 1
     var stackBook: List<Audiobook>? = null
 
+    fun showListAnalytic(filterId: Int){
+        repository.addAnalytic(ConversionEvent.view_item_list, "View Item List $filterId")
+    }
+
+    fun showSearchAnalytic(filter: String){
+        repository.addAnalytic(ConversionEvent.view_search_results, "View Search Results $filter")
+    }
+
     fun fetchCategory(filterId: Int, page: Int, pageSize: Int, lang: String, code: String) {
         bookListResult.addSource(repository.bookList(filterId, lang, page, pageSize)) { value ->
             if (value.data?.size != null) {
@@ -25,6 +34,7 @@ class AudiobookListViewModel @Inject constructor(private val repository: Audiobo
                 bookListResult.value = Result.success(resultFilter)
             }
         }
+        repository.addAnalytic(ConversionEvent.view_item_list, "View Item List $filterId")
     }
 
     fun fetchSearch(filter: String, page: Int, pageSize: Int, code: String) {
@@ -36,6 +46,7 @@ class AudiobookListViewModel @Inject constructor(private val repository: Audiobo
                 searchListResult.value = Result.success(resultFilter)
             }
         }
+//        repository.addAnalytic(ConversionEvent.view_search_results, "View Search Result")
     }
 
     private fun filterCountry(code: String, rawResult: List<Audiobook>): List<Audiobook>? {

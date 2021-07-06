@@ -191,6 +191,8 @@ class ConfirmOrderFragment : Fragment(), Injectable {
                                     "Payment Status",
                                     " Your Payment is successful"
                                 )
+
+                                viewModel.showPurchaseBook(orderId!!)
                                 AsyncTask.execute {
                                     viewModel.deleteCartAll()
                                 }

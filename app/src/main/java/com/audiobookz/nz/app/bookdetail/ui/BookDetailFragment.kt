@@ -69,6 +69,8 @@ class BookDetailFragment : Fragment(), Injectable {
 
         viewModel = injectViewModel(viewModelFactory)
         viewModel.bookId = args.id.toString()
+        viewModel.showItemAnalytic()
+
         //   viewModel.fetchReview(1, REVIEW_PAGE_SIZE)
         mediaPlayer = MediaPlayer()
         val binding = FragmentBookDetailBinding.inflate(inflater, container, false)

@@ -54,6 +54,9 @@ class UpgradeProFragment : Fragment(), Injectable {
                             " Congratulations! Subscription Successful"
                         )
 
+                        viewModel.showRenewSubscriptionAnalytic()
+
+
                         val intent = Intent(
                             activity,
                             MainActivity::class.java

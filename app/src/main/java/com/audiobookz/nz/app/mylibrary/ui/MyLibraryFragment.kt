@@ -76,6 +76,9 @@ class MyLibraryFragment : Fragment(), Injectable {
             }
 
             override fun onQueryTextSubmit(query: String): Boolean {
+                /////////
+                viewModel.showSearchAnalytic(query)
+                /////
                 adapter.deleteFragment()
                 adapter.addFragment(CloudLibraryFragment(query), "Cloud")
                 adapter.addFragment(DeviceLibraryFragment(), "Device")
@@ -102,6 +105,7 @@ class MyLibraryFragment : Fragment(), Injectable {
             mCursorDrawableRes.set(searchTextView, R.drawable.app_bar_search_cursor)
         } catch (e: Exception) {
         }
+
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String): Boolean {
                 //do noting

@@ -1,16 +1,11 @@
 package com.audiobookz.nz.app.bookdetail.ui
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
-import com.audiobookz.nz.app.audiobookList.data.AudiobookListRepository
 import com.audiobookz.nz.app.bookdetail.data.BookDetailRepository
 import com.audiobookz.nz.app.bookdetail.data.BookReview
-import com.audiobookz.nz.app.bookdetail.data.BookRoomDao
-import com.audiobookz.nz.app.browse.categories.data.Category
 import com.audiobookz.nz.app.data.Result
 import com.audiobookz.nz.app.more.data.WishListData
-import com.audiobookz.nz.app.util.CATEGORY_PAGE_SIZE
 import com.audiobookz.nz.app.util.ConversionEvent
 import com.audiobookz.nz.app.util.REVIEW_PAGE_SIZE
 import okhttp3.MediaType
@@ -54,6 +49,12 @@ class BookDetailViewModel @Inject constructor(private val repository: BookDetail
         return newResult
     }
 
+    ////View Item Analytic
+    fun showItemAnalytic(){
+        repository.addAnalytic(ConversionEvent.view_item, "Book ID $bookId")
+    }
+
+
     fun addCart() {
         var data = bookData.value?.data
         var title = data?.title
@@ -61,14 +62,17 @@ class BookDetailViewModel @Inject constructor(private val repository: BookDetail
         var image = data?.cover_image_url
         var price = data?.price
         var credit_price = data?.credit_price
+
+        repository.addAnalytic(ConversionEvent.add_to_cart, "Book ID $id")
+
         addCartResult.addSource(
-            repository.addCard(
-                id,
-                title,
-                image,
-                price,
-                credit_price
-            )
+                repository.addCard(
+                        id,
+                        title,
+                        image,
+                        price,
+                        credit_price
+                )
         ) { value ->
             addCartResult.value = value
         }
